@@ -8,6 +8,7 @@ Dieses Repository sammelt Boardgame-Materialien, Regeln, Designs und optionale T
 - Der Root-Ordner nutzt den vollen Spielnamen in lowercase, z. B. `sp-zeilenfuttern`.
 - Innerhalb der Spielstruktur zaehlt die Kurzversion des Spiels.
 - Platzhalter sind sinnbildlich: `[name]` ist lowercase, `[Name]` ist Titlecase, `[NAME]` ist uppercase. Die eckigen Klammern werden nie in Datei- oder Ordnernamen geschrieben.
+- Umlaute und deutsche Sonderzeichen sind in Dokumentation, Spieltexten, Materialdaten, Tool-Oberflaechen und Tool-Eingaben erlaubt.
 - Jedes Spiel hat eine eigene Uebersicht `z_README-[NAME].md`.
 - Spielmaterialien liegen direkt im Spielordner unter `assets/`.
 - Spieltools und Hilfsskripte liegen direkt im Spielordner unter `tools/`.
@@ -55,7 +56,7 @@ Regeln:
 - Datum, Kategorien und Dauer im Format `### YYYY-MM-DD - zeifu, design (2,3h)`; bei mehreren Sessions optional mit Anzahl, z. B. `(2,2h, 3x)`.
 - Wenn Git-Zeitpunkte oder Commits den Arbeitszeitraum belastbar eingrenzen, die Dauer daraus ableiten und als `ca.` markieren, z. B. `(ca. 0,5h)`.
 - Wenn eine Dauer genannt wird, diese uebernehmen.
-- Wenn nur ein unklarer, uncommitted Arbeitsblock vorliegt und keine Dauer genannt wird, bleibt die Dauer bei `n/a`.
+- Wenn nur ein unklarer Arbeitsblock vorliegt, eine vorsichtige `ca.`-Schaetzung nutzen und nicht mit leeren Platzhaltern arbeiten.
 - Unter `Stats` zuerst `Ausgangsdatum: YYYY-MM-DD` notieren.
 - Danach feste Stats-Abschnitte nutzen: `Diese Woche`, `Letzte Woche`, `Dieser Monat`, `Letzter Monat`, `Jahr`, `Insgesamt`.
 - Stats-Abschnitte im Format `*Abschnitt (Dauer, Tage, Inhalte):*` schreiben; darunter eine kurze spezifische Themenzeile, keine Tabelle.

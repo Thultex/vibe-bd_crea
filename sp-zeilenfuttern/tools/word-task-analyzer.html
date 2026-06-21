@@ -1,0 +1,1942 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zeilenfutter Wortanalyse</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f6f3ea;
+      --panel: #fffdfa;
+      --ink: #202124;
+      --muted: #67625a;
+      --line: #d8d1c4;
+      --accent: #245a6f;
+      --accent-strong: #163f50;
+      --warn: #8b3f1f;
+      --shadow: 0 10px 30px rgba(32, 33, 36, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.45;
+    }
+
+    main {
+      width: min(1420px, calc(100vw - 32px));
+      margin: 24px auto;
+    }
+
+    header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 16px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 12px;
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    h1 {
+      font-size: 1.55rem;
+    }
+
+    h2 {
+      font-size: 1rem;
+      color: var(--accent-strong);
+    }
+
+    h3 {
+      font-size: 0.95rem;
+    }
+
+    .version {
+      color: var(--muted);
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(320px, 0.95fr) minmax(360px, 1.05fr);
+      gap: 16px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
+
+    details.panel > summary {
+      cursor: pointer;
+      list-style: none;
+      color: var(--accent-strong);
+    }
+
+    details.panel > summary::-webkit-details-marker {
+      display: none;
+    }
+
+    details.panel > summary::before {
+      content: "▾";
+      display: inline-block;
+      margin-right: 8px;
+      transition: transform 0.14s ease;
+    }
+
+    details.panel:not([open]) > summary::before {
+      transform: rotate(-90deg);
+    }
+
+    .panel-title {
+      display: inline;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    label {
+      font-weight: 650;
+      color: var(--accent-strong);
+    }
+
+    textarea,
+    output {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      color: var(--ink);
+      font: 0.95rem/1.4 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+      padding: 12px;
+    }
+
+    textarea {
+      min-height: 220px;
+      resize: vertical;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      color: var(--ink);
+      font: 0.95rem/1.4 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+      padding: 10px;
+    }
+
+    #taskInput {
+      min-height: 170px;
+    }
+
+    output {
+      display: block;
+      min-height: 160px;
+      white-space: pre-wrap;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    button,
+    .button-link {
+      border: 1px solid var(--accent-strong);
+      border-radius: 6px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      padding: 10px 14px;
+      cursor: pointer;
+    }
+
+    .button-link {
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+    }
+
+    button.secondary,
+    .button-link.secondary {
+      background: transparent;
+      color: var(--accent-strong);
+    }
+
+    button:hover,
+    .button-link:hover {
+      background: var(--accent-strong);
+      color: #fff;
+    }
+
+    .results {
+      display: grid;
+      grid-template-columns: minmax(280px, 0.9fr) minmax(300px, 1.1fr);
+      gap: 16px;
+      align-items: start;
+    }
+
+    .result-column {
+      display: grid;
+      gap: 16px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .metric {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 10px;
+      background: #fbf8f1;
+      min-height: 72px;
+    }
+
+    .metric span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 1.35rem;
+      margin-top: 4px;
+    }
+
+    .task-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .task-card {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 12px;
+      background: #fff;
+    }
+
+    details.task-card > summary {
+      cursor: pointer;
+      list-style: none;
+      color: var(--accent-strong);
+    }
+
+    details.task-card > summary::-webkit-details-marker {
+      display: none;
+    }
+
+    details.task-card > summary::before {
+      content: "▾";
+      display: inline-block;
+      margin-right: 8px;
+      transition: transform 0.14s ease;
+    }
+
+    details.task-card:not([open]) > summary::before {
+      transform: rotate(-90deg);
+    }
+
+    .task-card.invalid {
+      border-color: var(--warn);
+      color: var(--warn);
+    }
+
+    .task-meta {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-top: 6px;
+    }
+
+    .generated-links {
+      display: grid;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .print-page-links {
+      display: inline-flex;
+      flex-wrap: wrap;
+      gap: 0 4px;
+      align-items: baseline;
+    }
+
+    .letter-list {
+      margin-top: 8px;
+      font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+      font-size: 0.9rem;
+      word-break: break-word;
+    }
+
+    .detail-toggle {
+      margin-top: 8px;
+      border-top: 1px solid var(--line);
+      padding-top: 8px;
+    }
+
+    .detail-toggle > summary {
+      cursor: pointer;
+      color: var(--accent-strong);
+      font-weight: 700;
+    }
+
+    .option-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .check-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 42px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      color: var(--ink);
+      padding: 10px;
+    }
+
+    .check-option input {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 auto;
+    }
+
+    @media (max-width: 900px) {
+      main {
+        width: min(100vw - 20px, 760px);
+        margin: 12px auto;
+      }
+
+      header,
+      .layout,
+      .results {
+        display: block;
+      }
+
+      .version {
+        margin-top: 4px;
+      }
+
+      .panel {
+        margin-bottom: 12px;
+      }
+
+      .summary-grid,
+      .option-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Zeilenfutter Wortanalyse</h1>
+      <div class="version">Tool v1.72</div>
+    </header>
+
+    <div class="layout">
+      <div class="result-column">
+        <details class="panel" open>
+          <summary><span id="inputHeading" class="panel-title">Text</span></summary>
+
+          <div class="field">
+            <label for="sourceText">Text</label>
+            <textarea id="sourceText" spellcheck="false"></textarea>
+          </div>
+
+          <div class="actions">
+            <button id="analyzeButton" type="button">Analysieren</button>
+            <button id="clearButton" class="secondary" type="button">Text leeren</button>
+          </div>
+        </details>
+
+        <details class="panel" open>
+          <summary><span class="panel-title">Aufgaben</span></summary>
+
+          <div class="field">
+            <label for="taskInput">Aufgaben</label>
+            <textarea id="taskInput" spellcheck="false"></textarea>
+          </div>
+
+          <details class="task-card">
+            <summary><span class="panel-title">Format- und Phonetik-Hinweise</span></summary>
+            <div class="task-meta">
+              Jede Zeile ist eine Aufgabe: `Name: regex`, `Name (Punkte): regex` oder nur `regex`.
+            </div>
+            <div class="letter-list">
+              <strong>Basisschreibweise (wird intern zu Regex übersetzt):</strong><br>
+              Oder-Verbindung: (d, t, k, g)<br>
+              Initial: (d, t)"i<br>
+              Medial: (d, t)"m<br>
+              Final: (d, t)"f<br>
+              Combo: (d, t, k, g)"k<br>
+              Doppelung: (r, s)"2<br>
+              Kürzel: ("k), ("v), ("u), ("v, "u)<br>
+              Silben etwa: (4), (2, 3), (1-4)<br><br>
+
+              <strong>Kombis und Positionen:</strong><br>
+              Konsonantenverbindungen: ("k)"k<br>
+              Endungen: (en, er, el, ung)<br>
+              Vokalkombo: ("v, "u)"k<br>
+              Doppelkonsonanten: ("k)"2<br><br>
+
+              <strong>Buchstabentypen:</strong><br>
+              Vokale: (a, e, i, o, u)<br>
+              Vokale mit Umlauten: (a, e, i, o, u, ä, ö, ü)<br>
+              Konsonanten: (b, c, d, f, g, h, j, k, l, m, n, p, q, r, s, t, v, w, x, y, z)<br>
+              Umlaute: (ä, ö, ü)<br><br>
+
+              <strong>Lautgruppen:</strong><br>
+              Diphthonge: (ei, au, eu)<br>
+              Nasale: (m, n, ng, nk)<br>
+              Liquide: (l, r)<br>
+              Plosive: (p, b, t, d, k, g)<br>
+              Frikative: (f, v, w, s, sch, ch)<br>
+              Zischlaute: (s, z, sch, ch)<br>
+              Affrikaten: (pf, ts, tsch)<br>
+              Harte/weiche Paare: (p, b), (t, d), (k, g), (s, z)<br><br>
+
+
+              <strong>Spezialfälle:</strong><br>
+              Liquid plus Vokal: (l, r) + (a, e, i, o, u, ä, ö, ü)<br>
+              Vokal plus Liquid: (a, e, i, o, u, ä, ö, ü) + (l, r)<br>
+              Initiales st/sp: \b(?:st|sp)<br>
+              Finale Endung: (?:en|er)\b<br>
+              Vokal vor Nasal: [aeiouäöü][mn]<br>
+              Liquid vor Verschluss: [lr][tdkg]<br>
+              Vokal vor sch: [aeiouäöü]sch<br>
+              Zischlaut vor t: [sz]t<br>
+              R vor Konsonant: r + Konsonantengruppe<br>
+              Offene Silbe grob: [aeiouäöü]\b<br>
+              Geschlossene Silbe grob: [aeiouäöü][bcdfghjklmnpqrstvwxyz]\b<br>
+              Endverhaertungsidee: [tdgkbp]\b<br>
+              Ich-Laut-Kontext: [eiäöü][a-zäöüß]*ch<br>
+              Ach-Laut-Kontext: [aou][a-zäöüß]*ch<br>
+              Vokal plus r: [aeiouäöü]r<br>
+              Unbetonte Endung grob: (?:e|en|er|el)\b<br>
+              Diphthong plus Konsonant: (?:ei|au|eu)[bcdfghjklmnpqrstvwxyz]
+            </div>
+          </details>
+
+          <div class="actions">
+            <a id="regex101Link" class="button-link secondary" href="https://regex101.com/" target="_blank" rel="noopener noreferrer">Regex101 öffnen</a>
+            <button id="resetTasksButton" class="secondary" type="button">Standardaufgaben</button>
+          </div>
+        </details>
+
+        <details class="panel">
+          <summary><span class="panel-title">Optionen</span></summary>
+
+          <div class="field">
+            <label>Wortlänge</label>
+            <div class="option-grid">
+              <div>
+                <label for="minWordLength">Minimum</label>
+                <input id="minWordLength" type="number" min="0" step="1">
+              </div>
+              <div>
+                <label for="maxWordLength">Maximum</label>
+                <input id="maxWordLength" type="number" min="0" step="1">
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Silbenzahl grob</label>
+            <div class="option-grid">
+              <div>
+                <label for="minSyllableCount">Minimum</label>
+                <input id="minSyllableCount" type="number" min="0" step="1">
+              </div>
+              <div>
+                <label for="maxSyllableCount">Maximum</label>
+                <input id="maxSyllableCount" type="number" min="0" step="1">
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Cleanup</label>
+            <div class="option-grid">
+              <label class="check-option" for="removeDuplicates">
+                <input id="removeDuplicates" type="checkbox">
+                Duplikate entfernen
+              </label>
+              <label class="check-option" for="replaceUmlauts">
+                <input id="replaceUmlauts" type="checkbox">
+                Umlaute als Doppelvokale
+              </label>
+              <label class="check-option" for="removeDiacritics">
+                <input id="removeDiacritics" type="checkbox">
+                Diakritika entfernen
+              </label>
+              <label class="check-option" for="keepHyphenPartsTogether">
+                <input id="keepHyphenPartsTogether" type="checkbox">
+                Bindestriche verbinden
+              </label>
+              <label class="check-option" for="removeWordNumbers">
+                <input id="removeWordNumbers" type="checkbox">
+                Zahlen entfernen
+              </label>
+              <label class="check-option" for="rewriteSimplePatterns">
+                <input id="rewriteSimplePatterns" type="checkbox">
+                Basisschreibweise zu Regex ändern
+              </label>
+              <label class="check-option" for="rewriteSyllablePatterns">
+                <input id="rewriteSyllablePatterns" type="checkbox">
+                Silbenkürzel zu Regex ändern
+              </label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Anzeigen</label>
+            <div class="option-grid">
+              <label class="check-option" for="showSyllableWordMapping">
+                <input id="showSyllableWordMapping" type="checkbox">
+                Wortzuordnung anzeigen
+              </label>
+              <label class="check-option" for="showTaskHitSummary">
+                <input id="showTaskHitSummary" type="checkbox">
+                Trefferzeile anzeigen
+              </label>
+              <label class="check-option" for="showTaskDetails">
+                <input id="showTaskDetails" type="checkbox">
+                Buchstaben/Silben anzeigen
+              </label>
+              <label class="check-option" for="showTaskPoints">
+                <input id="showTaskPoints" type="checkbox">
+                Punkte in Trefferzeile anzeigen
+              </label>
+              <label class="check-option" for="showTaskWordActions">
+                <input id="showTaskWordActions" type="checkbox">
+                Aufgaben-Wörter kopieren/drucken
+              </label>
+              <label class="check-option" for="showDebugPatterns">
+                <input id="showDebugPatterns" type="checkbox">
+                Debug: Regex anzeigen
+              </label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="printFontSize">Print-Schriftgröße</label>
+            <input id="printFontSize" type="number" min="10" step="1">
+          </div>
+
+          <div class="field">
+            <label for="printColumnCount">Print-Spalten</label>
+            <input id="printColumnCount" type="number" min="1" step="1">
+          </div>
+
+          <div class="field">
+            <label class="check-option" for="printMonospace">
+              <input id="printMonospace" type="checkbox">
+              Druckseite mit Monospace
+            </label>
+          </div>
+
+          <div class="actions">
+            <button class="analyze-button" type="button">Analysieren</button>
+            <button id="resetOptionsButton" class="secondary" type="button">Optionen zurücksetzen</button>
+          </div>
+        </details>
+      </div>
+
+      <section class="results" aria-live="polite">
+        <div class="result-column">
+          <details class="panel" open>
+            <summary><span id="summaryHeading" class="panel-title">Generelles</span></summary>
+            <div class="summary-grid">
+              <div class="metric">
+                <span>Wörter</span>
+                <strong id="wordCount">0</strong>
+              </div>
+              <div class="metric">
+                <span>Buchstaben</span>
+                <strong id="letterCount">0</strong>
+              </div>
+              <div class="metric">
+                <span>Mittlere Wortlänge</span>
+                <strong id="averageWordLength">0</strong>
+              </div>
+              <div class="metric">
+                <span>Mittlere Silbenzahl</span>
+                <strong id="averageSyllableCount">0</strong>
+              </div>
+            </div>
+            <div class="field">
+              <label for="missingLetters">Fehlende Buchstaben (de)</label>
+              <output id="missingLetters">-</output>
+            </div>
+            <div class="actions">
+              <button class="secondary copy-words-button" type="button">Wörter kopieren</button>
+              <button class="secondary copy-table-button" type="button">Tabelle</button>
+            </div>
+            <div class="task-meta" id="copyStatus" role="status" aria-live="polite"></div>
+            <div class="generated-links print-page-links"></div>
+          </details>
+
+          <details class="panel" open>
+            <summary><span id="wordsHeading" class="panel-title">Wörter pro Länge</span></summary>
+            <div class="field">
+              <output id="sortedWords">-</output>
+            </div>
+          </details>
+
+          <details class="panel">
+            <summary><span class="panel-title">Cleanup für Printversion</span></summary>
+            <div class="field">
+              <label for="printWords">Ein Wort pro Zeile</label>
+              <output id="printWords">-</output>
+            </div>
+            <div class="actions">
+              <button class="secondary copy-words-button" type="button">Wörter kopieren</button>
+              <button class="secondary copy-table-button" type="button">Tabelle</button>
+            </div>
+            <div class="generated-links print-page-links"></div>
+          </details>
+        </div>
+
+        <details class="panel" open>
+          <summary><span id="tasksHeading" class="panel-title">Analyse</span></summary>
+          <div id="taskResults" class="task-list"></div>
+        </details>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    "use strict";
+
+    const CONFIG = {
+      defaultText: "Der Nordwind und die Sonne\n\nEinst stritten sich Nordwind und Sonne, wer von ihnen beiden wohl der Stärkere wäre, als ein Wanderer, der in einen warmen Mantel gehüllt war, des Weges daherkam. Sie wurden einig, dass derjenige für den Stärkeren gelten sollte, der den Wanderer zwingen würde, seinen Mantel abzunehmen. Der Nordwind blies mit aller Macht, aber je mehr er blies, desto fester hüllte sich der Wanderer in seinen Mantel ein. Endlich gab der Nordwind den Kampf auf. Nun erwärmte die Sonne die Luft mit ihren freundlichen Strahlen, und schon nach wenigen Augenblicken zog der Wanderer seinen Mantel aus. Da musste der Nordwind zugeben, dass die Sonne von ihnen beiden der Stärkere war.",
+      defaultTasks: [
+        "Diphthonge (2): (?:ei|au|eu)",
+        "Vokalkombi: [aeiou\\u00e4\\u00f6\\u00fc]{2}",
+        "st im Wort (2): st",
+        "ch im Wort (3): ch",
+        "Umlaute (2): [\\u00e4\\u00f6\\u00fc]",
+        "r vor Mitlaut (2): r[bcdfghjklmnpqrstvwxyz]",
+        "m/n vor Vokal: [mn][aeiou\\u00e4\\u00f6\\u00fc]",
+        "l/r vor Vokal: [lr][aeiou\\u00e4\\u00f6\\u00fc]",
+        "Endung en/er: (?:en|er)\\b",
+        "Endlaut d/t/g/k (2): [tdgk]\\b",
+        "2-Silber: (2)",
+        "3-Silber (2): (3)",
+        "4-Silber (5): (4)",
+      ].join("\n"),
+      germanLetters: "abcdefghijklmnopqrstuvwxyz\u00e4\u00f6\u00fc\u00df".split(""),
+      defaultMinWordLength: 0,
+      defaultMaxWordLength: 0,
+      defaultMinSyllableCount: 0,
+      defaultMaxSyllableCount: 0,
+      defaultRemoveDuplicates: true,
+      defaultReplaceUmlauts: false,
+      defaultRemoveDiacritics: false,
+      defaultKeepHyphenPartsTogether: false,
+      defaultRemoveWordNumbers: true,
+      defaultRewriteSimplePatterns: true,
+      defaultRewriteSyllablePatterns: false,
+      defaultShowSyllableWordMapping: false,
+      defaultShowTaskHitSummary: true,
+      defaultShowTaskDetails: true,
+      defaultShowTaskPoints: true,
+      defaultShowTaskWordActions: false,
+      defaultShowDebugPatterns: false,
+      defaultPrintFontSize: 30,
+      defaultPrintColumnCount: 3,
+      defaultPrintMonospace: false,
+      defaultPointsPerHit: 1,
+      optionsStorageKey: "zeifu-word-task-analyzer-options-v1",
+      tasksStorageKey: "zeifu-word-task-analyzer-tasks-v1",
+      taskSeparator: ":",
+      regexFlags: "giu",
+    };
+
+    const elements = {
+      sourceText: document.getElementById("sourceText"),
+      taskInput: document.getElementById("taskInput"),
+      regex101Link: document.getElementById("regex101Link"),
+      minWordLength: document.getElementById("minWordLength"),
+      maxWordLength: document.getElementById("maxWordLength"),
+      minSyllableCount: document.getElementById("minSyllableCount"),
+      maxSyllableCount: document.getElementById("maxSyllableCount"),
+      removeDuplicates: document.getElementById("removeDuplicates"),
+      replaceUmlauts: document.getElementById("replaceUmlauts"),
+      removeDiacritics: document.getElementById("removeDiacritics"),
+      keepHyphenPartsTogether: document.getElementById("keepHyphenPartsTogether"),
+      removeWordNumbers: document.getElementById("removeWordNumbers"),
+      rewriteSimplePatterns: document.getElementById("rewriteSimplePatterns"),
+      rewriteSyllablePatterns: document.getElementById("rewriteSyllablePatterns"),
+      showSyllableWordMapping: document.getElementById("showSyllableWordMapping"),
+      showTaskHitSummary: document.getElementById("showTaskHitSummary"),
+      showTaskDetails: document.getElementById("showTaskDetails"),
+      showTaskPoints: document.getElementById("showTaskPoints"),
+      showTaskWordActions: document.getElementById("showTaskWordActions"),
+      showDebugPatterns: document.getElementById("showDebugPatterns"),
+      printFontSize: document.getElementById("printFontSize"),
+      printColumnCount: document.getElementById("printColumnCount"),
+      printMonospace: document.getElementById("printMonospace"),
+      analyzeButtons: document.querySelectorAll("#analyzeButton, .analyze-button"),
+      resetTasksButton: document.getElementById("resetTasksButton"),
+      resetOptionsButton: document.getElementById("resetOptionsButton"),
+      clearButton: document.getElementById("clearButton"),
+      copyWordsButtons: document.querySelectorAll(".copy-words-button"),
+      copyTableButtons: document.querySelectorAll(".copy-table-button"),
+      wordCount: document.getElementById("wordCount"),
+      letterCount: document.getElementById("letterCount"),
+      averageWordLength: document.getElementById("averageWordLength"),
+      averageSyllableCount: document.getElementById("averageSyllableCount"),
+      missingLetters: document.getElementById("missingLetters"),
+      sortedWords: document.getElementById("sortedWords"),
+      printWords: document.getElementById("printWords"),
+      copyStatus: document.getElementById("copyStatus"),
+      printPageLinks: document.querySelectorAll(".print-page-links"),
+      taskResults: document.getElementById("taskResults"),
+    };
+
+    let generatedPrintUrls = [];
+
+    function initializeTool() {
+      elements.sourceText.value = CONFIG.defaultText;
+      const storedTasks = loadStoredTasks();
+      elements.taskInput.value = storedTasks !== null ? storedTasks : CONFIG.defaultTasks;
+      applyOptionsToForm(loadStoredOptions() || getDefaultOptions());
+      elements.analyzeButtons.forEach((button) => button.addEventListener("click", analyzeInput));
+      elements.taskInput.addEventListener("input", updateRegex101Link);
+      elements.resetTasksButton.addEventListener("click", resetTasks);
+      elements.resetOptionsButton.addEventListener("click", resetOptions);
+      elements.clearButton.addEventListener("click", clearInput);
+      elements.copyWordsButtons.forEach((button) => button.addEventListener("click", copyPrintWords));
+      elements.copyTableButtons.forEach((button) => button.addEventListener("click", copyHtmlTable));
+      analyzeInput();
+    }
+
+    function analyzeInput() {
+      const options = getAnalysisOptions();
+      saveOptions(options);
+      if (options.rewriteSimplePatterns || options.rewriteSyllablePatterns) {
+        normalizeTaskInputPatterns();
+      }
+      saveTasks(elements.taskInput.value);
+      const normalizedText = normalizeSourceText(elements.sourceText.value, options);
+      const rawWords = extractWords(normalizedText, options);
+      const cleanedWords = options.removeDuplicates ? removeDuplicateWords(rawWords).words : rawWords;
+      const words = filterWords(cleanedWords, options);
+      const uniqueStatWords = removeDuplicateWords(words).words;
+      const sortedWords = sortWords(words);
+      const generalStats = calculateGeneralStats(uniqueStatWords);
+      const tasks = parseTasks(elements.taskInput.value);
+      const taskStats = sortTaskStats(tasks.map((task) => analyzeTask(task, words, options)));
+
+      renderGeneralStats(generalStats);
+      renderWordLengthCounts(sortedWords);
+      renderPrintWords(sortedWords);
+      renderTaskStats(taskStats, options);
+      updateRegex101Link(tasks);
+    }
+
+    function normalizeTaskInputPatterns() {
+      const options = getAnalysisOptions();
+      const normalizedLines = elements.taskInput.value.split(/\r?\n/).map((line) => normalizeTaskLinePattern(line, options));
+      const normalizedValue = normalizedLines.join("\n");
+      if (elements.taskInput.value !== normalizedValue) {
+        elements.taskInput.value = normalizedValue;
+      }
+    }
+
+    function normalizeSourceText(text, options) {
+      let normalizedText = text.normalize("NFC");
+
+      if (options.replaceUmlauts) {
+        normalizedText = replaceGermanUmlauts(normalizedText);
+      }
+      if (options.removeDiacritics) {
+        normalizedText = removeCombiningDiacritics(normalizedText);
+      }
+      if (options.keepHyphenPartsTogether) {
+        normalizedText = normalizedText.replace(/[\p{L}\p{N}]+(?:[-‐‑‒–—][\p{L}\p{N}]+)+/gu, (match) => {
+          return match.replace(/[-‐‑‒–—]/g, "");
+        });
+      }
+
+      return normalizedText;
+    }
+
+    function extractWords(text, options) {
+      const wordPattern = options.removeWordNumbers ? /\p{L}+/gu : /[\p{L}]+[\p{L}\p{N}]*/gu;
+      const matches = text.match(wordPattern);
+      return matches ? matches : [];
+    }
+
+    function replaceGermanUmlauts(text) {
+      return text
+        .replaceAll("ä", "ae")
+        .replaceAll("Ä", "Ae")
+        .replaceAll("ö", "oe")
+        .replaceAll("Ö", "Oe")
+        .replaceAll("ü", "ue")
+        .replaceAll("Ü", "Ue")
+        .replaceAll("ß", "ss")
+        .replaceAll("ẞ", "SS");
+    }
+
+    function removeCombiningDiacritics(text) {
+      return text.normalize("NFD").replace(/\p{M}+/gu, "").normalize("NFC");
+    }
+
+    function removeDuplicateWords(words) {
+      const seenWords = new Set();
+      const uniqueWords = [];
+      let duplicateCount = 0;
+
+      for (const word of words) {
+        const wordKey = normalizeWordKey(word);
+        if (seenWords.has(wordKey)) {
+          duplicateCount += 1;
+          continue;
+        }
+        seenWords.add(wordKey);
+        uniqueWords.push(word);
+      }
+
+      return {
+        words: uniqueWords,
+        duplicateCount,
+      };
+    }
+
+    function normalizeWordKey(word) {
+      return word.toLowerCase().normalize("NFC");
+    }
+
+    function getAnalysisOptions() {
+      return {
+        minWordLength: parseFilterLimit(elements.minWordLength.value),
+        maxWordLength: parseFilterLimit(elements.maxWordLength.value),
+        minSyllableCount: parseFilterLimit(elements.minSyllableCount.value),
+        maxSyllableCount: parseFilterLimit(elements.maxSyllableCount.value),
+        removeDuplicates: elements.removeDuplicates.checked,
+        replaceUmlauts: elements.replaceUmlauts.checked,
+        removeDiacritics: elements.removeDiacritics.checked,
+        keepHyphenPartsTogether: elements.keepHyphenPartsTogether.checked,
+        removeWordNumbers: elements.removeWordNumbers.checked,
+        rewriteSimplePatterns: elements.rewriteSimplePatterns.checked,
+        rewriteSyllablePatterns: elements.rewriteSyllablePatterns.checked,
+        showSyllableWordMapping: elements.showSyllableWordMapping.checked,
+        showTaskHitSummary: elements.showTaskHitSummary.checked,
+        showTaskDetails: elements.showTaskDetails.checked,
+        showTaskPoints: elements.showTaskPoints.checked,
+        showTaskWordActions: elements.showTaskWordActions.checked,
+        showDebugPatterns: elements.showDebugPatterns.checked,
+        printFontSize: parsePositiveInteger(elements.printFontSize.value, CONFIG.defaultPrintFontSize),
+        printColumnCount: parsePositiveInteger(elements.printColumnCount.value, CONFIG.defaultPrintColumnCount),
+        printMonospace: elements.printMonospace.checked,
+      };
+    }
+
+    function getDefaultOptions() {
+      return {
+        minWordLength: CONFIG.defaultMinWordLength,
+        maxWordLength: CONFIG.defaultMaxWordLength,
+        minSyllableCount: CONFIG.defaultMinSyllableCount,
+        maxSyllableCount: CONFIG.defaultMaxSyllableCount,
+        removeDuplicates: CONFIG.defaultRemoveDuplicates,
+        replaceUmlauts: CONFIG.defaultReplaceUmlauts,
+        removeDiacritics: CONFIG.defaultRemoveDiacritics,
+        keepHyphenPartsTogether: CONFIG.defaultKeepHyphenPartsTogether,
+        removeWordNumbers: CONFIG.defaultRemoveWordNumbers,
+        rewriteSimplePatterns: CONFIG.defaultRewriteSimplePatterns,
+        rewriteSyllablePatterns: CONFIG.defaultRewriteSyllablePatterns,
+        showSyllableWordMapping: CONFIG.defaultShowSyllableWordMapping,
+        showTaskHitSummary: CONFIG.defaultShowTaskHitSummary,
+        showTaskDetails: CONFIG.defaultShowTaskDetails,
+        showTaskPoints: CONFIG.defaultShowTaskPoints,
+        showTaskWordActions: CONFIG.defaultShowTaskWordActions,
+        showDebugPatterns: CONFIG.defaultShowDebugPatterns,
+        printFontSize: CONFIG.defaultPrintFontSize,
+        printColumnCount: CONFIG.defaultPrintColumnCount,
+        printMonospace: CONFIG.defaultPrintMonospace,
+      };
+    }
+
+    function applyOptionsToForm(options) {
+      const mergedOptions = { ...getDefaultOptions(), ...options };
+      elements.minWordLength.value = mergedOptions.minWordLength;
+      elements.maxWordLength.value = mergedOptions.maxWordLength;
+      elements.minSyllableCount.value = mergedOptions.minSyllableCount;
+      elements.maxSyllableCount.value = mergedOptions.maxSyllableCount;
+      elements.removeDuplicates.checked = mergedOptions.removeDuplicates;
+      elements.replaceUmlauts.checked = mergedOptions.replaceUmlauts;
+      elements.removeDiacritics.checked = mergedOptions.removeDiacritics;
+      elements.keepHyphenPartsTogether.checked = mergedOptions.keepHyphenPartsTogether;
+      elements.removeWordNumbers.checked = mergedOptions.removeWordNumbers;
+      elements.rewriteSimplePatterns.checked = mergedOptions.rewriteSimplePatterns;
+      elements.rewriteSyllablePatterns.checked = mergedOptions.rewriteSyllablePatterns;
+      elements.showSyllableWordMapping.checked = mergedOptions.showSyllableWordMapping;
+      elements.showTaskHitSummary.checked = mergedOptions.showTaskHitSummary;
+      elements.showTaskDetails.checked = mergedOptions.showTaskDetails;
+      elements.showTaskPoints.checked = mergedOptions.showTaskPoints;
+      elements.showTaskWordActions.checked = mergedOptions.showTaskWordActions;
+      elements.showDebugPatterns.checked = mergedOptions.showDebugPatterns;
+      elements.printFontSize.value = mergedOptions.printFontSize;
+      elements.printColumnCount.value = mergedOptions.printColumnCount;
+      elements.printMonospace.checked = mergedOptions.printMonospace;
+    }
+
+    function loadStoredOptions() {
+      try {
+        const storedValue = window.localStorage.getItem(CONFIG.optionsStorageKey);
+        return storedValue ? JSON.parse(storedValue) : null;
+      } catch (error) {
+        return null;
+      }
+    }
+
+    function saveOptions(options) {
+      try {
+        window.localStorage.setItem(CONFIG.optionsStorageKey, JSON.stringify(options));
+      } catch (error) {
+        // Offline files may run in contexts where localStorage is unavailable.
+      }
+    }
+
+    function loadStoredTasks() {
+      try {
+        return window.localStorage.getItem(CONFIG.tasksStorageKey);
+      } catch (error) {
+        return null;
+      }
+    }
+
+    function saveTasks(tasks) {
+      try {
+        window.localStorage.setItem(CONFIG.tasksStorageKey, tasks);
+      } catch (error) {
+        // Offline files may run in contexts where localStorage is unavailable.
+      }
+    }
+
+    function parsePositiveInteger(value, fallbackValue) {
+      const parsedValue = Number.parseInt(value, 10);
+      return Number.isFinite(parsedValue) && parsedValue > 0 ? parsedValue : fallbackValue;
+    }
+
+    function parseFilterLimit(value) {
+      const parsedValue = Number.parseInt(value, 10);
+      return Number.isFinite(parsedValue) && parsedValue > 0 ? parsedValue : null;
+    }
+
+    function filterWords(words, options) {
+      return words.filter((word) => {
+        const length = Array.from(word).length;
+        if (options.minWordLength !== null && length < options.minWordLength) {
+          return false;
+        }
+        if (options.maxWordLength !== null && length > options.maxWordLength) {
+          return false;
+        }
+        const syllableCount = estimateSyllableCount(word);
+        if (options.minSyllableCount !== null && syllableCount < options.minSyllableCount) {
+          return false;
+        }
+        if (options.maxSyllableCount !== null && syllableCount > options.maxSyllableCount) {
+          return false;
+        }
+        return true;
+      });
+    }
+
+    function estimateSyllableCount(word) {
+      return extractSyllables(word).length;
+    }
+
+    function extractSyllables(word) {
+      const matches = word.toLowerCase().normalize("NFC").match(/[aeiouäöüy]+/gu);
+      return matches || [];
+    }
+
+    function sortWords(words) {
+      return [...words].sort((first, second) => {
+        const lengthDiff = Array.from(first).length - Array.from(second).length;
+        if (lengthDiff !== 0) {
+          return lengthDiff;
+        }
+        return first.localeCompare(second, "de", { sensitivity: "base" });
+      });
+    }
+
+    function calculateGeneralStats(words) {
+      const letterMap = countLetters(words.join(""));
+      const missingLetters = CONFIG.germanLetters.filter((letter) => !letterMap.has(letter));
+      const totalLetterCount = Array.from(words.join("")).length;
+      const averageWordLength = words.length > 0 ? totalLetterCount / words.length : 0;
+      const syllableCount = words.reduce((sum, word) => sum + estimateSyllableCount(word), 0);
+      const averageSyllableCount = words.length > 0 ? syllableCount / words.length : 0;
+
+      return {
+        wordCount: words.length,
+        letterCount: letterMap.size,
+        averageWordLength,
+        averageSyllableCount,
+        missingLetters,
+      };
+    }
+
+    function parseTasks(rawTasks) {
+      return rawTasks
+        .split(/\r?\n/)
+        .map((line) => line.trim())
+        .filter(Boolean)
+        .map((line, index) => parseTaskLine(line, index));
+    }
+
+    function normalizeTaskLinePattern(line, options) {
+      if (!line.trim()) {
+        return line;
+      }
+
+      const separatorIndex = line.indexOf(CONFIG.taskSeparator);
+      if (separatorIndex === -1) {
+        return convertPatternForField(line.trim(), options) || line;
+      }
+
+      const beforePattern = line.slice(0, separatorIndex + 1);
+      const pattern = line.slice(separatorIndex + 1).trim();
+      const convertedPattern = convertPatternForField(pattern, options);
+      return convertedPattern ? `${beforePattern} ${convertedPattern}` : line;
+    }
+
+    function convertPatternForField(pattern, options) {
+      if (!options.rewriteSyllablePatterns && parseSyllableRange(pattern)) {
+        return null;
+      }
+      const repairedPattern = repairEscapedNonCapturingGroup(pattern);
+      if (repairedPattern !== pattern) {
+        return repairedPattern;
+      }
+      if (options.rewriteSyllablePatterns) {
+        const syllableRange = parseSyllableRange(pattern);
+        if (syllableRange) {
+          return createSyllableRangeRegex(syllableRange);
+        }
+      }
+      if (options.rewriteSimplePatterns) {
+        return convertSimplePattern(pattern);
+      }
+      return null;
+    }
+
+    function repairEscapedNonCapturingGroup(pattern) {
+      const repairedPattern = pattern
+        .replace(/\\\?:/g, "")
+        .replace(/\\\|/g, "|")
+        .replace(/\\([a-zäöüß])/gi, "$1");
+      const match = repairedPattern.match(/^\(\?:[a-zäöüß|]+\)$/i);
+      return match ? repairedPattern : pattern;
+    }
+
+    function parseTaskLine(line, index) {
+      const separatorIndex = line.indexOf(CONFIG.taskSeparator);
+      if (separatorIndex === -1) {
+        const nameParts = parseTaskName(createUnnamedTaskName(index, line));
+        const syllableRange = parseSyllableRange(line);
+        if (syllableRange) {
+          return {
+            name: nameParts.name,
+            points: nameParts.points,
+            hasExplicitPoints: nameParts.hasExplicitPoints,
+            pattern: line,
+            type: "syllableRange",
+            syllableRange,
+            sourceLine: line,
+          };
+        }
+        const pattern = convertSimplePattern(line) || line;
+        return {
+          name: nameParts.name,
+          points: nameParts.points,
+          hasExplicitPoints: nameParts.hasExplicitPoints,
+          pattern,
+          sourceLine: line,
+        };
+      }
+
+      const possibleName = line.slice(0, separatorIndex).trim();
+      const possiblePattern = line.slice(separatorIndex + 1).trim();
+      const nameParts = parseTaskName(possibleName || createUnnamedTaskName(index, possiblePattern || line));
+      const syllableRange = parseSyllableRange(possiblePattern || line);
+      if (syllableRange) {
+        return {
+          name: nameParts.name,
+          points: nameParts.points,
+          hasExplicitPoints: nameParts.hasExplicitPoints,
+          pattern: possiblePattern || line,
+          type: "syllableRange",
+          syllableRange,
+          sourceLine: line,
+        };
+      }
+      const pattern = convertSimplePattern(possiblePattern || line) || possiblePattern || line;
+
+      return {
+        name: nameParts.name,
+        points: nameParts.points,
+        hasExplicitPoints: nameParts.hasExplicitPoints,
+        pattern,
+        sourceLine: line,
+      };
+    }
+
+    function createUnnamedTaskName(index, pattern) {
+      const description = describeTaskPattern(pattern);
+      return description ? `Aufgabe ${index + 1}: ${description}` : `Aufgabe ${index + 1}`;
+    }
+
+    function describeTaskPattern(pattern) {
+      const syllableRange = parseSyllableRange(pattern);
+      if (syllableRange) {
+        return formatSyllableRangeLabel(syllableRange);
+      }
+
+      const shortcutParts = parseSimpleShortcutPatternParts(pattern);
+      if (shortcutParts) {
+        return formatSimpleShortcutLabel(shortcutParts);
+      }
+
+      const simpleParts = parseSimplePatternParts(pattern);
+      if (simpleParts) {
+        return formatSimplePatternLabel(simpleParts);
+      }
+
+      return describeCommonRegexPattern(pattern);
+    }
+
+    function formatSyllableRangeLabel(range) {
+      return range.min === range.max ? `${range.min}-Silber` : `${range.min}-${range.max}-Silber`;
+    }
+
+    function formatSimplePatternLabel(parts) {
+      const label = `/${parts.items.join("|")}/`;
+      const positionLabels = {
+        i: "initial",
+        m: "medial",
+        f: "final",
+        k: "kombo",
+        2: "doppelt",
+      };
+      return parts.position ? `${label} ${positionLabels[parts.position]}` : label;
+    }
+
+    function formatSimpleShortcutLabel(parts) {
+      const shortcutLabels = {
+        k: "Konsonanten",
+        v: "Vokale",
+        u: "Umlaute",
+      };
+      const positionLabels = {
+        i: "initial",
+        m: "medial",
+        f: "final",
+        2: "doppelt",
+      };
+      const label = shortcutLabels[parts.shortcut] || parts.shortcut;
+      return parts.position ? `${label} ${positionLabels[parts.position]}` : label;
+    }
+
+    function describeCommonRegexPattern(pattern) {
+      const initialMatch = pattern.match(/^\\b([a-zäöüß]+)$/i);
+      if (initialMatch) {
+        return `/${initialMatch[1]}/ initial`;
+      }
+
+      const finalMatch = pattern.match(/^([a-zäöüß]+)\\b$/i);
+      if (finalMatch) {
+        return `/${finalMatch[1]}/ final`;
+      }
+
+      const medialMatch = pattern.match(/^\(\?<=\.\)([a-zäöüß]+)\(\?=\.\)$/i);
+      if (medialMatch) {
+        return `/${medialMatch[1]}/ medial`;
+      }
+
+      const literalMatch = pattern.match(/^[a-zäöüß]+$/i);
+      return literalMatch ? `/${pattern}/` : "";
+    }
+
+    function parseTaskName(rawName) {
+      const match = rawName.match(/^(.*?)(?:\s*\(([-+]?\d+(?:[.,]\d+)?)\))?\s*$/);
+      const hasExplicitPoints = Boolean(match && match[2]);
+      const points = hasExplicitPoints ? Number.parseFloat(match[2].replace(",", ".")) : CONFIG.defaultPointsPerHit;
+      return {
+        name: match && match[1] ? match[1].trim() : rawName.trim(),
+        points: Number.isFinite(points) ? points : 0,
+        hasExplicitPoints,
+      };
+    }
+
+    function parseSyllableRange(rawPattern) {
+      const exactMatch = rawPattern.match(/^\((\d+)\)$/);
+      if (exactMatch) {
+        const count = Number.parseInt(exactMatch[1], 10);
+        return { min: count, max: count };
+      }
+
+      const listMatch = rawPattern.match(/^\((\d+)\s*,\s*(\d+)\)$/);
+      if (listMatch) {
+        return {
+          min: Number.parseInt(listMatch[1], 10),
+          max: Number.parseInt(listMatch[2], 10),
+        };
+      }
+
+      const rangeMatch = rawPattern.match(/^\((\d+)\s*-\s*(\d+)\)$/);
+      if (rangeMatch) {
+        return {
+          min: Number.parseInt(rangeMatch[1], 10),
+          max: Number.parseInt(rangeMatch[2], 10),
+        };
+      }
+
+      return null;
+    }
+
+    function createSyllableRangeRegex(range) {
+      const syllablePattern = "[aeiouäöüy]+";
+      const betweenPattern = "[^aeiouäöüy]*";
+      const alternatives = [];
+
+      for (let count = range.min; count <= range.max; count += 1) {
+        alternatives.push(`(?:${betweenPattern}${syllablePattern}){${count}}${betweenPattern}`);
+      }
+
+      return `^(?:${alternatives.join("|")})$`;
+    }
+
+    function convertSimplePattern(rawPattern) {
+      const shortcutParts = parseSimpleShortcutPatternParts(rawPattern);
+      if (shortcutParts) {
+        return convertSimpleShortcutPattern(shortcutParts);
+      }
+
+      const simpleParts = parseSimplePatternParts(rawPattern);
+      if (!simpleParts) {
+        return null;
+      }
+      const alternatives = simpleParts.items.map(convertSimpleItemPattern);
+      const position = simpleParts.position;
+      if (position === "2") {
+        return createRepeatedSimplePattern(simpleParts.items);
+      }
+      const grouped = position === "k" ? alternatives.join("") : `(?:${alternatives.join("|")})`;
+      const positionedPattern = applySimplePosition(grouped, position);
+      return positionedPattern;
+    }
+
+    function parseSimpleShortcutPatternParts(rawPattern) {
+      const shortcutMatch = rawPattern.match(/^\("([kvu])\)(?:"([imfk2]))?$/i);
+      if (!shortcutMatch) {
+        return null;
+      }
+      return {
+        shortcut: shortcutMatch[1].toLowerCase(),
+        position: shortcutMatch[2] ? shortcutMatch[2].toLowerCase() : "",
+      };
+    }
+
+    function convertSimpleShortcutPattern(parts) {
+      const shortcutClasses = {
+        k: "bcdfghjklmnpqrstvwxyz",
+        v: "aeiou",
+        u: "äöü",
+      };
+      const characterClass = `[${shortcutClasses[parts.shortcut]}]`;
+      if (parts.position === "2") {
+        return `(${characterClass})\\1`;
+      }
+      if (parts.position === "k") {
+        return `${characterClass}${characterClass}`;
+      }
+      return applySimplePosition(characterClass, parts.position);
+    }
+
+    function parseSimplePatternParts(rawPattern) {
+      const simpleMatch = rawPattern.match(/^\(([^()]+)\)(?:"([imfk2]))?$/i);
+      if (!simpleMatch) {
+        return null;
+      }
+      if (rawPattern.startsWith("(?:") || !simpleMatch[1].includes(",")) {
+        return null;
+      }
+      if (/[\\|?+*^$[\]{}]/.test(simpleMatch[1])) {
+        return null;
+      }
+
+      const items = simpleMatch[1]
+        .split(",")
+        .map((part) => part.trim())
+        .filter(Boolean);
+      if (items.length === 0) {
+        return null;
+      }
+
+      return {
+        items,
+        position: simpleMatch[2] ? simpleMatch[2].toLowerCase() : "",
+      };
+    }
+
+    function createRepeatedSimplePattern(items) {
+      const repeatedClass = createRepeatedCharacterClass(items);
+      if (repeatedClass) {
+        return `([${repeatedClass}])\\1`;
+      }
+      return `(?:${items.map((item) => {
+        const pattern = convertSimpleItemPattern(item);
+        return `${pattern}${pattern}`;
+      }).join("|")})`;
+    }
+
+    function createRepeatedCharacterClass(items) {
+      let characterClass = "";
+      for (const item of items) {
+        const shortcutCharacters = getSimpleShortcutCharacters(item);
+        if (shortcutCharacters) {
+          characterClass += shortcutCharacters;
+          continue;
+        }
+        if (Array.from(item).length !== 1) {
+          return "";
+        }
+        characterClass += escapeCharacterClassItem(item);
+      }
+      return characterClass;
+    }
+
+    function convertSimpleItemPattern(item) {
+      const shortcutCharacters = getSimpleShortcutCharacters(item);
+      return shortcutCharacters ? `[${shortcutCharacters}]` : escapeRegex(item);
+    }
+
+    function getSimpleShortcutCharacters(item) {
+      const shortcutMatch = item.match(/^"([kvu])$/i);
+      if (!shortcutMatch) {
+        return "";
+      }
+      const shortcutClasses = {
+        k: "bcdfghjklmnpqrstvwxyz",
+        v: "aeiou",
+        u: "äöü",
+      };
+      return shortcutClasses[shortcutMatch[1].toLowerCase()];
+    }
+
+    function escapeCharacterClassItem(item) {
+      return item.replace(/[\\\]\-^]/g, "\\$&");
+    }
+
+    function applySimplePosition(groupedPattern, position) {
+      if (position === "i") {
+        return `\\b${groupedPattern}`;
+      }
+      if (position === "m") {
+        return `(?<=.)${groupedPattern}(?=.)`;
+      }
+      if (position === "f") {
+        return `${groupedPattern}\\b`;
+      }
+      return groupedPattern;
+    }
+
+    function escapeRegex(value) {
+      return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    }
+
+    function updateRegex101Link(tasks = parseTasks(elements.taskInput.value)) {
+      const firstPattern = tasks.length > 0 ? tasks[0].pattern : "";
+      const params = new URLSearchParams({
+        regex: firstPattern,
+        testString: elements.taskInput.value,
+        flags: "giu",
+        flavor: "javascript",
+      });
+
+      elements.regex101Link.href = `https://regex101.com/?${params.toString()}`;
+    }
+
+    function analyzeTask(task, words, options) {
+      if (task.type === "syllableRange") {
+        return analyzeSyllableTask(task, words, options);
+      }
+
+      try {
+        const regex = createStickyRegex(task.pattern);
+        let matchCount = 0;
+        let matchingWordCount = 0;
+        const matchedParts = [];
+        const matchedWords = [];
+        const wordGroups = new Map();
+
+        for (const word of words) {
+          const matches = collectOverlappingMatches(word, regex);
+          if (matches.length > 0) {
+            matchingWordCount += 1;
+            matchCount += matches.length;
+            matchedParts.push(...matches);
+            matchedWords.push(word);
+            if (options.showSyllableWordMapping) {
+              for (const match of matches) {
+                addGroupedWord(wordGroups, match, word);
+              }
+            }
+          }
+        }
+
+        return {
+          ...task,
+          valid: true,
+          matchCount,
+          matchingWordCount,
+          pointsTotal: matchCount * task.points,
+          detailLabel: "Buchstaben",
+          detailCounts: countLetters(matchedParts.join("")),
+          matchedWords: sortWords(removeDuplicateWords(matchedWords).words),
+          wordMappings: formatWordGroups(wordGroups),
+        };
+      } catch (error) {
+        return {
+          ...task,
+          valid: false,
+          errorMessage: error.message,
+          matchCount: 0,
+          matchingWordCount: 0,
+          pointsTotal: 0,
+          detailLabel: "Buchstaben",
+          detailCounts: new Map(),
+          matchedWords: [],
+        };
+      }
+    }
+
+    function analyzeSyllableTask(task, words, options) {
+      let matchCount = 0;
+      const matchedWords = [];
+      const syllableTypeCounts = new Map();
+      const wordGroups = new Map();
+
+      for (const word of words) {
+        const syllableCount = estimateSyllableCount(word);
+        if (syllableCount >= task.syllableRange.min && syllableCount <= task.syllableRange.max) {
+          matchCount += 1;
+          matchedWords.push(word);
+          const label = formatSyllableTypeLabel(syllableCount);
+          syllableTypeCounts.set(label, (syllableTypeCounts.get(label) || 0) + 1);
+          if (options.showSyllableWordMapping) {
+            addGroupedWord(wordGroups, label, word);
+          }
+        }
+      }
+
+      return {
+        ...task,
+        valid: true,
+        matchCount,
+        matchingWordCount: matchCount,
+        pointsTotal: matchCount * task.points,
+        detailLabel: "Silben",
+        detailCounts: syllableTypeCounts,
+        matchedWords: sortWords(removeDuplicateWords(matchedWords).words),
+        wordMappings: formatWordGroups(wordGroups),
+      };
+    }
+
+    function formatSyllableTypeLabel(count) {
+      return `${count}-Silber`;
+    }
+
+    function createStickyRegex(pattern) {
+      const flags = CONFIG.regexFlags.replace(/[gy]/g, "");
+      return new RegExp(pattern, flags.includes("y") ? flags : `${flags}y`);
+    }
+
+    function collectOverlappingMatches(word, regex) {
+      const matches = [];
+      for (let index = 0; index < word.length; index += 1) {
+        regex.lastIndex = index;
+        const match = regex.exec(word);
+        if (match && match.index === index && match[0]) {
+          matches.push(match[0]);
+        }
+      }
+      return matches;
+    }
+
+    function sortTaskStats(taskStats) {
+      return [...taskStats].sort((first, second) => {
+        const pointsDiff = second.pointsTotal - first.pointsTotal;
+        if (pointsDiff !== 0) {
+          return pointsDiff;
+        }
+        const wordDiff = second.matchingWordCount - first.matchingWordCount;
+        if (wordDiff !== 0) {
+          return wordDiff;
+        }
+        const matchDiff = second.matchCount - first.matchCount;
+        if (matchDiff !== 0) {
+          return matchDiff;
+        }
+      return first.name.localeCompare(second.name, "de", { sensitivity: "base" });
+    });
+    }
+
+    function countLetters(text) {
+      return countItems(Array.from(text.normalize("NFC").toLowerCase()).filter((character) => /\p{L}/u.test(character)));
+    }
+
+    function countItems(items) {
+      const counts = new Map();
+      for (const item of items) {
+        counts.set(item, (counts.get(item) || 0) + 1);
+      }
+      return counts;
+    }
+
+    function renderGeneralStats(stats) {
+      elements.wordCount.textContent = String(stats.wordCount);
+      elements.letterCount.textContent = String(stats.letterCount);
+      elements.averageWordLength.textContent = formatDecimal(stats.averageWordLength);
+      elements.averageSyllableCount.textContent = formatDecimal(stats.averageSyllableCount);
+      elements.missingLetters.textContent = stats.missingLetters.length > 0
+        ? `${stats.missingLetters.length}: ${stats.missingLetters.join(", ")}`
+        : "0: Keine";
+    }
+
+    function renderWordLengthCounts(words) {
+      elements.sortedWords.textContent = words.length > 0 ? formatWordLengthCounts(words) : "-";
+    }
+
+    function renderPrintWords(words) {
+      elements.printWords.textContent = words.length > 0 ? words.join("\n") : "-";
+      elements.copyStatus.textContent = "";
+      clearPrintPageLinks();
+    }
+
+    function formatWordLengthCounts(words) {
+      const groups = new Map();
+      for (const word of words) {
+        const length = Array.from(word).length;
+        groups.set(length, (groups.get(length) || 0) + 1);
+      }
+
+      return Array.from(groups.entries())
+        .map(([length, count]) => `${length}: ${count}`)
+        .join("\n");
+    }
+
+    function formatDecimal(value) {
+      return value.toLocaleString("de-DE", {
+        minimumFractionDigits: 1,
+        maximumFractionDigits: 1,
+      });
+    }
+
+    function renderTaskStats(taskStats, options) {
+      elements.taskResults.replaceChildren();
+
+      if (taskStats.length === 0) {
+        const emptyCard = document.createElement("div");
+        emptyCard.className = "task-card";
+        emptyCard.textContent = "Keine Aufgaben eingetragen.";
+        elements.taskResults.append(emptyCard);
+        return;
+      }
+
+      for (const task of taskStats) {
+        elements.taskResults.append(createTaskCard(task, options));
+      }
+    }
+
+    function createTaskCard(task, options) {
+      const card = document.createElement("details");
+      card.className = task.valid ? "task-card" : "task-card invalid";
+      card.open = true;
+
+      const summary = document.createElement("summary");
+      const heading = document.createElement("span");
+      heading.textContent = task.name;
+      heading.className = "panel-title";
+      summary.append(heading);
+      card.append(summary);
+
+      if (!task.valid || options.showTaskHitSummary) {
+        const meta = document.createElement("div");
+        meta.className = "task-meta";
+        meta.style.fontWeight = "700";
+        meta.textContent = task.valid
+          ? `${formatTaskHitSummary(task, options)}.`
+          : `Regex ungültig: ${task.errorMessage}`;
+        card.append(meta);
+      }
+
+      if (options.showDebugPatterns) {
+        const pattern = document.createElement("div");
+        pattern.className = "task-meta";
+        pattern.textContent = `Regex: ${task.pattern}`;
+        card.append(pattern);
+      }
+
+      if (task.valid) {
+        if (options.showTaskDetails) {
+          card.append(createTaskDetailElement(task));
+        }
+        if (task.wordMappings && task.wordMappings.length > 0) {
+          card.append(createWordMappingElement(task));
+        }
+        if (options.showTaskWordActions && task.matchedWords && task.matchedWords.length > 0) {
+          card.append(createTaskWordActionsElement(task, options));
+        }
+      }
+
+      return card;
+    }
+
+    function createTaskWordActionsElement(task, options) {
+      const wrapper = document.createElement("div");
+
+      const actions = document.createElement("div");
+      actions.className = "actions";
+
+      const copyButton = document.createElement("button");
+      copyButton.className = "secondary";
+      copyButton.type = "button";
+      copyButton.textContent = "Wörter kopieren";
+      copyButton.addEventListener("click", async () => {
+        await copyText(task.matchedWords.join("\n"), "Aufgaben-Wörter kopiert.");
+      });
+      actions.append(copyButton);
+
+      const printButton = document.createElement("button");
+      printButton.className = "secondary";
+      printButton.type = "button";
+      printButton.textContent = "Druckseiten";
+      actions.append(printButton);
+
+      const links = document.createElement("div");
+      links.className = "generated-links print-page-links";
+      let printUrls = [];
+      printButton.addEventListener("click", () => {
+        revokePrintUrls(printUrls);
+        const pages = createPrintPages(task.matchedWords, options.printFontSize, options.printColumnCount, options.printMonospace);
+        printUrls = renderPrintLinksInContainer(links, pages);
+      });
+
+      wrapper.append(actions);
+      wrapper.append(links);
+      return wrapper;
+    }
+
+    function formatTaskHitSummary(task, options) {
+      const pointsPrefix = options.showTaskPoints ? `(${formatPointValue(task.pointsTotal)}p): ` : "";
+      if (task.matchCount === task.matchingWordCount) {
+        return `${pointsPrefix}${task.matchingWordCount} Wörter`;
+      }
+      return `${pointsPrefix}${task.matchCount} Treffer in ${task.matchingWordCount} Wörtern`;
+    }
+
+    function createWordMappingElement(task) {
+      const text = `Wörter (${task.matchingWordCount}): ${task.wordMappings.join(", ")}`;
+      if (task.matchingWordCount <= 20) {
+        const details = document.createElement("div");
+        details.className = "letter-list";
+        details.textContent = text;
+        return details;
+      }
+
+      const details = document.createElement("details");
+      details.className = "detail-toggle";
+      const summary = document.createElement("summary");
+      summary.textContent = `Wörter (${task.matchingWordCount})`;
+      details.append(summary);
+
+      const list = document.createElement("div");
+      list.className = "letter-list";
+      list.textContent = task.wordMappings.join(", ");
+      details.append(list);
+
+      return details;
+    }
+
+    function createTaskDetailElement(task) {
+      const total = sumCountMap(task.detailCounts);
+      const text = `${task.detailLabel} (${total}): ${formatCountMap(task.detailCounts)}`;
+      const shouldCollapse = task.type !== "syllableRange" && task.detailCounts.size > 20;
+
+      if (!shouldCollapse) {
+        const details = document.createElement("div");
+        details.className = "letter-list";
+        details.textContent = text;
+        return details;
+      }
+
+      const details = document.createElement("details");
+      details.className = "detail-toggle";
+
+      const summary = document.createElement("summary");
+      summary.textContent = `${task.detailLabel} (${total})`;
+      details.append(summary);
+
+      const list = document.createElement("div");
+      list.className = "letter-list";
+      list.textContent = formatCountMap(task.detailCounts);
+      details.append(list);
+
+      return details;
+    }
+
+    function formatPointValue(value) {
+      return Number.isInteger(value)
+        ? String(value)
+        : value.toLocaleString("de-DE", { maximumFractionDigits: 2 });
+    }
+
+    function formatCountMap(counts) {
+      const entries = Array.from(counts.entries()).sort((first, second) => {
+        if (typeof first[0] === "number" && typeof second[0] === "number") {
+          return first[0] - second[0];
+        }
+        return String(first[0]).localeCompare(String(second[0]), "de", { sensitivity: "base" });
+      });
+
+      if (entries.length === 0) {
+        return "-";
+      }
+
+      return entries.map(([item, count]) => `${item} (${count})`).join(", ");
+    }
+
+    function sumCountMap(counts) {
+      return Array.from(counts.values()).reduce((sum, count) => sum + count, 0);
+    }
+
+    function addGroupedWord(groups, groupName, word) {
+      if (!groups.has(groupName)) {
+        groups.set(groupName, new Set());
+      }
+      groups.get(groupName).add(word);
+    }
+
+    function formatWordGroups(groups) {
+      return Array.from(groups.entries()).map(([groupName, words]) => {
+        return `${groupName} (${Array.from(words).join(", ")})`;
+      });
+    }
+
+    function resetTasks() {
+      elements.taskInput.value = CONFIG.defaultTasks;
+      saveTasks(elements.taskInput.value);
+      updateRegex101Link();
+      analyzeInput();
+    }
+
+    function resetOptions() {
+      const defaultOptions = getDefaultOptions();
+      applyOptionsToForm(defaultOptions);
+      saveOptions(defaultOptions);
+      analyzeInput();
+    }
+
+    function clearInput() {
+      elements.sourceText.value = "";
+      analyzeInput();
+      elements.sourceText.focus();
+    }
+
+    async function copyPrintWords() {
+      await copyText(elements.printWords.textContent === "-" ? "" : elements.printWords.textContent, "Wörter kopiert.");
+    }
+
+    async function copyHtmlTable() {
+      const words = elements.printWords.textContent === "-" ? [] : elements.printWords.textContent.split("\n");
+      if (words.length === 0) {
+        await copyText("", "Keine Wörter für Tabelle vorhanden.");
+        return;
+      }
+      const options = getAnalysisOptions();
+      const pages = createPrintPages(words, options.printFontSize, options.printColumnCount, options.printMonospace);
+      renderPrintPageLinks(pages);
+      elements.copyStatus.textContent = pages.length === 1 ? "Druckseite erstellt." : "Druckseiten erstellt.";
+    }
+
+    function createPrintPages(words, fontSize, columnCount, useMonospace) {
+      const rowsPerColumn = Math.max(18, Math.floor(760 / (fontSize * 1.35)));
+      const wordsPerPage = rowsPerColumn * columnCount;
+      const pages = [];
+      for (let index = 0; index < words.length; index += wordsPerPage) {
+        const pageWords = words.slice(index, index + wordsPerPage);
+        pages.push({
+          number: pages.length + 1,
+          html: createPrintPageHtml(pageWords, fontSize, columnCount, useMonospace),
+        });
+      }
+      return pages;
+    }
+
+    function createPrintPageHtml(words, fontSize, columnCount, useMonospace) {
+      const fontFamily = useMonospace
+        ? 'ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace'
+        : "Arial, sans-serif";
+      const rows = [];
+      const rowsPerColumn = Math.ceil(words.length / columnCount);
+      for (let rowIndex = 0; rowIndex < rowsPerColumn; rowIndex += 1) {
+        const cells = [];
+        for (let columnIndex = 0; columnIndex < columnCount; columnIndex += 1) {
+          const word = words[rowIndex + rowsPerColumn * columnIndex] || "";
+          cells.push(`<td>${escapeHtml(word)}</td>`);
+        }
+        rows.push(`<tr>${cells.join("")}</tr>`);
+      }
+
+      return `<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>Zeilenfutter Worttabelle</title>
+  <style>
+    @page { size: A4 portrait; margin: 14mm; }
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: ${fontFamily}; font-size: ${fontSize}px; line-height: 1.25; }
+    table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    td { width: ${100 / columnCount}%; padding: 2mm 4mm 2mm 0; vertical-align: top; }
+  </style>
+</head>
+<body>
+  <table>
+    <tbody>
+${rows.join("\n")}
+    </tbody>
+  </table>
+</body>
+</html>`;
+    }
+
+    function renderPrintPageLinks(pages) {
+      clearPrintPageLinks();
+      for (const container of elements.printPageLinks) {
+        generatedPrintUrls.push(...renderPrintLinksInContainer(container, pages));
+      }
+    }
+
+    function clearPrintPageLinks() {
+      revokePrintUrls(generatedPrintUrls);
+      generatedPrintUrls = [];
+      for (const container of elements.printPageLinks) {
+        container.replaceChildren();
+      }
+    }
+
+    function renderPrintLinksInContainer(container, pages) {
+      container.replaceChildren();
+      const pageUrls = pages.map((page) => {
+        const blob = new Blob([page.html], { type: "text/html" });
+        const url = URL.createObjectURL(blob);
+        return { ...page, url };
+      });
+
+      const label = document.createElement("span");
+      label.textContent = "Druckseiten: ";
+      container.append(label);
+      for (const page of pageUrls) {
+        if (page.number > 1) {
+          container.append(document.createTextNode(", "));
+        }
+        const link = document.createElement("a");
+        link.href = page.url;
+        link.target = "_blank";
+        link.rel = "noopener noreferrer";
+        link.textContent = `[${page.number}]`;
+        container.append(link);
+      }
+      return pageUrls;
+    }
+
+    function revokePrintUrls(pageUrls) {
+      for (const page of pageUrls) {
+        URL.revokeObjectURL(page.url);
+      }
+    }
+
+    async function copyText(text, successMessage) {
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(text);
+        } else {
+          fallbackCopyText(text);
+        }
+        elements.copyStatus.textContent = successMessage;
+      } catch (error) {
+        elements.copyStatus.textContent = `Kopieren fehlgeschlagen: ${error.message}`;
+      }
+    }
+
+    function fallbackCopyText(text) {
+      const helper = document.createElement("textarea");
+      helper.value = text;
+      helper.style.position = "fixed";
+      helper.style.left = "-9999px";
+      document.body.append(helper);
+      helper.focus();
+      helper.select();
+      document.execCommand("copy");
+      helper.remove();
+    }
+
+    function escapeHtml(value) {
+      return value
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;");
+    }
+
+    initializeTool();
+  </script>
+</body>
+</html>

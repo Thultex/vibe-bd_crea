@@ -7,6 +7,7 @@ Kurzversion: `zeifu`
 - Anleitung: `anleitung_zeifu.md`
 - Materialien: `assets/`
 - Tools: `tools/`
+- Wortanalyse-Tool: `tools/word-task-analyzer.html`
 - Design: `design_zeifu.md`
 - Ideen: `ideen_zeifu.md`
 - Plan: `plan_zeifu.md`
