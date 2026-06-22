@@ -141,7 +141,9 @@
       resize: vertical;
     }
 
-    input[type="number"] {
+    input[type="number"],
+    input[type="file"],
+    select {
       width: 100%;
       border: 1px solid var(--line);
       border-radius: 6px;
@@ -368,7 +370,7 @@
   <main>
     <header>
       <h1>Zeilenfutter Wortanalyse</h1>
-      <div class="version">Tool v1.75</div>
+      <div class="version">Tool v1.84</div>
     </header>
 
     <div class="layout">
@@ -381,9 +383,20 @@
             <textarea id="sourceText" spellcheck="false"></textarea>
           </div>
 
+          <div class="field">
+            <label for="sourceFile">Datei</label>
+            <input id="sourceFile" type="file" accept=".txt,.md,text/plain,text/markdown">
+          </div>
+
           <div class="actions">
             <button id="analyzeButton" type="button">Analysieren</button>
-            <button id="clearButton" class="secondary" type="button">Text leeren</button>
+            <button id="clearButton" class="secondary" type="button">Leeren</button>
+            <select id="textPreset" aria-label="Standardtext">
+              <option value="" hidden>Eigener Text</option>
+              <option value="nordwind">Nordwind &amp; Sonne</option>
+              <option value="leibnitz100k">Leibnitz 100k (mixed typical)</option>
+              <option value="default">Standard</option>
+            </select>
           </div>
         </details>
 
@@ -403,9 +416,11 @@
             <div class="letter-list">
               <strong>Basisschreibweise (wird intern zu Regex übersetzt):</strong><br>
               Oder-Verbindung: (d, t, k, g)<br>
-              Initial: (d, t)=i oder (a)=i<br>
-              Medial: (d, t)=m oder (a=m, s=m)<br>
-              Final: (d, t)=f<br>
+              Groß/Klein erzwingen: !A=p oder !(A, B)=p<br>
+              Initial: a=p, (d, t)=p oder (a)=p+<br>
+              Medial: (d, t)=p~ oder (a=p~, s=p~)<br>
+              Final: (d, t)=p-<br>
+              Exklusiv initial/medial/final: (d, t)=p++, (d, t)=p~~ oder (d, t)=p--<br>
               Combo: (d, t, k, g)=c<br>
               Combo mit erstem Laut: (ch, a, o, u)=c+<br>
               Combo mit letztem Laut: (a, o, u, ch)=c-<br>
@@ -458,13 +473,14 @@
               Diphthong plus Konsonant: (?:ei|au|eu)[bcdfghjklmnpqrstvwxyz]<br><br>
 
               <strong>Hinweis:</strong><br>
-              `=` und `#` markieren Basisschreibweise eindeutig. Der alte `"`-Positionsmarker funktioniert weiter als Fallback.
+              `=` und `#` markieren Basisschreibweise eindeutig. Der alte `"`-Trenner funktioniert weiter als Fallback.
             </div>
           </details>
 
           <div class="actions">
-            <a id="regex101Link" class="button-link secondary" href="https://regex101.com/" target="_blank" rel="noopener noreferrer">Regex101 öffnen</a>
-            <button id="resetTasksButton" class="secondary" type="button">Standardaufgaben</button>
+            <a id="regex101Link" class="button-link secondary" href="https://regex101.com/" target="_blank" rel="noopener noreferrer">Regex101</a>
+            <button id="resetTasksButton" class="secondary" type="button">Reset</button>
+            <button id="clearTasksButton" class="secondary" type="button">Leeren</button>
           </div>
         </details>
 
@@ -521,14 +537,6 @@
               <label class="check-option" for="removeWordNumbers">
                 <input id="removeWordNumbers" type="checkbox">
                 Zahlen entfernen
-              </label>
-              <label class="check-option" for="rewriteSimplePatterns">
-                <input id="rewriteSimplePatterns" type="checkbox">
-                Basisschreibweise ins Aufgabenfeld schreiben
-              </label>
-              <label class="check-option" for="rewriteSyllablePatterns">
-                <input id="rewriteSyllablePatterns" type="checkbox">
-                Silbenkürzel zu Regex ändern
               </label>
             </div>
           </div>
@@ -592,10 +600,18 @@
           </div>
 
           <div class="field">
-            <label class="check-option" for="printMonospace">
-              <input id="printMonospace" type="checkbox">
-              Druckseite mit Monospace
-            </label>
+            <label for="printFontFamily">Print-Schrift</label>
+            <select id="printFontFamily">
+              <option value="sans">Sans</option>
+              <option value="mono">Mono</option>
+              <option value="serif">Serif</option>
+              <option value="arial-rounded">Arial Rounded</option>
+              <option value="verdana">Verdana</option>
+              <option value="trebuchet">Trebuchet MS</option>
+              <option value="century-gothic">Century Gothic</option>
+              <option value="comic-sans">Comic Sans MS</option>
+              <option value="consolas">Consolas</option>
+            </select>
           </div>
 
           <div class="actions">
@@ -668,6 +684,7 @@
     </div>
   </main>
 
+  <script src="presets/leibnitz-100k.js"></script>
   <script>
     "use strict";
 
@@ -698,8 +715,6 @@
       defaultRemoveDiacritics: false,
       defaultKeepHyphenPartsTogether: false,
       defaultRemoveWordNumbers: true,
-      defaultRewriteSimplePatterns: false,
-      defaultRewriteSyllablePatterns: false,
       defaultShowSyllableWordMapping: false,
       defaultShowTaskHitSummary: true,
       defaultShowTaskDetails: true,
@@ -710,17 +725,38 @@
       defaultForceUppercaseOutput: false,
       defaultPrintFontSize: 30,
       defaultPrintColumnCount: 3,
-      defaultPrintMonospace: false,
+      defaultPrintFontFamily: "sans",
       defaultPrintTableGrid: false,
       defaultPointsPerHit: 1,
-      optionsStorageKey: "zeifu-word-task-analyzer-options-v2",
+      optionsStorageKey: "zeifu-word-task-analyzer-options-v3",
       tasksStorageKey: "zeifu-word-task-analyzer-tasks-v1",
+      textStorageKey: "zeifu-word-task-analyzer-text-v1",
+      textPresets: {
+        nordwind: {
+          label: "Nordwind & Sonne",
+          text: null,
+        },
+        leibnitz100k: {
+          label: "Leibnitz 100k (mixed typical)",
+          globalName: "ZEIFU_LEIBNITZ_100K_TEXT",
+          url: "presets/leibnitz-100k.txt",
+        },
+        default: {
+          label: "Standard",
+          text: null,
+        },
+      },
       taskSeparator: ":",
       regexFlags: "giu",
     };
 
+    CONFIG.textPresets.nordwind.text = CONFIG.defaultText;
+    CONFIG.textPresets.default.text = CONFIG.defaultText;
+
     const elements = {
       sourceText: document.getElementById("sourceText"),
+      textPreset: document.getElementById("textPreset"),
+      sourceFile: document.getElementById("sourceFile"),
       taskInput: document.getElementById("taskInput"),
       regex101Link: document.getElementById("regex101Link"),
       minWordLength: document.getElementById("minWordLength"),
@@ -732,8 +768,6 @@
       removeDiacritics: document.getElementById("removeDiacritics"),
       keepHyphenPartsTogether: document.getElementById("keepHyphenPartsTogether"),
       removeWordNumbers: document.getElementById("removeWordNumbers"),
-      rewriteSimplePatterns: document.getElementById("rewriteSimplePatterns"),
-      rewriteSyllablePatterns: document.getElementById("rewriteSyllablePatterns"),
       showSyllableWordMapping: document.getElementById("showSyllableWordMapping"),
       showTaskHitSummary: document.getElementById("showTaskHitSummary"),
       showTaskDetails: document.getElementById("showTaskDetails"),
@@ -744,10 +778,11 @@
       forceUppercaseOutput: document.getElementById("forceUppercaseOutput"),
       printFontSize: document.getElementById("printFontSize"),
       printColumnCount: document.getElementById("printColumnCount"),
-      printMonospace: document.getElementById("printMonospace"),
+      printFontFamily: document.getElementById("printFontFamily"),
       printTableGrid: document.getElementById("printTableGrid"),
       analyzeButtons: document.querySelectorAll("#analyzeButton, .analyze-button"),
       resetTasksButton: document.getElementById("resetTasksButton"),
+      clearTasksButton: document.getElementById("clearTasksButton"),
       resetOptionsButton: document.getElementById("resetOptionsButton"),
       clearButton: document.getElementById("clearButton"),
       copyWordsButtons: document.querySelectorAll(".copy-words-button"),
@@ -767,13 +802,18 @@
     let generatedPrintUrls = [];
 
     function initializeTool() {
-      elements.sourceText.value = CONFIG.defaultText;
+      const storedText = loadStoredText();
+      elements.sourceText.value = storedText !== null ? storedText : CONFIG.defaultText;
+      elements.textPreset.value = storedText !== null ? "" : "nordwind";
       const storedTasks = loadStoredTasks();
       elements.taskInput.value = storedTasks !== null ? storedTasks : CONFIG.defaultTasks;
       applyOptionsToForm(loadStoredOptions() || getDefaultOptions());
       elements.analyzeButtons.forEach((button) => button.addEventListener("click", analyzeInput));
       elements.taskInput.addEventListener("input", updateRegex101Link);
+      elements.textPreset.addEventListener("change", loadTextPreset);
+      elements.sourceFile.addEventListener("change", loadSourceFile);
       elements.resetTasksButton.addEventListener("click", resetTasks);
+      elements.clearTasksButton.addEventListener("click", clearTasks);
       elements.resetOptionsButton.addEventListener("click", resetOptions);
       elements.clearButton.addEventListener("click", clearInput);
       elements.copyWordsButtons.forEach((button) => button.addEventListener("click", copyPrintWords));
@@ -784,9 +824,7 @@
     function analyzeInput() {
       const options = getAnalysisOptions();
       saveOptions(options);
-      if (options.rewriteSimplePatterns || options.rewriteSyllablePatterns) {
-        normalizeTaskInputPatterns();
-      }
+      saveText(elements.sourceText.value);
       saveTasks(elements.taskInput.value);
       const normalizedText = normalizeSourceText(elements.sourceText.value, options);
       const rawWords = formatOutputWords(extractWords(normalizedText, options), options);
@@ -803,15 +841,6 @@
       renderPrintWords(sortedWords);
       renderTaskStats(taskStats, options);
       updateRegex101Link(tasks);
-    }
-
-    function normalizeTaskInputPatterns() {
-      const options = getAnalysisOptions();
-      const normalizedLines = elements.taskInput.value.split(/\r?\n/).map((line) => normalizeTaskLinePattern(line, options));
-      const normalizedValue = normalizedLines.join("\n");
-      if (elements.taskInput.value !== normalizedValue) {
-        elements.taskInput.value = normalizedValue;
-      }
     }
 
     function normalizeSourceText(text, options) {
@@ -900,8 +929,6 @@
         removeDiacritics: elements.removeDiacritics.checked,
         keepHyphenPartsTogether: elements.keepHyphenPartsTogether.checked,
         removeWordNumbers: elements.removeWordNumbers.checked,
-        rewriteSimplePatterns: elements.rewriteSimplePatterns.checked,
-        rewriteSyllablePatterns: elements.rewriteSyllablePatterns.checked,
         showSyllableWordMapping: elements.showSyllableWordMapping.checked,
         showTaskHitSummary: elements.showTaskHitSummary.checked,
         showTaskDetails: elements.showTaskDetails.checked,
@@ -912,7 +939,7 @@
         forceUppercaseOutput: elements.forceUppercaseOutput.checked,
         printFontSize: parsePositiveInteger(elements.printFontSize.value, CONFIG.defaultPrintFontSize),
         printColumnCount: parsePositiveInteger(elements.printColumnCount.value, CONFIG.defaultPrintColumnCount),
-        printMonospace: elements.printMonospace.checked,
+        printFontFamily: elements.printFontFamily.value || CONFIG.defaultPrintFontFamily,
         printTableGrid: elements.printTableGrid.checked,
       };
     }
@@ -928,8 +955,6 @@
         removeDiacritics: CONFIG.defaultRemoveDiacritics,
         keepHyphenPartsTogether: CONFIG.defaultKeepHyphenPartsTogether,
         removeWordNumbers: CONFIG.defaultRemoveWordNumbers,
-        rewriteSimplePatterns: CONFIG.defaultRewriteSimplePatterns,
-        rewriteSyllablePatterns: CONFIG.defaultRewriteSyllablePatterns,
         showSyllableWordMapping: CONFIG.defaultShowSyllableWordMapping,
         showTaskHitSummary: CONFIG.defaultShowTaskHitSummary,
         showTaskDetails: CONFIG.defaultShowTaskDetails,
@@ -940,7 +965,7 @@
         forceUppercaseOutput: CONFIG.defaultForceUppercaseOutput,
         printFontSize: CONFIG.defaultPrintFontSize,
         printColumnCount: CONFIG.defaultPrintColumnCount,
-        printMonospace: CONFIG.defaultPrintMonospace,
+        printFontFamily: CONFIG.defaultPrintFontFamily,
         printTableGrid: CONFIG.defaultPrintTableGrid,
       };
     }
@@ -956,8 +981,6 @@
       elements.removeDiacritics.checked = mergedOptions.removeDiacritics;
       elements.keepHyphenPartsTogether.checked = mergedOptions.keepHyphenPartsTogether;
       elements.removeWordNumbers.checked = mergedOptions.removeWordNumbers;
-      elements.rewriteSimplePatterns.checked = mergedOptions.rewriteSimplePatterns;
-      elements.rewriteSyllablePatterns.checked = mergedOptions.rewriteSyllablePatterns;
       elements.showSyllableWordMapping.checked = mergedOptions.showSyllableWordMapping;
       elements.showTaskHitSummary.checked = mergedOptions.showTaskHitSummary;
       elements.showTaskDetails.checked = mergedOptions.showTaskDetails;
@@ -968,7 +991,7 @@
       elements.forceUppercaseOutput.checked = mergedOptions.forceUppercaseOutput;
       elements.printFontSize.value = mergedOptions.printFontSize;
       elements.printColumnCount.value = mergedOptions.printColumnCount;
-      elements.printMonospace.checked = mergedOptions.printMonospace;
+      elements.printFontFamily.value = mergedOptions.printFontFamily || CONFIG.defaultPrintFontFamily;
       elements.printTableGrid.checked = mergedOptions.printTableGrid;
     }
 
@@ -1000,6 +1023,22 @@
     function saveTasks(tasks) {
       try {
         window.localStorage.setItem(CONFIG.tasksStorageKey, tasks);
+      } catch (error) {
+        // Offline files may run in contexts where localStorage is unavailable.
+      }
+    }
+
+    function loadStoredText() {
+      try {
+        return window.localStorage.getItem(CONFIG.textStorageKey);
+      } catch (error) {
+        return null;
+      }
+    }
+
+    function saveText(text) {
+      try {
+        window.localStorage.setItem(CONFIG.textStorageKey, text);
       } catch (error) {
         // Offline files may run in contexts where localStorage is unavailable.
       }
@@ -1124,56 +1163,6 @@
         .map((line, index) => parseTaskLine(line, index));
     }
 
-    function normalizeTaskLinePattern(line, options) {
-      if (!line.trim()) {
-        return line;
-      }
-
-      const separatorIndex = line.indexOf(CONFIG.taskSeparator);
-      if (separatorIndex === -1) {
-        const numberedTask = parseNumberedRegexTask(line.trim());
-        if (numberedTask) {
-          const convertedNumberedPattern = convertPatternForField(numberedTask.pattern, options);
-          return convertedNumberedPattern ? `${numberedTask.number}. ${convertedNumberedPattern}` : line;
-        }
-        return convertPatternForField(line.trim(), options) || line;
-      }
-
-      const beforePattern = line.slice(0, separatorIndex + 1);
-      const pattern = line.slice(separatorIndex + 1).trim();
-      const convertedPattern = convertPatternForField(pattern, options);
-      return convertedPattern ? `${beforePattern} ${convertedPattern}` : line;
-    }
-
-    function convertPatternForField(pattern, options) {
-      if (!options.rewriteSyllablePatterns && parseSyllableRange(pattern)) {
-        return null;
-      }
-      const repairedPattern = repairEscapedNonCapturingGroup(pattern);
-      if (repairedPattern !== pattern) {
-        return repairedPattern;
-      }
-      if (options.rewriteSyllablePatterns) {
-        const syllableRange = parseSyllableRange(pattern);
-        if (syllableRange) {
-          return createSyllableRangeRegex(syllableRange);
-        }
-      }
-      if (options.rewriteSimplePatterns) {
-        return convertSimplePattern(pattern);
-      }
-      return null;
-    }
-
-    function repairEscapedNonCapturingGroup(pattern) {
-      const repairedPattern = pattern
-        .replace(/\\\?:/g, "")
-        .replace(/\\\|/g, "|")
-        .replace(/\\([a-zäöüß])/gi, "$1");
-      const match = repairedPattern.match(/^\(\?:[a-zäöüß|]+\)$/i);
-      return match ? repairedPattern : pattern;
-    }
-
     function parseTaskLine(line, index) {
       const separatorIndex = line.indexOf(CONFIG.taskSeparator);
       if (separatorIndex === -1) {
@@ -1272,8 +1261,13 @@
       const label = `/${parts.items.join("|")}/`;
       const positionLabels = {
         i: "initial",
-        m: "medial",
-        f: "final",
+        p: "initial",
+        "p+": "initial",
+        "p-": "final",
+        "p~": "medial",
+        "p++": "exklusiv initial",
+        "p--": "exklusiv final",
+        "p~~": "exklusiv medial",
         c: "kombo",
         "c+": "kombo mit erstem Laut",
         "c-": "kombo mit letztem Laut",
@@ -1290,8 +1284,13 @@
       };
       const positionLabels = {
         i: "initial",
-        m: "medial",
-        f: "final",
+        p: "initial",
+        "p+": "initial",
+        "p-": "final",
+        "p~": "medial",
+        "p++": "exklusiv initial",
+        "p--": "exklusiv final",
+        "p~~": "exklusiv medial",
         c: "kombo",
         2: "doppelt",
       };
@@ -1356,18 +1355,6 @@
       return null;
     }
 
-    function createSyllableRangeRegex(range) {
-      const syllablePattern = "[aeiouäöüy]+";
-      const betweenPattern = "[^aeiouäöüy]*";
-      const alternatives = [];
-
-      for (let count = range.min; count <= range.max; count += 1) {
-        alternatives.push(`(?:${betweenPattern}${syllablePattern}){${count}}${betweenPattern}`);
-      }
-
-      return `^(?:${alternatives.join("|")})$`;
-    }
-
     function convertSimplePattern(rawPattern) {
       const inlineParts = parseInlineSimplePatternParts(rawPattern);
       if (inlineParts) {
@@ -1403,7 +1390,7 @@
     }
 
     function parseInlineSimplePatternParts(rawPattern) {
-      const inlineMatch = rawPattern.match(/^(#[kvu]|[a-zäöüß]+)=(i|m|f|c|2)$/i);
+      const inlineMatch = rawPattern.match(/^(!?(?:#[kvu]|[a-zäöüß]+))=(i|p(?:\+\+|\+|--|-|~~|~)?|c|2)$/i);
       if (!inlineMatch) {
         return null;
       }
@@ -1429,7 +1416,7 @@
     }
 
     function parseSimpleShortcutPatternParts(rawPattern) {
-      const shortcutMatch = rawPattern.match(/^\(#([kvu])\)(?:(?:=|")([imfc2]))?$/i);
+      const shortcutMatch = rawPattern.match(/^\(#([kvu])\)(?:(?:=|")(i|p(?:\+\+|\+|--|-|~~|~)?|c|2))?$/i);
       if (!shortcutMatch) {
         return null;
       }
@@ -1456,10 +1443,12 @@
     }
 
     function parseSimplePatternParts(rawPattern) {
-      const simpleMatch = rawPattern.match(/^\(([^()]+)\)(?:(?:=|")([imfc2]|c[+-]))?$/i);
+      const forcedSimpleMatch = rawPattern.match(/^!\(([^()]+)\)(?:(?:=|")(i|p(?:\+\+|\+|--|-|~~|~)?|c[+-]?|2))?$/i);
+      const simpleMatch = forcedSimpleMatch || rawPattern.match(/^\(([^()]+)\)(?:(?:=|")(i|p(?:\+\+|\+|--|-|~~|~)?|c[+-]?|2))?$/i);
       if (!simpleMatch) {
         return null;
       }
+      const forcedCase = Boolean(forcedSimpleMatch);
       if (rawPattern.startsWith("(?:") || (!simpleMatch[1].includes(",") && !simpleMatch[2])) {
         return null;
       }
@@ -1476,7 +1465,7 @@
       }
 
       return {
-        items,
+        items: forcedCase ? items.map((item) => `!${item}`) : items,
         position: simpleMatch[2] ? simpleMatch[2].toLowerCase() : "",
       };
     }
@@ -1521,6 +1510,9 @@
     }
 
     function convertSimpleItemPattern(item) {
+      if (isCaseSensitiveItem(item)) {
+        return createCaseSensitivePattern(item.slice(1));
+      }
       const shortcutCharacters = getSimpleShortcutCharacters(item);
       return shortcutCharacters ? `[${shortcutCharacters}]` : escapeRegex(item);
     }
@@ -1538,19 +1530,38 @@
       return shortcutClasses[shortcutMatch[1].toLowerCase()];
     }
 
+    function isCaseSensitiveItem(item) {
+      return item.startsWith("!") && item.length > 1;
+    }
+
+    function createCaseSensitivePattern(item) {
+      const shortcutCharacters = getSimpleShortcutCharacters(item);
+      const pattern = shortcutCharacters ? `[${shortcutCharacters}]` : escapeRegex(item);
+      return `(?-i:${pattern})`;
+    }
+
     function escapeCharacterClassItem(item) {
       return item.replace(/[\\\]\-^]/g, "\\$&");
     }
 
     function applySimplePosition(groupedPattern, position) {
-      if (position === "i") {
+      if (position === "i" || position === "p" || position === "p+") {
         return `\\b${groupedPattern}`;
       }
-      if (position === "m") {
-        return `(?<=.)${groupedPattern}(?=.)`;
-      }
-      if (position === "f") {
+      if (position === "p-") {
         return `${groupedPattern}\\b`;
+      }
+      if (position === "p~") {
+        return `(?:(?<=.)${groupedPattern}|${groupedPattern}(?=.))`;
+      }
+      if (position === "p++") {
+        return `\\b${groupedPattern}(?=.)`;
+      }
+      if (position === "p--") {
+        return `(?<=.)${groupedPattern}\\b`;
+      }
+      if (position === "p~~") {
+        return `(?<=.)${groupedPattern}(?=.)`;
       }
       return groupedPattern;
     }
@@ -1835,7 +1846,7 @@
       let printUrls = [];
       printButton.addEventListener("click", () => {
         revokePrintUrls(printUrls);
-        const pages = createPrintPages(task.matchedWords, options.printFontSize, options.printColumnCount, options.printMonospace, options.printTableGrid);
+        const pages = createPrintPages(task.matchedWords, options.printFontSize, options.printColumnCount, options.printFontFamily, options.printTableGrid);
         printUrls = renderPrintLinksInContainer(links, pages);
       });
 
@@ -1947,6 +1958,14 @@
       analyzeInput();
     }
 
+    function clearTasks() {
+      elements.taskInput.value = "";
+      saveTasks(elements.taskInput.value);
+      updateRegex101Link();
+      analyzeInput();
+      elements.taskInput.focus();
+    }
+
     function resetOptions() {
       const defaultOptions = getDefaultOptions();
       applyOptionsToForm(defaultOptions);
@@ -1956,8 +1975,62 @@
 
     function clearInput() {
       elements.sourceText.value = "";
+      elements.sourceFile.value = "";
+      elements.textPreset.value = "";
       analyzeInput();
       elements.sourceText.focus();
+    }
+
+    async function loadTextPreset(event) {
+      const presetKey = event.target.value;
+      if (!presetKey) {
+        return;
+      }
+      const preset = CONFIG.textPresets[presetKey];
+      if (!preset) {
+        return;
+      }
+
+      try {
+        const text = await resolvePresetText(preset);
+        elements.sourceText.value = text;
+        elements.sourceFile.value = "";
+        analyzeInput();
+      } catch (error) {
+        elements.copyStatus.textContent = `Standard konnte nicht geladen werden: ${error.message}`;
+      }
+    }
+
+    async function resolvePresetText(preset) {
+      if (preset.text !== null && preset.text !== undefined) {
+        return preset.text;
+      }
+      if (preset.globalName && typeof window[preset.globalName] === "string") {
+        return window[preset.globalName];
+      }
+      return fetchPresetText(preset.url);
+    }
+
+    async function fetchPresetText(url) {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`${response.status} ${response.statusText}`);
+      }
+      return response.text();
+    }
+
+    async function loadSourceFile(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) {
+        return;
+      }
+      try {
+        elements.sourceText.value = await file.text();
+        elements.textPreset.value = "";
+        analyzeInput();
+      } catch (error) {
+        elements.copyStatus.textContent = `Datei konnte nicht gelesen werden: ${error.message}`;
+      }
     }
 
     async function copyPrintWords() {
@@ -1971,12 +2044,12 @@
         return;
       }
       const options = getAnalysisOptions();
-      const pages = createPrintPages(words, options.printFontSize, options.printColumnCount, options.printMonospace, options.printTableGrid);
+      const pages = createPrintPages(words, options.printFontSize, options.printColumnCount, options.printFontFamily, options.printTableGrid);
       renderPrintPageLinks(pages);
       elements.copyStatus.textContent = pages.length === 1 ? "Druckseite erstellt." : "Druckseiten erstellt.";
     }
 
-    function createPrintPages(words, fontSize, columnCount, useMonospace, showTableGrid) {
+    function createPrintPages(words, fontSize, columnCount, fontFamilyKey, showTableGrid) {
       const rowsPerColumn = Math.max(18, Math.floor(760 / (fontSize * 1.35)));
       const wordsPerPage = rowsPerColumn * columnCount;
       const pages = [];
@@ -1984,16 +2057,14 @@
         const pageWords = words.slice(index, index + wordsPerPage);
         pages.push({
           number: pages.length + 1,
-          html: createPrintPageHtml(pageWords, fontSize, columnCount, useMonospace, showTableGrid),
+          html: createPrintPageHtml(pageWords, fontSize, columnCount, fontFamilyKey, showTableGrid),
         });
       }
       return pages;
     }
 
-    function createPrintPageHtml(words, fontSize, columnCount, useMonospace, showTableGrid) {
-      const fontFamily = useMonospace
-        ? 'ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace'
-        : "Arial, sans-serif";
+    function createPrintPageHtml(words, fontSize, columnCount, fontFamilyKey, showTableGrid) {
+      const fontFamily = getPrintFontFamily(fontFamilyKey);
       const tableBorder = showTableGrid ? "1px solid #222" : "0";
       const cellPadding = showTableGrid ? "2mm 3mm" : "2mm 4mm 2mm 0";
       const rows = [];
@@ -2028,6 +2099,21 @@ ${rows.join("\n")}
   </table>
 </body>
 </html>`;
+    }
+
+    function getPrintFontFamily(fontFamilyKey) {
+      const printFontFamilies = {
+        sans: "Arial, Helvetica, sans-serif",
+        mono: 'ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace',
+        serif: 'Georgia, "Times New Roman", serif',
+        "arial-rounded": '"Arial Rounded MT Bold", "Arial Rounded MT", Arial, sans-serif',
+        verdana: "Verdana, Geneva, sans-serif",
+        trebuchet: '"Trebuchet MS", Arial, sans-serif',
+        "century-gothic": '"Century Gothic", "Avenir Next", Arial, sans-serif',
+        "comic-sans": '"Comic Sans MS", "Comic Sans", cursive',
+        consolas: 'Consolas, "Lucida Console", "Courier New", monospace',
+      };
+      return printFontFamilies[fontFamilyKey] || printFontFamilies.sans;
     }
 
     function renderPrintPageLinks(pages) {

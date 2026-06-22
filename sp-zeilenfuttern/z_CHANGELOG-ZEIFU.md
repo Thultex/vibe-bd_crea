@@ -4,23 +4,23 @@
 
 Ausgangsdatum: 2026-06-21
 
-*Diese Woche (ca. 2,2h, 2 Tage, 41 Inhalte):*
-Zeifu: Grundstruktur angelegt, Spielinhalte direkt im Spielordner gebuendelt, README-/Changelog-Namen vereinheitlicht, Wortanalyse-Tool ergaenzt und erweitert, Regex101-Absprung ergaenzt, Eingabebereiche neu geordnet, Print-Cleanup und Cleanup-/Ausgabeoptionen ergaenzt, Basisschreibweise auf `=`/`#` umgestellt, gerichtete `c`-Kombos ergaenzt, `k` auf `#k` fuer Konsonanten reserviert, nummerierte Regex-Aufgaben ergaenzt, Copy-Buttons verschoben, Standardtext gesetzt sowie Anleitung v1.08 und Designdokument v1.01 eingebunden.
+*Diese Woche (ca. 2,7h, 2 Tage, 48 Inhalte):*
+Zeifu: Grundstruktur angelegt, Spielinhalte direkt im Spielordner gebuendelt, README-/Changelog-Namen vereinheitlicht, Wortanalyse-Tool ergaenzt und erweitert, Regex101-Absprung ergaenzt, Eingabebereiche neu geordnet, Dateiimport und Textspeicherung ergaenzt, Textstandards `Nordwind & Sonne` und `Leibnitz 100k (mixed typical)` ergaenzt, Print-Cleanup und Cleanup-/Ausgabeoptionen ergaenzt, Print-Schriftauswahl ergaenzt, Basisschreibweise auf `=`/`#` umgestellt, Positionsmarker auf `p` umgestellt, gerichtete `c`-Kombos ergaenzt, `k` auf `#k` fuer Konsonanten reserviert, nummerierte Regex-Aufgaben ergaenzt, Copy-Buttons verschoben und gekuerzt, Standardtext gesetzt sowie Anleitung v1.08 und Designdokument v1.01 eingebunden.
 
 *Letzte Woche (0,0h, 0 Tage, 0 Inhalte):*
 Keine Eintraege.
 
-*Dieser Monat (ca. 2,2h, 2 Tage, 41 Inhalte):*
-Zeifu: Grundstruktur angelegt, Spielinhalte direkt im Spielordner gebuendelt, README-/Changelog-Namen vereinheitlicht, Wortanalyse-Tool ergaenzt und erweitert, Regex101-Absprung ergaenzt, Eingabebereiche neu geordnet, Print-Cleanup und Cleanup-/Ausgabeoptionen ergaenzt, Basisschreibweise auf `=`/`#` umgestellt, gerichtete `c`-Kombos ergaenzt, `k` auf `#k` fuer Konsonanten reserviert, nummerierte Regex-Aufgaben ergaenzt, Copy-Buttons verschoben, Standardtext gesetzt sowie Anleitung v1.08 und Designdokument v1.01 eingebunden.
+*Dieser Monat (ca. 2,7h, 2 Tage, 48 Inhalte):*
+Zeifu: Grundstruktur angelegt, Spielinhalte direkt im Spielordner gebuendelt, README-/Changelog-Namen vereinheitlicht, Wortanalyse-Tool ergaenzt und erweitert, Regex101-Absprung ergaenzt, Eingabebereiche neu geordnet, Dateiimport und Textspeicherung ergaenzt, Textstandards `Nordwind & Sonne` und `Leibnitz 100k (mixed typical)` ergaenzt, Print-Cleanup und Cleanup-/Ausgabeoptionen ergaenzt, Print-Schriftauswahl ergaenzt, Basisschreibweise auf `=`/`#` umgestellt, Positionsmarker auf `p` umgestellt, gerichtete `c`-Kombos ergaenzt, `k` auf `#k` fuer Konsonanten reserviert, nummerierte Regex-Aufgaben ergaenzt, Copy-Buttons verschoben und gekuerzt, Standardtext gesetzt sowie Anleitung v1.08 und Designdokument v1.01 eingebunden.
 
 *Letzter Monat (0,0h, 0 Tage, 0 Inhalte):*
 Keine Eintraege.
 
-*Jahr (ca. 2,2h, 2 Tage, 41 Inhalte):*
-Zeifu: Grundstruktur angelegt, Spielinhalte direkt im Spielordner gebuendelt, README-/Changelog-Namen vereinheitlicht, Wortanalyse-Tool ergaenzt und erweitert, Regex101-Absprung ergaenzt, Eingabebereiche neu geordnet, Print-Cleanup und Cleanup-/Ausgabeoptionen ergaenzt, Basisschreibweise auf `=`/`#` umgestellt, gerichtete `c`-Kombos ergaenzt, `k` auf `#k` fuer Konsonanten reserviert, nummerierte Regex-Aufgaben ergaenzt, Copy-Buttons verschoben, Standardtext gesetzt sowie Anleitung v1.08 und Designdokument v1.01 eingebunden.
+*Jahr (ca. 2,7h, 2 Tage, 48 Inhalte):*
+Zeifu: Grundstruktur angelegt, Spielinhalte direkt im Spielordner gebuendelt, README-/Changelog-Namen vereinheitlicht, Wortanalyse-Tool ergaenzt und erweitert, Regex101-Absprung ergaenzt, Eingabebereiche neu geordnet, Dateiimport und Textspeicherung ergaenzt, Textstandards `Nordwind & Sonne` und `Leibnitz 100k (mixed typical)` ergaenzt, Print-Cleanup und Cleanup-/Ausgabeoptionen ergaenzt, Print-Schriftauswahl ergaenzt, Basisschreibweise auf `=`/`#` umgestellt, Positionsmarker auf `p` umgestellt, gerichtete `c`-Kombos ergaenzt, `k` auf `#k` fuer Konsonanten reserviert, nummerierte Regex-Aufgaben ergaenzt, Copy-Buttons verschoben und gekuerzt, Standardtext gesetzt sowie Anleitung v1.08 und Designdokument v1.01 eingebunden.
 
-*Insgesamt (ca. 2,2h, 2 Tage, 41 Inhalte):*
-Zeifu: Grundstruktur angelegt, Spielinhalte direkt im Spielordner gebuendelt, README-/Changelog-Namen vereinheitlicht, Wortanalyse-Tool ergaenzt und erweitert, Regex101-Absprung ergaenzt, Eingabebereiche neu geordnet, Print-Cleanup und Cleanup-/Ausgabeoptionen ergaenzt, Basisschreibweise auf `=`/`#` umgestellt, gerichtete `c`-Kombos ergaenzt, `k` auf `#k` fuer Konsonanten reserviert, nummerierte Regex-Aufgaben ergaenzt, Copy-Buttons verschoben, Standardtext gesetzt sowie Anleitung v1.08 und Designdokument v1.01 eingebunden.
+*Insgesamt (ca. 2,7h, 2 Tage, 48 Inhalte):*
+Zeifu: Grundstruktur angelegt, Spielinhalte direkt im Spielordner gebuendelt, README-/Changelog-Namen vereinheitlicht, Wortanalyse-Tool ergaenzt und erweitert, Regex101-Absprung ergaenzt, Eingabebereiche neu geordnet, Dateiimport und Textspeicherung ergaenzt, Textstandards `Nordwind & Sonne` und `Leibnitz 100k (mixed typical)` ergaenzt, Print-Cleanup und Cleanup-/Ausgabeoptionen ergaenzt, Print-Schriftauswahl ergaenzt, Basisschreibweise auf `=`/`#` umgestellt, Positionsmarker auf `p` umgestellt, gerichtete `c`-Kombos ergaenzt, `k` auf `#k` fuer Konsonanten reserviert, nummerierte Regex-Aufgaben ergaenzt, Copy-Buttons verschoben und gekuerzt, Standardtext gesetzt sowie Anleitung v1.08 und Designdokument v1.01 eingebunden.
 
 ## Log
 
@@ -34,7 +34,17 @@ Zeifu: Grundstruktur angelegt, Spielinhalte direkt im Spielordner gebuendelt, RE
 - Tooling: Gerichtete Kombos ergaenzt; `(ch, a, o, u)=c+` erzeugt feste Reihenfolgen mit erstem Laut wie `cha`, `cho`, `chu`, waehrend `(a, o, u, ch)=c-` feste Reihenfolgen mit letztem Laut wie `ach`, `och`, `uch` erzeugt.
 - Tooling: Kombomarker von `k` auf `c` umgestellt; `k` bleibt nur noch im Kuerzel `#k` fuer Konsonanten erhalten.
 - Tooling: Verhalten von `c+` und `c-` getauscht; Plus steht nun fuer ersten festen Laut, Minus fuer letzten festen Laut.
-- Versionen: word-task-analyzer v1.75.
+- Tooling: Text kann nun per Dateiimport geladen werden; das Aufgabenfeld hat einen eigenen Leeren-Button.
+- Tooling: Buttonbeschriftungen gekuerzt: `Regex101`, `Reset`, `Leeren`.
+- Tooling: Sichtbare Konvertierung der Basisschreibweise ins Aufgabenfeld entfernt; Aufgaben bleiben in der eingegebenen Notation sichtbar und werden nur intern analysiert.
+- Tooling: Monospace-Checkbox fuer Druckseiten durch speicherbare Schriftauswahl ersetzt; verfuegbar sind Sans, Mono, Serif, Arial Rounded, Verdana, Trebuchet MS, Century Gothic, Comic Sans MS und Consolas.
+- Tooling: Positionsmarker von `i/m/f` auf `p` umgestellt; `p` und `p+` markieren initial, `p-` final, `p~` medialen Kontext sowie `p++`, `p--` und `p~~` die exklusiven Varianten.
+- Tooling: Textfeld-Inhalt wird nun lokal zwischengespeichert; auch geladene Datei-Inhalte erscheinen beim erneuten Oeffnen wieder, soweit Browser-Speicher verfuegbar ist.
+- Tooling: Standardauswahl fuer Texte in die Aktionszeile neben `Analysieren` und `Leeren` verschoben; Eintraege heissen nun `Nordwind & Sonne` und `Leibnitz 100k (mixed typical)`.
+- Fix: Auswahl `Standard` laedt nun ebenfalls aktiv den Standardtext; eigener gespeicherter Text nutzt einen neutralen Dropdown-Zustand.
+- Fix: `Leibnitz 100k (mixed typical)` nutzt zusaetzlich eine lokale JS-Fallbackdatei, damit das Preset auch ohne erfolgreichen `fetch` beim direkten Oeffnen der HTML-Datei geladen werden kann.
+- Tooling: Case-sensitive Basisschreibweise mit `!` ergaenzt; z.B. `!A=i` oder `!(A, B)=i` erzwingen Gross-/Kleinschreibung fuer diese Basisteile, waehrend normale Aufgaben weiter case-insensitive bleiben.
+- Versionen: word-task-analyzer v1.84.
 
 ### 2026-06-21 - zeifu, struktur, doku (ca. 1,4h)
 
