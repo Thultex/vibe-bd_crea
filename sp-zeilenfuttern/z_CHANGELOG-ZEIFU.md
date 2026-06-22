@@ -4,25 +4,37 @@
 
 Ausgangsdatum: 2026-06-21
 
-*Diese Woche (ca. 1,4h, 1 Tag, 33 Inhalte):*
-Zeifu: Grundstruktur angelegt, Spielinhalte direkt im Spielordner gebuendelt, README-/Changelog-Namen vereinheitlicht, Wortanalyse-Tool ergaenzt und erweitert, Regex101-Absprung ergaenzt, Eingabebereiche neu geordnet, Print-Cleanup und Cleanup-Optionen ergaenzt, Copy-Buttons verschoben, Standardtext gesetzt sowie Anleitung v1.08 und Designdokument v1.01 eingebunden.
+*Diese Woche (ca. 2,2h, 2 Tage, 41 Inhalte):*
+Zeifu: Grundstruktur angelegt, Spielinhalte direkt im Spielordner gebuendelt, README-/Changelog-Namen vereinheitlicht, Wortanalyse-Tool ergaenzt und erweitert, Regex101-Absprung ergaenzt, Eingabebereiche neu geordnet, Print-Cleanup und Cleanup-/Ausgabeoptionen ergaenzt, Basisschreibweise auf `=`/`#` umgestellt, gerichtete `c`-Kombos ergaenzt, `k` auf `#k` fuer Konsonanten reserviert, nummerierte Regex-Aufgaben ergaenzt, Copy-Buttons verschoben, Standardtext gesetzt sowie Anleitung v1.08 und Designdokument v1.01 eingebunden.
 
 *Letzte Woche (0,0h, 0 Tage, 0 Inhalte):*
 Keine Eintraege.
 
-*Dieser Monat (ca. 1,4h, 1 Tag, 33 Inhalte):*
-Zeifu: Grundstruktur angelegt, Spielinhalte direkt im Spielordner gebuendelt, README-/Changelog-Namen vereinheitlicht, Wortanalyse-Tool ergaenzt und erweitert, Regex101-Absprung ergaenzt, Eingabebereiche neu geordnet, Print-Cleanup und Cleanup-Optionen ergaenzt, Copy-Buttons verschoben, Standardtext gesetzt sowie Anleitung v1.08 und Designdokument v1.01 eingebunden.
+*Dieser Monat (ca. 2,2h, 2 Tage, 41 Inhalte):*
+Zeifu: Grundstruktur angelegt, Spielinhalte direkt im Spielordner gebuendelt, README-/Changelog-Namen vereinheitlicht, Wortanalyse-Tool ergaenzt und erweitert, Regex101-Absprung ergaenzt, Eingabebereiche neu geordnet, Print-Cleanup und Cleanup-/Ausgabeoptionen ergaenzt, Basisschreibweise auf `=`/`#` umgestellt, gerichtete `c`-Kombos ergaenzt, `k` auf `#k` fuer Konsonanten reserviert, nummerierte Regex-Aufgaben ergaenzt, Copy-Buttons verschoben, Standardtext gesetzt sowie Anleitung v1.08 und Designdokument v1.01 eingebunden.
 
 *Letzter Monat (0,0h, 0 Tage, 0 Inhalte):*
 Keine Eintraege.
 
-*Jahr (ca. 1,4h, 1 Tag, 33 Inhalte):*
-Zeifu: Grundstruktur angelegt, Spielinhalte direkt im Spielordner gebuendelt, README-/Changelog-Namen vereinheitlicht, Wortanalyse-Tool ergaenzt und erweitert, Regex101-Absprung ergaenzt, Eingabebereiche neu geordnet, Print-Cleanup und Cleanup-Optionen ergaenzt, Copy-Buttons verschoben, Standardtext gesetzt sowie Anleitung v1.08 und Designdokument v1.01 eingebunden.
+*Jahr (ca. 2,2h, 2 Tage, 41 Inhalte):*
+Zeifu: Grundstruktur angelegt, Spielinhalte direkt im Spielordner gebuendelt, README-/Changelog-Namen vereinheitlicht, Wortanalyse-Tool ergaenzt und erweitert, Regex101-Absprung ergaenzt, Eingabebereiche neu geordnet, Print-Cleanup und Cleanup-/Ausgabeoptionen ergaenzt, Basisschreibweise auf `=`/`#` umgestellt, gerichtete `c`-Kombos ergaenzt, `k` auf `#k` fuer Konsonanten reserviert, nummerierte Regex-Aufgaben ergaenzt, Copy-Buttons verschoben, Standardtext gesetzt sowie Anleitung v1.08 und Designdokument v1.01 eingebunden.
 
-*Insgesamt (ca. 1,4h, 1 Tag, 33 Inhalte):*
-Zeifu: Grundstruktur angelegt, Spielinhalte direkt im Spielordner gebuendelt, README-/Changelog-Namen vereinheitlicht, Wortanalyse-Tool ergaenzt und erweitert, Regex101-Absprung ergaenzt, Eingabebereiche neu geordnet, Print-Cleanup und Cleanup-Optionen ergaenzt, Copy-Buttons verschoben, Standardtext gesetzt sowie Anleitung v1.08 und Designdokument v1.01 eingebunden.
+*Insgesamt (ca. 2,2h, 2 Tage, 41 Inhalte):*
+Zeifu: Grundstruktur angelegt, Spielinhalte direkt im Spielordner gebuendelt, README-/Changelog-Namen vereinheitlicht, Wortanalyse-Tool ergaenzt und erweitert, Regex101-Absprung ergaenzt, Eingabebereiche neu geordnet, Print-Cleanup und Cleanup-/Ausgabeoptionen ergaenzt, Basisschreibweise auf `=`/`#` umgestellt, gerichtete `c`-Kombos ergaenzt, `k` auf `#k` fuer Konsonanten reserviert, nummerierte Regex-Aufgaben ergaenzt, Copy-Buttons verschoben, Standardtext gesetzt sowie Anleitung v1.08 und Designdokument v1.01 eingebunden.
 
 ## Log
+
+### 2026-06-22 - zeifu, memo #1 (ca. 0,7h)
+
+- Tooling: Memo #1 umgesetzt; Basisschreibweise schreibt standardmaessig nicht mehr ins Aufgabenfeld, wird aber weiter intern fuer die Analyse verstanden.
+- Tooling: Basisschreibweise auf `=` und `#` umgestellt; Positionsmarker wie `(d, t)=i`, Einzelmarker wie `(a)=i` sowie Kurzgruppen wie `#v=i` und `(#v, #u)=2` werden erkannt, alte `"`-Positionsmarker bleiben als Fallback gueltig.
+- Tooling: Ausgabeoptionen getrennt; Wortausgaben koennen erzwungen klein oder gross geschrieben werden und Drucktabellen koennen optional ein Tabellengitter zeigen.
+- Tooling: Namenlose Regex-Aufgaben koennen nun auch als nummerierte Zeilen wie `1. sch` oder `2) [aeiou]` eingegeben werden.
+- Tooling: Aufgaben-Wortausgaben sortieren Trefferwoerter zuerst nach Treffergruppe, damit gleiche Buchstaben, Laute oder Silben zusammenbleiben.
+- Tooling: Gerichtete Kombos ergaenzt; `(ch, a, o, u)=c+` erzeugt feste Reihenfolgen mit erstem Laut wie `cha`, `cho`, `chu`, waehrend `(a, o, u, ch)=c-` feste Reihenfolgen mit letztem Laut wie `ach`, `och`, `uch` erzeugt.
+- Tooling: Kombomarker von `k` auf `c` umgestellt; `k` bleibt nur noch im Kuerzel `#k` fuer Konsonanten erhalten.
+- Tooling: Verhalten von `c+` und `c-` getauscht; Plus steht nun fuer ersten festen Laut, Minus fuer letzten festen Laut.
+- Versionen: word-task-analyzer v1.75.
 
 ### 2026-06-21 - zeifu, struktur, doku (ca. 1,4h)
 

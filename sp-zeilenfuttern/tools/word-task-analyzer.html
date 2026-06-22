@@ -368,7 +368,7 @@
   <main>
     <header>
       <h1>Zeilenfutter Wortanalyse</h1>
-      <div class="version">Tool v1.72</div>
+      <div class="version">Tool v1.75</div>
     </header>
 
     <div class="layout">
@@ -398,24 +398,28 @@
           <details class="task-card">
             <summary><span class="panel-title">Format- und Phonetik-Hinweise</span></summary>
             <div class="task-meta">
-              Jede Zeile ist eine Aufgabe: `Name: regex`, `Name (Punkte): regex` oder nur `regex`.
+              Jede Zeile ist eine Aufgabe: `Name: regex`, `Name (Punkte): regex`, `regex` oder zeilenweise nach `1. regex`.
             </div>
             <div class="letter-list">
               <strong>Basisschreibweise (wird intern zu Regex übersetzt):</strong><br>
               Oder-Verbindung: (d, t, k, g)<br>
-              Initial: (d, t)"i<br>
-              Medial: (d, t)"m<br>
-              Final: (d, t)"f<br>
-              Combo: (d, t, k, g)"k<br>
-              Doppelung: (r, s)"2<br>
-              Kürzel: ("k), ("v), ("u), ("v, "u)<br>
+              Initial: (d, t)=i oder (a)=i<br>
+              Medial: (d, t)=m oder (a=m, s=m)<br>
+              Final: (d, t)=f<br>
+              Combo: (d, t, k, g)=c<br>
+              Combo mit erstem Laut: (ch, a, o, u)=c+<br>
+              Combo mit letztem Laut: (a, o, u, ch)=c-<br>
+              Doppelung: (r, s)=2<br>
+              Kürzel: (#k), (#v), (#u), (#v, #u)<br>
               Silben etwa: (4), (2, 3), (1-4)<br><br>
 
               <strong>Kombis und Positionen:</strong><br>
-              Konsonantenverbindungen: ("k)"k<br>
+              Konsonantenverbindungen: (#k)=c<br>
               Endungen: (en, er, el, ung)<br>
-              Vokalkombo: ("v, "u)"k<br>
-              Doppelkonsonanten: ("k)"2<br><br>
+              fester Laut ch vor Alternative: (ch, a, o, u)=c+<br>
+              fester Laut ch nach Alternative: (a, o, u, ch)=c-<br>
+              Vokalkombo: (#v, #u)=c<br>
+              Doppelkonsonanten: (#k)=2<br><br>
 
               <strong>Buchstabentypen:</strong><br>
               Vokale: (a, e, i, o, u)<br>
@@ -451,7 +455,10 @@
               Ach-Laut-Kontext: [aou][a-zäöüß]*ch<br>
               Vokal plus r: [aeiouäöü]r<br>
               Unbetonte Endung grob: (?:e|en|er|el)\b<br>
-              Diphthong plus Konsonant: (?:ei|au|eu)[bcdfghjklmnpqrstvwxyz]
+              Diphthong plus Konsonant: (?:ei|au|eu)[bcdfghjklmnpqrstvwxyz]<br><br>
+
+              <strong>Hinweis:</strong><br>
+              `=` und `#` markieren Basisschreibweise eindeutig. Der alte `"`-Positionsmarker funktioniert weiter als Fallback.
             </div>
           </details>
 
@@ -517,7 +524,7 @@
               </label>
               <label class="check-option" for="rewriteSimplePatterns">
                 <input id="rewriteSimplePatterns" type="checkbox">
-                Basisschreibweise zu Regex ändern
+                Basisschreibweise ins Aufgabenfeld schreiben
               </label>
               <label class="check-option" for="rewriteSyllablePatterns">
                 <input id="rewriteSyllablePatterns" type="checkbox">
@@ -552,6 +559,24 @@
               <label class="check-option" for="showDebugPatterns">
                 <input id="showDebugPatterns" type="checkbox">
                 Debug: Regex anzeigen
+              </label>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Ausgabe</label>
+            <div class="option-grid">
+              <label class="check-option" for="forceLowercaseOutput">
+                <input id="forceLowercaseOutput" type="checkbox">
+                Ausgabe klein schreiben
+              </label>
+              <label class="check-option" for="forceUppercaseOutput">
+                <input id="forceUppercaseOutput" type="checkbox">
+                Ausgabe GROSS schreiben
+              </label>
+              <label class="check-option" for="printTableGrid">
+                <input id="printTableGrid" type="checkbox">
+                Tabellengitter drucken
               </label>
             </div>
           </div>
@@ -673,7 +698,7 @@
       defaultRemoveDiacritics: false,
       defaultKeepHyphenPartsTogether: false,
       defaultRemoveWordNumbers: true,
-      defaultRewriteSimplePatterns: true,
+      defaultRewriteSimplePatterns: false,
       defaultRewriteSyllablePatterns: false,
       defaultShowSyllableWordMapping: false,
       defaultShowTaskHitSummary: true,
@@ -681,11 +706,14 @@
       defaultShowTaskPoints: true,
       defaultShowTaskWordActions: false,
       defaultShowDebugPatterns: false,
+      defaultForceLowercaseOutput: false,
+      defaultForceUppercaseOutput: false,
       defaultPrintFontSize: 30,
       defaultPrintColumnCount: 3,
       defaultPrintMonospace: false,
+      defaultPrintTableGrid: false,
       defaultPointsPerHit: 1,
-      optionsStorageKey: "zeifu-word-task-analyzer-options-v1",
+      optionsStorageKey: "zeifu-word-task-analyzer-options-v2",
       tasksStorageKey: "zeifu-word-task-analyzer-tasks-v1",
       taskSeparator: ":",
       regexFlags: "giu",
@@ -712,9 +740,12 @@
       showTaskPoints: document.getElementById("showTaskPoints"),
       showTaskWordActions: document.getElementById("showTaskWordActions"),
       showDebugPatterns: document.getElementById("showDebugPatterns"),
+      forceLowercaseOutput: document.getElementById("forceLowercaseOutput"),
+      forceUppercaseOutput: document.getElementById("forceUppercaseOutput"),
       printFontSize: document.getElementById("printFontSize"),
       printColumnCount: document.getElementById("printColumnCount"),
       printMonospace: document.getElementById("printMonospace"),
+      printTableGrid: document.getElementById("printTableGrid"),
       analyzeButtons: document.querySelectorAll("#analyzeButton, .analyze-button"),
       resetTasksButton: document.getElementById("resetTasksButton"),
       resetOptionsButton: document.getElementById("resetOptionsButton"),
@@ -758,7 +789,7 @@
       }
       saveTasks(elements.taskInput.value);
       const normalizedText = normalizeSourceText(elements.sourceText.value, options);
-      const rawWords = extractWords(normalizedText, options);
+      const rawWords = formatOutputWords(extractWords(normalizedText, options), options);
       const cleanedWords = options.removeDuplicates ? removeDuplicateWords(rawWords).words : rawWords;
       const words = filterWords(cleanedWords, options);
       const uniqueStatWords = removeDuplicateWords(words).words;
@@ -805,6 +836,16 @@
       const wordPattern = options.removeWordNumbers ? /\p{L}+/gu : /[\p{L}]+[\p{L}\p{N}]*/gu;
       const matches = text.match(wordPattern);
       return matches ? matches : [];
+    }
+
+    function formatOutputWords(words, options) {
+      if (options.forceUppercaseOutput) {
+        return words.map((word) => word.toLocaleUpperCase("de-DE"));
+      }
+      if (options.forceLowercaseOutput) {
+        return words.map((word) => word.toLocaleLowerCase("de-DE"));
+      }
+      return words;
     }
 
     function replaceGermanUmlauts(text) {
@@ -867,9 +908,12 @@
         showTaskPoints: elements.showTaskPoints.checked,
         showTaskWordActions: elements.showTaskWordActions.checked,
         showDebugPatterns: elements.showDebugPatterns.checked,
+        forceLowercaseOutput: elements.forceLowercaseOutput.checked,
+        forceUppercaseOutput: elements.forceUppercaseOutput.checked,
         printFontSize: parsePositiveInteger(elements.printFontSize.value, CONFIG.defaultPrintFontSize),
         printColumnCount: parsePositiveInteger(elements.printColumnCount.value, CONFIG.defaultPrintColumnCount),
         printMonospace: elements.printMonospace.checked,
+        printTableGrid: elements.printTableGrid.checked,
       };
     }
 
@@ -892,9 +936,12 @@
         showTaskPoints: CONFIG.defaultShowTaskPoints,
         showTaskWordActions: CONFIG.defaultShowTaskWordActions,
         showDebugPatterns: CONFIG.defaultShowDebugPatterns,
+        forceLowercaseOutput: CONFIG.defaultForceLowercaseOutput,
+        forceUppercaseOutput: CONFIG.defaultForceUppercaseOutput,
         printFontSize: CONFIG.defaultPrintFontSize,
         printColumnCount: CONFIG.defaultPrintColumnCount,
         printMonospace: CONFIG.defaultPrintMonospace,
+        printTableGrid: CONFIG.defaultPrintTableGrid,
       };
     }
 
@@ -917,9 +964,12 @@
       elements.showTaskPoints.checked = mergedOptions.showTaskPoints;
       elements.showTaskWordActions.checked = mergedOptions.showTaskWordActions;
       elements.showDebugPatterns.checked = mergedOptions.showDebugPatterns;
+      elements.forceLowercaseOutput.checked = mergedOptions.forceLowercaseOutput;
+      elements.forceUppercaseOutput.checked = mergedOptions.forceUppercaseOutput;
       elements.printFontSize.value = mergedOptions.printFontSize;
       elements.printColumnCount.value = mergedOptions.printColumnCount;
       elements.printMonospace.checked = mergedOptions.printMonospace;
+      elements.printTableGrid.checked = mergedOptions.printTableGrid;
     }
 
     function loadStoredOptions() {
@@ -995,13 +1045,58 @@
     }
 
     function sortWords(words) {
+      return [...words].sort(compareWords);
+    }
+
+    function sortWordsByTaskOrder(words, taskOrder, wordMatchGroups) {
+      if (!taskOrder || taskOrder.size === 0) {
+        return sortWords(words);
+      }
       return [...words].sort((first, second) => {
-        const lengthDiff = Array.from(first).length - Array.from(second).length;
-        if (lengthDiff !== 0) {
-          return lengthDiff;
+        const firstOrder = getWordTaskOrder(first, taskOrder, wordMatchGroups);
+        const secondOrder = getWordTaskOrder(second, taskOrder, wordMatchGroups);
+        if (firstOrder !== secondOrder) {
+          return firstOrder - secondOrder;
         }
-        return first.localeCompare(second, "de", { sensitivity: "base" });
+        return compareWords(first, second);
       });
+    }
+
+    function getWordTaskOrder(word, taskOrder, wordMatchGroups) {
+      const wordGroups = wordMatchGroups ? wordMatchGroups.get(normalizeWordKey(word)) : null;
+      if (!wordGroups) {
+        return Number.MAX_SAFE_INTEGER;
+      }
+      return wordGroups.reduce((lowestOrder, groupName) => {
+        const groupOrder = taskOrder.has(groupName) ? taskOrder.get(groupName) : Number.MAX_SAFE_INTEGER;
+        return Math.min(lowestOrder, groupOrder);
+      }, Number.MAX_SAFE_INTEGER);
+    }
+
+    function compareWords(first, second) {
+      const lengthDiff = Array.from(first).length - Array.from(second).length;
+      if (lengthDiff !== 0) {
+        return lengthDiff;
+      }
+      return first.localeCompare(second, "de", { sensitivity: "base" });
+    }
+
+    function createMatchGroupOrder(matches) {
+      return new Map([...new Set(matches.map((match) => normalizeMatchGroup(match)))]
+        .sort((first, second) => first.localeCompare(second, "de", { sensitivity: "base" }))
+        .map((match, index) => [match, index]));
+    }
+
+    function addWordMatchGroups(groups, word, matches) {
+      const wordKey = normalizeWordKey(word);
+      if (!groups.has(wordKey)) {
+        groups.set(wordKey, []);
+      }
+      groups.get(wordKey).push(...matches.map(normalizeMatchGroup));
+    }
+
+    function normalizeMatchGroup(match) {
+      return match.toLocaleLowerCase("de-DE").normalize("NFC");
     }
 
     function calculateGeneralStats(words) {
@@ -1036,6 +1131,11 @@
 
       const separatorIndex = line.indexOf(CONFIG.taskSeparator);
       if (separatorIndex === -1) {
+        const numberedTask = parseNumberedRegexTask(line.trim());
+        if (numberedTask) {
+          const convertedNumberedPattern = convertPatternForField(numberedTask.pattern, options);
+          return convertedNumberedPattern ? `${numberedTask.number}. ${convertedNumberedPattern}` : line;
+        }
         return convertPatternForField(line.trim(), options) || line;
       }
 
@@ -1077,20 +1177,23 @@
     function parseTaskLine(line, index) {
       const separatorIndex = line.indexOf(CONFIG.taskSeparator);
       if (separatorIndex === -1) {
-        const nameParts = parseTaskName(createUnnamedTaskName(index, line));
-        const syllableRange = parseSyllableRange(line);
+        const numberedTask = parseNumberedRegexTask(line);
+        const taskPattern = numberedTask ? numberedTask.pattern : line;
+        const name = numberedTask ? `Aufgabe ${numberedTask.number}` : createUnnamedTaskName(index, taskPattern);
+        const nameParts = parseTaskName(name);
+        const syllableRange = parseSyllableRange(taskPattern);
         if (syllableRange) {
           return {
             name: nameParts.name,
             points: nameParts.points,
             hasExplicitPoints: nameParts.hasExplicitPoints,
-            pattern: line,
+            pattern: taskPattern,
             type: "syllableRange",
             syllableRange,
             sourceLine: line,
           };
         }
-        const pattern = convertSimplePattern(line) || line;
+        const pattern = convertSimplePattern(taskPattern) || taskPattern;
         return {
           name: nameParts.name,
           points: nameParts.points,
@@ -1123,6 +1226,17 @@
         hasExplicitPoints: nameParts.hasExplicitPoints,
         pattern,
         sourceLine: line,
+      };
+    }
+
+    function parseNumberedRegexTask(line) {
+      const match = line.match(/^(\d+)[.)]\s+(.+)$/);
+      if (!match) {
+        return null;
+      }
+      return {
+        number: Number.parseInt(match[1], 10),
+        pattern: match[2].trim(),
       };
     }
 
@@ -1160,7 +1274,9 @@
         i: "initial",
         m: "medial",
         f: "final",
-        k: "kombo",
+        c: "kombo",
+        "c+": "kombo mit erstem Laut",
+        "c-": "kombo mit letztem Laut",
         2: "doppelt",
       };
       return parts.position ? `${label} ${positionLabels[parts.position]}` : label;
@@ -1176,6 +1292,7 @@
         i: "initial",
         m: "medial",
         f: "final",
+        c: "kombo",
         2: "doppelt",
       };
       const label = shortcutLabels[parts.shortcut] || parts.shortcut;
@@ -1252,6 +1369,11 @@
     }
 
     function convertSimplePattern(rawPattern) {
+      const inlineParts = parseInlineSimplePatternParts(rawPattern);
+      if (inlineParts) {
+        return convertInlineSimplePattern(inlineParts);
+      }
+
       const shortcutParts = parseSimpleShortcutPatternParts(rawPattern);
       if (shortcutParts) {
         return convertSimpleShortcutPattern(shortcutParts);
@@ -1261,18 +1383,53 @@
       if (!simpleParts) {
         return null;
       }
+      if (!simpleParts.position && simpleParts.items.some(hasInlineSimplePosition)) {
+        return `(?:${simpleParts.items.map((item) => {
+          const inlineParts = parseInlineSimplePatternParts(item);
+          return inlineParts ? convertInlineSimplePattern(inlineParts) : convertSimpleItemPattern(item);
+        }).join("|")})`;
+      }
       const alternatives = simpleParts.items.map(convertSimpleItemPattern);
       const position = simpleParts.position;
       if (position === "2") {
         return createRepeatedSimplePattern(simpleParts.items);
       }
-      const grouped = position === "k" ? alternatives.join("") : `(?:${alternatives.join("|")})`;
+      if (position === "c+" || position === "c-") {
+        return createDirectionalComboPattern(alternatives, position);
+      }
+      const grouped = position === "c" ? alternatives.join("") : `(?:${alternatives.join("|")})`;
       const positionedPattern = applySimplePosition(grouped, position);
       return positionedPattern;
     }
 
+    function parseInlineSimplePatternParts(rawPattern) {
+      const inlineMatch = rawPattern.match(/^(#[kvu]|[a-zäöüß]+)=(i|m|f|c|2)$/i);
+      if (!inlineMatch) {
+        return null;
+      }
+      return {
+        item: inlineMatch[1],
+        position: inlineMatch[2].toLowerCase(),
+      };
+    }
+
+    function convertInlineSimplePattern(parts) {
+      const pattern = convertSimpleItemPattern(parts.item);
+      if (parts.position === "2") {
+        return createRepeatedSimplePattern([parts.item]);
+      }
+      if (parts.position === "c") {
+        return `${pattern}${pattern}`;
+      }
+      return applySimplePosition(pattern, parts.position);
+    }
+
+    function hasInlineSimplePosition(item) {
+      return Boolean(parseInlineSimplePatternParts(item));
+    }
+
     function parseSimpleShortcutPatternParts(rawPattern) {
-      const shortcutMatch = rawPattern.match(/^\("([kvu])\)(?:"([imfk2]))?$/i);
+      const shortcutMatch = rawPattern.match(/^\(#([kvu])\)(?:(?:=|")([imfc2]))?$/i);
       if (!shortcutMatch) {
         return null;
       }
@@ -1292,18 +1449,18 @@
       if (parts.position === "2") {
         return `(${characterClass})\\1`;
       }
-      if (parts.position === "k") {
+      if (parts.position === "c") {
         return `${characterClass}${characterClass}`;
       }
       return applySimplePosition(characterClass, parts.position);
     }
 
     function parseSimplePatternParts(rawPattern) {
-      const simpleMatch = rawPattern.match(/^\(([^()]+)\)(?:"([imfk2]))?$/i);
+      const simpleMatch = rawPattern.match(/^\(([^()]+)\)(?:(?:=|")([imfc2]|c[+-]))?$/i);
       if (!simpleMatch) {
         return null;
       }
-      if (rawPattern.startsWith("(?:") || !simpleMatch[1].includes(",")) {
+      if (rawPattern.startsWith("(?:") || (!simpleMatch[1].includes(",") && !simpleMatch[2])) {
         return null;
       }
       if (/[\\|?+*^$[\]{}]/.test(simpleMatch[1])) {
@@ -1335,6 +1492,18 @@
       }).join("|")})`;
     }
 
+    function createDirectionalComboPattern(alternatives, position) {
+      if (alternatives.length < 2) {
+        return alternatives[0] || "";
+      }
+      if (position === "c+") {
+        const startPattern = alternatives[0];
+        return `(?:${alternatives.slice(1).map((pattern) => `${startPattern}${pattern}`).join("|")})`;
+      }
+      const endPattern = alternatives[alternatives.length - 1];
+      return `(?:${alternatives.slice(0, -1).map((pattern) => `${pattern}${endPattern}`).join("|")})`;
+    }
+
     function createRepeatedCharacterClass(items) {
       let characterClass = "";
       for (const item of items) {
@@ -1357,7 +1526,7 @@
     }
 
     function getSimpleShortcutCharacters(item) {
-      const shortcutMatch = item.match(/^"([kvu])$/i);
+      const shortcutMatch = item.match(/^#([kvu])$/i);
       if (!shortcutMatch) {
         return "";
       }
@@ -1413,6 +1582,7 @@
         let matchingWordCount = 0;
         const matchedParts = [];
         const matchedWords = [];
+        const wordMatchGroups = new Map();
         const wordGroups = new Map();
 
         for (const word of words) {
@@ -1422,6 +1592,7 @@
             matchCount += matches.length;
             matchedParts.push(...matches);
             matchedWords.push(word);
+            addWordMatchGroups(wordMatchGroups, word, matches);
             if (options.showSyllableWordMapping) {
               for (const match of matches) {
                 addGroupedWord(wordGroups, match, word);
@@ -1438,7 +1609,7 @@
           pointsTotal: matchCount * task.points,
           detailLabel: "Buchstaben",
           detailCounts: countLetters(matchedParts.join("")),
-          matchedWords: sortWords(removeDuplicateWords(matchedWords).words),
+          matchedWords: sortWordsByTaskOrder(removeDuplicateWords(matchedWords).words, createMatchGroupOrder(matchedParts), wordMatchGroups),
           wordMappings: formatWordGroups(wordGroups),
         };
       } catch (error) {
@@ -1664,7 +1835,7 @@
       let printUrls = [];
       printButton.addEventListener("click", () => {
         revokePrintUrls(printUrls);
-        const pages = createPrintPages(task.matchedWords, options.printFontSize, options.printColumnCount, options.printMonospace);
+        const pages = createPrintPages(task.matchedWords, options.printFontSize, options.printColumnCount, options.printMonospace, options.printTableGrid);
         printUrls = renderPrintLinksInContainer(links, pages);
       });
 
@@ -1800,12 +1971,12 @@
         return;
       }
       const options = getAnalysisOptions();
-      const pages = createPrintPages(words, options.printFontSize, options.printColumnCount, options.printMonospace);
+      const pages = createPrintPages(words, options.printFontSize, options.printColumnCount, options.printMonospace, options.printTableGrid);
       renderPrintPageLinks(pages);
       elements.copyStatus.textContent = pages.length === 1 ? "Druckseite erstellt." : "Druckseiten erstellt.";
     }
 
-    function createPrintPages(words, fontSize, columnCount, useMonospace) {
+    function createPrintPages(words, fontSize, columnCount, useMonospace, showTableGrid) {
       const rowsPerColumn = Math.max(18, Math.floor(760 / (fontSize * 1.35)));
       const wordsPerPage = rowsPerColumn * columnCount;
       const pages = [];
@@ -1813,16 +1984,18 @@
         const pageWords = words.slice(index, index + wordsPerPage);
         pages.push({
           number: pages.length + 1,
-          html: createPrintPageHtml(pageWords, fontSize, columnCount, useMonospace),
+          html: createPrintPageHtml(pageWords, fontSize, columnCount, useMonospace, showTableGrid),
         });
       }
       return pages;
     }
 
-    function createPrintPageHtml(words, fontSize, columnCount, useMonospace) {
+    function createPrintPageHtml(words, fontSize, columnCount, useMonospace, showTableGrid) {
       const fontFamily = useMonospace
         ? 'ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace'
         : "Arial, sans-serif";
+      const tableBorder = showTableGrid ? "1px solid #222" : "0";
+      const cellPadding = showTableGrid ? "2mm 3mm" : "2mm 4mm 2mm 0";
       const rows = [];
       const rowsPerColumn = Math.ceil(words.length / columnCount);
       for (let rowIndex = 0; rowIndex < rowsPerColumn; rowIndex += 1) {
@@ -1844,7 +2017,7 @@
     * { box-sizing: border-box; }
     body { margin: 0; font-family: ${fontFamily}; font-size: ${fontSize}px; line-height: 1.25; }
     table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-    td { width: ${100 / columnCount}%; padding: 2mm 4mm 2mm 0; vertical-align: top; }
+    td { width: ${100 / columnCount}%; border: ${tableBorder}; padding: ${cellPadding}; vertical-align: top; }
   </style>
 </head>
 <body>
