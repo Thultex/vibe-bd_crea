@@ -1,0 +1,8 @@
+Karten: 73
+Symbole: 73
+Symbole je Karte: 9
+Vorkommen je Symbol: 9
+Schnittmenge jedes Kartenpaars: exakt 1
+Geprüfte Kartenpaare: 2628
+Unbenannte Symbol-IDs: 0
+Bildstatus: 73 nummerierte Platzhalter

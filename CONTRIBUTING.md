@@ -10,9 +10,10 @@ Dieses Repository sammelt Boardgame-Materialien, Regeln, Designs und optionale T
 - Platzhalter sind sinnbildlich: `[name]` ist lowercase, `[Name]` ist Titlecase, `[NAME]` ist uppercase. Die eckigen Klammern werden nie in Datei- oder Ordnernamen geschrieben.
 - Umlaute und deutsche Sonderzeichen sind in Dokumentation, Spieltexten, Materialdaten, Tool-Oberflaechen und Tool-Eingaben erlaubt.
 - Jedes Spiel hat eine eigene Uebersicht `z_README-[NAME].md`.
-- Bild-, Video- und andere Medien-Assets liegen direkt im Spielordner unter `assets/`, bei Bedarf in Unterordnern wie `assets/images/`.
+- Bild-, Video- und andere Medien-Assets liegen direkt im Spielordner unter `assets/` und werden dort nach Medientyp (`images/`, `video/`, `audio/`) oder klarer Funktion gegliedert.
 - Allgemeine Dateien wie CSV, ZIP, JSON sowie nicht ausfuehrbare JS-/Python-Quellen liegen direkt im Spielordner unter `files/`.
 - Ausfuehrbare Spieltools und Hilfsskripte liegen direkt im Spielordner unter `tools/`.
+- Ein Tool liegt mit allen unmittelbar fuer seine Ausfuehrung oder Generierung benoetigten Vorlagen, Daten und Medien gemeinsam in einem eigenen Unterordner unter `tools/`, z. B. `tools/nandeck/`.
 - Allgemeinverstaendliche Spielregeln stehen direkt im Spielordner als `anleitung_[name].md`.
 - Designdokumente heissen `design_[name].md` und enthalten Materiallisten, Spezifikationen, detaillierte Regeln und Spezialfaelle.
 - Noch nicht eingebrachte Ideen stehen in `ideen_[name].md`.

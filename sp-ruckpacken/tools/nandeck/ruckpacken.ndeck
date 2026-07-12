@@ -1,0 +1,19 @@
+; Ruckpacken – perfektes 9er-Dobble / nanDECK
+UNIT=CM
+PAGE=21,29.7,PORTRAIT
+CARDSIZE=6.3,8.8
+LINKCSV=UTF8
+LINK="cards.csv"
+BORDER=1-73,0.08,#202020,ROUND
+RECTANGLE=1-73,0,0,6.3,8.8,#FFFFFF
+IMAGE=1-73,[slot_01_file],2.38,0.25,[slot_01_size],[slot_01_size],[slot_01_rot],PNR
+IMAGE=1-73,[slot_02_file],0.85,1.35,[slot_02_size],[slot_02_size],[slot_02_rot],PNR
+IMAGE=1-73,[slot_03_file],3.75,1.35,[slot_03_size],[slot_03_size],[slot_03_rot],PNR
+IMAGE=1-73,[slot_04_file],0.2,3.2,[slot_04_size],[slot_04_size],[slot_04_rot],PNR
+IMAGE=1-73,[slot_05_file],2.15,3.05,[slot_05_size],[slot_05_size],[slot_05_rot],PNR
+IMAGE=1-73,[slot_06_file],4.6,3.2,[slot_06_size],[slot_06_size],[slot_06_rot],PNR
+IMAGE=1-73,[slot_07_file],0.85,5.55,[slot_07_size],[slot_07_size],[slot_07_rot],PNR
+IMAGE=1-73,[slot_08_file],3.75,5.55,[slot_08_size],[slot_08_size],[slot_08_rot],PNR
+IMAGE=1-73,[slot_09_file],2.38,7.05,[slot_09_size],[slot_09_size],[slot_09_rot],PNR
+; Validate -> Build -> PDF
+; Platzhalter-PNGs später unter gleichem Dateinamen ersetzen.
