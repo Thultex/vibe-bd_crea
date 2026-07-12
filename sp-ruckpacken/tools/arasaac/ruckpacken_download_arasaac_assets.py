@@ -13,10 +13,10 @@ OVERRIDE_IDS = {
     22: 38604,  # Trinkflasche statt Schnabeltasse
     52: 2535,   # freigestelltes Fußballtor statt vollflächiger Fußballszene
     53: 24161,  # Landkarte statt Kreditkarte
+    69: 8289,   # freigestelltes Stoppschild statt Ampel/Stopp-Geste
 }
 REVIEW_NOTES = {
     50: "Verbandskasten statt eindeutigem Arztkoffer; visuell prüfen.",
-    69: "Ampel statt allgemeinem Verkehrsschild; Ersatz suchen.",
 }
 ATTRIBUTION = """# ARASAAC-Piktogramme
 

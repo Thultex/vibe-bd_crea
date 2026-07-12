@@ -23,4 +23,10 @@ Die Mitte ist größer als Innen- und Außenpositionen. Einzelne Symbole werden 
 
 ## Mathematischer Kern
 
-Das nanDECK-Paket enthält eine projektive Ebene der Ordnung 8: 73 Karten, neun Symbole pro Karte, neun Vorkommen jedes Symbols und genau ein gemeinsames Symbol je Kartenpaar. Symbol-ID und Bild sind getrennt; ein Motiv kann später ausgetauscht werden, ohne die Matrix neu zu berechnen.
+Die Kartenmatrix bildet eine projektive Ebene der Ordnung 8: 73 Karten, neun Symbole pro Karte, neun Vorkommen jedes Symbols und genau ein gemeinsames Symbol je Kartenpaar. Symbol-ID und Bild sind getrennt; ein Motiv kann später ausgetauscht werden, ohne die Matrix neu zu berechnen.
+
+## Produktionswerkzeug
+
+`cm` bezeichnet ausschließlich [nhmkdev/cardmaker](https://github.com/nhmkdev/cardmaker). Das aktive Projekt liegt unter `tools/cm/` und verwendet eine CSV-Reference mit neun Graphic-Elementen. Rotation sowie Breite und Höhe werden je Karte über `override:[element]:[value]` gesteuert.
+
+Das Layout nutzt 750 × 1050 px bei 300 DPI, entsprechend dem Pokerkartenformat 2,5 × 3,5 Zoll.

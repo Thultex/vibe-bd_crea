@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<Project xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Layout combineReferences="false" width="750" height="1050" buffer="0" Name="Ruckpacken" defaultCount="1" dpi="300" drawBorder="true">
+    <Element variable="@[slot_01_file]" type="Graphic" x="283" y="30" width="190" height="190" borderthickness="0" autoscalefont="false" lockaspect="true" keeporiginalsize="false" centerimageonorigin="false" outlinethickness="0" rotation="0" horizontalalign="1" verticalalign="1" colortype="0" opacity="255" tilesize="" mirrortype="0" imagemasksurface="false" lineheight="14" wordspace="0" justifiedtext="false" name="Symbol 1" font="Arial;12;0;0;0;0" elementcolor="0x000000FF" bordercolor="0x000000FF" backgroundcolor="0x00000000" enabled="true" outlinecolor="0x000000FF" gradient="" colormatrix="" />
+    <Element variable="@[slot_02_file]" type="Graphic" x="101" y="161" width="190" height="190" borderthickness="0" autoscalefont="false" lockaspect="true" keeporiginalsize="false" centerimageonorigin="false" outlinethickness="0" rotation="0" horizontalalign="1" verticalalign="1" colortype="0" opacity="255" tilesize="" mirrortype="0" imagemasksurface="false" lineheight="14" wordspace="0" justifiedtext="false" name="Symbol 2" font="Arial;12;0;0;0;0" elementcolor="0x000000FF" bordercolor="0x000000FF" backgroundcolor="0x00000000" enabled="true" outlinecolor="0x000000FF" gradient="" colormatrix="" />
+    <Element variable="@[slot_03_file]" type="Graphic" x="446" y="161" width="190" height="190" borderthickness="0" autoscalefont="false" lockaspect="true" keeporiginalsize="false" centerimageonorigin="false" outlinethickness="0" rotation="0" horizontalalign="1" verticalalign="1" colortype="0" opacity="255" tilesize="" mirrortype="0" imagemasksurface="false" lineheight="14" wordspace="0" justifiedtext="false" name="Symbol 3" font="Arial;12;0;0;0;0" elementcolor="0x000000FF" bordercolor="0x000000FF" backgroundcolor="0x00000000" enabled="true" outlinecolor="0x000000FF" gradient="" colormatrix="" />
+    <Element variable="@[slot_04_file]" type="Graphic" x="24" y="382" width="190" height="190" borderthickness="0" autoscalefont="false" lockaspect="true" keeporiginalsize="false" centerimageonorigin="false" outlinethickness="0" rotation="0" horizontalalign="1" verticalalign="1" colortype="0" opacity="255" tilesize="" mirrortype="0" imagemasksurface="false" lineheight="14" wordspace="0" justifiedtext="false" name="Symbol 4" font="Arial;12;0;0;0;0" elementcolor="0x000000FF" bordercolor="0x000000FF" backgroundcolor="0x00000000" enabled="true" outlinecolor="0x000000FF" gradient="" colormatrix="" />
+    <Element variable="@[slot_05_file]" type="Graphic" x="256" y="364" width="238" height="238" borderthickness="0" autoscalefont="false" lockaspect="true" keeporiginalsize="false" centerimageonorigin="false" outlinethickness="0" rotation="0" horizontalalign="1" verticalalign="1" colortype="0" opacity="255" tilesize="" mirrortype="0" imagemasksurface="false" lineheight="14" wordspace="0" justifiedtext="false" name="Symbol 5" font="Arial;12;0;0;0;0" elementcolor="0x000000FF" bordercolor="0x000000FF" backgroundcolor="0x00000000" enabled="true" outlinecolor="0x000000FF" gradient="" colormatrix="" />
+    <Element variable="@[slot_06_file]" type="Graphic" x="548" y="382" width="190" height="190" borderthickness="0" autoscalefont="false" lockaspect="true" keeporiginalsize="false" centerimageonorigin="false" outlinethickness="0" rotation="0" horizontalalign="1" verticalalign="1" colortype="0" opacity="255" tilesize="" mirrortype="0" imagemasksurface="false" lineheight="14" wordspace="0" justifiedtext="false" name="Symbol 6" font="Arial;12;0;0;0;0" elementcolor="0x000000FF" bordercolor="0x000000FF" backgroundcolor="0x00000000" enabled="true" outlinecolor="0x000000FF" gradient="" colormatrix="" />
+    <Element variable="@[slot_07_file]" type="Graphic" x="101" y="662" width="190" height="190" borderthickness="0" autoscalefont="false" lockaspect="true" keeporiginalsize="false" centerimageonorigin="false" outlinethickness="0" rotation="0" horizontalalign="1" verticalalign="1" colortype="0" opacity="255" tilesize="" mirrortype="0" imagemasksurface="false" lineheight="14" wordspace="0" justifiedtext="false" name="Symbol 7" font="Arial;12;0;0;0;0" elementcolor="0x000000FF" bordercolor="0x000000FF" backgroundcolor="0x00000000" enabled="true" outlinecolor="0x000000FF" gradient="" colormatrix="" />
+    <Element variable="@[slot_08_file]" type="Graphic" x="446" y="662" width="190" height="190" borderthickness="0" autoscalefont="false" lockaspect="true" keeporiginalsize="false" centerimageonorigin="false" outlinethickness="0" rotation="0" horizontalalign="1" verticalalign="1" colortype="0" opacity="255" tilesize="" mirrortype="0" imagemasksurface="false" lineheight="14" wordspace="0" justifiedtext="false" name="Symbol 8" font="Arial;12;0;0;0;0" elementcolor="0x000000FF" bordercolor="0x000000FF" backgroundcolor="0x00000000" enabled="true" outlinecolor="0x000000FF" gradient="" colormatrix="" />
+    <Element variable="@[slot_09_file]" type="Graphic" x="283" y="841" width="190" height="190" borderthickness="0" autoscalefont="false" lockaspect="true" keeporiginalsize="false" centerimageonorigin="false" outlinethickness="0" rotation="0" horizontalalign="1" verticalalign="1" colortype="0" opacity="255" tilesize="" mirrortype="0" imagemasksurface="false" lineheight="14" wordspace="0" justifiedtext="false" name="Symbol 9" font="Arial;12;0;0;0;0" elementcolor="0x000000FF" bordercolor="0x000000FF" backgroundcolor="0x00000000" enabled="true" outlinecolor="0x000000FF" gradient="" colormatrix="" />
+    <Reference RelativePath="cards.csv" Default="true" />
+    <exportNameFormat>rupa_#_</exportNameFormat>
+    <exportRotation>0</exportRotation>
+    <exportTransparentBackground>false</exportTransparentBackground>
+    <exportPDFAsPageBack>false</exportPDFAsPageBack>
+    <exportWidth>0</exportWidth>
+    <exportHeight>0</exportHeight>
+    <zoom>0.65</zoom>
+    <exportLayoutBorder>false</exportLayoutBorder>
+    <exportLayoutBorderCrossSize>0</exportLayoutBorderCrossSize>
+  </Layout>
+  <translatorName>Incept</translatorName>
+  <exportNameFormat>rupa_#_</exportNameFormat>
+  <defaultDefineReferenceType>CSV</defaultDefineReferenceType>
+  <overrideDefineReferenceName />
+  <jsTildeMeansCode>true</jsTildeMeansCode>
+  <jsKeepFunctions>true</jsKeepFunctions>
+  <jsSingleQuoteStartsCode>true</jsSingleQuoteStartsCode>
+  <collapsedNodes />
+</Project>
