@@ -1,0 +1,76 @@
+; Ruckpacken – perfektes 9er-Dobble / nanDECK
+UNIT=CM
+PAGE=21,29.7,PORTRAIT
+CARDSIZE=5.7,8.8
+LINKCSV=UTF8
+LINK="cards.csv"
+[size]= .9
+
+
+[card] = INFO(C)
+{[sl_file] =
+LABELSUB([slot_01_file],[card])|
+LABELSUB([slot_02_file],[card])|
+LABELSUB([slot_03_file],[card])|
+LABELSUB([slot_04_file],[card])|
+LABELSUB([slot_05_file],[card])|
+LABELSUB([slot_06_file],[card])|
+LABELSUB([slot_07_file],[card])|
+LABELSUB([slot_08_file],[card])|
+LABELSUB([slot_09_file],[card])|
+}
+
+
+SEQUENCE =
+sl_px	|37.8%
+sl_py	|02.8%
+
+sl_px	|13.5%
+sl_py	|15.3%
+
+sl_px	|59.5%
+sl_py	|15.3%
+
+sl_px	|03.2%
+sl_py	|36.4%
+
+sl_px	|34.1%
+sl_py	|34.7%
+
+sl_px	|73.0%
+sl_py	|36.4%
+
+sl_px	|13.5%
+sl_py	|63.1%
+
+sl_px	|59.5%
+sl_py	|63.1%
+
+sl_px	|37.8%
+sl_py	|80.1%
+
+ENDSEQUENCE
+
+LOG=1,"log.txt",[test]
+
+BORDER=ROUNDED,#202020,0.08, SOLID
+RECTANGLE=1-73,0,0,6.3,8.8,#FFFFFF
+
+FOR = a, 1, 9
+    'LOG=1-73,"log.txt",{sl_file?a}
+	IMAGE=1-73,{sl_file?a},{sl_px?a},{sl_py?a},[slot_01_size],[slot_01_size],[slot_01_rot],ANPRX,,,,,,{[slot_01_size]*[size]},{[slot_01_size]*[size]}
+
+NEXT
+
+'IMAGE=1-73,[slot_01_file],37.8%,02.8%,[slot_01_size],[slot_01_size],[slot_01_rot],ANPRX,,,,,,{[slot_01_size]*[size]},{[slot_01_size]*[size]}
+'IMAGE=1-73,[slot_02_file],13.5%,15.3%,[slot_02_size],[slot_02_size],[slot_02_rot],ANPRX,,,,,,{[slot_02_size]*[size]},{[slot_02_size]*[size]}
+'IMAGE=1-73,[slot_03_file],59.5%,15.3%,[slot_03_size],[slot_03_size],[slot_03_rot],ANPRX,,,,,,{[slot_03_size]*[size]},{[slot_03_size]*[size]}
+'IMAGE=1-73,[slot_04_file],03.2%,36.4%,[slot_04_size],[slot_04_size],[slot_04_rot],ANPRX,,,,,,{[slot_04_size]*[size]},{[slot_04_size]*[size]}
+'IMAGE=1-73,[slot_05_file],34.1%,34.7%,[slot_05_size],[slot_05_size],[slot_05_rot],ANPRX,,,,,,{[slot_05_size]*[size]},{[slot_05_size]*[size]}
+'IMAGE=1-73,[slot_06_file],73.0%,36.4%,[slot_06_size],[slot_06_size],[slot_06_rot],ANPRX,,,,,,{[slot_06_size]*[size]},{[slot_06_size]*[size]}
+'IMAGE=1-73,[slot_07_file],13.5%,63.1%,[slot_07_size],[slot_07_size],[slot_07_rot],ANPRX,,,,,,{[slot_07_size]*[size]},{[slot_07_size]*[size]}
+'IMAGE=1-73,[slot_08_file],59.5%,63.1%,[slot_08_size],[slot_08_size],[slot_08_rot],ANPRX,,,,,,{[slot_08_size]*[size]},{[slot_08_size]*[size]}
+'IMAGE=1-73,[slot_09_file],37.8%,80.1%,[slot_09_size],[slot_09_size],[slot_09_rot],ANPRX,,,,,,{[slot_09_size]*[size]},{[slot_09_size]*[size]}
+; Validate -> Build -> PDF
+; Platzhalter-PNGs später unter gleichem Dateinamen ersetzen.
+
