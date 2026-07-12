@@ -2,7 +2,7 @@
 
 ## Material
 
-- 73 Symbolkarten im Pokerformat 63 × 88 mm
+- 73 Symbolkarten im Format 57 × 88 mm
 - 73 Gegenstandssymbole, jeweils neun Vorkommen
 - neun Symbole je Karte
 - geheime Aufgaben der Typen A, B und C
@@ -27,6 +27,6 @@ Die Kartenmatrix bildet eine projektive Ebene der Ordnung 8: 73 Karten, neun Sym
 
 ## Produktionswerkzeug
 
-`cm` bezeichnet ausschließlich [nhmkdev/cardmaker](https://github.com/nhmkdev/cardmaker). Das aktive Projekt liegt unter `tools/cm/` und verwendet eine CSV-Reference mit neun Graphic-Elementen. Rotation sowie Breite und Höhe werden je Karte über `override:[element]:[value]` gesteuert.
+`cm` bezeichnet ausschließlich [nhmkdev/cardmaker](https://github.com/nhmkdev/cardmaker). Das aktive Projekt liegt unter `tools/cm/` und verwendet eine schlanke CSV-Reference mit neun Bildpfaden. Position, Größe und Drehung der neun Graphic-Elemente sind im CM-Projekt gespeichert und nicht Teil der CSV.
 
-Das Layout nutzt 750 × 1050 px bei 300 DPI, entsprechend dem Pokerkartenformat 2,5 × 3,5 Zoll.
+Das Layout nutzt 673 × 1039 px bei 300 DPI, entsprechend 57 × 88 mm. Die organische Raute verwendet drei Größenstufen; die neun leichten Drehungen sind einmalig pseudo-zufällig festgelegt.

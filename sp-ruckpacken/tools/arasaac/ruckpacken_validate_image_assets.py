@@ -35,15 +35,26 @@ def is_square_filling(path: Path) -> tuple[bool, str]:
 def main(folder: Path) -> None:
     paths = sorted(folder.glob("sym_*.png"))
     flagged = []
+    undersized = []
     for path in paths:
         bad, details = is_square_filling(path)
         if bad:
             flagged.append((path.name, details))
-    print(f"images={len(paths)} square_filling={len(flagged)}")
+        with Image.open(path) as image:
+            if image.width < 500 or image.height < 500:
+                undersized.append((path.name, image.size))
+    print(
+        f"images={len(paths)} square_filling={len(flagged)} "
+        f"undersized={len(undersized)}"
+    )
     for name, details in flagged:
         print(f"FLAG {name}: {details}")
+    for name, size in undersized:
+        print(f"SMALL {name}: {size[0]}x{size[1]}")
     if len(paths) != 73:
         raise SystemExit("Erwartet werden 73 PNG-Dateien.")
+    if flagged or undersized:
+        raise SystemExit("Bildsatz verletzt Freistellungs- oder Größenregel.")
 
 
 if __name__ == "__main__":
