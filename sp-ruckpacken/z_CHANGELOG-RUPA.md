@@ -41,6 +41,7 @@ Ausgangsdatum: 2026-07-12
 - Struktur: Toolordner von `tools/cm/` nach `tools/cardmaker/` ausgeschrieben; `cm` bleibt nur das dokumentierte Toolkürzel.
 - Change: Hart codierte Symbolrotationen entfernt; CardMaker erzeugt Drehung (−20° bis +20°) und geringe Größenabweichung nun beim Rendern über Incept-`#random`-Overrides.
 - Tool: `configure_runtime_transforms.py` ergänzt und Validator auf echte Laufzeittransformationen verschärft. Dauer: ca. 25 Minuten.
+- Daten: Markdown-Übersicht aller 73 Gegenstände mit laufender Nummer, leerer Notizspalte und den drei Kategoriearten unter `files/ruckpacken_gegenstaende.md` ergänzt. Dauer: ca. 10 Minuten.
 - Refactor: ARASAAC-Mapping und Downloader funktional unter `tools/arasaac/` gebündelt.
 - Regeln/Design: Überdeckungsmechanik, A/B/C-Aufgaben und organisches Neun-Symbol-Layout dokumentiert.
 - Test: CSV-Zeilen, ZIP-Struktur, Python-Syntax und Dobble-Validierung geprüft.
