@@ -9,6 +9,13 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 
+SIZE_RANGES = {
+    151: (143, 159),
+    175: (166, 184),
+    211: (200, 222),
+}
+
+
 def validate(folder: Path) -> None:
     root = ET.parse(folder / "ruckpacken.cmp").getroot()
     layout = root.find("Layout")
@@ -23,10 +30,20 @@ def validate(folder: Path) -> None:
     if reference is None or reference.get("RelativePath") != "cards.csv":
         raise RuntimeError("Reference auf cards.csv fehlt.")
     for slot, element in enumerate(elements, 1):
-        if element.get("variable") != f"@[slot_{slot:02}]":
-            raise RuntimeError(f"Falsche Bildvariable bei Symbol {slot}.")
-        if abs(int(element.get("rotation", "0"))) > 20:
-            raise RuntimeError(f"Zu starke Drehung bei Symbol {slot}.")
+        base_size = int(element.get("width", "0"))
+        if base_size != int(element.get("height", "0")) or base_size not in SIZE_RANGES:
+            raise RuntimeError(f"Unerwartete Grundgröße bei Symbol {slot}.")
+        minimum, maximum = SIZE_RANGES[base_size]
+        expected = (
+            f"@[slot_{slot:02}]"
+            "$[rotation:#random;-20;20#]"
+            f"$[width:#random;{minimum};{maximum}#]"
+            f"$[height:#random;{minimum};{maximum}#]"
+        )
+        if element.get("variable") != expected:
+            raise RuntimeError(f"Falsche Laufzeittransformation bei Symbol {slot}.")
+        if element.get("rotation") != "0":
+            raise RuntimeError(f"Drehung bei Symbol {slot} ist noch hart codiert.")
 
     with (folder / "cards.csv").open(encoding="utf-8-sig", newline="") as handle:
         reader = csv.DictReader(handle)
@@ -48,7 +65,7 @@ def validate(folder: Path) -> None:
                 missing.append(str(image))
     if missing:
         raise RuntimeError("Fehlende Bilder:\n" + "\n".join(missing))
-    print("CM-Projekt: 57 × 88 mm, 73 Karten, 9 Grafiken, saubere CSV, 0 fehlende Bilder")
+    print("CM-Projekt: 57 × 88 mm, 73 Karten, 9 Grafiken, Laufzeitzufall, saubere CSV, 0 fehlende Bilder")
 
 
 if __name__ == "__main__":
