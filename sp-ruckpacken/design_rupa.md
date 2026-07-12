@@ -27,6 +27,6 @@ Die Kartenmatrix bildet eine projektive Ebene der Ordnung 8: 73 Karten, neun Sym
 
 ## Produktionswerkzeug
 
-`cm` bezeichnet ausschließlich [nhmkdev/cardmaker](https://github.com/nhmkdev/cardmaker). Das aktive Projekt liegt unter `tools/cm/` und verwendet eine schlanke CSV-Reference mit neun Bildpfaden. Position, Größe und Drehung der neun Graphic-Elemente sind im CM-Projekt gespeichert und nicht Teil der CSV.
+`cm` bezeichnet ausschließlich [nhmkdev/cardmaker](https://github.com/nhmkdev/cardmaker). Das aktive Projekt liegt unter `tools/cardmaker/` und verwendet eine schlanke CSV-Reference mit neun Bildpfaden. Position, Größe und Drehung der neun Graphic-Elemente sind im CM-Projekt gespeichert und nicht Teil der CSV.
 
 Das Layout nutzt 673 × 1039 px bei 300 DPI, entsprechend 57 × 88 mm. Die organische Raute verwendet drei Größenstufen; die neun leichten Drehungen sind einmalig pseudo-zufällig festgelegt.

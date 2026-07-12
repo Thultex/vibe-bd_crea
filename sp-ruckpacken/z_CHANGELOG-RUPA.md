@@ -32,12 +32,13 @@ Ausgangsdatum: 2026-07-12
 - Material: 73 farbige ARASAAC-Piktogramme heruntergeladen und als aktive nanDECK-Bilder eingebunden; Trinkflasche und Karte auf passendere Alternativtreffer korrigiert.
 - Material: Attribution, tatsächliche ARASAAC-IDs und Prüfhilfen ergänzt; Arztkoffer und Verkehrsschild bleiben zur Nachprüfung markiert.
 - Fix: Vollflächige Fußballszene durch ein freigestelltes Fußballtor ersetzt; technische Prüfung meldet keine quadratfüllenden Bilder mehr.
-- Tool: Kartengenerierung auf `nhmkdev/cardmaker` (`cm`) v1.4.0.0 umgestellt; Projekt, Reference-CSV, Overrides und Validator unter `tools/cm/` ergänzt.
+- Tool: Kartengenerierung auf `nhmkdev/cardmaker` (`cm`) v1.4.0.0 umgestellt; Projekt, Reference-CSV, Overrides und Validator unter `tools/cardmaker/` ergänzt.
 - Material: Verkehrsschild von Ampel/Stopp-Geste auf ein freigestelltes Stoppschild korrigiert; Verbandskasten als Arztkoffer akzeptiert.
 - Doku: `cm` eindeutig als `nhmkdev/cardmaker` definiert; nanDECK als Legacy-Prototyp markiert.
 - Change: CM-Kartenformat auf 57 × 88 mm (673 × 1039 px bei 300 DPI) gesetzt; Neun-Symbol-Raute mit drei Positionsgrößen und gespeicherten leichten Drehungen umgesetzt.
 - Refactor: CM-CSV auf elf Spalten reduziert; Rotation, Größe, Namen, IDs und Overrides aus der Datenquelle entfernt.
 - Test: 73 Karten, sauberes CSV-Schema, neun Grafiken und 657 vorhandene Bildreferenzen validiert.
+- Struktur: Toolordner von `tools/cm/` nach `tools/cardmaker/` ausgeschrieben; `cm` bleibt nur das dokumentierte Toolkürzel.
 - Refactor: ARASAAC-Mapping und Downloader funktional unter `tools/arasaac/` gebündelt.
 - Regeln/Design: Überdeckungsmechanik, A/B/C-Aufgaben und organisches Neun-Symbol-Layout dokumentiert.
 - Test: CSV-Zeilen, ZIP-Struktur, Python-Syntax und Dobble-Validierung geprüft.
