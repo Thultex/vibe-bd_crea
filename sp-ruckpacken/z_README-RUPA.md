@@ -9,6 +9,7 @@ Ruckpacken ist ein semantisches Karten- und Deduktionsspiel. Der aktuelle Protot
 - `assets/ruckpacken_74.csv`: 73 Gegenstände samt Häufigkeit und Kategorien; der bestehende Dateiname bleibt aus Kompatibilitätsgründen erhalten.
 - `assets/ruckpacken_kats.csv`: Kategorien, Frequenzbewertung und Trefferzahlen im Korpus.
 - `assets/ruckpacken_nanndeck.zip`: vollständiges nanDECK-Paket.
+- `assets/ruckpacken_arasaac_mapping.csv`: API-Kandidaten für alle 73 Gegenstände mit Farb-, Schwarz-Weiß- und Alternativlinks.
 - `tools/ruckpacken_arasaac_mapping_api_offiziell.py`: ARASAAC-Mapping über die offizielle API.
 
 ## ARASAAC-Mapping
@@ -18,3 +19,5 @@ python tools/ruckpacken_arasaac_mapping_api_offiziell.py assets/ruckpacken_74.cs
 ```
 
 Das Skript sucht auf Deutsch und Englisch. Automatisch gewählte Kandidaten müssen wegen mehrdeutiger Begriffe anschließend visuell geprüft werden.
+
+Der aktuelle API-Lauf fand für alle 73 Gegenstände mindestens einen Kandidaten und für 68 Gegenstände einen Alternativtreffer.

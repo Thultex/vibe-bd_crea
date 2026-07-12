@@ -25,6 +25,7 @@ Ausgangsdatum: 2026-07-12
 - Material: Korpus mit 73 Gegenständen und neu berechnete Kategorienverteilung übernommen.
 - Material: Vollständiges nanDECK-Paket mit perfekter 73-Karten-Matrix übernommen.
 - Tool: Offizielles ARASAAC-API-Mapping für deutsche und englische Suchen übernommen.
+- Material: ARASAAC-Mapping für alle 73 Gegenstände erzeugt; 73 Haupt- und 68 Alternativtreffer stehen zur visuellen Auswahl bereit.
 - Regeln/Design: Überdeckungsmechanik, A/B/C-Aufgaben und organisches Neun-Symbol-Layout dokumentiert.
 - Test: CSV-Zeilen, ZIP-Struktur, Python-Syntax und Dobble-Validierung geprüft.
 - Versionen: ruckpacken_arasaac_mapping_api_offiziell v1.00.
