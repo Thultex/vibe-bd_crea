@@ -1,7 +1,7 @@
 Ruckpacken nanDECK-Paket
 
-Enthält cards.csv, cards_long.csv, symbols.csv, ruckpacken.ndeck und 73 nummerierte PNG-Platzhalter.
+Enthält cards.csv, cards_long.csv, symbols.csv, ruckpacken.ndeck und 73 farbige ARASAAC-Piktogramme.
 Die sechs Ergänzungen sind Brille, Zeitung, Kerze, Schüssel, Mikrofon und Regenschirm.
 
-ruckpacken.ndeck direkt aus diesem Ordner in nanDECK öffnen. Die relativen Bildpfade verweisen auf symbols/sym_01.png bis symbols/sym_73.png.
-Für die finale Fassung die Platzhalter unter unveränderten Dateinamen durch die ausgewählten Symbole ersetzen.
+ruckpacken.ndeck direkt aus diesem Ordner in nanDECK öffnen. Die relativen Bildpfade verweisen auf assets/images/arasaac/color/sym_01.png bis sym_73.png.
+Attribution, tatsächliche ARASAAC-IDs und Prüfhilfen liegen unter assets/images/arasaac/.
