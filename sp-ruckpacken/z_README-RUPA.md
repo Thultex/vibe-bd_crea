@@ -4,8 +4,8 @@ Ruckpacken ist ein semantisches Karten- und Deduktionsspiel. Der aktuelle Protot
 
 ## Dateien
 
-- `anleitung_ruckp.md`: Spielanleitung v1.00.
-- `design_ruckp.md`: Kartendesign und technische Grundlage.
+- `anleitung_rupa.md`: Spielanleitung v1.00.
+- `design_rupa.md`: Kartendesign und technische Grundlage.
 - `assets/ruckpacken_74.csv`: 73 Gegenstände samt Häufigkeit und Kategorien; der bestehende Dateiname bleibt aus Kompatibilitätsgründen erhalten.
 - `assets/ruckpacken_kats.csv`: Kategorien, Frequenzbewertung und Trefferzahlen im Korpus.
 - `assets/ruckpacken_nanndeck.zip`: vollständiges nanDECK-Paket.

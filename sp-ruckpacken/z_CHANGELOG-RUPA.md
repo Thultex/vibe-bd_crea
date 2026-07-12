@@ -18,10 +18,10 @@ Ausgangsdatum: 2026-07-12
 
 ## Log
 
-### 2026-07-12 - ruckp, struktur, regeln, design, assets, tools, doku (ca. 0,8h)
+### 2026-07-12 - rupa, struktur, regeln, design, assets, tools, doku (ca. 0,8h)
 
 - Summary: Bestehende Sitzungsartefakte als regelkonformes Spielprojekt übernommen und dokumentiert.
-- Struktur: Root-Ordner `sp-ruckpacken` mit dem Kürzel `ruckp` angelegt.
+- Struktur: Root-Ordner `sp-ruckpacken` mit dem Kürzel `rupa` angelegt.
 - Material: Korpus mit 73 Gegenständen und neu berechnete Kategorienverteilung übernommen.
 - Material: Vollständiges nanDECK-Paket mit perfekter 73-Karten-Matrix übernommen.
 - Tool: Offizielles ARASAAC-API-Mapping für deutsche und englische Suchen übernommen.
