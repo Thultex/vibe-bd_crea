@@ -23,6 +23,6 @@ Das Skript sucht auf Deutsch und Englisch. Automatisch gewählte Kandidaten müs
 
 Der aktuelle API-Lauf fand für alle 73 Gegenstände mindestens einen Kandidaten und für 68 Gegenstände einen Alternativtreffer. Die 73 ausgewählten farbigen Bilder liegen unter `tools/nandeck/assets/images/arasaac/color/`; Quellen und Prüfhilfen stehen daneben in `sources.csv`.
 
-Die Zuordnungen für Arztkoffer, Fußballtor und Verkehrsschild sind noch visuell bzw. inhaltlich zu ersetzen. Trinkflasche und Karte wurden bereits auf geeignetere Alternativtreffer korrigiert.
+Die Zuordnungen für Arztkoffer und Verkehrsschild sind noch visuell bzw. inhaltlich zu ersetzen. Trinkflasche, Fußballtor und Karte wurden bereits auf geeignetere, freigestellte Alternativtreffer korrigiert.
 
 Die Piktogramme stammen von Sergio Palao für ARASAAC/Gobierno de Aragón und stehen unter CC BY-NC-SA. Der vollständige Hinweis liegt in `tools/nandeck/assets/images/arasaac/ATTRIBUTION.md`.

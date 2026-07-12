@@ -5,4 +5,4 @@ Vorkommen je Symbol: 9
 Schnittmenge jedes Kartenpaars: exakt 1
 Geprüfte Kartenpaare: 2628
 Unbenannte Symbol-IDs: 0
-Bildstatus: 73 farbige ARASAAC-PNGs; 3 Zuordnungen zur Nachprüfung markiert
+Bildstatus: 73 farbige, freigestellte ARASAAC-PNGs; 2 Zuordnungen zur Nachprüfung markiert

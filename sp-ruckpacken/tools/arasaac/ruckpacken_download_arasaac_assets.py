@@ -11,11 +11,11 @@ from pathlib import Path
 PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
 OVERRIDE_IDS = {
     22: 38604,  # Trinkflasche statt Schnabeltasse
+    52: 2535,   # freigestelltes Fußballtor statt vollflächiger Fußballszene
     53: 24161,  # Landkarte statt Kreditkarte
 }
 REVIEW_NOTES = {
     50: "Verbandskasten statt eindeutigem Arztkoffer; visuell prüfen.",
-    52: "Fußballszene statt Fußballtor; Ersatz suchen.",
     69: "Ampel statt allgemeinem Verkehrsschild; Ersatz suchen.",
 }
 ATTRIBUTION = """# ARASAAC-Piktogramme
