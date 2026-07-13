@@ -9,6 +9,7 @@ Groessenkorrektur sowie Start, Ende und Verschiebung fuer alle Modi.
 from __future__ import annotations
 
 import csv
+import configparser
 import shutil
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -17,6 +18,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 PROJECT = ROOT / "lautspiele.cmp"
 EMPTY_DEFINES = ROOT / "lautspiele_defines.csv"
+BUILD_CONFIG = Path(__file__).with_name("build.ini")
 SYMBOL_ROOT = ROOT / "images" / "symbols"
 DEFAULT_SYMBOL_SET = "k"
 GRUSELINO_SYMBOLS = 8
@@ -42,6 +44,35 @@ SYMBOL_NAMES = [
     "Ei", "Kuh", "Mädchen", "Mädchen (Duplikat 1)",
     "Mädchen (Duplikat 2)",
 ]
+
+
+def selection_range(available_count: int) -> tuple[int, int]:
+    """Liest das gemeinsame, inklusive Symbolfenster aus build.ini."""
+    parser = configparser.ConfigParser()
+    if not parser.read(BUILD_CONFIG, encoding="utf-8"):
+        raise FileNotFoundError(f"Generator-Konfiguration fehlt: {BUILD_CONFIG}")
+    try:
+        start = parser.getint("symbols", "start_symbol")
+        requested = parser.getint("symbols", "symbol_count")
+    except (configparser.Error, ValueError) as error:
+        raise ValueError("build.ini benötigt ganzzahlige symbols-Werte.") from error
+    if start < 1 or start > available_count:
+        raise ValueError(
+            f"start_symbol muss zwischen 1 und {available_count} liegen."
+        )
+    remaining = available_count - start + 1
+    count = remaining if requested == -1 else requested
+    if count < 1 or count > remaining:
+        raise ValueError(
+            "symbol_count muss -1 oder eine positive Anzahl innerhalb der "
+            "verfügbaren Symbole sein."
+        )
+    if count < GRUSELINO_SYMBOLS:
+        raise ValueError(
+            f"Das gemeinsame Symbolfenster braucht mindestens {GRUSELINO_SYMBOLS} "
+            "Symbole für Gruselino."
+        )
+    return start, start + count - 1
 
 
 def _element(name: str, kind: str, x: int, y: int, width: int, height: int,
@@ -208,7 +239,16 @@ def dobble_variable(slot: int) -> str:
     return (
         "(function(){"
         f"var matrix={encoded};"
-        + _selection_prelude(f"matrix[cardIndex-1][{slot - 1}]", "dobble")
+        f"var start=parseInt(dobble_start,10)||1;"
+        "var end=parseInt(dobble_end,10)||start;"
+        "var n=Math.max(1,end-start+1);"
+        f"var logical=matrix[cardIndex-1][{slot - 1}];"
+        "var id=start+logical;"
+        "var scales=String(symbol_scale_map||'1').split('|').map(function(v){return parseFloat(v)||1;});"
+        "var correction=scales[id-1]||1;"
+        "var available=String(symbol_available_map||'').split('|');"
+        "var exists=logical<n&&(available.length?available[id-1]==='1':id<=scales.length);"
+        "var file=id.toString().padStart(2,'0');"
         + "if(!exists){AddOverrideField('enabled','false');return '';}"
           "AddOverrideField('enabled','true');"
         + _transform(0.18, 180)
@@ -431,15 +471,15 @@ def _write_symbol_config(folder: Path) -> None:
     row["symbol_names"] = "|".join(names)
     row["symbol_scale_map"] = "|".join(scales)
     row["symbol_count"] = str(len(names))
+    selection_start, selection_end = selection_range(len(names))
+    for mode in ("gruselino", "domino", "dobble"):
+        row[f"{mode}_start"] = str(selection_start)
+        row[f"{mode}_end"] = str(selection_end)
     availability_length = max(DOBBLE_SYMBOL_COUNT, len(names))
     row["symbol_available_map"] = "|".join(
         "1" if (folder / f"{index:02}.png").is_file() else "0"
         for index in range(1, availability_length + 1)
     )
-    row["dobble_end"] = str(max(
-        DOBBLE_SYMBOL_COUNT,
-        int(row.get("dobble_end", str(DOBBLE_SYMBOL_COUNT)) or str(DOBBLE_SYMBOL_COUNT)),
-    ))
     row["symbol_set"] = folder.name
     row["symbol_folder"] = folder.relative_to(ROOT).as_posix()
     with path.open("w", encoding="utf-8", newline="") as handle:

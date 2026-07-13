@@ -94,6 +94,8 @@ def create_symbol_set_config(
         for index in range(amount)
     ]
     availability_length = max(31, amount)
+    from build_lautspiele_files import selection_range
+    selection_start, selection_end = selection_range(amount)
     row = {
         "symbol_set": set_name,
         "symbol_folder": relative_folder,
@@ -104,11 +106,14 @@ def create_symbol_set_config(
             "1" if index in ids else "0"
             for index in range(1, availability_length + 1)
         ),
-        "gruselino_start": "1", "gruselino_end": str(amount),
+        "gruselino_start": str(selection_start),
+        "gruselino_end": str(selection_end),
         "gruselino_shift": previous.get("gruselino_shift", "0") or "0",
-        "domino_start": "1", "domino_end": str(amount),
+        "domino_start": str(selection_start),
+        "domino_end": str(selection_end),
         "domino_shift": previous.get("domino_shift", "0") or "0",
-        "dobble_start": "1", "dobble_end": "31",
+        "dobble_start": str(selection_start),
+        "dobble_end": str(selection_end),
         "dobble_shift": previous.get("dobble_shift", "0") or "0",
     }
     with config_path.open("w", encoding="utf-8", newline="") as handle:
@@ -116,7 +121,7 @@ def create_symbol_set_config(
         writer.writeheader()
         writer.writerow(row)
 
-    from build_lautspiele_project import write_mode_reference_files
+    from build_lautspiele_files import write_mode_reference_files
     write_mode_reference_files()
     return config_path
 

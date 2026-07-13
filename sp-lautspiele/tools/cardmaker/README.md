@@ -13,7 +13,8 @@ Das aktive Projekt ist für [nhmkdev/cardmaker](https://github.com/nhmkdev/cardm
 | `images/symbols/default/` | neutraler Standardsatz `01.png` bis `10.png` |
 | `images/symbols/k/` | aktueller K-Laut-Satz `01.png` bis `10.png` |
 | `images/ui/` | Oberflächenbilder des bestehenden Designs |
-| `generators/build_lautspiele_project.py` | erzeugt CSVs und CMP reproduzierbar neu |
+| `generators/build_lautspiele_files.py` | erzeugt CSVs und CMP reproduzierbar neu |
+| `generators/build.ini` | gemeinsame Auswahl von Startsymbol und Symbolanzahl (`-1` = automatisch alle) |
 | `validate_lautspiele_project.py` | prüft Struktur und Kombinatorik |
 | `generators/symbols_generate_sets.py` | erzeugt Master- und Modus-CSVs aus Namen und vorhandenen Bildern |
 | `generators/symbols_download_arasaac.py` | lädt ARASAAC-Bilder/Quellen und ruft den Set-Generator auf |
@@ -35,6 +36,8 @@ Das aktive Projekt ist für [nhmkdev/cardmaker](https://github.com/nhmkdev/cardm
 | `<modus>_shift` | zyklischer Versatz des jeweiligen Modus |
 
 Alle fachlich editierbaren Informationen eines Bildsatzes stehen in genau einer Master-Zeile. CardMaker benötigt seine Kartenanzahl jedoch in einer Spalte `Count`. Der Builder leitet deshalb aus jedem Master drei technische Referenzen ab: `gruselino_k.csv`, `domino_k.csv` und `dobble_k.csv`. Memory und Domino verwenden gemeinsam `domino_k.csv`. Jedes Layout bindet automatisch alle vorhandenen Satz-CSVs seines Modus ein; der Bildsatz kann daher direkt in CardMaker zwischen `default`, `k` und später ergänzten Sätzen gewechselt werden. Der K-Satz ist zunächst als Standard markiert. Der Layout-Standardcount bleibt wie im Original bei `1`; die tatsächliche Ausgabezahl kommt aus der gewählten Modus-CSV. Bei Memory/Domino entspricht sie automatisch der Länge von `domino_start` bis `domino_end`. Abgeleitete Dateien werden nicht von Hand gepflegt.
+
+Das gemeinsame Symbolfenster wird in `generators/build.ini` eingestellt. `start_symbol = 1` beginnt bei `01.png`; `symbol_count = -1` übernimmt automatisch alle ab dort vorhandenen Hauptsymbole. Ein positiver Count begrenzt die Auswahl. Der Builder schreibt das Fenster in alle Start-/Endfelder, während die modusspezifischen Shifts in den Master-CSVs erhalten bleiben. Mindestens acht Symbole sind für Gruselino erforderlich.
 
 ## Größenkorrektur
 
@@ -97,8 +100,8 @@ Die PDF-Exportflächen übernehmen die historischen Projektwerte: `7860 × 7602`
 ## Erzeugen und prüfen
 
 ```powershell
-python generators/build_lautspiele_project.py
+python generators/build_lautspiele_files.py
 python validate_lautspiele_project.py
 ```
 
-CardMaker-Version des Werkzeugstands: v1.05. `symbols_generate_sets`: v1.00. `symbols_download_arasaac`: v1.01.
+CardMaker-Version des Werkzeugstands: v1.06. `symbols_generate_sets`: v1.01. `symbols_download_arasaac`: v1.01.

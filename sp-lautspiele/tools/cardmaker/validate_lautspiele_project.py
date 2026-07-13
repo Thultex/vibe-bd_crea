@@ -19,7 +19,7 @@ def fail(message: str) -> None:
 
 
 def load_builder():
-    path = ROOT / "generators" / "build_lautspiele_project.py"
+    path = ROOT / "generators" / "build_lautspiele_files.py"
     spec = importlib.util.spec_from_file_location("lautspiele_builder", path)
     if spec is None or spec.loader is None:
         fail("Builder konnte nicht geladen werden.")
@@ -67,12 +67,15 @@ def validate() -> None:
             fail(f"{master.name} hat keine vollständige Verfügbarkeitskarte.")
         if any(float(value) <= 0 for value in scales):
             fail(f"{master.name} enthält eine ungültige Größenkorrektur.")
+        expected_start, expected_end = builder.selection_range(len(names))
         for mode in MODES:
             start = int(row[f"{mode}_start"])
             end = int(row[f"{mode}_end"])
             int(row[f"{mode}_shift"])
             if not 1 <= start <= end:
                 fail(f"Ungültige Start-/Endspanne für {mode} in {master.name}.")
+            if (start, end) != (expected_start, expected_end):
+                fail(f"{master.name} übernimmt die Auswahl aus build.ini nicht.")
         expected_counts = {
             "gruselino": 12,
             "domino": int(row["domino_end"]) - int(row["domino_start"]) + 1,

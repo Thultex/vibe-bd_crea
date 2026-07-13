@@ -4,23 +4,23 @@
 
 Ausgangsdatum: 2026-07-13
 
-*Diese Woche (ca. 3,8h, 2 Tage, Inhalte):* Altbestand archiviert und CardMaker-Generierung samt ARASAAC-Bildsatzimport für Gruselino, Memory/Domino und Dobble aufgebaut.
+*Diese Woche (ca. 4,0h, 2 Tage, Inhalte):* Altbestand archiviert und CardMaker-Generierung samt ARASAAC-Bildsatzimport für Gruselino, Memory/Domino und Dobble aufgebaut.
 
 *Letzte Woche (0h, 0 Tage, Inhalte):* Keine Einträge.
 
-*Dieser Monat (ca. 3,8h, 2 Tage, Inhalte):* Lautspiele v1.05 als Repo-Projekt angelegt, Datenkopplung korrigiert und ARASAAC-Import ergänzt.
+*Dieser Monat (ca. 4,0h, 2 Tage, Inhalte):* Lautspiele v1.06 als Repo-Projekt angelegt, Datenkopplung korrigiert und ARASAAC-Import ergänzt.
 
 *Letzter Monat (0h, 0 Tage, Inhalte):* Keine Einträge.
 
-*Jahr (ca. 3,8h, 2 Tage, Inhalte):* Lautspiele v1.05 begonnen.
+*Jahr (ca. 4,0h, 2 Tage, Inhalte):* Lautspiele v1.06 begonnen.
 
-*Insgesamt (ca. 3,8h, 2 Tage, Inhalte):* Lautspiele v1.05 begonnen.
+*Insgesamt (ca. 4,0h, 2 Tage, Inhalte):* Lautspiele v1.06 begonnen.
 
 ## Log
 
-### 2026-07-14 - laut, tools, daten, assets, fix, doku (ca. 2,3h)
+### 2026-07-14 - laut, tools, daten, assets, fix, doku (ca. 2,5h)
 
-- Summary: CardMaker-Counts und Datenkopplung repariert, Gruselino Papier verkleinert, Memory/Domino originalnah zusammengeführt und perfektes 6er-Dobble räumlich verbessert.
+- Summary: CardMaker-Counts und Datenkopplung repariert, Layouts und Satzreferenzen originalnah zusammengeführt sowie die gemeinsame Symbolauswahl über `build.ini` konfigurierbar gemacht.
 - Fix: Doppelte `symbol_01` bis `symbol_50` beseitigt; CardMaker hatte `lautspiele_defines.csv` sowohl projekt- als auch referenzbezogen geladen.
 - Fix: Nicht verfügbare JavaScript-Namen wie `symbol_01__scale` entfernt; Skalierungsfaktoren werden nun aus `symbol_scale_map` der aktiven Bildsatzzeile gelesen.
 - Fix: CardMaker-Referenzen erhalten nun die erforderliche Spalte `Count`; dadurch werden nicht mehr nur einzelne Karten pro Layout erzeugt.
@@ -47,7 +47,9 @@ Ausgangsdatum: 2026-07-13
 - Sicherheit: Vorhandene Bildsätze werden nur mit explizitem `--force` ersetzt; Suchlisten, Satznamen, PNG-Antworten und Kandidatenzahlen werden validiert.
 - Feature: Jedes Layout bindet alle vorhandenen Satz-CSVs seines Modus ein; `default` und `k` lassen sich dadurch unmittelbar in CardMaker wechseln.
 - Export: Historische Layout-Standardcounts und PDF-Seitenflächen übernommen; Memory/Domino bezieht seine Ausgabezahl weiterhin dynamisch aus der Symbolspanne.
-- Versionen: build_lautspiele_project v1.05, validate_lautspiele_project v1.05, symbols_generate_sets v1.00, symbols_download_arasaac v1.01.
+- Konfiguration: `generators/build.ini` steuert das gemeinsame Symbolfenster mit Startsymbol und automatischer oder fester Anzahl.
+- Refactor: Builder prägnant in `build_lautspiele_files.py` umbenannt und alle Aufrufe angepasst.
+- Versionen: build_lautspiele_files v1.06, validate_lautspiele_project v1.06, symbols_generate_sets v1.01, symbols_download_arasaac v1.01.
 
 ### 2026-07-13 - laut, struktur, tools, design, material, doku (ca. 1,5h)
 
@@ -63,4 +65,4 @@ Ausgangsdatum: 2026-07-13
 - Design: Zufallsrotationen und die Größenvariation von ±5 % liegen direkt in den JavaScript-Feldern; Grundpositionen und -größen bleiben im Editor die maßgebliche Geometrie.
 - Test: Gemeinsame Referenzen, CSV-Schema, 50 Definitionen, aktive Bilddateien, Gruselino-Ausblendung, Domino-Ring und perfekte Dobble-Matrix durch einen Validator abgesichert.
 - Doku: Datenmodell, Generatorbedienung, Spielkurzregeln, Ideen und nächste Schritte dokumentiert.
-- Versionen: build_lautspiele_project v1.00, validate_lautspiele_project v1.00.
+- Versionen: build_lautspiele_files v1.00, validate_lautspiele_project v1.00.
