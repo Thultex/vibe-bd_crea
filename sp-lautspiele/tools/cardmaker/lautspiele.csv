@@ -1,0 +1,4 @@
+﻿Count,allowed_layout,mode,symbol_folder,symbol_start,symbol_end,symbol_shift
+11,Gruselino Karten;Gruselino Papier,gruselino,images/symbols/default,1,10,0
+10,Domino Papier,domino,images/symbols/default,1,10,0
+7,Dobble Papier,dobble,images/symbols/default,1,10,0
