@@ -17,17 +17,20 @@
 3. Prüfen, ob `cards.csv` als Reference geladen ist.
 4. Layout `Ruckpacken MPC Jumbo 3.5x5` auswählen und Karten bzw. PDF exportieren.
 
-Die neun Bildelemente beziehen nur ihre Dateipfade aus `cards.csv`. Position und Grundgröße liegen in `ruckpacken.cmp`. CardMaker erzeugt bei jeder Übersetzung jedes Bildes eine neue Drehung über den vollständigen Kreis (0° bis 359°) und eine Größenabweichung von höchstens ungefähr ±5 %. Die Bilder bleiben dank `lockaspect="true"` unverzerrt.
+Die neun Bildelemente beziehen nur ihre Dateipfade aus `cards.csv`. Position und Grundgröße liegen in `ruckpacken.cmp`. CardMaker erzeugt bei jeder Übersetzung jedes Bildes eine neue Drehung über den vollständigen Kreis (0° bis 359°) und eine einheitliche Größenabweichung von höchstens ungefähr ±5 %. Die Bilder bleiben dank `lockaspect="true"` unverzerrt und durch gemeinsam berechnete `x`-, `y`-, `width`- und `height`-Overrides auf ihrem festen Mittelpunkt.
 
-Die Laufzeitvariation verwendet CardMakers Incept-Syntax direkt in der Elementdefinition:
+Die Laufzeitvariation verwendet CardMakers JavaScript-Übersetzer direkt in der Elementdefinition. Ein gemeinsamer Zufallswert steuert Breite und Höhe; die linke obere Ecke wird passend zum festen Mittelpunkt neu berechnet:
 
-```text
-$[rotation:#random;0;359#]
-$[width:#random;MIN;MAX#]
-$[height:#random;MIN;MAX#]
+```javascript
+var size = Math.round(BASE * (0.95 + Math.random() * 0.10));
+AddOverrideField('x', Math.round(CENTER_X - size / 2).toString());
+AddOverrideField('y', Math.round(CENTER_Y - size / 2).toString());
+AddOverrideField('width', size.toString());
+AddOverrideField('height', size.toString());
+AddOverrideField('rotation', Math.floor(Math.random() * 360).toString());
 ```
 
-Die XML-Attribute `rotation` bleiben deshalb alle auf `0`; es gibt keine pro Karte gespeicherten Transformationswerte in der CSV. Die ARASAAC-Bilder und ihre Attribution liegen unter `assets/images/arasaac/`.
+Die XML-Attribute `rotation` bleiben deshalb alle auf `0`; es gibt keine pro Karte gespeicherten Transformationswerte in der CSV. `centerimageonorigin` bleibt bewusst deaktiviert: CardMaker berechnet die Elementrotation bereits um die Mitte des Rechtecks, während diese Bildoption einen zweiten, inkompatiblen Ursprung verwendet. Die ARASAAC-Bilder und ihre Attribution liegen unter `assets/images/arasaac/`.
 
 ## MPC-Flächen
 

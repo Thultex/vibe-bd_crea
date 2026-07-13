@@ -20,6 +20,7 @@ from configure_runtime_transforms import (
     SAFE_HEIGHT,
     SAFE_INSET,
     SAFE_WIDTH,
+    runtime_variable,
 )
 
 
@@ -54,21 +55,20 @@ def validate(folder: Path) -> None:
         x = round(new_center_x + (old_x - old_center_x) * scale_x)
         y = round(new_center_y + (old_y - old_center_y) * scale_y)
         base_size = round(old_size * symbol_scale)
-        minimum = round(base_size * 0.95)
-        maximum = round(base_size * 1.05)
-        expected = (
-            f"@[slot_{slot:02}]"
-            "$[rotation:#random;0;359#]"
-            f"$[width:#random;{minimum};{maximum}#]"
-            f"$[height:#random;{minimum};{maximum}#]"
-        )
+        expected = runtime_variable(slot, x, y, base_size)
+        top_left_x = round(x - base_size / 2)
+        top_left_y = round(y - base_size / 2)
         actual = (int(element.get("x", "-1")), int(element.get("y", "-1")), int(element.get("width", "-1")))
-        if actual != (x, y, base_size) or element.get("height") != str(base_size):
+        if actual != (top_left_x, top_left_y, base_size) or element.get("height") != str(base_size):
             raise RuntimeError(f"Falsche skalierte Geometrie bei Symbol {slot}: {actual}.")
         if element.get("variable") != expected:
             raise RuntimeError(f"Falsche Laufzeittransformation bei Symbol {slot}.")
-        if element.get("rotation") != "0" or element.get("centerimageonorigin") != "true":
+        if element.get("rotation") != "0" or element.get("centerimageonorigin") != "false":
             raise RuntimeError(f"Falscher Ursprung oder hart codierte Drehung bei Symbol {slot}.")
+
+    translator = root.findtext("translatorName")
+    if translator != "JavaScript":
+        raise RuntimeError(f"Erwarteter Übersetzer: JavaScript; gefunden: {translator}.")
 
     helpers = {element.get("name"): element for element in elements if element.get("type") == "Text"}
     expected_helpers = {
@@ -92,7 +92,7 @@ def validate(folder: Path) -> None:
         element = helpers[name]
         if element.get("bordercolor") != "0xFF0000FF" or element.get("backgroundcolor") != "0x00000000":
             raise RuntimeError(f"{name} ist nicht rot und ungefüllt.")
-        if "$[enabled:false]" not in element.get("variable", ""):
+        if "AddOverrideField('enabled', 'false')" not in element.get("variable", ""):
             raise RuntimeError(f"{name} würde mit exportiert.")
 
     reference = layout.find("Reference")
@@ -119,7 +119,7 @@ def validate(folder: Path) -> None:
         raise RuntimeError("Fehlende Bilder:\n" + "\n".join(missing))
     if len(set(image_references)) != 73:
         raise RuntimeError(f"Erwartet: 73 eindeutige Bildassets; gefunden: {len(set(image_references))}")
-    print("CM-Projekt: MPC Jumbo 1120 × 1570 px, 300 dpi, 73 Karten, 9 Layout-Bildplätze, 73 eindeutige Bildassets, Guides und Laufzeitzufall valide")
+    print("CM-Projekt: MPC Jumbo 1120 × 1570 px, 300 dpi, 73 Karten, 9 zentrierte Layout-Bildplätze, 73 eindeutige Bildassets, Guides und JavaScript-Laufzeitzufall valide")
 
 
 if __name__ == "__main__":

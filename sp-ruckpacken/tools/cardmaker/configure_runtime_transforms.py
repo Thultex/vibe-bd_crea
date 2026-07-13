@@ -33,10 +33,23 @@ ORIGINAL_SPECS = {
 }
 
 
+def runtime_variable(slot: int, center_x: int, center_y: int, base_size: int) -> str:
+    """Erzeugt eine einheitlich skalierte, um ihren festen Mittelpunkt rotierte Grafik."""
+    return (
+        f"var size = Math.round({base_size} * (0.95 + Math.random() * 0.10)); "
+        f"AddOverrideField('x', Math.round({center_x} - size / 2).toString()); "
+        f"AddOverrideField('y', Math.round({center_y} - size / 2).toString()); "
+        "AddOverrideField('width', size.toString()); "
+        "AddOverrideField('height', size.toString()); "
+        "AddOverrideField('rotation', Math.floor(Math.random() * 360).toString()); "
+        f"slot_{slot:02}"
+    )
+
+
 def _helper_element(name: str, x: int, y: int, width: int, height: int, *,
                     border: int, border_color: str, background_color: str,
                     editor_only: bool = False) -> ET.Element:
-    variable = "#(if ![exporting] == 1 then $[enabled:false])#" if editor_only else ""
+    variable = "if (exporting) { AddOverrideField('enabled', 'false'); } ''" if editor_only else "''"
     return ET.Element(
         "Element",
         {
@@ -105,20 +118,12 @@ def configure(project: Path) -> None:
         x = round(new_center_x + (old_x - old_center_x) * scale_x)
         y = round(new_center_y + (old_y - old_center_y) * scale_y)
         base_size = round(old_size * symbol_scale)
-        minimum = round(base_size * 0.95)
-        maximum = round(base_size * 1.05)
-        element.set("x", str(x))
-        element.set("y", str(y))
+        element.set("x", str(round(x - base_size / 2)))
+        element.set("y", str(round(y - base_size / 2)))
         element.set("width", str(base_size))
         element.set("height", str(base_size))
-        element.set("centerimageonorigin", "true")
-        element.set(
-            "variable",
-            f"@[slot_{slot:02}]"
-            "$[rotation:#random;0;359#]"
-            f"$[width:#random;{minimum};{maximum}#]"
-            f"$[height:#random;{minimum};{maximum}#]",
-        )
+        element.set("centerimageonorigin", "false")
+        element.set("variable", runtime_variable(slot, x, y, base_size))
         element.set("rotation", "0")
         ordered_graphics.append(element)
 
@@ -126,6 +131,20 @@ def configure(project: Path) -> None:
     layout.set("height", str(FULL_BLEED_HEIGHT))
     layout.set("Name", "Ruckpacken MPC Jumbo 3.5x5")
     layout.set("dpi", "300")
+    translator_name = root.find("translatorName")
+    if translator_name is None:
+        translator_name = ET.SubElement(root, "translatorName")
+    translator_name.text = "JavaScript"
+
+    for setting, value in (
+        ("jsTildeMeansCode", "true"),
+        ("jsKeepFunctions", "true"),
+        ("jsSingleQuoteStartsCode", "true"),
+    ):
+        node = root.find(setting)
+        if node is None:
+            node = ET.SubElement(root, setting)
+        node.text = value
 
     safe_guide = _helper_element(
         "Safe Area (editor only)", SAFE_INSET, SAFE_INSET, SAFE_WIDTH, SAFE_HEIGHT,
