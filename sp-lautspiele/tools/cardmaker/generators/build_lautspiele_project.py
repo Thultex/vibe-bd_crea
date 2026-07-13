@@ -9,17 +9,33 @@ Groessenkorrektur sowie Start, Ende und Verschiebung fuer alle Modi.
 from __future__ import annotations
 
 import csv
-import math
 import shutil
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parent.parent
 PROJECT = ROOT / "lautspiele.cmp"
 EMPTY_DEFINES = ROOT / "lautspiele_defines.csv"
 SYMBOL_ROOT = ROOT / "images" / "symbols"
-DEFAULT_SYMBOL_REFERENCE = "symbols_k.csv"
+DEFAULT_SYMBOL_SET = "k"
+GRUSELINO_SYMBOLS = 8
+GRUSELINO_BASE_CARDS = 4
+DOBBLE_ORDER = 5
+DOBBLE_SYMBOL_COUNT = DOBBLE_ORDER * DOBBLE_ORDER + DOBBLE_ORDER + 1
+
+GRUSELINO_CARD_POSITIONS = (
+    (101, 87, 335), (409, 181, 335), (689, 226, 335), (999, 96, 335),
+    (150, 439, 335), (417, 483, 335), (712, 473, 335), (965, 413, 335),
+)
+GRUSELINO_PAPER_BASE_POSITIONS = (
+    (-18, 81, 400), (309, -17, 335), (638, -15, 335), (786, 166, 335),
+    (759, 409, 335), (523, 501, 335), (279, 471, 335), (15, 386, 335),
+)
+GRUSELINO_PAPER_SEARCH_POSITIONS = (
+    (32, 54, 400), (315, 22, 400), (471, 158, 400), (684, 31, 400),
+    (51, 361, 400), (327, 434, 400), (619, 391, 400), (247, 233, 335),
+)
 
 SCALE_VALUES = [
     0.91, 0.88, 0.91, 0.91, 0.94,
@@ -83,6 +99,8 @@ def _selection_prelude(slot_expression: str, mode: str) -> str:
         "var id=start+mod(shift+logical,n);"
         "var scales=String(symbol_scale_map||'1').split('|').map(function(v){return parseFloat(v)||1;});"
         "var correction=scales[id-1]||1;"
+        "var available=String(symbol_available_map||'').split('|');"
+        "var exists=available.length?available[id-1]==='1':id<=scales.length;"
         "var file=id.toString().padStart(2,'0');"
     )
 
@@ -105,14 +123,54 @@ def _transform(random_size: bool, random_rotation: bool) -> str:
     )
 
 
-def gruselino_variable(slot: int) -> str:
+def _gruselino_permutation(slot: int) -> str:
+    return (
+        "function shuffled(slot,seed){var p=[0,1,2,3,4,5,6,7];"
+        "var state=(seed*1664525+1013904223)>>>0;"
+        "for(var i=7;i>0;i--){state=(state*1664525+1013904223)>>>0;"
+        "var j=state%(i+1);var t=p[i];p[i]=p[j];p[j]=t;}return p[slot];}"
+        f"var shuffledLogical=shuffled({slot - 1},cardIndex);"
+    )
+
+
+def gruselino_variable(slot: int, base: bool) -> str:
+    visibility = (
+        f"if(cardIndex>{GRUSELINO_BASE_CARDS}||!exists)"
+        if base else
+        f"var hidden=cardIndex-{GRUSELINO_BASE_CARDS + 1};"
+        f"if(cardIndex<={GRUSELINO_BASE_CARDS}||shuffledLogical===hidden||!exists)"
+    )
     return (
         "(function(){"
-        + _selection_prelude(str(slot - 1), "gruselino")
-        + f"var hidden=cardIndex-1;if(cardIndex>1&&hidden==={slot}){{"
-          "AddOverrideField('enabled','false');return ''; }"
-          "AddOverrideField('enabled','true');"
+        + _gruselino_permutation(slot)
+        + _selection_prelude("shuffledLogical", "gruselino")
+        + visibility + "{AddOverrideField('enabled','false');return '';}"
+        + "AddOverrideField('enabled','true');"
         + _transform(True, True)
+        + "return symbol_folder+'/'+file+'.png';})()"
+    )
+
+
+def gruselino_twirl_variable(slot: int) -> str:
+    return (
+        "(function(){"
+        + _gruselino_permutation(slot)
+        + f"var hidden=cardIndex-{GRUSELINO_BASE_CARDS + 1};"
+          f"if(cardIndex<={GRUSELINO_BASE_CARDS}||shuffledLogical===hidden){{"
+          "AddOverrideField('enabled','false');return '';}"
+          "AddOverrideField('enabled','true');"
+          "AddOverrideField('rotation',Math.floor(Math.random()*360).toString());"
+          "return 'images/ui/twirl.png';})()"
+    )
+
+
+def memory_variable() -> str:
+    return (
+        "(function(){"
+        + _selection_prelude("Math.floor((cardIndex-1)/2)", "memory")
+        + "if(!exists){AddOverrideField('enabled','false');return '';}"
+          "AddOverrideField('enabled','true');"
+        + _transform(False, False)
         + "return symbol_folder+'/'+file+'.png';})()"
     )
 
@@ -123,15 +181,32 @@ def domino_variable(offset: int) -> str:
     return (
         "(function(){"
         + _selection_prelude(f"cardIndex-1+{offset}", "domino")
+        + "if(!exists){AddOverrideField('enabled','false');return '';}"
+          "AddOverrideField('enabled','true');"
         + _transform(False, True)
         + "return symbol_folder+'/'+file+'.png';})()"
     )
 
 
-DOBBLE = (
-    (0, 1, 2), (0, 3, 4), (0, 5, 6),
-    (1, 3, 5), (1, 4, 6), (2, 3, 6), (2, 4, 5),
-)
+def _projective_plane(order: int) -> tuple[tuple[int, ...], ...]:
+    cards: list[tuple[int, ...]] = []
+    for slope in range(order):
+        for intercept in range(order):
+            points = tuple(
+                x * order + ((slope * x + intercept) % order)
+                for x in range(order)
+            )
+            cards.append((*points, order * order + slope))
+    for x in range(order):
+        points = tuple(x * order + y for y in range(order))
+        cards.append((*points, order * order + order))
+    cards.append(tuple(range(order * order, order * order + order + 1)))
+    return tuple(cards)
+
+
+# Das naechstkleinere perfekte System unterhalb der 8er-Karten ist die
+# projektive Ebene der Ordnung 5: 31 Karten, 31 Symbole, 6 je Karte.
+DOBBLE = _projective_plane(DOBBLE_ORDER)
 
 
 def dobble_variable(slot: int) -> str:
@@ -140,6 +215,8 @@ def dobble_variable(slot: int) -> str:
         "(function(){"
         f"var matrix={encoded};"
         + _selection_prelude(f"matrix[cardIndex-1][{slot - 1}]", "dobble")
+        + "if(!exists){AddOverrideField('enabled','false');return '';}"
+          "AddOverrideField('enabled','true');"
         + _transform(True, True)
         + "return symbol_folder+'/'+file+'.png';})()"
     )
@@ -162,6 +239,10 @@ def _layout(name: str, width: int, height: int, reference: str, count: int = 1) 
     return layout
 
 
+def _reference(mode: str, set_name: str = DEFAULT_SYMBOL_SET) -> str:
+    return f"{mode}_{set_name}.csv"
+
+
 def _insert_elements(layout: ET.Element, elements: list[ET.Element]) -> None:
     reference = layout.find("Reference")
     assert reference is not None
@@ -177,29 +258,69 @@ def _background(width: int, height: int, name: str = "White Background") -> ET.E
 
 
 def _gruselino_layout(name: str, width: int, height: int) -> ET.Element:
-    layout = _layout(name, width, height, DEFAULT_SYMBOL_REFERENCE, count=11)
-    cx, cy = width / 2, height / 2
-    radius_x, radius_y = width * 0.39, height * 0.34
-    size = round(min(width, height) * 0.25)
-    graphics: list[ET.Element] = []
-    for slot in range(1, 11):
-        angle = math.radians(-108 + (slot - 1) * 36)
-        center_x = cx + math.cos(angle) * radius_x
-        center_y = cy + math.sin(angle) * radius_y
-        graphics.append(_element(
-            f"Symbol {slot}", "Graphic", round(center_x - size / 2),
-            round(center_y - size / 2), size, size, gruselino_variable(slot),
-        ))
-    bg_path = "cardIndex===1?'images/ui/gruselino-bg2.png':'images/ui/gruselino-bg1.png'"
-    bg = _element("Gruselino Background", "Graphic", 0, 0, width, height, bg_path,
+    layout = _layout(name, width, height, _reference("gruselino"), count=12)
+    if name == "Gruselino Karten":
+        base_positions = search_positions = GRUSELINO_CARD_POSITIONS
+        base_bg, search_bg = "gruselino-bg1.png", "gruselino-bg2.png"
+        ui_x, ui_y, ui_width, ui_height = 46, 41, 1395, 816
+    else:
+        base_positions = GRUSELINO_PAPER_BASE_POSITIONS
+        search_positions = GRUSELINO_PAPER_SEARCH_POSITIONS
+        base_bg, search_bg = "gruselino-bg2.png", "gruselino-bg1.png"
+        ui_x, ui_y, ui_width, ui_height = 7, 6, 1104, 816
+    base_graphics = [
+        _element(f"Grundsymbol {slot}", "Graphic", x, y, size, size,
+                 gruselino_variable(slot, True))
+        for slot, (x, y, size) in enumerate(base_positions, start=1)
+    ]
+    search_graphics = [
+        _element(f"Suchsymbol {slot}", "Graphic", x, y, size, size,
+                 gruselino_variable(slot, False))
+        for slot, (x, y, size) in enumerate(search_positions, start=1)
+    ]
+    twirls: list[ET.Element] = []
+    if name == "Gruselino Papier":
+        twirls = [
+            _element(f"Twirl {slot}", "Graphic", x, y, size, size,
+                     gruselino_twirl_variable(slot), opacity="105")
+            for slot, (x, y, size) in enumerate(search_positions, start=1)
+        ]
+    bg_path = (
+        f"cardIndex<={GRUSELINO_BASE_CARDS}?"
+        f"'images/ui/{base_bg}':'images/ui/{search_bg}'"
+    )
+    bg = _element("Gruselino Background", "Graphic", ui_x, ui_y,
+                  ui_width, ui_height, bg_path,
                   lockaspect="false")
-    _insert_elements(layout, [*graphics, bg, _background(width, height)])
+    front: list[ET.Element] = []
+    if name == "Gruselino Papier":
+        front_path = (
+            f"cardIndex<={GRUSELINO_BASE_CARDS}?"
+            "'':'images/ui/gruselino_front.png'"
+        )
+        front = [_element("Gruselino Front", "Graphic", ui_x, ui_y,
+                          ui_width, ui_height, front_path,
+                          lockaspect="false", opacity="150")]
+    _insert_elements(layout, [*front, *search_graphics, *base_graphics,
+                              *twirls, bg, _background(width, height)])
+    return layout
+
+
+def _memory_layout() -> ET.Element:
+    width, height = 590, 590
+    layout = _layout("Memory Papier", width, height, _reference("memory"), count=20)
+    symbol = _element("Memory Symbol", "Graphic", 85, 85, 420, 420,
+                      memory_variable())
+    frame = _element("Memory Rahmen", "Text", 12, 12, 566, 566, "''",
+                     lockaspect="false", borderthickness="5",
+                     bordercolor="0x5A7D8AFF", backgroundcolor="0xF7FBFFFF")
+    _insert_elements(layout, [symbol, frame, _background(width, height)])
     return layout
 
 
 def _domino_layout() -> ET.Element:
     width, height = 1181, 590
-    layout = _layout("Domino Papier", width, height, DEFAULT_SYMBOL_REFERENCE, count=10)
+    layout = _layout("Domino Papier", width, height, _reference("domino"), count=10)
     size = 420
     graphics = [
         _element("Domino Symbol links", "Graphic", 88, 85, size, size, domino_variable(0)),
@@ -216,8 +337,11 @@ def _domino_layout() -> ET.Element:
 
 def _dobble_layout() -> ET.Element:
     width, height = 1122, 826
-    layout = _layout("Dobble Papier", width, height, DEFAULT_SYMBOL_REFERENCE, count=7)
-    specs = ((561, 205, 260), (325, 555, 285), (797, 555, 285))
+    layout = _layout("Dobble Papier", width, height, _reference("dobble"), count=31)
+    specs = (
+        (561, 145, 235), (285, 300, 230), (837, 300, 230),
+        (285, 610, 230), (837, 610, 230), (561, 485, 270),
+    )
     graphics = [
         _element(f"Dobble Symbol {slot}", "Graphic", round(x - size / 2),
                  round(y - size / 2), size, size, dobble_variable(slot))
@@ -238,19 +362,24 @@ def _write_symbol_config(folder: Path) -> None:
     """Schreibt genau eine CardMaker-Datenzeile fuer einen Bildsatz."""
     path = _symbol_config_path(folder)
     fields = [
-        "symbol_set", "symbol_folder", "symbol_names", "symbol_scale_map",
+        "symbol_set", "symbol_folder", "symbol_count", "symbol_names",
+        "symbol_scale_map", "symbol_available_map",
         "gruselino_start", "gruselino_end", "gruselino_shift",
+        "memory_start", "memory_end", "memory_shift",
         "domino_start", "domino_end", "domino_shift",
         "dobble_start", "dobble_end", "dobble_shift",
     ]
     row = {
         "symbol_set": folder.name,
         "symbol_folder": folder.relative_to(ROOT).as_posix(),
+        "symbol_count": str(len(SYMBOL_NAMES)),
         "symbol_names": "|".join(SYMBOL_NAMES),
         "symbol_scale_map": "|".join(f"{scale:.4g}" for scale in SCALE_VALUES),
+        "symbol_available_map": "",
         "gruselino_start": "1", "gruselino_end": "10", "gruselino_shift": "0",
+        "memory_start": "1", "memory_end": "10", "memory_shift": "0",
         "domino_start": "1", "domino_end": "10", "domino_shift": "0",
-        "dobble_start": "1", "dobble_end": "10", "dobble_shift": "0",
+        "dobble_start": "1", "dobble_end": str(DOBBLE_SYMBOL_COUNT), "dobble_shift": "0",
     }
     if path.exists():
         with path.open(encoding="utf-8-sig", newline="") as handle:
@@ -274,6 +403,16 @@ def _write_symbol_config(folder: Path) -> None:
         scales = scales[1:]
     row["symbol_names"] = "|".join(names)
     row["symbol_scale_map"] = "|".join(scales)
+    row["symbol_count"] = str(len(names))
+    availability_length = max(DOBBLE_SYMBOL_COUNT, len(names))
+    row["symbol_available_map"] = "|".join(
+        "1" if (folder / f"{index:02}.png").is_file() else "0"
+        for index in range(1, availability_length + 1)
+    )
+    row["dobble_end"] = str(max(
+        DOBBLE_SYMBOL_COUNT,
+        int(row.get("dobble_end", str(DOBBLE_SYMBOL_COUNT)) or str(DOBBLE_SYMBOL_COUNT)),
+    ))
     row["symbol_set"] = folder.name
     row["symbol_folder"] = folder.relative_to(ROOT).as_posix()
     with path.open("w", encoding="utf-8", newline="") as handle:
@@ -296,8 +435,35 @@ def _ensure_symbol_sets() -> None:
     _write_symbol_config(k_folder)
 
 
+def write_mode_reference_files() -> None:
+    """Leitet CardMaker-Referenzen mit technischem Count aus den Mastern ab."""
+    for master in sorted(ROOT.glob("symbols_*.csv")):
+        if master.name.endswith("_sources.csv"):
+            continue
+        with master.open(encoding="utf-8-sig", newline="") as handle:
+            rows = list(csv.DictReader(handle))
+        if len(rows) != 1 or not rows[0].get("symbol_set"):
+            continue
+        row = rows[0]
+        set_name = row["symbol_set"]
+        counts = {
+            "gruselino": 12,
+            "memory": 2 * (int(row["memory_end"]) - int(row["memory_start"]) + 1),
+            "domino": int(row["domino_end"]) - int(row["domino_start"]) + 1,
+            "dobble": len(DOBBLE),
+        }
+        for mode, count in counts.items():
+            target = ROOT / f"{mode}_{set_name}.csv"
+            fields = ["Count", *row.keys()]
+            with target.open("w", encoding="utf-8", newline="") as handle:
+                writer = csv.DictWriter(handle, fieldnames=fields)
+                writer.writeheader()
+                writer.writerow({"Count": count, **row})
+
+
 def write_csv_files() -> None:
     _ensure_symbol_sets()
+    write_mode_reference_files()
     # CardMaker sucht automatisch <projekt>_defines.csv. Eine reine Kopfzeile
     # verhindert die irreführende "No defines found"-Meldung, enthält aber
     # bewusst keine globalen Daten und kann daher nichts doppelt definieren.
@@ -314,6 +480,7 @@ def build() -> None:
     root.extend([
         _gruselino_layout("Gruselino Karten", 1488, 897),
         _gruselino_layout("Gruselino Papier", 1122, 826),
+        _memory_layout(),
         _domino_layout(),
         _dobble_layout(),
     ])

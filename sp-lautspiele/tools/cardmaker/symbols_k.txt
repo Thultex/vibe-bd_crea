@@ -1,0 +1,11 @@
+# Deutsch[,Englisch][,zusätzliche Kandidaten je Sprache]
+Käse,cheese,2
+Bankkarte,bank card,2
+Stecker,electrical plug,2
+Katze,cat,2
+Keks,cookie,2
+Ei,egg,2
+Kuh,cow,2
+Mädchen,girl,2
+Mädchen,girl,2
+Mädchen,girl,2

@@ -2,17 +2,26 @@
 
 ## Gemeinsames Datenmodell
 
-Der Spielmodus ist durch das CardMaker-Layout festgelegt. Jedes Layout liest eine frei auswählbare Bildsatz-CSV. Diese enthält Bildordner, Namen, Größenwertfolge sowie getrennte Start-, End- und Verschiebungswerte für Gruselino, Domino und Dobble. Drehung, Position, Ausblendung und Nachbarschaft werden im jeweiligen CardMaker-Feld berechnet.
+Der Spielmodus ist durch das CardMaker-Layout festgelegt. Jeder Bildsatz besitzt eine editierbare Master-CSV mit Bildordner, Namen, Größenwertfolge, Verfügbarkeit sowie Start-, End- und Verschiebungswerten für Gruselino, Memory, Domino und Dobble. Drehung, Position, Ausblendung und Nachbarschaft werden im jeweiligen CardMaker-Feld berechnet.
 
-Die fachliche Größenkorrektur steht in einer nach dem Bildsatz benannten Tabelle neben dem CardMaker-Projekt: `symbols_default.csv` gehört zu `images/symbols/default`, `symbols_k.csv` zu `images/symbols/k`. Die Tabelle ist zugleich die CardMaker-Referenz und verbindet den gesamten Bildsatz mit Namen, Faktoren und Moduseinstellungen. Dadurch können Layouts unterschiedliche, gleich nummerierte Bildsätze nutzen, ohne zusätzliche Modusdateien. Globale CardMaker-Defines werden dafür nicht benutzt.
+Die fachliche Größenkorrektur steht in einer nach dem Bildsatz benannten Tabelle neben dem CardMaker-Projekt: `symbols_default.csv` gehört zu `images/symbols/default`, `symbols_k.csv` zu `images/symbols/k`. Weil CardMaker die Kartenanzahl nur über `Count` in der Referenz steuert, erzeugt der Builder daraus technische Modusdateien wie `gruselino_k.csv`. Diese spiegeln den Master vollständig und ergänzen nur `Count`. Globale CardMaker-Defines werden dafür nicht benutzt.
+
+`generate_symbol_set.py` ist die gemeinsame Grenze zwischen Bildbeschaffung und Layoutdaten. Es zählt ausschließlich lückenlose Hauptdateien `01.png`, `02.png` usw., übernimmt die erste Spalte der Namensliste und aktualisiert Master plus Modusdateien. `import_arasaac_symbols.py` beschafft Bilder und Quellen und delegiert danach an diese Funktion.
 
 ## Gruselino
 
-- Ein aktiver Satz umfasst zehn Symbole.
-- Karte 1 ist die Übersicht und zeigt alle zehn.
-- Die folgenden zehn Karten blenden jeweils ein anderes Symbol aus und zeigen neun.
-- `gruselino_shift` verschiebt das aktive Zehnerfenster zyklisch im durch Start und Ende definierten Ring.
+- Ein aktiver Satz umfasst acht Symbole.
+- Vier Grundkarten zeigen alle acht Symbole.
+- Die folgenden acht Suchkarten blenden jeweils ein anderes Symbol aus und zeigen sieben.
+- Reihenfolge und Rotation werden je Karte zufällig variiert, die historischen acht Positionen bleiben fest.
+- `gruselino_shift` verschiebt das aktive Achterfenster zyklisch im durch Start und Ende definierten Ring.
 - Symbole werden um bis zu fünf Prozent vergrößert oder verkleinert und vollständig zufällig gedreht.
+
+## Memory
+
+- Start und Ende bestimmen den inklusiven Symbolbereich.
+- Jede Symbol-ID wird auf zwei aufeinanderfolgenden Karten ausgegeben.
+- Memory verändert weder Größenkorrektur noch Ausrichtung zufällig.
 
 ## Domino
 
@@ -23,9 +32,10 @@ Die fachliche Größenkorrektur steht in einer nach dem Bildsatz benannten Tabel
 
 ## Dobble
 
-- Die erste Version verwendet die projektive Ebene der Ordnung 2.
-- Sieben Symbole bilden sieben Karten mit jeweils drei Symbolen.
+- Die kompakte Version verwendet die projektive Ebene der Ordnung 5.
+- 31 Symbole bilden 31 Karten mit jeweils sechs Symbolen.
 - Zwei Karten besitzen immer genau ein gemeinsames Symbol.
+- Nicht vorhandene nummerierte PNGs werden über `symbol_available_map` leer gelassen.
 - Die Grundfläche entspricht ungefähr dem Gruselino-Papierlayout und kann über CardMakers PDF-Ausgabe auf A4 ausgeschossen werden.
 
 ## Dateiregeln

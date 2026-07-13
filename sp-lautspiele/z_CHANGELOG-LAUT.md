@@ -4,32 +4,44 @@
 
 Ausgangsdatum: 2026-07-13
 
-*Diese Woche (ca. 2,2h, 2 Tage, Inhalte):* Altbestand archiviert und CardMaker-Generierung mit bildsatzbezogenen Symboltabellen für Gruselino, Domino und Dobble aufgebaut.
+*Diese Woche (ca. 3,3h, 2 Tage, Inhalte):* Altbestand archiviert und CardMaker-Generierung samt ARASAAC-Bildsatzimport für Gruselino, Memory, Domino und Dobble aufgebaut.
 
 *Letzte Woche (0h, 0 Tage, Inhalte):* Keine Einträge.
 
-*Dieser Monat (ca. 2,2h, 2 Tage, Inhalte):* Lautspiele v1.02 als Repo-Projekt angelegt und die Datenkopplung korrigiert.
+*Dieser Monat (ca. 3,3h, 2 Tage, Inhalte):* Lautspiele v1.03 als Repo-Projekt angelegt, Datenkopplung korrigiert und ARASAAC-Import ergänzt.
 
 *Letzter Monat (0h, 0 Tage, Inhalte):* Keine Einträge.
 
-*Jahr (ca. 2,2h, 2 Tage, Inhalte):* Lautspiele v1.02 begonnen.
+*Jahr (ca. 3,3h, 2 Tage, Inhalte):* Lautspiele v1.03 begonnen.
 
-*Insgesamt (ca. 2,2h, 2 Tage, Inhalte):* Lautspiele v1.02 begonnen.
+*Insgesamt (ca. 3,3h, 2 Tage, Inhalte):* Lautspiele v1.03 begonnen.
 
 ## Log
 
-### 2026-07-14 - laut, tools, daten, fix, doku (ca. 0,7h)
+### 2026-07-14 - laut, tools, daten, assets, fix, doku (ca. 1,8h)
 
-- Summary: Fehlerhafte globale Größen-Defines entfernt und alle Modusdaten in direkt auswählbaren CSVs pro Laut-/Bildsatz gebündelt.
+- Summary: Fehlerhafte globale Größen-Defines entfernt, CardMaker-Counts repariert und historische Gruselino-Struktur samt Memory und perfektem 6er-Dobble wiederhergestellt.
 - Fix: Doppelte `symbol_01` bis `symbol_50` beseitigt; CardMaker hatte `lautspiele_defines.csv` sowohl projekt- als auch referenzbezogen geladen.
 - Fix: Nicht verfügbare JavaScript-Namen wie `symbol_01__scale` entfernt; Skalierungsfaktoren werden nun aus `symbol_scale_map` der aktiven Bildsatzzeile gelesen.
-- Refactor: Zwischenstand mit `gruselino.csv`, `domino.csv` und `dobble.csv` verworfen; der Modus wird bereits durch das Layout bestimmt und benötigt keine eigene CSV.
+- Fix: CardMaker-Referenzen erhalten nun die erforderliche Spalte `Count`; dadurch werden nicht mehr nur einzelne Karten pro Layout erzeugt.
+- Refactor: `symbols_default.csv` und `symbols_k.csv` bleiben alleinige editierbare Master; Modus-CSVs werden technisch und reproduzierbar daraus abgeleitet.
 - Daten: Größenkorrektur, Symbolnamen und Bildordner in `symbols_default.csv` und `symbols_k.csv` zusammengeführt; der Dateiname weist den jeweiligen Bildsatz eindeutig aus.
-- Tool: `symbols_default.csv` und `symbols_k.csv` sind nun direkte CardMaker-Referenzen und enthalten jeweils Ordner, Namen, Skalierungen sowie Start, Ende und Shift aller Modi in einer Zeile.
+- Tool: Generiert je Bildsatz `gruselino`, `memory`, `domino` und `dobble` als CardMaker-Referenz mit korrekt berechnetem Count.
 - Tool: `lautspiele_defines.csv` auf eine absichtlich leere Kompatibilitätskopfzeile reduziert, damit CardMaker keine fehlenden oder doppelten Defines meldet.
-- Test: Zwei direkt auswählbare Symbol-CSVs, vier Layoutreferenzen, Bildsatzzuordnung, Skalierungsdaten und Dobble-Matrix validiert.
+- Feature: Gruselino erzeugt wieder vier Grundkarten mit acht Symbolen und acht Suchkarten mit je einem fehlenden, zufällig angeordneten und gedrehten Symbol.
+- Feature: Memory erzeugt pro Symbol genau zwei Karten; Domino bleibt ein geschlossener, frei konfigurierbarer Ring.
+- Feature: Dobble verwendet die perfekte projektive Ebene der Ordnung 5 mit 31 Karten und sechs Symbolen je Karte.
+- Test: Zwei Master-CSVs, acht abgeleitete Modus-CSVs, fünf Layouts, Gruselino-Ausblendung, Memory-Paare und perfekte Dobble-Matrix validiert.
 - Doku: CSV-Auswahl pro Bildsatz, modusspezifische Felder und technische Rolle der leeren Defines-Datei erklärt.
-- Versionen: build_lautspiele_project v1.02, validate_lautspiele_project v1.02.
+- Feature: Neuer ARASAAC-Importer liest `Deutsch[,Englisch][,Anzahl]`, sucht beide Sprachen und erzeugt Hauptbilder sowie `-dN`-/`-eN`-Alternativen zur manuellen Auswahl.
+- Daten/Assets: Importer schreibt Master, vier Modus-Referenzen, nummerierten Bildordner, Quellen-CSV und erforderliche ARASAAC-Lizenzzuordnung.
+- Refactor: Bildbeschaffung und CSV-Erzeugung getrennt; `generate_symbol_set.py` verarbeitet Namenslisten und vorhandene lückenlose Hauptbilder unabhängig von ARASAAC.
+- Tool: ARASAAC-Importer delegiert Master- und Modusdateien an den gemeinsamen Bildsatz-Generator; manuell gepflegte Bildordner nutzen denselben Pfad.
+- Daten: Nur `01.png`, `02.png` usw. zählen als Symbole; `-dN`- und `-eN`-Kandidaten bleiben austauschbare Alternativen.
+- Struktur: Alle drei Erzeuger liegen gebündelt unter `tools/cardmaker/generators/`; Validator, Projekt und erzeugte Daten bleiben im CardMaker-Stammordner.
+- Test: ARASAAC-Integration real mit deutschem Haupttreffer sowie deutscher und englischer Alternative erfolgreich ausgeführt.
+- Sicherheit: Vorhandene Bildsätze werden nur mit explizitem `--force` ersetzt; Suchlisten, Satznamen, PNG-Antworten und Kandidatenzahlen werden validiert.
+- Versionen: build_lautspiele_project v1.03, validate_lautspiele_project v1.03, generate_symbol_set v1.00, import_arasaac_symbols v1.00.
 
 ### 2026-07-13 - laut, struktur, tools, design, material, doku (ca. 1,5h)
 
