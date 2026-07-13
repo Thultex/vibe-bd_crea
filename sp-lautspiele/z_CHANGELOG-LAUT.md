@@ -4,21 +4,21 @@
 
 Ausgangsdatum: 2026-07-13
 
-*Diese Woche (ca. 4,0h, 2 Tage, Inhalte):* Altbestand archiviert und CardMaker-Generierung samt ARASAAC-Bildsatzimport für Gruselino, Memory/Domino und Dobble aufgebaut.
+*Diese Woche (ca. 4,2h, 2 Tage, Inhalte):* Altbestand archiviert und CardMaker-Skripte samt ARASAAC-Bildsatzimport für Gruselino, Memory/Domino und Dobble aufgebaut.
 
 *Letzte Woche (0h, 0 Tage, Inhalte):* Keine Einträge.
 
-*Dieser Monat (ca. 4,0h, 2 Tage, Inhalte):* Lautspiele v1.06 als Repo-Projekt angelegt, Datenkopplung korrigiert und ARASAAC-Import ergänzt.
+*Dieser Monat (ca. 4,2h, 2 Tage, Inhalte):* Lautspiele v1.07 als Repo-Projekt angelegt, Datenkopplung korrigiert und ARASAAC-Import ergänzt.
 
 *Letzter Monat (0h, 0 Tage, Inhalte):* Keine Einträge.
 
-*Jahr (ca. 4,0h, 2 Tage, Inhalte):* Lautspiele v1.06 begonnen.
+*Jahr (ca. 4,2h, 2 Tage, Inhalte):* Lautspiele v1.07 begonnen.
 
-*Insgesamt (ca. 4,0h, 2 Tage, Inhalte):* Lautspiele v1.06 begonnen.
+*Insgesamt (ca. 4,2h, 2 Tage, Inhalte):* Lautspiele v1.07 begonnen.
 
 ## Log
 
-### 2026-07-14 - laut, tools, daten, assets, fix, doku (ca. 2,5h)
+### 2026-07-14 - laut, tools, daten, assets, fix, doku (ca. 2,7h)
 
 - Summary: CardMaker-Counts und Datenkopplung repariert, Layouts und Satzreferenzen originalnah zusammengeführt sowie die gemeinsame Symbolauswahl über `build.ini` konfigurierbar gemacht.
 - Fix: Doppelte `symbol_01` bis `symbol_50` beseitigt; CardMaker hatte `lautspiele_defines.csv` sowohl projekt- als auch referenzbezogen geladen.
@@ -38,18 +38,22 @@ Ausgangsdatum: 2026-07-13
 - Refactor: Bildbeschaffung und CSV-Erzeugung getrennt; `symbols_generate_sets.py` verarbeitet Namenslisten und vorhandene lückenlose Hauptbilder unabhängig von ARASAAC.
 - Tool: ARASAAC-Importer delegiert Master- und Modusdateien an den gemeinsamen Bildsatz-Generator; manuell gepflegte Bildordner nutzen denselben Pfad.
 - Daten: Nur `01.png`, `02.png` usw. zählen als Symbole; `-dN`- und `-eN`-Kandidaten bleiben austauschbare Alternativen.
-- Struktur: Alle drei Erzeuger liegen gebündelt unter `tools/cardmaker/generators/`; Validator, Projekt und erzeugte Daten bleiben im CardMaker-Stammordner.
+- Struktur: Skripte liegen unter `tools/cardmaker/scripts/`; Build und Prüfung sind in `build/`, Bildsatz-Erzeugung und Vorlagen in `generate/` getrennt.
 - Struktur: Symbolwerkzeuge einheitlich als `symbols_download_arasaac.py` und `symbols_generate_sets.py` benannt; `symbol_names.csv` liegt als ausführbares Eingabebeispiel direkt daneben.
-- Doku: `generators/GENERATORS_README.md` beschreibt Zuständigkeiten, Eingabeformat, Ausgaben, Befehle und den empfohlenen Gesamtworkflow aller Generatoren.
+- Doku: `scripts/SCRIPTS_README.md` beschreibt Zuständigkeiten, Eingabeformat, Ausgaben, Befehle und den empfohlenen Gesamtworkflow aller Skripte.
 - Feature: `symbol_ids.csv` ergänzt einen direkten ARASAAC-ID-Modus ohne Suchlauf; deutsche API-Begriffe werden als Namen übernommen.
-- Daten: Leere, selbsterklärende `generators/symbol_ids.csv` als Vorlage neben `symbol_names.csv` angelegt.
+- Daten: Leere, selbsterklärende `scripts/generate/symbol_ids.csv` als Vorlage neben `symbol_names.csv` angelegt.
 - Test: ARASAAC-Integration real mit deutschem Haupttreffer sowie deutscher und englischer Alternative erfolgreich ausgeführt.
 - Sicherheit: Vorhandene Bildsätze werden nur mit explizitem `--force` ersetzt; Suchlisten, Satznamen, PNG-Antworten und Kandidatenzahlen werden validiert.
 - Feature: Jedes Layout bindet alle vorhandenen Satz-CSVs seines Modus ein; `default` und `k` lassen sich dadurch unmittelbar in CardMaker wechseln.
 - Export: Historische Layout-Standardcounts und PDF-Seitenflächen übernommen; Memory/Domino bezieht seine Ausgabezahl weiterhin dynamisch aus der Symbolspanne.
-- Konfiguration: `generators/build.ini` steuert das gemeinsame Symbolfenster mit Startsymbol und automatischer oder fester Anzahl.
+- Konfiguration: `scripts/build/build.ini` steuert das gemeinsame Symbolfenster mit Startsymbol und automatischer oder fester Anzahl und dokumentiert die Symbolzahlen der Layouts.
 - Refactor: Builder prägnant in `build_lautspiele_files.py` umbenannt und alle Aufrufe angepasst.
-- Versionen: build_lautspiele_files v1.06, validate_lautspiele_project v1.06, symbols_generate_sets v1.01, symbols_download_arasaac v1.01.
+- Refactor: Sämtliche aktiven Pfade, Importe und Befehlsbeispiele von `generators` auf die getrennte `scripts`-Struktur umgestellt.
+- Fix: Memory/Domino verwendet wieder die vollständigen `#roundedrect…#`-Shape-Strings; dadurch erscheinen die zwei getrennten Kartenkästchen wie im Original.
+- Export: Domino-Zoom, Crop-Definition und `2362 × 7400` übernommen; zwei Doppelmodule beziehungsweise vier Memory-Karten passen nebeneinander.
+- Refactor: Statische Rahmen, Geometrie, Farben und Exportwerte verbleiben im Layout; JavaScript bleibt auf dynamische Symbolberechnung beschränkt.
+- Versionen: build_lautspiele_files v1.07, validate_lautspiele_project v1.07, symbols_generate_sets v1.02, symbols_download_arasaac v1.02.
 
 ### 2026-07-13 - laut, struktur, tools, design, material, doku (ca. 1,5h)
 

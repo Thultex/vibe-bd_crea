@@ -1,17 +1,18 @@
-# Lautspiele-Generatoren
+# Lautspiele-Skripte
 
-Die Generatoren trennen Bildbeschaffung, Bildsatz-Konfiguration und CardMaker-Projektaufbau. Als Arbeitsverzeichnis wird in den Beispielen `sp-lautspiele/tools/cardmaker/` verwendet.
+Die Skripte trennen Bildbeschaffung und Bildsatz-Erzeugung unter `scripts/generate/` vom Projektaufbau und der Prüfung unter `scripts/build/`. Als Arbeitsverzeichnis wird in den Beispielen `sp-lautspiele/tools/cardmaker/` verwendet.
 
 ## Überblick
 
 | Datei | Aufgabe |
 |---|---|
-| `symbols_download_arasaac.py` | Sucht Begriffe über die ARASAAC-API, lädt Hauptbilder und Alternativen und dokumentiert deren Quellen. Ruft danach automatisch `symbols_generate_sets.py` auf. |
-| `symbols_generate_sets.py` | Erzeugt aus einer Namensliste und einem vorhandenen nummerierten Bildordner die Master-CSV sowie die drei CardMaker-Modus-CSVs. Benötigt kein Netzwerk. |
-| `build_lautspiele_files.py` | Erzeugt `lautspiele.cmp`, aktualisiert die vorhandenen Master-CSVs und leitet alle technischen Modus-CSVs erneut ab. |
-| `build.ini` | Legt das gemeinsame Startsymbol und die automatisch oder fest bestimmte Zahl verwendeter Symbole fest. |
-| `symbol_names.csv` | Beispiel für die gemeinsame Namens- und ARASAAC-Suchliste. |
-| `symbol_ids.csv` | Leere Vorlage für bekannte ARASAAC-IDs ohne Suchlauf. |
+| `generate/symbols_download_arasaac.py` | Sucht Begriffe über die ARASAAC-API, lädt Hauptbilder und Alternativen und dokumentiert deren Quellen. Ruft danach automatisch den Set-Generator auf. |
+| `generate/symbols_generate_sets.py` | Erzeugt aus einer Namensliste und einem vorhandenen nummerierten Bildordner die Master-CSV sowie die drei CardMaker-Modus-CSVs. Benötigt kein Netzwerk. |
+| `generate/symbol_names.csv` | Beispiel für die gemeinsame Namens- und ARASAAC-Suchliste. |
+| `generate/symbol_ids.csv` | Leere Vorlage für bekannte ARASAAC-IDs ohne Suchlauf. |
+| `build/build_lautspiele_files.py` | Erzeugt `lautspiele.cmp`, aktualisiert die vorhandenen Master-CSVs und leitet alle technischen Modus-CSVs erneut ab. |
+| `build/validate_lautspiele_project.py` | Prüft Struktur, Referenzen, Counts, Layoutregeln und Dobble-Kombinatorik. |
+| `build/build.ini` | Legt das gemeinsame Startsymbol und die automatisch oder fest bestimmte Zahl verwendeter Symbole fest. |
 
 ## Symbolauswahl in `build.ini`
 
@@ -61,7 +62,7 @@ Der Downloader erkennt `symbol_ids.csv` am Dateinamen. Er überspringt die Kopfz
 ## 1. ARASAAC-Bilder herunterladen
 
 ```powershell
-python generators/symbols_download_arasaac.py generators/symbol_names.csv --set-name k --force
+python scripts/generate/symbols_download_arasaac.py scripts/generate/symbol_names.csv --set-name k --force
 ```
 
 Der Befehl erzeugt:
@@ -88,7 +89,7 @@ Ohne `--set-name` wird der Dateiname der Namensliste als Satzname verwendet. Bes
 Direkter Abruf bekannter IDs:
 
 ```powershell
-python generators/symbols_download_arasaac.py generators/symbol_ids.csv --set-name k --force
+python scripts/generate/symbols_download_arasaac.py scripts/generate/symbol_ids.csv --set-name k --force
 ```
 
 ## 2. Vorhandene Bilder als Bildsatz einbinden
@@ -96,7 +97,7 @@ python generators/symbols_download_arasaac.py generators/symbol_ids.csv --set-na
 Sind die PNGs bereits vorhanden oder manuell ausgewählt, ist kein ARASAAC-Abruf nötig:
 
 ```powershell
-python generators/symbols_generate_sets.py generators/symbol_names.csv images/symbols/k --set-name k --force
+python scripts/generate/symbols_generate_sets.py scripts/generate/symbol_names.csv images/symbols/k --set-name k --force
 ```
 
 Gezählt werden ausschließlich lückenlos nummerierte Hauptbilder:
@@ -121,8 +122,8 @@ Vorhandene Größenkorrekturen und Modus-Shifts werden beim Neuerzeugen soweit m
 ## 3. CardMaker-Projekt neu erzeugen
 
 ```powershell
-python generators/build_lautspiele_files.py
-python validate_lautspiele_project.py
+python scripts/build/build_lautspiele_files.py
+python scripts/build/validate_lautspiele_project.py
 ```
 
 Der Builder erzeugt `lautspiele.cmp` mit diesen Layouts:

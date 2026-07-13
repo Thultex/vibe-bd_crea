@@ -9,7 +9,8 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[2]
+BUILD_SCRIPT = Path(__file__).with_name("build_lautspiele_files.py")
 SETS = ("default", "k")
 MODES = ("gruselino", "domino", "dobble")
 
@@ -19,8 +20,7 @@ def fail(message: str) -> None:
 
 
 def load_builder():
-    path = ROOT / "generators" / "build_lautspiele_files.py"
-    spec = importlib.util.spec_from_file_location("lautspiele_builder", path)
+    spec = importlib.util.spec_from_file_location("lautspiele_builder", BUILD_SCRIPT)
     if spec is None or spec.loader is None:
         fail("Builder konnte nicht geladen werden.")
     module = importlib.util.module_from_spec(spec)
@@ -125,6 +125,8 @@ def validate() -> None:
             export_width, export_height
         ):
             fail(f"{name} verwendet nicht die erwartete PDF-Seitengröße.")
+        if layout.findtext("zoom") != "0.6081989":
+            fail(f"{name} übernimmt nicht den historischen Layout-Zoom.")
 
     gruselino = layouts["Gruselino Papier"].findall("Element")
     bases = [e for e in gruselino if (e.get("name") or "").startswith("Grundsymbol ")]
@@ -159,18 +161,21 @@ def validate() -> None:
         code = element.get("variable", "")
         if "AddOverrideField('rotation','0')" not in code or "Math.random" in code:
             fail("Memory/Domino darf weder drehen noch zufällig skalieren.")
-    cut = [e for e in double_layout.findall("Element") if e.get("name") == "Schnittzone"]
+    cut = [e for e in double_layout.findall("Element") if e.get("name") == "frame_mid"]
     if len(cut) != 1 or cut[0].get("x") != "579" or cut[0].get("width") != "22":
         fail("Memory/Domino braucht die originalnahe mittige Schnittzone.")
     borders = [
         e for e in double_layout.findall("Element")
-        if (e.get("name") or "").startswith("Kartenrand ")
+        if e.get("name") in {"border1", "border2"}
     ]
     if len(borders) != 2 or any(
         e.get("width") != "560" or e.get("height") != "560"
+        or e.get("variable") != "'#roundedrect;7;-;-;25#'"
         for e in borders
     ):
         fail("Memory/Domino braucht zwei identische originalnahe Kartenränder.")
+    if double_layout.find("exportCropDefinition") is None:
+        fail("Memory/Domino übernimmt die originale PDF-Crop-Konfiguration nicht.")
     required_ui = {
         "Memory Domino Front", "Twirl links", "Twirl rechts",
         "Memory Domino Hintergrund",

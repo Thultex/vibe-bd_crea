@@ -6,10 +6,14 @@ from __future__ import annotations
 import argparse
 import csv
 import re
+import sys
 from pathlib import Path
 
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]
+BUILD_SCRIPTS = Path(__file__).resolve().parents[1] / "build"
+if str(BUILD_SCRIPTS) not in sys.path:
+    sys.path.insert(0, str(BUILD_SCRIPTS))
 PRIMARY_IMAGE = re.compile(r"^(\d{2,})\.png$")
 CONFIG_FIELDS = [
     "symbol_set", "symbol_folder", "symbol_count", "symbol_names",

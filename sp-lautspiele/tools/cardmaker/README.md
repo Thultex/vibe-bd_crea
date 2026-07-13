@@ -13,14 +13,14 @@ Das aktive Projekt ist für [nhmkdev/cardmaker](https://github.com/nhmkdev/cardm
 | `images/symbols/default/` | neutraler Standardsatz `01.png` bis `10.png` |
 | `images/symbols/k/` | aktueller K-Laut-Satz `01.png` bis `10.png` |
 | `images/ui/` | Oberflächenbilder des bestehenden Designs |
-| `generators/build_lautspiele_files.py` | erzeugt CSVs und CMP reproduzierbar neu |
-| `generators/build.ini` | gemeinsame Auswahl von Startsymbol und Symbolanzahl (`-1` = automatisch alle) |
-| `validate_lautspiele_project.py` | prüft Struktur und Kombinatorik |
-| `generators/symbols_generate_sets.py` | erzeugt Master- und Modus-CSVs aus Namen und vorhandenen Bildern |
-| `generators/symbols_download_arasaac.py` | lädt ARASAAC-Bilder/Quellen und ruft den Set-Generator auf |
-| `generators/symbol_names.csv` | Beispiel und reproduzierbare Suchliste für einen Bildsatz |
-| `generators/symbol_ids.csv` | leere Vorlage für den direkten Download bekannter ARASAAC-IDs |
-| `generators/GENERATORS_README.md` | ausführliche Bedienung und Zusammenspiel aller Generatoren |
+| `scripts/build/build_lautspiele_files.py` | erzeugt CSVs und CMP reproduzierbar neu |
+| `scripts/build/validate_lautspiele_project.py` | prüft Struktur und Kombinatorik |
+| `scripts/build/build.ini` | gemeinsame Auswahl von Startsymbol und Symbolanzahl (`-1` = automatisch alle) |
+| `scripts/generate/symbols_generate_sets.py` | erzeugt Master- und Modus-CSVs aus Namen und vorhandenen Bildern |
+| `scripts/generate/symbols_download_arasaac.py` | lädt ARASAAC-Bilder/Quellen und ruft den Set-Generator auf |
+| `scripts/generate/symbol_names.csv` | Beispiel und reproduzierbare Suchliste für einen Bildsatz |
+| `scripts/generate/symbol_ids.csv` | leere Vorlage für den direkten Download bekannter ARASAAC-IDs |
+| `scripts/SCRIPTS_README.md` | ausführliche Bedienung aller Build-, Prüf- und Erzeugungsskripte |
 
 ## Konfiguration pro Bildsatz
 
@@ -37,7 +37,7 @@ Das aktive Projekt ist für [nhmkdev/cardmaker](https://github.com/nhmkdev/cardm
 
 Alle fachlich editierbaren Informationen eines Bildsatzes stehen in genau einer Master-Zeile. CardMaker benötigt seine Kartenanzahl jedoch in einer Spalte `Count`. Der Builder leitet deshalb aus jedem Master drei technische Referenzen ab: `gruselino_k.csv`, `domino_k.csv` und `dobble_k.csv`. Memory und Domino verwenden gemeinsam `domino_k.csv`. Jedes Layout bindet automatisch alle vorhandenen Satz-CSVs seines Modus ein; der Bildsatz kann daher direkt in CardMaker zwischen `default`, `k` und später ergänzten Sätzen gewechselt werden. Der K-Satz ist zunächst als Standard markiert. Der Layout-Standardcount bleibt wie im Original bei `1`; die tatsächliche Ausgabezahl kommt aus der gewählten Modus-CSV. Bei Memory/Domino entspricht sie automatisch der Länge von `domino_start` bis `domino_end`. Abgeleitete Dateien werden nicht von Hand gepflegt.
 
-Das gemeinsame Symbolfenster wird in `generators/build.ini` eingestellt. `start_symbol = 1` beginnt bei `01.png`; `symbol_count = -1` übernimmt automatisch alle ab dort vorhandenen Hauptsymbole. Ein positiver Count begrenzt die Auswahl. Der Builder schreibt das Fenster in alle Start-/Endfelder, während die modusspezifischen Shifts in den Master-CSVs erhalten bleiben. Mindestens acht Symbole sind für Gruselino erforderlich.
+Das gemeinsame Symbolfenster wird in `scripts/build/build.ini` eingestellt. `start_symbol = 1` beginnt bei `01.png`; `symbol_count = -1` übernimmt automatisch alle ab dort vorhandenen Hauptsymbole. Ein positiver Count begrenzt die Auswahl. Der Builder schreibt das Fenster in alle Start-/Endfelder, während die modusspezifischen Shifts in den Master-CSVs erhalten bleiben. Mindestens acht Symbole sind für Gruselino erforderlich.
 
 ## Größenkorrektur
 
@@ -59,7 +59,7 @@ Keks,,2
 Das dritte Feld gibt die Zahl zusätzlicher Kandidaten **je vorhandener Sprache** an. Der beste deutsche Treffer wird als `01.png` verwendet. Weitere deutsche Treffer heißen `01-d1.png`, `01-d2.png` usw.; englische Alternativen heißen `01-e1.png`, `01-e2.png` usw. Doppelte ARASAAC-IDs werden übersprungen. Dadurch kann später eine Alternative durch einfaches Umbenennen zur Hauptdatei gemacht werden.
 
 ```powershell
-python generators/symbols_download_arasaac.py generators/symbol_names.csv --set-name k --force
+python scripts/generate/symbols_download_arasaac.py scripts/generate/symbol_names.csv --set-name k --force
 ```
 
 Der Satzname bestimmt automatisch:
@@ -71,10 +71,10 @@ Der Satzname bestimmt automatisch:
 
 Ohne `--set-name` wird der Dateiname der Wortliste verwendet. Bestehende Ausgaben werden nur mit `--force` ersetzt. Neu erzeugte Größenfaktoren beginnen bei `1` und können danach in `symbol_scale_map` korrigiert werden.
 
-Sind die gewünschten ARASAAC-IDs bereits bekannt, werden sie ohne Suche zeilenweise in `generators/symbol_ids.csv` eingetragen. Der Downloader erkennt diesen Dateinamen, lädt jede ID direkt, übernimmt den ersten deutschen API-Begriff als Symbolnamen und erzeugt dieselben Bilder, Quellen- und Set-Dateien:
+Sind die gewünschten ARASAAC-IDs bereits bekannt, werden sie ohne Suche zeilenweise in `scripts/generate/symbol_ids.csv` eingetragen. Der Downloader erkennt diesen Dateinamen, lädt jede ID direkt, übernimmt den ersten deutschen API-Begriff als Symbolnamen und erzeugt dieselben Bilder, Quellen- und Set-Dateien:
 
 ```powershell
-python generators/symbols_download_arasaac.py generators/symbol_ids.csv --set-name mein-satz --force
+python scripts/generate/symbols_download_arasaac.py scripts/generate/symbol_ids.csv --set-name mein-satz --force
 ```
 
 ## Vorhandenen Bildordner anbinden
@@ -82,7 +82,7 @@ python generators/symbols_download_arasaac.py generators/symbol_ids.csv --set-na
 Der unabhängige CSV-Generator kann auch ohne ARASAAC verwendet werden. Die erste Spalte der Namensliste enthält die Anzeigenamen; weitere Spalten werden ignoriert. Im Bildordner zählen nur lückenlos nummerierte Hauptdateien `01.png`, `02.png` usw. Dateien wie `01-d1.png` sind Alternativen und erhöhen die Symbolzahl nicht.
 
 ```powershell
-python generators/symbols_generate_sets.py generators/symbol_names.csv images/symbols/k --set-name k --force
+python scripts/generate/symbols_generate_sets.py scripts/generate/symbol_names.csv images/symbols/k --set-name k --force
 ```
 
 Der Ordnername ist ohne `--set-name` zugleich der Satzname. Vorhandene Größenkorrekturen und Shifts werden beim bewussten Neuerzeugen soweit möglich beibehalten. Danach sind Master und alle drei technischen Modus-CSVs aktuell. Der ARASAAC-Importer benutzt intern genau dieselbe Funktion.
@@ -90,18 +90,18 @@ Der Ordnername ist ohne `--set-name` zugleich der Satzname. Vorhandene Größenk
 ## Spiellogik
 
 - **Gruselino Papier:** Vier Grundkarten zeigen dieselben acht Symbole. Acht Suchkarten zeigen diese Symbole jeweils zufällig vertauscht; auf jeder Suchkarte fehlt genau ein anderes Symbol. Die historischen Positionen bleiben erhalten, die Symbolflächen sind um 20 % verkleinert und drehen nur um ±20°. `gruselino_shift` verschiebt das aktive 8er-Fenster zyklisch.
-- **Memory / Domino Papier:** Ein Modul enthält zwei verbundene, an der weißen Mitte trennbare Karten mit aufeinanderfolgenden Symbolen. Verbunden bilden sie den Domino-Ring. Getrennt kommt durch den geschlossenen Ring jedes Symbol zweimal vor und bildet ein Memory-Set. Es gibt keine Zufallsdrehung oder -skalierung.
+- **Memory / Domino Papier:** Ein Modul enthält zwei klar getrennte, abgerundete 560er Kartenkästchen aus dem Original und dazwischen die ursprüngliche 22-Pixel-Schnittzone. Verbunden bilden aufeinanderfolgende Symbole den Domino-Ring. Getrennt kommt durch den geschlossenen Ring jedes Symbol zweimal vor und bildet ein Memory-Set. Es gibt keine Zufallsdrehung oder -skalierung.
 - **Dobble:** Das nächstkleinere perfekte System unterhalb der 8er-Karten nutzt 31 Symbole, 31 Karten und sechs Symbole pro Karte. Jedes Kartenpaar teilt exakt ein Symbol. Bei kleineren Bildsätzen bleiben nicht vorhandene IDs leer. Die Positionen nutzen die Kartenfläche weitläufig; die Größe variiert um ±18 %.
 
 Gruselino variiert zur Laufzeit um ±5 % in der Größe und ±20° in der Drehung. Dobble variiert um ±18 % und 0–359°. Die Grundpositionen und Grundgrößen bleiben direkt im CardMaker-Editor editierbar.
 
-Die PDF-Exportflächen übernehmen die historischen Projektwerte: `7860 × 7602` für Gruselino und Dobble sowie `2362 × 7400` für das trennbare Memory-/Domino-Modul.
+Die PDF-Exportflächen übernehmen die historischen Projektwerte: `7860 × 7602` für Gruselino und Dobble sowie `2362 × 7400` für Memory/Domino. Die Breite von `2362` entspricht exakt zwei 1181 Pixel breiten Doppelmodulen nebeneinander, also vier getrennten Memory-Karten. Auch Zoom `0.6081989` und die ursprüngliche Crop-Definition des Domino-Layouts werden übernommen.
 
 ## Erzeugen und prüfen
 
 ```powershell
-python generators/build_lautspiele_files.py
-python validate_lautspiele_project.py
+python scripts/build/build_lautspiele_files.py
+python scripts/build/validate_lautspiele_project.py
 ```
 
-CardMaker-Version des Werkzeugstands: v1.06. `symbols_generate_sets`: v1.01. `symbols_download_arasaac`: v1.01.
+CardMaker-Version des Werkzeugstands: v1.07. `symbols_generate_sets`: v1.02. `symbols_download_arasaac`: v1.02.

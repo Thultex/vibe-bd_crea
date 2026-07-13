@@ -15,7 +15,7 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]
 PROJECT = ROOT / "lautspiele.cmp"
 EMPTY_DEFINES = ROOT / "lautspiele_defines.csv"
 BUILD_CONFIG = Path(__file__).with_name("build.ini")
@@ -257,7 +257,8 @@ def dobble_variable(slot: int) -> str:
 
 
 def _layout(name: str, width: int, height: int, mode: str,
-            export_width: int, export_height: int) -> ET.Element:
+            export_width: int, export_height: int,
+            export_crop_definition: bool = False) -> ET.Element:
     layout = ET.Element("Layout", {
         "combineReferences": "false", "width": str(width), "height": str(height),
         "buffer": "0", "Name": name, "defaultCount": "1",
@@ -276,10 +277,12 @@ def _layout(name: str, width: int, height: int, mode: str,
         ("exportNameFormat", ""), ("exportRotation", "0"),
         ("exportTransparentBackground", "false"), ("exportPDFAsPageBack", "false"),
         ("exportWidth", str(export_width)),
-        ("exportHeight", str(export_height)), ("zoom", "0.65"),
+        ("exportHeight", str(export_height)), ("zoom", "0.6081989"),
         ("exportLayoutBorder", "false"), ("exportLayoutBorderCrossSize", "0"),
     ):
         ET.SubElement(layout, tag).text = value
+    if export_crop_definition:
+        ET.SubElement(layout, "exportCropDefinition")
     return layout
 
 
@@ -353,7 +356,7 @@ def _gruselino_layout() -> ET.Element:
 def _domino_layout() -> ET.Element:
     width, height = 1181, 590
     layout = _layout("Memory / Domino Papier", width, height,
-                     "domino", 2362, 7400)
+                     "domino", 2362, 7400, export_crop_definition=True)
     size = 550
     graphics = [
         _element("Memory Domino Symbol links", "Graphic", 27, 19,
@@ -362,28 +365,28 @@ def _domino_layout() -> ET.Element:
                  size, size, domino_variable(1)),
     ]
     card_borders = [
-        _element("Kartenrand links", "Shape", 22, 12, 560, 560,
-                 "'roundedrect;7;-;-;25'", lockaspect="false",
+        _element("border1", "Shape", 22, 12, 560, 560,
+                 "'#roundedrect;7;-;-;25#'", lockaspect="false",
                  elementcolor="0x585858FF"),
-        _element("Kartenrand rechts", "Shape", 598, 12, 560, 560,
-                 "'roundedrect;7;-;-;25'", lockaspect="false",
+        _element("border2", "Shape", 598, 12, 560, 560,
+                 "'#roundedrect;7;-;-;25#'", lockaspect="false",
                  elementcolor="0x585858FF"),
     ]
     frame_bands = [
-        _element("Rand oben", "Shape", -2, -4, 1181, 12,
-                 "'rect;0;-;-'", lockaspect="false",
+        _element("frame_top", "Shape", -2, -4, 1181, 12,
+                 "'#rect;0;-;-#'", lockaspect="false",
                  elementcolor="0xFFFFFFFF"),
-        _element("Schnittzone", "Shape", 579, -2, 22, 590,
-                 "'rect;0;-;-'", lockaspect="false",
+        _element("frame_mid", "Shape", 579, -2, 22, 590,
+                 "'#rect;0;-;-#'", lockaspect="false",
                  elementcolor="0xFFFFFFFF"),
-        _element("Rand unten", "Shape", 0, 578, 1181, 12,
-                 "'rect;0;-;-'", lockaspect="false",
+        _element("frame_bottom", "Shape", 0, 578, 1181, 12,
+                 "'#rect;0;-;-#'", lockaspect="false",
                  elementcolor="0xFFFFFFFF"),
-        _element("Rand links", "Shape", -4, 0, 12, 590,
-                 "'rect;0;-;-'", lockaspect="false",
+        _element("frame_left", "Shape", -4, 0, 12, 413,
+                 "'#rect;0;-;-#'", lockaspect="false",
                  elementcolor="0xFFFFFFFF"),
-        _element("Rand rechts", "Shape", 1181, 0, 12, 590,
-                 "'rect;0;-;-'", lockaspect="false",
+        _element("frame_right", "Shape", 1181, 0, 12, 590,
+                 "'#rect;0;-;-#'", lockaspect="false",
                  elementcolor="0xFFFFFFFF"),
     ]
     front = _element("Memory Domino Front", "Graphic", 27, 15, 1134, 553,
@@ -398,9 +401,21 @@ def _domino_layout() -> ET.Element:
     background = _element("Memory Domino Hintergrund", "Graphic", 7, 6,
                           1120, 560, "'images/ui/gruselino-bg1.png'",
                           lockaspect="false")
+    original_backgrounds = [
+        _element("bg_color", "Shape", 5, 7, 1181, 590,
+                 "'#roundedrect;0;-;-;35#'", lockaspect="false",
+                 elementcolor="0xC4E4EAFF", opacity="100", enabled="false"),
+        _element("bframe", "Shape", 1, 1, 1181, 560,
+                 "'#roundedrect;0;-;-;35#'", lockaspect="false",
+                 elementcolor="0xFFFFFFFF"),
+        _element("bframe_bleed", "Shape", 1, 1, 1178, 897,
+                 "'#rect;0;-;-#'", lockaspect="false",
+                 elementcolor="0xFFFFFFFF", backgroundcolor="0xACACACFF",
+                 outlinethickness="15", enabled="false"),
+    ]
     _insert_elements(layout, [*card_borders, *frame_bands, front,
                               graphics[0], twirls[0], graphics[1], twirls[1],
-                              background, _background(width, height)])
+                              background, *original_backgrounds])
     return layout
 
 

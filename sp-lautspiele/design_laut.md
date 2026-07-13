@@ -6,7 +6,7 @@ Der Spielmodus ist durch das CardMaker-Layout festgelegt. Jeder Bildsatz besitzt
 
 Die fachliche Größenkorrektur steht in einer nach dem Bildsatz benannten Tabelle neben dem CardMaker-Projekt: `symbols_default.csv` gehört zu `images/symbols/default`, `symbols_k.csv` zu `images/symbols/k`. Weil CardMaker die Kartenanzahl nur über `Count` in der Referenz steuert, erzeugt der Builder daraus technische Modusdateien wie `gruselino_k.csv`. Diese spiegeln den Master vollständig und ergänzen nur `Count`; für Memory/Domino wird dieser Wert aus der konfigurierten Symbolspanne berechnet. Alle zum Modus gehörenden Satz-CSVs werden am Layout angeschlossen. Globale CardMaker-Defines werden dafür nicht benutzt.
 
-`symbols_generate_sets.py` ist die gemeinsame Grenze zwischen Bildbeschaffung und Layoutdaten. Es zählt ausschließlich lückenlose Hauptdateien `01.png`, `02.png` usw., übernimmt die erste Spalte der Namensliste und aktualisiert Master plus Modusdateien. `symbols_download_arasaac.py` beschafft Bilder und Quellen und delegiert danach an diese Funktion. `generators/symbol_names.csv` dokumentiert das gemeinsame Eingabeformat.
+`symbols_generate_sets.py` ist die gemeinsame Grenze zwischen Bildbeschaffung und Layoutdaten. Es zählt ausschließlich lückenlose Hauptdateien `01.png`, `02.png` usw., übernimmt die erste Spalte der Namensliste und aktualisiert Master plus Modusdateien. `symbols_download_arasaac.py` beschafft Bilder und Quellen und delegiert danach an diese Funktion. `scripts/generate/symbol_names.csv` dokumentiert das gemeinsame Eingabeformat.
 
 ## Gruselino
 
@@ -24,8 +24,10 @@ Die fachliche Größenkorrektur steht in einer nach dem Bildsatz benannten Tabel
 - Jedes Modul zeigt auf zwei verbundenen 560er Karten Ringelement `n` und dessen Nachfolger.
 - Das letzte Symbol wird mit dem ersten verbunden.
 - Die 22 Pixel breite weiße Mitte ist die Schnittzone.
+- Zwei abgerundete 560er Rahmen werden mit den originalen CardMaker-Shape-Definitionen gezeichnet.
 - Verbunden dienen die Module als Domino; getrennt bilden die doppelt vorkommenden Symbole das Memory.
 - Die Quelldateien bleiben unverschoben und ungedreht; CardMaker korrigiert nur die individuelle Grundgröße mittig.
+- Statische Geometrie und Exportwerte bleiben im Layout; JavaScript wird nur für Symbolauswahl und Sichtbarkeit verwendet.
 
 ## Dobble
 

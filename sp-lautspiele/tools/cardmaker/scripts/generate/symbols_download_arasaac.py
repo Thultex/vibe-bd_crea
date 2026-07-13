@@ -19,7 +19,7 @@ from pathlib import Path
 from typing import Any
 
 
-ROOT = Path(__file__).resolve().parent.parent
+ROOT = Path(__file__).resolve().parents[2]
 API_SEARCH = "https://api.arasaac.org/api/pictograms/{language}/search/{query}"
 API_PICTOGRAM = "https://api.arasaac.org/api/pictograms/de/{id}"
 STATIC_IMAGE = "https://static.arasaac.org/pictograms/{id}/{id}_500.png"
