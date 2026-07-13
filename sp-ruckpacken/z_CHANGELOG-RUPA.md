@@ -4,19 +4,27 @@
 
 Ausgangsdatum: 2026-07-12
 
-*Diese Woche (ca. 0,8h, 1 Tag, Inhalte):* Bestehende Daten, nanDECK-Paket, Anleitung und Projektdokumentation eingebracht.
+*Diese Woche (ca. 1,5h, 2 Tage, Inhalte):* Projektgrundlage eingebracht und Kartengenerator auf MPC-Jumboformat umgestellt.
 
 *Letzte Woche (0h, 0 Tage, Inhalte):* Keine Einträge.
 
-*Dieser Monat (ca. 0,8h, 1 Tag, Inhalte):* Ruckpacken-Projektgrundlage angelegt.
+*Dieser Monat (ca. 1,5h, 2 Tage, Inhalte):* Ruckpacken-Projektgrundlage angelegt und Drucklayout vorbereitet.
 
 *Letzter Monat (0h, 0 Tage, Inhalte):* Keine Einträge.
 
-*Jahr (ca. 0,8h, 1 Tag, Inhalte):* Ruckpacken v1.00 begonnen.
+*Jahr (ca. 1,5h, 2 Tage, Inhalte):* Ruckpacken v1.00 begonnen.
 
-*Insgesamt (ca. 0,8h, 1 Tag, Inhalte):* Ruckpacken v1.00 begonnen.
+*Insgesamt (ca. 1,5h, 2 Tage, Inhalte):* Ruckpacken v1.00 begonnen.
 
 ## Log
+
+### 2026-07-13 - rupa, cardmaker, layout, druck (ca. 0,7h)
+
+- Change: CardMaker-Projekt auf MPC Jumbo 3,5″ × 5″ bei 300 dpi umgestellt; 1120 × 1570 px Vollbeschnitt, 1050 × 1500 px Schnittfläche und 975 × 1425 px Sicherheitsfläche umgesetzt.
+- Design: Symbolmittelpunkte auf X und Y proportional zur Schnittfläche skaliert; Symbolgrößen anhand des kleineren Achsenfaktors angepasst.
+- Change: Laufzeitrotation auf den vollständigen Kreis (0° bis 359°) erweitert; Größenvariation bleibt auf ungefähr ±5 % begrenzt.
+- Design: Vollflächigen weißen Hintergrund sowie rote, ungefüllte Schnitt- und Sicherheitsrahmen ergänzt; Rahmen sind nur im Editor sichtbar und werden nicht exportiert.
+- Test: Layoutmaße, 300 dpi, Symbolgeometrie, Zufallstransformationen, Hilfsrahmen, weißer Hintergrund, 73 Karten und alle Bildreferenzen validiert.
 
 ### 2026-07-12 - rupa, struktur, regeln, design, assets, tools, doku (ca. 0,8h)
 

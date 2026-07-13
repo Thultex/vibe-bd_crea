@@ -2,7 +2,7 @@
 
 ## Material
 
-- 73 Symbolkarten im Format 57 × 88 mm
+- 73 Symbolkarten im Endformat 3,5″ × 5″ (89 × 127 mm)
 - 73 Gegenstandssymbole, jeweils neun Vorkommen
 - neun Symbole je Karte
 - geheime Aufgaben der Typen A, B und C
@@ -19,7 +19,7 @@ Die neun Positionen bilden eine organische Raute statt eines 3×3-Rasters:
       9
 ```
 
-Die Mitte ist größer als Innen- und Außenpositionen. Einzelne Symbole werden zufällig leicht gedreht. Karten dürfen als Ganzes gedreht und so überlappt werden, dass drei bis sechs Symbole verschwinden.
+Die Mitte ist größer als Innen- und Außenpositionen. Einzelne Symbole erhalten beim Rendering eine zufällige Orientierung über 360° und bis ungefähr ±5 % Größenvariation. Karten dürfen als Ganzes gedreht und so überlappt werden, dass drei bis sechs Symbole verschwinden.
 
 ## Mathematischer Kern
 
@@ -29,4 +29,6 @@ Die Kartenmatrix bildet eine projektive Ebene der Ordnung 8: 73 Karten, neun Sym
 
 `cm` bezeichnet ausschließlich [nhmkdev/cardmaker](https://github.com/nhmkdev/cardmaker). Das aktive Projekt liegt unter `tools/cardmaker/` und verwendet eine schlanke CSV-Reference mit neun Bildpfaden. Position und Grundgröße der neun Graphic-Elemente sind im CM-Projekt gespeichert; Transformationswerte sind nicht Teil der CSV.
 
-Das Layout nutzt 673 × 1039 px bei 300 DPI, entsprechend 57 × 88 mm. Die organische Raute verwendet drei Größenstufen. CardMakers Incept-Übersetzer erzeugt pro Rendering und Symbol eine Drehung von −20° bis +20° sowie eine kleine Größenvariation von ungefähr ±5 %; das Seitenverhältnis bleibt gesperrt.
+Das Layout folgt dem [MPC-Jumboformat](https://www.makeplayingcards.com/design/custom-3-5-x-5-game-cards.html): 1050 × 1500 px Schnittfläche und 1120 × 1570 px Vollbeschnitt bei 300 dpi. Der weiße Hintergrund reicht bis zum Außenrand. Rote, ungefüllte Rahmen zeigen im Editor Schnitt- und Sicherheitsfläche und werden nicht exportiert.
+
+Die organische Raute verwendet drei Größenstufen. Abstände zur Kartenmitte werden für X und Y getrennt proportional auf die neue Schnittfläche skaliert; die Symbolgrößen folgen dem kleineren Skalierungsfaktor. CardMakers Incept-Übersetzer erzeugt pro Rendering und Symbol eine Drehung von 0° bis 359° sowie eine Größenvariation von ungefähr ±5 %; das Seitenverhältnis bleibt gesperrt.
