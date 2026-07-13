@@ -2,16 +2,16 @@
 
 ## Gemeinsames Datenmodell
 
-Alle Layouts lesen dieselbe Konfigurations-CSV. Sie enthält ausschließlich Kartenanzahl, Layoutfilter, Modus, Symbolordner, Start, Ende und Verschiebung. Drehung, Größenkorrektur, Position, Ausblendung und Nachbarschaft werden im jeweiligen CardMaker-Feld berechnet.
+Der Spielmodus ist durch das CardMaker-Layout festgelegt. Jedes Layout liest eine frei auswählbare Bildsatz-CSV. Diese enthält Bildordner, Namen, Größenwertfolge sowie getrennte Start-, End- und Verschiebungswerte für Gruselino, Domino und Dobble. Drehung, Position, Ausblendung und Nachbarschaft werden im jeweiligen CardMaker-Feld berechnet.
 
-Die Größenkorrektur steht separat in `tools/cardmaker/lautspiele_defines.csv`. Sie verbindet jede Symbol-ID mit einem Namen und einem Faktor. Dadurch können mehrere Konfigurations-CSVs auf unterschiedliche, gleich nummerierte Ordner verweisen und trotzdem dieselben Layouts verwenden.
+Die fachliche Größenkorrektur steht in einer nach dem Bildsatz benannten Tabelle neben dem CardMaker-Projekt: `symbols_default.csv` gehört zu `images/symbols/default`, `symbols_k.csv` zu `images/symbols/k`. Die Tabelle ist zugleich die CardMaker-Referenz und verbindet den gesamten Bildsatz mit Namen, Faktoren und Moduseinstellungen. Dadurch können Layouts unterschiedliche, gleich nummerierte Bildsätze nutzen, ohne zusätzliche Modusdateien. Globale CardMaker-Defines werden dafür nicht benutzt.
 
 ## Gruselino
 
 - Ein aktiver Satz umfasst zehn Symbole.
 - Karte 1 ist die Übersicht und zeigt alle zehn.
 - Die folgenden zehn Karten blenden jeweils ein anderes Symbol aus und zeigen neun.
-- `symbol_shift` verschiebt das aktive Zehnerfenster zyklisch im durch Start und Ende definierten Ring.
+- `gruselino_shift` verschiebt das aktive Zehnerfenster zyklisch im durch Start und Ende definierten Ring.
 - Symbole werden um bis zu fünf Prozent vergrößert oder verkleinert und vollständig zufällig gedreht.
 
 ## Domino

@@ -10,4 +10,4 @@ Lautspiele bündelt bildbasierte Sprachspiele, die aus einem gemeinsamen Symbols
 - `files/archive/lautspiele-original/`: unveränderter früherer Datei- und Codebestand.
 - `files/archive/Logospiele.xlsx`: unveränderte frühere Berechnungsarbeitsmappe.
 
-Das Spielkürzel lautet `laut`. Die aktiven Layouts verwenden gemeinsam `tools/cardmaker/lautspiele.csv`; ein Symbolsatz wird dort über seinen Ordner ausgewählt.
+Das Spielkürzel lautet `laut`. Gruselino, Domino und Dobble sind eigene Layouts, benötigen aber keine eigenen Modus-CSVs. Stattdessen wählt jedes Layout eine vollständige Symbol-CSV wie `symbols_k.csv`; sie enthält Bildordner, Namen, Größenkorrekturen und die modusspezifischen Bereiche.

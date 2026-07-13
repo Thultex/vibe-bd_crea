@@ -28,37 +28,49 @@ def load_builder():
 
 def validate() -> None:
     project = ROOT / "lautspiele.cmp"
-    config = ROOT / "lautspiele.csv"
-    defines = ROOT / "lautspiele_defines.csv"
-    for path in (project, config, defines):
+    config_paths = {
+        "default": ROOT / "symbols_default.csv",
+        "k": ROOT / "symbols_k.csv",
+    }
+    empty_defines = ROOT / "lautspiele_defines.csv"
+    for path in (project, empty_defines, *config_paths.values()):
         if not path.is_file():
             fail(f"Datei fehlt: {path.name}")
 
-    with config.open(encoding="utf-8-sig", newline="") as handle:
-        rows = list(csv.DictReader(handle))
-    if len(rows) != 3:
-        fail("Die gemeinsame Konfiguration muss genau drei Moduszeilen enthalten.")
-    expected = {"gruselino": 11, "domino": 10, "dobble": 7}
-    for row in rows:
-        mode = row["mode"]
-        if mode not in expected or int(row["Count"]) != expected[mode]:
-            fail(f"Unerwartete Kartenanzahl fuer {mode}.")
-        if not row["symbol_folder"]:
-            fail(f"Symbolordner fehlt fuer {mode}.")
-        if mode == "domino":
-            ring = int(row["symbol_end"]) - int(row["symbol_start"]) + 1
-            if int(row["Count"]) != ring:
-                fail("Domino Count muss der inklusiven Start-/Endspanne entsprechen.")
+    required_fields = {
+        "symbol_set", "symbol_folder", "symbol_names", "symbol_scale_map",
+        "gruselino_start", "gruselino_end", "gruselino_shift",
+        "domino_start", "domino_end", "domino_shift",
+        "dobble_start", "dobble_end", "dobble_shift",
+    }
+    for set_name, config in config_paths.items():
+        with config.open(encoding="utf-8-sig", newline="") as handle:
+            config_rows = list(csv.DictReader(handle))
+        if len(config_rows) != 1:
+            fail(f"{config.name} muss genau eine CardMaker-Datenzeile enthalten.")
+        row = config_rows[0]
+        if not required_fields.issubset(row):
+            fail(f"{config.name} enthält nicht alle Konfigurationsfelder.")
+        expected_folder = f"images/symbols/{set_name}"
+        if row["symbol_set"] != set_name or row["symbol_folder"] != expected_folder:
+            fail(f"{config.name} ist nicht dem Bildsatz {set_name} zugeordnet.")
+        names = row["symbol_names"].split("|")
+        scales = row["symbol_scale_map"].split("|")
+        if len(names) != len(scales) or len(scales) < 1:
+            fail(f"Namen und Skalierungen sind in {config.name} nicht deckungsgleich.")
+        if any(float(value) <= 0 for value in scales):
+            fail(f"{config.name} enthält eine ungültige Größenkorrektur.")
+        for mode in ("gruselino", "domino", "dobble"):
+            start = int(row[f"{mode}_start"])
+            end = int(row[f"{mode}_end"])
+            int(row[f"{mode}_shift"])
+            if not 1 <= start <= end <= len(scales):
+                fail(f"Ungültige Start-/Endspanne für {mode} in {config.name}.")
 
-    with defines.open(encoding="utf-8-sig", newline="") as handle:
-        define_rows = list(csv.DictReader(handle))
-    if len(define_rows) != 50:
-        fail("Es werden 50 erweiterbare Symboldefinitionen erwartet.")
-    for index, row in enumerate(define_rows, start=1):
-        if row["define"] != f"symbol_{index:02}" or not row["name"]:
-            fail(f"Ungueltige Symboldefinition in Zeile {index}.")
-        if float(row["scale"]) <= 0:
-            fail(f"Ungueltige Groessenkorrektur fuer Symbol {index}.")
+    with empty_defines.open(encoding="utf-8-sig", newline="") as handle:
+        define_lines = list(csv.reader(handle))
+    if define_lines != [["define", "value"]]:
+        fail("Die technische Projekt-Defines-Datei muss leer bleiben.")
 
     root = ET.parse(project).getroot()
     if root.findtext("translatorName") != "JavaScript":
@@ -67,10 +79,26 @@ def validate() -> None:
     expected_layouts = {"Gruselino Karten", "Gruselino Papier", "Domino Papier", "Dobble Papier"}
     if set(layouts) != expected_layouts:
         fail("Die vier erwarteten Layouts fehlen oder wurden umbenannt.")
+    expected_refs = {
+        "Gruselino Karten": "symbols_k.csv",
+        "Gruselino Papier": "symbols_k.csv",
+        "Domino Papier": "symbols_k.csv",
+        "Dobble Papier": "symbols_k.csv",
+    }
+    expected_counts = {
+        "Gruselino Karten": "11", "Gruselino Papier": "11",
+        "Domino Papier": "10", "Dobble Papier": "7",
+    }
     for name, layout in layouts.items():
         refs = layout.findall("Reference")
-        if len(refs) != 1 or refs[0].get("RelativePath") != "lautspiele.csv":
-            fail(f"{name} verwendet nicht die gemeinsame CSV.")
+        if len(refs) != 1 or refs[0].get("RelativePath") != expected_refs[name]:
+            fail(f"{name} verwendet nicht die erwartete Symbol-CSV.")
+        if layout.get("defaultCount") != expected_counts[name]:
+            fail(f"{name} hat eine unerwartete Kartenanzahl.")
+        for element in layout.findall("Element"):
+            code = element.get("variable", "")
+            if "symbol_01__scale" in code or "symbol_scale_map" not in code and element.get("type") == "Graphic" and "Symbol" in (element.get("name") or ""):
+                fail(f"{name} enthält alte globale Größen-Defines.")
 
     for name in ("Gruselino Karten", "Gruselino Papier"):
         symbols = [e for e in layouts[name].findall("Element") if (e.get("name") or "").startswith("Symbol ")]
@@ -100,13 +128,18 @@ def validate() -> None:
     if any(len(cards[a] & cards[b]) != 1 for a in range(7) for b in range(a + 1, 7)):
         fail("Dobble-Matrix ist nicht perfekt.")
 
-    default_symbols = ROOT / "images" / "symbols" / "default"
-    for index in range(1, 11):
-        if not (default_symbols / f"{index:02}.png").is_file():
-            fail(f"Standardbild {index:02}.png fehlt.")
+    for set_name in ("default", "k"):
+        symbol_folder = ROOT / "images" / "symbols" / set_name
+        symbol_config = ROOT / f"symbols_{set_name}.csv"
+        if not symbol_config.is_file():
+            fail(f"Symboltabelle fuer {set_name} fehlt.")
+        for index in range(1, 11):
+            if not (symbol_folder / f"{index:02}.png").is_file():
+                fail(f"Bild {set_name}/{index:02}.png fehlt.")
 
     print("OK: Lautspiele-CardMaker-Projekt ist konsistent.")
-    print("Layouts: 4 | Konfigurationszeilen: 3 | Definitionen: 50")
+    print("Layouts: 4 | Symbol-CSVs: 2 | globale Definitionen: 0")
+    print("Symbolordner: default, k | CSV-Auswahl wechselt den Bildsatz")
     print("Gruselino: 11 Karten je Layout | Domino: 10 | Dobble: 7 perfekt")
 
 

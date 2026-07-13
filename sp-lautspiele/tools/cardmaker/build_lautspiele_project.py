@@ -1,23 +1,25 @@
 #!/usr/bin/env python3
 """Erzeugt das aktive CardMaker-Projekt fuer Lautspiele.
 
-Alle Karten benutzen dieselbe kleine Konfigurations-CSV. Symbolauswahl,
-Groessenkorrektur, Ausblendung, Rotation und Positionierung werden zur Laufzeit
-in den CardMaker-Elementen berechnet.
+Jeder Bildsatz besitzt eine eigene Konfigurations-CSV. Das CardMaker-Layout
+bestimmt den Spielmodus; die gewaehlte Symbol-CSV liefert Bildordner, Namen,
+Groessenkorrektur sowie Start, Ende und Verschiebung fuer alle Modi.
 """
 
 from __future__ import annotations
 
 import csv
 import math
+import shutil
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parent
 PROJECT = ROOT / "lautspiele.cmp"
-CONFIG = ROOT / "lautspiele.csv"
-DEFINES = ROOT / "lautspiele_defines.csv"
+EMPTY_DEFINES = ROOT / "lautspiele_defines.csv"
+SYMBOL_ROOT = ROOT / "images" / "symbols"
+DEFAULT_SYMBOL_REFERENCE = "symbols_k.csv"
 
 SCALE_VALUES = [
     0.91, 0.88, 0.91, 0.91, 0.94,
@@ -70,23 +72,17 @@ def _element(name: str, kind: str, x: int, y: int, width: int, height: int,
     return ET.Element("Element", attrs)
 
 
-def _scale_array() -> str:
-    values = ["1"]
-    values.extend(f"parseFloat(symbol_{idx:02}__scale)||1" for idx in range(1, 51))
-    return "[" + ",".join(values) + "]"
-
-
-def _selection_prelude(slot_expression: str) -> str:
+def _selection_prelude(slot_expression: str, mode: str) -> str:
     return (
-        "var start=parseInt(symbol_start,10)||1;"
-        "var end=parseInt(symbol_end,10)||start;"
+        f"var start=parseInt({mode}_start,10)||1;"
+        f"var end=parseInt({mode}_end,10)||start;"
         "var n=Math.max(1,end-start+1);"
-        "var shift=parseInt(symbol_shift,10)||0;"
+        f"var shift=parseInt({mode}_shift,10)||0;"
         "function mod(v,m){return ((v%m)+m)%m;}"
         f"var logical={slot_expression};"
         "var id=start+mod(shift+logical,n);"
-        f"var scales={_scale_array()};"
-        "var correction=scales[id]||1;"
+        "var scales=String(symbol_scale_map||'1').split('|').map(function(v){return parseFloat(v)||1;});"
+        "var correction=scales[id-1]||1;"
         "var file=id.toString().padStart(2,'0');"
     )
 
@@ -112,7 +108,7 @@ def _transform(random_size: bool, random_rotation: bool) -> str:
 def gruselino_variable(slot: int) -> str:
     return (
         "(function(){"
-        + _selection_prelude(str(slot - 1))
+        + _selection_prelude(str(slot - 1), "gruselino")
         + f"var hidden=cardIndex-1;if(cardIndex>1&&hidden==={slot}){{"
           "AddOverrideField('enabled','false');return ''; }"
           "AddOverrideField('enabled','true');"
@@ -126,7 +122,7 @@ def domino_variable(offset: int) -> str:
     # gesamte, mittig groessenkorrigierte Graphic-Element.
     return (
         "(function(){"
-        + _selection_prelude(f"cardIndex-1+{offset}")
+        + _selection_prelude(f"cardIndex-1+{offset}", "domino")
         + _transform(False, True)
         + "return symbol_folder+'/'+file+'.png';})()"
     )
@@ -143,19 +139,19 @@ def dobble_variable(slot: int) -> str:
     return (
         "(function(){"
         f"var matrix={encoded};"
-        + _selection_prelude(f"matrix[cardIndex-1][{slot - 1}]")
+        + _selection_prelude(f"matrix[cardIndex-1][{slot - 1}]", "dobble")
         + _transform(True, True)
         + "return symbol_folder+'/'+file+'.png';})()"
     )
 
 
-def _layout(name: str, width: int, height: int, count: int = 1) -> ET.Element:
+def _layout(name: str, width: int, height: int, reference: str, count: int = 1) -> ET.Element:
     layout = ET.Element("Layout", {
         "combineReferences": "false", "width": str(width), "height": str(height),
         "buffer": "0", "Name": name, "defaultCount": str(count),
         "dpi": "300", "drawBorder": "false",
     })
-    ET.SubElement(layout, "Reference", {"RelativePath": "lautspiele.csv", "Default": "true"})
+    ET.SubElement(layout, "Reference", {"RelativePath": reference, "Default": "true"})
     for tag, value in (
         ("exportNameFormat", ""), ("exportRotation", "0"),
         ("exportTransparentBackground", "false"), ("exportPDFAsPageBack", "false"),
@@ -181,7 +177,7 @@ def _background(width: int, height: int, name: str = "White Background") -> ET.E
 
 
 def _gruselino_layout(name: str, width: int, height: int) -> ET.Element:
-    layout = _layout(name, width, height)
+    layout = _layout(name, width, height, DEFAULT_SYMBOL_REFERENCE, count=11)
     cx, cy = width / 2, height / 2
     radius_x, radius_y = width * 0.39, height * 0.34
     size = round(min(width, height) * 0.25)
@@ -203,7 +199,7 @@ def _gruselino_layout(name: str, width: int, height: int) -> ET.Element:
 
 def _domino_layout() -> ET.Element:
     width, height = 1181, 590
-    layout = _layout("Domino Papier", width, height)
+    layout = _layout("Domino Papier", width, height, DEFAULT_SYMBOL_REFERENCE, count=10)
     size = 420
     graphics = [
         _element("Domino Symbol links", "Graphic", 88, 85, size, size, domino_variable(0)),
@@ -220,7 +216,7 @@ def _domino_layout() -> ET.Element:
 
 def _dobble_layout() -> ET.Element:
     width, height = 1122, 826
-    layout = _layout("Dobble Papier", width, height)
+    layout = _layout("Dobble Papier", width, height, DEFAULT_SYMBOL_REFERENCE, count=7)
     specs = ((561, 205, 260), (325, 555, 285), (797, 555, 285))
     graphics = [
         _element(f"Dobble Symbol {slot}", "Graphic", round(x - size / 2),
@@ -234,25 +230,79 @@ def _dobble_layout() -> ET.Element:
     return layout
 
 
-def write_csv_files() -> None:
-    with CONFIG.open("w", encoding="utf-8-sig", newline="") as handle:
-        writer = csv.writer(handle)
-        writer.writerow(["Count", "allowed_layout", "mode", "symbol_folder",
-                         "symbol_start", "symbol_end", "symbol_shift"])
-        writer.writerow([11, "Gruselino Karten;Gruselino Papier", "gruselino",
-                         "images/symbols/default", 1, 10, 0])
-        writer.writerow([10, "Domino Papier", "domino",
-                         "images/symbols/default", 1, 10, 0])
-        writer.writerow([7, "Dobble Papier", "dobble",
-                         "images/symbols/default", 1, 10, 0])
+def _symbol_config_path(folder: Path) -> Path:
+    return ROOT / f"symbols_{folder.name}.csv"
 
-    with DEFINES.open("w", encoding="utf-8-sig", newline="") as handle:
-        writer = csv.writer(handle)
-        writer.writerow(["define", "scale", "name"])
-        for symbol_id in range(1, 51):
-            scale = SCALE_VALUES[symbol_id - 1] if symbol_id <= len(SCALE_VALUES) else 1.0
-            name = SYMBOL_NAMES[symbol_id - 1] if symbol_id <= len(SYMBOL_NAMES) else f"Symbol {symbol_id:02}"
-            writer.writerow([f"symbol_{symbol_id:02}", f"{scale:.2f}", name])
+
+def _write_symbol_config(folder: Path) -> None:
+    """Schreibt genau eine CardMaker-Datenzeile fuer einen Bildsatz."""
+    path = _symbol_config_path(folder)
+    fields = [
+        "symbol_set", "symbol_folder", "symbol_names", "symbol_scale_map",
+        "gruselino_start", "gruselino_end", "gruselino_shift",
+        "domino_start", "domino_end", "domino_shift",
+        "dobble_start", "dobble_end", "dobble_shift",
+    ]
+    row = {
+        "symbol_set": folder.name,
+        "symbol_folder": folder.relative_to(ROOT).as_posix(),
+        "symbol_names": "|".join(SYMBOL_NAMES),
+        "symbol_scale_map": "|".join(f"{scale:.4g}" for scale in SCALE_VALUES),
+        "gruselino_start": "1", "gruselino_end": "10", "gruselino_shift": "0",
+        "domino_start": "1", "domino_end": "10", "domino_shift": "0",
+        "dobble_start": "1", "dobble_end": "10", "dobble_shift": "0",
+    }
+    if path.exists():
+        with path.open(encoding="utf-8-sig", newline="") as handle:
+            existing_rows = list(csv.DictReader(handle))
+        if existing_rows and "symbol_scale_map" in existing_rows[0]:
+            for field in fields:
+                if existing_rows[0].get(field, "").strip():
+                    row[field] = existing_rows[0][field].strip()
+        elif existing_rows and "symbol_id" in existing_rows[0]:
+            # Einmalige Migration der zuvor zeilenweisen Symboltabelle.
+            ordered = sorted(existing_rows, key=lambda item: int(item["symbol_id"]))
+            row["symbol_names"] = "|".join(item["symbol_name"] for item in ordered)
+            row["symbol_scale_map"] = "|".join(
+                f"{float(item['scale']):.4g}" for item in ordered
+            )
+    names = row["symbol_names"].split("|")
+    scales = row["symbol_scale_map"].split("|")
+    if names and not names[0]:
+        names = names[1:]
+    if len(scales) == len(names) + 1:
+        scales = scales[1:]
+    row["symbol_names"] = "|".join(names)
+    row["symbol_scale_map"] = "|".join(scales)
+    row["symbol_set"] = folder.name
+    row["symbol_folder"] = folder.relative_to(ROOT).as_posix()
+    with path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fields)
+        writer.writeheader()
+        writer.writerow(row)
+
+
+def _ensure_symbol_sets() -> None:
+    """Stellt Default und den vorhandenen K-Laut-Satz samt Manifest bereit."""
+    default = SYMBOL_ROOT / "default"
+    k_folder = SYMBOL_ROOT / "k"
+    default.mkdir(parents=True, exist_ok=True)
+    k_folder.mkdir(parents=True, exist_ok=True)
+    for source in sorted(default.glob("*.png")):
+        target = k_folder / source.name
+        if not target.exists():
+            shutil.copy2(source, target)
+    _write_symbol_config(default)
+    _write_symbol_config(k_folder)
+
+
+def write_csv_files() -> None:
+    _ensure_symbol_sets()
+    # CardMaker sucht automatisch <projekt>_defines.csv. Eine reine Kopfzeile
+    # verhindert die irreführende "No defines found"-Meldung, enthält aber
+    # bewusst keine globalen Daten und kann daher nichts doppelt definieren.
+    with EMPTY_DEFINES.open("w", encoding="utf-8", newline="") as handle:
+        csv.writer(handle).writerow(["define", "value"])
 
 
 def build() -> None:

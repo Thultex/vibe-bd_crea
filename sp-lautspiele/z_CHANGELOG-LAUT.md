@@ -4,19 +4,32 @@
 
 Ausgangsdatum: 2026-07-13
 
-*Diese Woche (ca. 1,5h, 1 Tag, Inhalte):* Altbestand archiviert und gemeinsame CardMaker-Generierung für Gruselino, Domino und Dobble aufgebaut.
+*Diese Woche (ca. 2,2h, 2 Tage, Inhalte):* Altbestand archiviert und CardMaker-Generierung mit bildsatzbezogenen Symboltabellen für Gruselino, Domino und Dobble aufgebaut.
 
 *Letzte Woche (0h, 0 Tage, Inhalte):* Keine Einträge.
 
-*Dieser Monat (ca. 1,5h, 1 Tag, Inhalte):* Lautspiele v1.00 als Repo-Projekt angelegt.
+*Dieser Monat (ca. 2,2h, 2 Tage, Inhalte):* Lautspiele v1.02 als Repo-Projekt angelegt und die Datenkopplung korrigiert.
 
 *Letzter Monat (0h, 0 Tage, Inhalte):* Keine Einträge.
 
-*Jahr (ca. 1,5h, 1 Tag, Inhalte):* Lautspiele v1.00 begonnen.
+*Jahr (ca. 2,2h, 2 Tage, Inhalte):* Lautspiele v1.02 begonnen.
 
-*Insgesamt (ca. 1,5h, 1 Tag, Inhalte):* Lautspiele v1.00 begonnen.
+*Insgesamt (ca. 2,2h, 2 Tage, Inhalte):* Lautspiele v1.02 begonnen.
 
 ## Log
+
+### 2026-07-14 - laut, tools, daten, fix, doku (ca. 0,7h)
+
+- Summary: Fehlerhafte globale Größen-Defines entfernt und alle Modusdaten in direkt auswählbaren CSVs pro Laut-/Bildsatz gebündelt.
+- Fix: Doppelte `symbol_01` bis `symbol_50` beseitigt; CardMaker hatte `lautspiele_defines.csv` sowohl projekt- als auch referenzbezogen geladen.
+- Fix: Nicht verfügbare JavaScript-Namen wie `symbol_01__scale` entfernt; Skalierungsfaktoren werden nun aus `symbol_scale_map` der aktiven Bildsatzzeile gelesen.
+- Refactor: Zwischenstand mit `gruselino.csv`, `domino.csv` und `dobble.csv` verworfen; der Modus wird bereits durch das Layout bestimmt und benötigt keine eigene CSV.
+- Daten: Größenkorrektur, Symbolnamen und Bildordner in `symbols_default.csv` und `symbols_k.csv` zusammengeführt; der Dateiname weist den jeweiligen Bildsatz eindeutig aus.
+- Tool: `symbols_default.csv` und `symbols_k.csv` sind nun direkte CardMaker-Referenzen und enthalten jeweils Ordner, Namen, Skalierungen sowie Start, Ende und Shift aller Modi in einer Zeile.
+- Tool: `lautspiele_defines.csv` auf eine absichtlich leere Kompatibilitätskopfzeile reduziert, damit CardMaker keine fehlenden oder doppelten Defines meldet.
+- Test: Zwei direkt auswählbare Symbol-CSVs, vier Layoutreferenzen, Bildsatzzuordnung, Skalierungsdaten und Dobble-Matrix validiert.
+- Doku: CSV-Auswahl pro Bildsatz, modusspezifische Felder und technische Rolle der leeren Defines-Datei erklärt.
+- Versionen: build_lautspiele_project v1.02, validate_lautspiele_project v1.02.
 
 ### 2026-07-13 - laut, struktur, tools, design, material, doku (ca. 1,5h)
 

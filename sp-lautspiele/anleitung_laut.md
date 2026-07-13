@@ -16,4 +16,4 @@ Zwei beliebige Karten besitzen genau ein gemeinsames Symbol. Wer es zuerst entde
 
 ## Material erzeugen
 
-Das CardMaker-Projekt liegt unter `tools/cardmaker/`. In `lautspiele.csv` werden Symbolordner, Bereich und Verschiebung gewählt. Anschließend wird das gewünschte Layout in CardMaker als Bilder oder PDF exportiert.
+Das CardMaker-Projekt liegt unter `tools/cardmaker/`. In CardMaker wird am gewünschten Layout eine Symbol-CSV wie `symbols_k.csv` oder `symbols_default.csv` gewählt. Diese eine Datei enthält Bildordner, Größenkorrekturen sowie Bereich und Verschiebung für alle drei Modi. Danach wird das gewünschte Layout als Bilder oder PDF exportiert.
