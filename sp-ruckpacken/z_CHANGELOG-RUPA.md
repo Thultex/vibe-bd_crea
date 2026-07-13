@@ -27,6 +27,7 @@ Ausgangsdatum: 2026-07-12
 - Test: Layoutmaße, 300 dpi, Symbolgeometrie, Zufallstransformationen, Hilfsrahmen, weißer Hintergrund, 73 Karten und alle Bildreferenzen validiert.
 - Doku: Bildmodell präzisiert: neun Layout-Bildplätze werden für 73 Karten wiederverwendet; 657 bezeichnet nur die daraus entstehenden Belegungen, nicht Layoutplätze oder Assets. Dauer: ca. 5 Minuten.
 - Fix: CardMaker-Ursprungsfehler behoben: Symbolkoordinaten als linke obere Elementkante gespeichert und `centerimageonorigin` deaktiviert. JavaScript erzeugt nun pro Symbol einen gemeinsamen Größenwert und führt X/Y nach, sodass ±5-%-Skalierung und 360°-Rotation dauerhaft um denselben Mittelpunkt laufen. Dauer: ca. 20 Minuten.
+- Refactor: Laufzeittransformationen verwenden die normalen CardMaker-Elementwerte `x`, `y`, `width` und `height` als Grundgeometrie; Verschieben und Größenänderungen im Editor werden damit automatisch zum neuen Standard. Dauer: ca. 5 Minuten.
 
 ### 2026-07-12 - rupa, struktur, regeln, design, assets, tools, doku (ca. 0,8h)
 

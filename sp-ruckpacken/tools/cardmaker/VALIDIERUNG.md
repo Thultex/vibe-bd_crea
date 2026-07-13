@@ -11,7 +11,7 @@
 - Vollbeschnitt: 1120 × 1570 px
 - Sicherheitsfläche: 975 × 1425 px
 - Rotation: bei jeder CardMaker-Übersetzung zufällig von 0° bis 359° um den festen Symbolmittelpunkt
-- Skalierung: ein gemeinsamer JavaScript-Zufallswert von ungefähr 95 % bis 105 % steuert Breite und Höhe; X und Y werden passend nachgeführt
+- Skalierung: ein gemeinsamer JavaScript-Zufallswert von ungefähr 95 % bis 105 % steuert Breite und Höhe; X und Y werden relativ zur normalen Elementgeometrie passend nachgeführt
 - Bildgröße: positionsabhängige Grundgröße plus ungefähr ±5 % Laufzeitvariation
 - Seitenverhältnis: gesperrt (`lockaspect=true`), daher keine Bildverzerrung
 - CSV: keine Transformationswerte

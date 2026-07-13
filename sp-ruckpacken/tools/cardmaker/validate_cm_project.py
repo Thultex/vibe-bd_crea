@@ -55,7 +55,7 @@ def validate(folder: Path) -> None:
         x = round(new_center_x + (old_x - old_center_x) * scale_x)
         y = round(new_center_y + (old_y - old_center_y) * scale_y)
         base_size = round(old_size * symbol_scale)
-        expected = runtime_variable(slot, x, y, base_size)
+        expected = runtime_variable(slot)
         top_left_x = round(x - base_size / 2)
         top_left_y = round(y - base_size / 2)
         actual = (int(element.get("x", "-1")), int(element.get("y", "-1")), int(element.get("width", "-1")))

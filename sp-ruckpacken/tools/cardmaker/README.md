@@ -22,15 +22,15 @@ Die neun Bildelemente beziehen nur ihre Dateipfade aus `cards.csv`. Position und
 Die Laufzeitvariation verwendet CardMakers JavaScript-Übersetzer direkt in der Elementdefinition. Ein gemeinsamer Zufallswert steuert Breite und Höhe; die linke obere Ecke wird passend zum festen Mittelpunkt neu berechnet:
 
 ```javascript
-var size = Math.round(BASE * (0.95 + Math.random() * 0.10));
-AddOverrideField('x', Math.round(CENTER_X - size / 2).toString());
-AddOverrideField('y', Math.round(CENTER_Y - size / 2).toString());
+var size = Math.round(Element.width * (0.95 + Math.random() * 0.10));
+AddOverrideField('x', Math.round(Element.x + (Element.width - size) / 2).toString());
+AddOverrideField('y', Math.round(Element.y + (Element.height - size) / 2).toString());
 AddOverrideField('width', size.toString());
 AddOverrideField('height', size.toString());
 AddOverrideField('rotation', Math.floor(Math.random() * 360).toString());
 ```
 
-Die XML-Attribute `rotation` bleiben deshalb alle auf `0`; es gibt keine pro Karte gespeicherten Transformationswerte in der CSV. `centerimageonorigin` bleibt bewusst deaktiviert: CardMaker berechnet die Elementrotation bereits um die Mitte des Rechtecks, während diese Bildoption einen zweiten, inkompatiblen Ursprung verwendet. Die ARASAAC-Bilder und ihre Attribution liegen unter `assets/images/arasaac/`.
+Die normalen XML-/Editorwerte `x`, `y`, `width` und `height` bilden dabei die Grundgeometrie. Wird ein Symbol im CardMaker-Editor verschoben oder in seiner Grundgröße geändert, verwendet das JavaScript diese neuen Werte automatisch als Standard und korrigiert nur die zufällige Größenabweichung um deren Mittelpunkt. Die XML-Attribute `rotation` bleiben alle auf `0`; es gibt keine pro Karte gespeicherten Transformationswerte in der CSV. `centerimageonorigin` bleibt bewusst deaktiviert: CardMaker berechnet die Elementrotation bereits um die Mitte des Rechtecks, während diese Bildoption einen zweiten, inkompatiblen Ursprung verwendet. Die ARASAAC-Bilder und ihre Attribution liegen unter `assets/images/arasaac/`.
 
 ## MPC-Flächen
 

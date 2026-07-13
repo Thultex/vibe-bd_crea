@@ -33,12 +33,12 @@ ORIGINAL_SPECS = {
 }
 
 
-def runtime_variable(slot: int, center_x: int, center_y: int, base_size: int) -> str:
+def runtime_variable(slot: int) -> str:
     """Erzeugt eine einheitlich skalierte, um ihren festen Mittelpunkt rotierte Grafik."""
     return (
-        f"var size = Math.round({base_size} * (0.95 + Math.random() * 0.10)); "
-        f"AddOverrideField('x', Math.round({center_x} - size / 2).toString()); "
-        f"AddOverrideField('y', Math.round({center_y} - size / 2).toString()); "
+        "var size = Math.round(Element.width * (0.95 + Math.random() * 0.10)); "
+        "AddOverrideField('x', Math.round(Element.x + (Element.width - size) / 2).toString()); "
+        "AddOverrideField('y', Math.round(Element.y + (Element.height - size) / 2).toString()); "
         "AddOverrideField('width', size.toString()); "
         "AddOverrideField('height', size.toString()); "
         "AddOverrideField('rotation', Math.floor(Math.random() * 360).toString()); "
@@ -123,7 +123,7 @@ def configure(project: Path) -> None:
         element.set("width", str(base_size))
         element.set("height", str(base_size))
         element.set("centerimageonorigin", "false")
-        element.set("variable", runtime_variable(slot, x, y, base_size))
+        element.set("variable", runtime_variable(slot))
         element.set("rotation", "0")
         ordered_graphics.append(element)
 
