@@ -108,14 +108,18 @@ def validate(folder: Path) -> None:
         raise RuntimeError(f"Erwartet: 73 Karten; gefunden: {len(cards)}")
 
     missing = []
+    image_references = []
     for card in cards:
         for slot in range(1, 10):
             image = folder / card[f"slot_{slot:02}"]
+            image_references.append(card[f"slot_{slot:02}"])
             if not image.is_file():
                 missing.append(str(image))
     if missing:
         raise RuntimeError("Fehlende Bilder:\n" + "\n".join(missing))
-    print("CM-Projekt: MPC Jumbo 1120 × 1570 px, 300 dpi, 73 Karten, 9 Grafiken, Guides und Laufzeitzufall valide")
+    if len(set(image_references)) != 73:
+        raise RuntimeError(f"Erwartet: 73 eindeutige Bildassets; gefunden: {len(set(image_references))}")
+    print("CM-Projekt: MPC Jumbo 1120 × 1570 px, 300 dpi, 73 Karten, 9 Layout-Bildplätze, 73 eindeutige Bildassets, Guides und Laufzeitzufall valide")
 
 
 if __name__ == "__main__":

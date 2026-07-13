@@ -25,6 +25,7 @@ Ausgangsdatum: 2026-07-12
 - Change: Laufzeitrotation auf den vollständigen Kreis (0° bis 359°) erweitert; Größenvariation bleibt auf ungefähr ±5 % begrenzt.
 - Design: Vollflächigen weißen Hintergrund sowie rote, ungefüllte Schnitt- und Sicherheitsrahmen ergänzt; Rahmen sind nur im Editor sichtbar und werden nicht exportiert.
 - Test: Layoutmaße, 300 dpi, Symbolgeometrie, Zufallstransformationen, Hilfsrahmen, weißer Hintergrund, 73 Karten und alle Bildreferenzen validiert.
+- Doku: Bildmodell präzisiert: neun Layout-Bildplätze werden für 73 Karten wiederverwendet; 657 bezeichnet nur die daraus entstehenden Belegungen, nicht Layoutplätze oder Assets. Dauer: ca. 5 Minuten.
 
 ### 2026-07-12 - rupa, struktur, regeln, design, assets, tools, doku (ca. 0,8h)
 
@@ -45,7 +46,7 @@ Ausgangsdatum: 2026-07-12
 - Doku: `cm` eindeutig als `nhmkdev/cardmaker` definiert; nanDECK als Legacy-Prototyp markiert.
 - Change: CM-Kartenformat auf 57 × 88 mm (673 × 1039 px bei 300 DPI) gesetzt; Neun-Symbol-Raute mit drei Positionsgrößen und gespeicherten leichten Drehungen umgesetzt.
 - Refactor: CM-CSV auf elf Spalten reduziert; Rotation, Größe, Namen, IDs und Overrides aus der Datenquelle entfernt.
-- Test: 73 Karten, sauberes CSV-Schema, neun Grafiken und 657 vorhandene Bildreferenzen validiert.
+- Test: 73 Karten, sauberes CSV-Schema, neun wiederverwendete Layout-Bildplätze und 73 eindeutige Bildassets validiert.
 - Struktur: Toolordner von `tools/cm/` nach `tools/cardmaker/` ausgeschrieben; `cm` bleibt nur das dokumentierte Toolkürzel.
 - Change: Hart codierte Symbolrotationen entfernt; CardMaker erzeugt Drehung (−20° bis +20°) und geringe Größenabweichung nun beim Rendern über Incept-`#random`-Overrides.
 - Tool: `configure_runtime_transforms.py` ergänzt und Validator auf echte Laufzeittransformationen verschärft. Dauer: ca. 25 Minuten.
