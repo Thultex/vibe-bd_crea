@@ -269,7 +269,7 @@ def import_symbols(input_path: Path, set_name: str, force: bool) -> None:
                 filename, candidate, url, False,
             ))
 
-    from generate_symbol_set import create_symbol_set_config
+    from symbols_generate_sets import create_symbol_set_config
     create_symbol_set_config(
         [entry.german for entry in entries], output_folder, set_name, force=True,
     )

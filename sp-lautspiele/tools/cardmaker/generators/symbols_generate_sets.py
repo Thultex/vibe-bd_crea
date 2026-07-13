@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Erzeugt Lautspiele-CSVs aus Namensliste und nummeriertem Bildordner."""
+"""Erzeugt Lautspiele-Sets aus Namensliste und nummeriertem Bildordner."""
 
 from __future__ import annotations
 

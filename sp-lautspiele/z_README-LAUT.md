@@ -7,8 +7,10 @@ Lautspiele bündelt bildbasierte Sprachspiele, die aus einem gemeinsamen Symbols
 - `anleitung_laut.md`: kurze Spiel- und Materialübersicht.
 - `design_laut.md`: technische Regeln für Symbolauswahl, Verschiebung und Layouts.
 - `tools/cardmaker/`: aktives Generatorprojekt für [nhmkdev/cardmaker](https://github.com/nhmkdev/cardmaker).
-- `tools/cardmaker/generators/import_arasaac_symbols.py`: lädt nummerierte ARASAAC-PNGs und Quellen aus einfachen Wortlisten.
-- `tools/cardmaker/generators/generate_symbol_set.py`: erzeugt dieselben CSVs ohne Netzwerk aus einer Namensliste und vorhandenen nummerierten PNGs.
+- `tools/cardmaker/generators/symbols_download_arasaac.py`: lädt nummerierte ARASAAC-PNGs und Quellen aus einfachen Wortlisten.
+- `tools/cardmaker/generators/symbols_generate_sets.py`: erzeugt dieselben CSVs ohne Netzwerk aus einer Namensliste und vorhandenen nummerierten PNGs.
+- `tools/cardmaker/generators/symbol_names.csv`: Beispiel für das gemeinsame Eingabeformat.
+- `tools/cardmaker/generators/GENERATORS_README.md`: ausführliche Anleitung für Download, lokale Set-Erzeugung und CardMaker-Build.
 - `files/archive/lautspiele-original/`: unveränderter früherer Datei- und Codebestand.
 - `files/archive/Logospiele.xlsx`: unveränderte frühere Berechnungsarbeitsmappe.
 

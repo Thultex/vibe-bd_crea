@@ -35,13 +35,15 @@ Ausgangsdatum: 2026-07-13
 - Doku: CSV-Auswahl pro Bildsatz, modusspezifische Felder und technische Rolle der leeren Defines-Datei erklärt.
 - Feature: Neuer ARASAAC-Importer liest `Deutsch[,Englisch][,Anzahl]`, sucht beide Sprachen und erzeugt Hauptbilder sowie `-dN`-/`-eN`-Alternativen zur manuellen Auswahl.
 - Daten/Assets: Importer schreibt Master, vier Modus-Referenzen, nummerierten Bildordner, Quellen-CSV und erforderliche ARASAAC-Lizenzzuordnung.
-- Refactor: Bildbeschaffung und CSV-Erzeugung getrennt; `generate_symbol_set.py` verarbeitet Namenslisten und vorhandene lückenlose Hauptbilder unabhängig von ARASAAC.
+- Refactor: Bildbeschaffung und CSV-Erzeugung getrennt; `symbols_generate_sets.py` verarbeitet Namenslisten und vorhandene lückenlose Hauptbilder unabhängig von ARASAAC.
 - Tool: ARASAAC-Importer delegiert Master- und Modusdateien an den gemeinsamen Bildsatz-Generator; manuell gepflegte Bildordner nutzen denselben Pfad.
 - Daten: Nur `01.png`, `02.png` usw. zählen als Symbole; `-dN`- und `-eN`-Kandidaten bleiben austauschbare Alternativen.
 - Struktur: Alle drei Erzeuger liegen gebündelt unter `tools/cardmaker/generators/`; Validator, Projekt und erzeugte Daten bleiben im CardMaker-Stammordner.
+- Struktur: Symbolwerkzeuge einheitlich als `symbols_download_arasaac.py` und `symbols_generate_sets.py` benannt; `symbol_names.csv` liegt als ausführbares Eingabebeispiel direkt daneben.
+- Doku: `generators/GENERATORS_README.md` beschreibt Zuständigkeiten, Eingabeformat, Ausgaben, Befehle und den empfohlenen Gesamtworkflow aller Generatoren.
 - Test: ARASAAC-Integration real mit deutschem Haupttreffer sowie deutscher und englischer Alternative erfolgreich ausgeführt.
 - Sicherheit: Vorhandene Bildsätze werden nur mit explizitem `--force` ersetzt; Suchlisten, Satznamen, PNG-Antworten und Kandidatenzahlen werden validiert.
-- Versionen: build_lautspiele_project v1.03, validate_lautspiele_project v1.03, generate_symbol_set v1.00, import_arasaac_symbols v1.00.
+- Versionen: build_lautspiele_project v1.03, validate_lautspiele_project v1.03, symbols_generate_sets v1.00, symbols_download_arasaac v1.00.
 
 ### 2026-07-13 - laut, struktur, tools, design, material, doku (ca. 1,5h)
 

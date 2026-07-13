@@ -15,9 +15,10 @@ Das aktive Projekt ist für [nhmkdev/cardmaker](https://github.com/nhmkdev/cardm
 | `images/ui/` | Oberflächenbilder des bestehenden Designs |
 | `generators/build_lautspiele_project.py` | erzeugt CSVs und CMP reproduzierbar neu |
 | `validate_lautspiele_project.py` | prüft Struktur und Kombinatorik |
-| `generators/generate_symbol_set.py` | erzeugt Master- und Modus-CSVs aus Namen und vorhandenen Bildern |
-| `generators/import_arasaac_symbols.py` | lädt ARASAAC-Bilder/Quellen und ruft den CSV-Generator auf |
-| `symbols_k.txt` | Beispiel und reproduzierbare Suchliste für den K-Satz |
+| `generators/symbols_generate_sets.py` | erzeugt Master- und Modus-CSVs aus Namen und vorhandenen Bildern |
+| `generators/symbols_download_arasaac.py` | lädt ARASAAC-Bilder/Quellen und ruft den Set-Generator auf |
+| `generators/symbol_names.csv` | Beispiel und reproduzierbare Suchliste für einen Bildsatz |
+| `generators/GENERATORS_README.md` | ausführliche Bedienung und Zusammenspiel aller Generatoren |
 
 ## Konfiguration pro Bildsatz
 
@@ -54,7 +55,7 @@ Keks,,2
 Das dritte Feld gibt die Zahl zusätzlicher Kandidaten **je vorhandener Sprache** an. Der beste deutsche Treffer wird als `01.png` verwendet. Weitere deutsche Treffer heißen `01-d1.png`, `01-d2.png` usw.; englische Alternativen heißen `01-e1.png`, `01-e2.png` usw. Doppelte ARASAAC-IDs werden übersprungen. Dadurch kann später eine Alternative durch einfaches Umbenennen zur Hauptdatei gemacht werden.
 
 ```powershell
-python generators/import_arasaac_symbols.py symbols_k.txt --set-name k --force
+python generators/symbols_download_arasaac.py generators/symbol_names.csv --set-name k --force
 ```
 
 Der Satzname bestimmt automatisch:
@@ -71,7 +72,7 @@ Ohne `--set-name` wird der Dateiname der Wortliste verwendet. Bestehende Ausgabe
 Der unabhängige CSV-Generator kann auch ohne ARASAAC verwendet werden. Die erste Spalte der Namensliste enthält die Anzeigenamen; weitere Spalten werden ignoriert. Im Bildordner zählen nur lückenlos nummerierte Hauptdateien `01.png`, `02.png` usw. Dateien wie `01-d1.png` sind Alternativen und erhöhen die Symbolzahl nicht.
 
 ```powershell
-python generators/generate_symbol_set.py symbols_k.txt images/symbols/k --set-name k --force
+python generators/symbols_generate_sets.py generators/symbol_names.csv images/symbols/k --set-name k --force
 ```
 
 Der Ordnername ist ohne `--set-name` zugleich der Satzname. Vorhandene Größenkorrekturen und Shifts werden beim bewussten Neuerzeugen soweit möglich beibehalten. Danach sind Master und alle vier technischen Modus-CSVs aktuell. Der ARASAAC-Importer benutzt intern genau dieselbe Funktion.
@@ -92,4 +93,4 @@ python generators/build_lautspiele_project.py
 python validate_lautspiele_project.py
 ```
 
-CardMaker-Version des Werkzeugstands: v1.03. Bildsatz-Generator: v1.00. ARASAAC-Importer: v1.00.
+CardMaker-Version des Werkzeugstands: v1.03. `symbols_generate_sets`: v1.00. `symbols_download_arasaac`: v1.00.
