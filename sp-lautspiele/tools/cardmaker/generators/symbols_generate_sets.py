@@ -15,7 +15,6 @@ CONFIG_FIELDS = [
     "symbol_set", "symbol_folder", "symbol_count", "symbol_names",
     "symbol_scale_map", "symbol_available_map",
     "gruselino_start", "gruselino_end", "gruselino_shift",
-    "memory_start", "memory_end", "memory_shift",
     "domino_start", "domino_end", "domino_shift",
     "dobble_start", "dobble_end", "dobble_shift",
 ]
@@ -107,8 +106,6 @@ def create_symbol_set_config(
         ),
         "gruselino_start": "1", "gruselino_end": str(amount),
         "gruselino_shift": previous.get("gruselino_shift", "0") or "0",
-        "memory_start": "1", "memory_end": str(amount),
-        "memory_shift": previous.get("memory_shift", "0") or "0",
         "domino_start": "1", "domino_end": str(amount),
         "domino_shift": previous.get("domino_shift", "0") or "0",
         "dobble_start": "1", "dobble_end": "31",

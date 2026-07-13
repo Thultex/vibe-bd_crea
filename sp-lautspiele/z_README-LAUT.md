@@ -1,6 +1,6 @@
 # Lautspiele
 
-Lautspiele bündelt bildbasierte Sprachspiele, die aus einem gemeinsamen Symbolsatz erzeugt werden. Der aktuelle Werkzeugstand umfasst Gruselino, Memory, Domino und eine kompakte perfekte Dobble-Variante.
+Lautspiele bündelt bildbasierte Sprachspiele, die aus einem gemeinsamen Symbolsatz erzeugt werden. Der aktuelle Werkzeugstand umfasst Gruselino Papier, ein doppelt nutzbares Memory-/Domino-Papiermodul und eine kompakte perfekte Dobble-Variante.
 
 ## Struktur
 
@@ -10,6 +10,7 @@ Lautspiele bündelt bildbasierte Sprachspiele, die aus einem gemeinsamen Symbols
 - `tools/cardmaker/generators/symbols_download_arasaac.py`: lädt nummerierte ARASAAC-PNGs und Quellen aus einfachen Wortlisten.
 - `tools/cardmaker/generators/symbols_generate_sets.py`: erzeugt dieselben CSVs ohne Netzwerk aus einer Namensliste und vorhandenen nummerierten PNGs.
 - `tools/cardmaker/generators/symbol_names.csv`: Beispiel für das gemeinsame Eingabeformat.
+- `tools/cardmaker/generators/symbol_ids.csv`: leere Vorlage für den direkten Abruf bekannter ARASAAC-IDs.
 - `tools/cardmaker/generators/GENERATORS_README.md`: ausführliche Anleitung für Download, lokale Set-Erzeugung und CardMaker-Build.
 - `files/archive/lautspiele-original/`: unveränderter früherer Datei- und Codebestand.
 - `files/archive/Logospiele.xlsx`: unveränderte frühere Berechnungsarbeitsmappe.

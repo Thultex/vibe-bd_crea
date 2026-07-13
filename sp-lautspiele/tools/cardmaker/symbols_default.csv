@@ -1,2 +1,2 @@
-symbol_set,symbol_folder,symbol_count,symbol_names,symbol_scale_map,symbol_available_map,gruselino_start,gruselino_end,gruselino_shift,memory_start,memory_end,memory_shift,domino_start,domino_end,domino_shift,dobble_start,dobble_end,dobble_shift
-default,images/symbols/default,10,Käse|Bankkarte|Stecker|Katze|Keks|Ei|Kuh|Mädchen|Mädchen (Duplikat 1)|Mädchen (Duplikat 2),0.91|0.88|0.91|0.91|0.94|0.9|1.03|0.97|0.97|0.97,1|1|1|1|1|1|1|1|1|1|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0,1,10,0,1,10,0,1,10,0,1,31,0
+symbol_set,symbol_folder,symbol_count,symbol_names,symbol_scale_map,symbol_available_map,gruselino_start,gruselino_end,gruselino_shift,domino_start,domino_end,domino_shift,dobble_start,dobble_end,dobble_shift
+default,images/symbols/default,10,Käse|Bankkarte|Stecker|Katze|Keks|Ei|Kuh|Mädchen|Mädchen (Duplikat 1)|Mädchen (Duplikat 2),0.91|0.88|0.91|0.91|0.94|0.9|1.03|0.97|0.97|0.97,1|1|1|1|1|1|1|1|1|1|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0|0,1,10,0,1,10,0,1,31,0

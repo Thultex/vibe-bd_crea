@@ -11,7 +11,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 SETS = ("default", "k")
-MODES = ("gruselino", "memory", "domino", "dobble")
+MODES = ("gruselino", "domino", "dobble")
 
 
 def fail(message: str) -> None:
@@ -44,11 +44,9 @@ def validate() -> None:
         "symbol_set", "symbol_folder", "symbol_count", "symbol_names",
         "symbol_scale_map", "symbol_available_map",
         "gruselino_start", "gruselino_end", "gruselino_shift",
-        "memory_start", "memory_end", "memory_shift",
         "domino_start", "domino_end", "domino_shift",
         "dobble_start", "dobble_end", "dobble_shift",
     }
-    expected_mode_counts: dict[tuple[str, str], int] = {}
     for set_name in SETS:
         master = ROOT / f"symbols_{set_name}.csv"
         if not master.is_file():
@@ -75,24 +73,21 @@ def validate() -> None:
             int(row[f"{mode}_shift"])
             if not 1 <= start <= end:
                 fail(f"Ungültige Start-/Endspanne für {mode} in {master.name}.")
-        expected_mode_counts.update({
-            ("gruselino", set_name): 12,
-            ("memory", set_name): 2 * (
-                int(row["memory_end"]) - int(row["memory_start"]) + 1
-            ),
-            ("domino", set_name): (
-                int(row["domino_end"]) - int(row["domino_start"]) + 1
-            ),
-            ("dobble", set_name): 31,
-        })
+        expected_counts = {
+            "gruselino": 12,
+            "domino": int(row["domino_end"]) - int(row["domino_start"]) + 1,
+            "dobble": 31,
+        }
         for mode in MODES:
             derived = ROOT / f"{mode}_{set_name}.csv"
             derived_row = read_one(derived)
-            if int(derived_row.get("Count", "0")) != expected_mode_counts[(mode, set_name)]:
+            if int(derived_row.get("Count", "0")) != expected_counts[mode]:
                 fail(f"{derived.name} hat einen falschen Count.")
             for field in required_fields:
                 if derived_row.get(field) != row.get(field):
                     fail(f"{derived.name} weicht im Feld {field} vom Master ab.")
+        if (ROOT / f"memory_{set_name}.csv").exists():
+            fail(f"Veraltete separate Memory-Datei vorhanden: memory_{set_name}.csv")
 
     if not project.is_file() or not empty_defines.is_file():
         fail("Projekt oder technische Defines-Datei fehlt.")
@@ -105,58 +100,94 @@ def validate() -> None:
         fail("Das Projekt muss den JavaScript-Translator verwenden.")
     layouts = {layout.get("Name"): layout for layout in root.findall("Layout")}
     expected = {
-        "Gruselino Karten": ("gruselino_k.csv", "12"),
-        "Gruselino Papier": ("gruselino_k.csv", "12"),
-        "Memory Papier": ("memory_k.csv", "20"),
-        "Domino Papier": ("domino_k.csv", "10"),
-        "Dobble Papier": ("dobble_k.csv", "31"),
+        "Gruselino Papier": ("gruselino", "7860", "7602"),
+        "Memory / Domino Papier": ("domino", "2362", "7400"),
+        "Dobble Papier": ("dobble", "7860", "7602"),
     }
     if set(layouts) != set(expected):
-        fail("Die fünf erwarteten Layouts fehlen oder wurden umbenannt.")
-    for name, (reference, default_count) in expected.items():
+        fail("Die drei erwarteten Layouts fehlen oder wurden umbenannt.")
+    for name, (mode, export_width, export_height) in expected.items():
         layout = layouts[name]
         refs = layout.findall("Reference")
-        if len(refs) != 1 or refs[0].get("RelativePath") != reference:
-            fail(f"{name} verwendet nicht die erwartete Modus-CSV.")
-        if layout.get("defaultCount") != default_count:
-            fail(f"{name} hat eine unerwartete Standard-Kartenanzahl.")
+        expected_refs = {f"{mode}_default.csv", f"{mode}_k.csv"}
+        actual_refs = {ref.get("RelativePath") for ref in refs}
+        if actual_refs != expected_refs:
+            fail(f"{name} bindet nicht alle erwarteten Satz-CSVs ein.")
+        defaults = [ref.get("RelativePath") for ref in refs if ref.get("Default") == "true"]
+        if defaults != [f"{mode}_k.csv"]:
+            fail(f"{name} muss genau den K-Satz als Standardreferenz markieren.")
+        if layout.get("defaultCount") != "1":
+            fail(f"{name} muss den historischen Layout-Standardcount 1 verwenden.")
+        if (layout.findtext("exportWidth"), layout.findtext("exportHeight")) != (
+            export_width, export_height
+        ):
+            fail(f"{name} verwendet nicht die erwartete PDF-Seitengröße.")
 
-    for name in ("Gruselino Karten", "Gruselino Papier"):
-        elements = layouts[name].findall("Element")
-        bases = [e for e in elements if (e.get("name") or "").startswith("Grundsymbol ")]
-        searches = [e for e in elements if (e.get("name") or "").startswith("Suchsymbol ")]
-        if len(bases) != 8 or len(searches) != 8:
-            fail(f"{name} braucht acht Grund- und acht Suchsymbolfelder.")
-        for element in [*bases, *searches]:
-            code = element.get("variable", "")
-            if "shuffledLogical" not in code or "Math.random()*360" not in code:
-                fail(f"Permutation oder Rotation fehlt in {name}.")
-        if name == "Gruselino Papier":
-            twirls = [e for e in elements if (e.get("name") or "").startswith("Twirl ")]
-            if len(twirls) != 8:
-                fail("Gruselino Papier braucht acht Suchkarten-Effekte.")
-            fronts = [e for e in elements if e.get("name") == "Gruselino Front"]
-            if len(fronts) != 1 or "cardIndex<=4" not in fronts[0].get("variable", ""):
-                fail("Gruselino Papier braucht die historische Suchkarten-Front.")
-
-    memory = [e for e in layouts["Memory Papier"].findall("Element")
-              if e.get("name") == "Memory Symbol"]
-    if len(memory) != 1 or "Math.floor((cardIndex-1)/2)" not in memory[0].get("variable", ""):
-        fail("Memory muss jedes Symbol genau als Paar erzeugen.")
-
-    domino = [e for e in layouts["Domino Papier"].findall("Element")
-              if (e.get("name") or "").startswith("Domino Symbol")]
-    if len(domino) != 2:
-        fail("Domino benötigt zwei Symbolfelder.")
-    for element in domino:
+    gruselino = layouts["Gruselino Papier"].findall("Element")
+    bases = [e for e in gruselino if (e.get("name") or "").startswith("Grundsymbol ")]
+    searches = [e for e in gruselino if (e.get("name") or "").startswith("Suchsymbol ")]
+    if len(bases) != 8 or len(searches) != 8:
+        fail("Gruselino Papier braucht acht Grund- und acht Suchsymbolfelder.")
+    for element in [*bases, *searches]:
         code = element.get("variable", "")
-        if "Math.random()*360" not in code or "0.95+Math.random" in code:
-            fail("Domino darf drehen, aber nicht zufällig skalieren.")
+        if "shuffledLogical" not in code or "Math.random()*41" not in code:
+            fail("Gruselino-Permutation oder dezente Rotation fehlt.")
+    expected_sizes = sorted(
+        size for _, _, size in builder._scaled_positions(
+            builder.GRUSELINO_PAPER_BASE_POSITIONS, 0.8
+        )
+    )
+    if sorted(int(e.get("width", "0")) for e in bases) != expected_sizes:
+        fail("Gruselino-Papiersymbole sind nicht um 20 Prozent verkleinert.")
+    if len([e for e in gruselino if (e.get("name") or "").startswith("Twirl ")]) != 8:
+        fail("Gruselino Papier braucht acht Suchkarten-Effekte.")
+    fronts = [e for e in gruselino if e.get("name") == "Gruselino Front"]
+    if len(fronts) != 1 or "cardIndex<=4" not in fronts[0].get("variable", ""):
+        fail("Gruselino Papier braucht die historische Suchkarten-Front.")
 
-    dobble = [e for e in layouts["Dobble Papier"].findall("Element")
-              if (e.get("name") or "").startswith("Dobble Symbol")]
+    double_layout = layouts["Memory / Domino Papier"]
+    double_symbols = [
+        e for e in double_layout.findall("Element")
+        if (e.get("name") or "").startswith("Memory Domino Symbol")
+    ]
+    if len(double_symbols) != 2:
+        fail("Memory/Domino benötigt zwei trennbare Symbolkarten.")
+    for element in double_symbols:
+        code = element.get("variable", "")
+        if "AddOverrideField('rotation','0')" not in code or "Math.random" in code:
+            fail("Memory/Domino darf weder drehen noch zufällig skalieren.")
+    cut = [e for e in double_layout.findall("Element") if e.get("name") == "Schnittzone"]
+    if len(cut) != 1 or cut[0].get("x") != "579" or cut[0].get("width") != "22":
+        fail("Memory/Domino braucht die originalnahe mittige Schnittzone.")
+    borders = [
+        e for e in double_layout.findall("Element")
+        if (e.get("name") or "").startswith("Kartenrand ")
+    ]
+    if len(borders) != 2 or any(
+        e.get("width") != "560" or e.get("height") != "560"
+        for e in borders
+    ):
+        fail("Memory/Domino braucht zwei identische originalnahe Kartenränder.")
+    required_ui = {
+        "Memory Domino Front", "Twirl links", "Twirl rechts",
+        "Memory Domino Hintergrund",
+    }
+    actual_ui = {e.get("name") for e in double_layout.findall("Element")}
+    if not required_ui.issubset(actual_ui):
+        fail("Memory/Domino fehlen originale Hintergrund-, Front- oder Twirl-Ebenen.")
+
+    dobble = [
+        e for e in layouts["Dobble Papier"].findall("Element")
+        if (e.get("name") or "").startswith("Dobble Symbol")
+    ]
     if len(dobble) != 6:
         fail("Dobble benötigt sechs Symbolfelder.")
+    if any("0.82+Math.random()*0.36" not in e.get("variable", "") for e in dobble):
+        fail("Dobble braucht die Größenvarianz von plus/minus 18 Prozent.")
+    centers_x = [int(e.get("x", "0")) + int(e.get("width", "0")) / 2 for e in dobble]
+    centers_y = [int(e.get("y", "0")) + int(e.get("height", "0")) / 2 for e in dobble]
+    if max(centers_x) - min(centers_x) < 700 or max(centers_y) - min(centers_y) < 450:
+        fail("Dobble-Symbole sind nicht weit genug über die Karte verteilt.")
     cards = [set(card) for card in builder.DOBBLE]
     if len(cards) != 31 or any(len(card) != 6 for card in cards):
         fail("Dobble-Matrix hat nicht 31 Karten mit je 6 Symbolen.")
@@ -170,9 +201,9 @@ def validate() -> None:
         fail("Dobble-Symbole erscheinen nicht jeweils sechsmal.")
 
     print("OK: Lautspiele-CardMaker-Projekt ist konsistent.")
-    print("Layouts: 5 | Master-CSVs: 2 | Modus-CSVs: 8")
-    print("Gruselino: 4 Grundkarten + 8 Suchkarten | Memory: Symbolpaare")
-    print("Domino: Bereichs-Count | Dobble: 31 Karten, 6 Symbole, perfekt")
+    print("Layouts: 3 | Master-CSVs: 2 | Modus-CSVs: 6")
+    print("Gruselino Papier: 4 Grundkarten + 8 Suchkarten, 80 Prozent Größe")
+    print("Memory/Domino: ein trennbares Doppelmodul | Dobble: 31x6, perfekt")
 
 
 if __name__ == "__main__":

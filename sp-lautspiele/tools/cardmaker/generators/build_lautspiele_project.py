@@ -24,10 +24,6 @@ GRUSELINO_BASE_CARDS = 4
 DOBBLE_ORDER = 5
 DOBBLE_SYMBOL_COUNT = DOBBLE_ORDER * DOBBLE_ORDER + DOBBLE_ORDER + 1
 
-GRUSELINO_CARD_POSITIONS = (
-    (101, 87, 335), (409, 181, 335), (689, 226, 335), (999, 96, 335),
-    (150, 439, 335), (417, 483, 335), (712, 473, 335), (965, 413, 335),
-)
 GRUSELINO_PAPER_BASE_POSITIONS = (
     (-18, 81, 400), (309, -17, 335), (638, -15, 335), (786, 166, 335),
     (759, 409, 335), (523, 501, 335), (279, 471, 335), (15, 386, 335),
@@ -105,12 +101,21 @@ def _selection_prelude(slot_expression: str, mode: str) -> str:
     )
 
 
-def _transform(random_size: bool, random_rotation: bool) -> str:
-    size_random = "*(0.95+Math.random()*0.10)" if random_size else ""
-    rotation = (
-        "AddOverrideField('rotation',Math.floor(Math.random()*360).toString());"
-        if random_rotation else "AddOverrideField('rotation','0');"
+def _transform(size_variation: float = 0, rotation_degrees: int = 0) -> str:
+    size_random = (
+        f"*({1 - size_variation:.4g}+Math.random()*{size_variation * 2:.4g})"
+        if size_variation else ""
     )
+    if rotation_degrees >= 180:
+        rotation = "AddOverrideField('rotation',Math.floor(Math.random()*360).toString());"
+    elif rotation_degrees > 0:
+        rotation = (
+            "AddOverrideField('rotation',"
+            f"(Math.floor(Math.random()*{rotation_degrees * 2 + 1})-{rotation_degrees})"
+            ".toString());"
+        )
+    else:
+        rotation = "AddOverrideField('rotation','0');"
     return (
         f"var factor=correction{size_random};"
         "var w=Math.round(Element.width*factor);"
@@ -146,7 +151,7 @@ def gruselino_variable(slot: int, base: bool) -> str:
         + _selection_prelude("shuffledLogical", "gruselino")
         + visibility + "{AddOverrideField('enabled','false');return '';}"
         + "AddOverrideField('enabled','true');"
-        + _transform(True, True)
+        + _transform(0.05, 20)
         + "return symbol_folder+'/'+file+'.png';})()"
     )
 
@@ -159,19 +164,8 @@ def gruselino_twirl_variable(slot: int) -> str:
           f"if(cardIndex<={GRUSELINO_BASE_CARDS}||shuffledLogical===hidden){{"
           "AddOverrideField('enabled','false');return '';}"
           "AddOverrideField('enabled','true');"
-          "AddOverrideField('rotation',Math.floor(Math.random()*360).toString());"
+          "AddOverrideField('rotation',(Math.floor(Math.random()*41)-20).toString());"
           "return 'images/ui/twirl.png';})()"
-    )
-
-
-def memory_variable() -> str:
-    return (
-        "(function(){"
-        + _selection_prelude("Math.floor((cardIndex-1)/2)", "memory")
-        + "if(!exists){AddOverrideField('enabled','false');return '';}"
-          "AddOverrideField('enabled','true');"
-        + _transform(False, False)
-        + "return symbol_folder+'/'+file+'.png';})()"
     )
 
 
@@ -183,7 +177,7 @@ def domino_variable(offset: int) -> str:
         + _selection_prelude(f"cardIndex-1+{offset}", "domino")
         + "if(!exists){AddOverrideField('enabled','false');return '';}"
           "AddOverrideField('enabled','true');"
-        + _transform(False, True)
+        + _transform(0, 0)
         + "return symbol_folder+'/'+file+'.png';})()"
     )
 
@@ -217,30 +211,36 @@ def dobble_variable(slot: int) -> str:
         + _selection_prelude(f"matrix[cardIndex-1][{slot - 1}]", "dobble")
         + "if(!exists){AddOverrideField('enabled','false');return '';}"
           "AddOverrideField('enabled','true');"
-        + _transform(True, True)
+        + _transform(0.18, 180)
         + "return symbol_folder+'/'+file+'.png';})()"
     )
 
 
-def _layout(name: str, width: int, height: int, reference: str, count: int = 1) -> ET.Element:
+def _layout(name: str, width: int, height: int, mode: str,
+            export_width: int, export_height: int) -> ET.Element:
     layout = ET.Element("Layout", {
         "combineReferences": "false", "width": str(width), "height": str(height),
-        "buffer": "0", "Name": name, "defaultCount": str(count),
+        "buffer": "0", "Name": name, "defaultCount": "1",
         "dpi": "300", "drawBorder": "false",
     })
-    ET.SubElement(layout, "Reference", {"RelativePath": reference, "Default": "true"})
+    references = sorted(ROOT.glob(f"{mode}_*.csv"))
+    if not references:
+        raise FileNotFoundError(f"Keine CardMaker-Referenz fuer Modus {mode!r} gefunden.")
+    default_name = f"{mode}_{DEFAULT_SYMBOL_SET}.csv"
+    for reference in references:
+        ET.SubElement(layout, "Reference", {
+            "RelativePath": reference.name,
+            "Default": "true" if reference.name == default_name else "false",
+        })
     for tag, value in (
         ("exportNameFormat", ""), ("exportRotation", "0"),
         ("exportTransparentBackground", "false"), ("exportPDFAsPageBack", "false"),
-        ("exportWidth", "0"), ("exportHeight", "0"), ("zoom", "0.65"),
+        ("exportWidth", str(export_width)),
+        ("exportHeight", str(export_height)), ("zoom", "0.65"),
         ("exportLayoutBorder", "false"), ("exportLayoutBorderCrossSize", "0"),
     ):
         ET.SubElement(layout, tag).text = value
     return layout
-
-
-def _reference(mode: str, set_name: str = DEFAULT_SYMBOL_SET) -> str:
-    return f"{mode}_{set_name}.csv"
 
 
 def _insert_elements(layout: ET.Element, elements: list[ET.Element]) -> None:
@@ -257,17 +257,24 @@ def _background(width: int, height: int, name: str = "White Background") -> ET.E
                     lockaspect="false", backgroundcolor="0xFFFFFFFF")
 
 
-def _gruselino_layout(name: str, width: int, height: int) -> ET.Element:
-    layout = _layout(name, width, height, _reference("gruselino"), count=12)
-    if name == "Gruselino Karten":
-        base_positions = search_positions = GRUSELINO_CARD_POSITIONS
-        base_bg, search_bg = "gruselino-bg1.png", "gruselino-bg2.png"
-        ui_x, ui_y, ui_width, ui_height = 46, 41, 1395, 816
-    else:
-        base_positions = GRUSELINO_PAPER_BASE_POSITIONS
-        search_positions = GRUSELINO_PAPER_SEARCH_POSITIONS
-        base_bg, search_bg = "gruselino-bg2.png", "gruselino-bg1.png"
-        ui_x, ui_y, ui_width, ui_height = 7, 6, 1104, 816
+def _scaled_positions(
+    positions: tuple[tuple[int, int, int], ...], factor: float,
+) -> tuple[tuple[int, int, int], ...]:
+    result = []
+    for x, y, size in positions:
+        new_size = round(size * factor)
+        offset = round((size - new_size) / 2)
+        result.append((x + offset, y + offset, new_size))
+    return tuple(result)
+
+
+def _gruselino_layout() -> ET.Element:
+    name, width, height = "Gruselino Papier", 1122, 826
+    layout = _layout(name, width, height, "gruselino", 7860, 7602)
+    base_positions = _scaled_positions(GRUSELINO_PAPER_BASE_POSITIONS, 0.8)
+    search_positions = _scaled_positions(GRUSELINO_PAPER_SEARCH_POSITIONS, 0.8)
+    base_bg, search_bg = "gruselino-bg2.png", "gruselino-bg1.png"
+    ui_x, ui_y, ui_width, ui_height = 7, 6, 1104, 816
     base_graphics = [
         _element(f"Grundsymbol {slot}", "Graphic", x, y, size, size,
                  gruselino_variable(slot, True))
@@ -279,12 +286,11 @@ def _gruselino_layout(name: str, width: int, height: int) -> ET.Element:
         for slot, (x, y, size) in enumerate(search_positions, start=1)
     ]
     twirls: list[ET.Element] = []
-    if name == "Gruselino Papier":
-        twirls = [
-            _element(f"Twirl {slot}", "Graphic", x, y, size, size,
-                     gruselino_twirl_variable(slot), opacity="105")
-            for slot, (x, y, size) in enumerate(search_positions, start=1)
-        ]
+    twirls = [
+        _element(f"Twirl {slot}", "Graphic", x, y, size, size,
+                 gruselino_twirl_variable(slot), opacity="105")
+        for slot, (x, y, size) in enumerate(search_positions, start=1)
+    ]
     bg_path = (
         f"cardIndex<={GRUSELINO_BASE_CARDS}?"
         f"'images/ui/{base_bg}':'images/ui/{search_bg}'"
@@ -292,55 +298,78 @@ def _gruselino_layout(name: str, width: int, height: int) -> ET.Element:
     bg = _element("Gruselino Background", "Graphic", ui_x, ui_y,
                   ui_width, ui_height, bg_path,
                   lockaspect="false")
-    front: list[ET.Element] = []
-    if name == "Gruselino Papier":
-        front_path = (
-            f"cardIndex<={GRUSELINO_BASE_CARDS}?"
-            "'':'images/ui/gruselino_front.png'"
-        )
-        front = [_element("Gruselino Front", "Graphic", ui_x, ui_y,
-                          ui_width, ui_height, front_path,
-                          lockaspect="false", opacity="150")]
+    front_path = (
+        f"cardIndex<={GRUSELINO_BASE_CARDS}?"
+        "'':'images/ui/gruselino_front.png'"
+    )
+    front = [_element("Gruselino Front", "Graphic", ui_x, ui_y,
+                      ui_width, ui_height, front_path,
+                      lockaspect="false", opacity="150")]
     _insert_elements(layout, [*front, *search_graphics, *base_graphics,
                               *twirls, bg, _background(width, height)])
     return layout
 
 
-def _memory_layout() -> ET.Element:
-    width, height = 590, 590
-    layout = _layout("Memory Papier", width, height, _reference("memory"), count=20)
-    symbol = _element("Memory Symbol", "Graphic", 85, 85, 420, 420,
-                      memory_variable())
-    frame = _element("Memory Rahmen", "Text", 12, 12, 566, 566, "''",
-                     lockaspect="false", borderthickness="5",
-                     bordercolor="0x5A7D8AFF", backgroundcolor="0xF7FBFFFF")
-    _insert_elements(layout, [symbol, frame, _background(width, height)])
-    return layout
-
-
 def _domino_layout() -> ET.Element:
     width, height = 1181, 590
-    layout = _layout("Domino Papier", width, height, _reference("domino"), count=10)
-    size = 420
+    layout = _layout("Memory / Domino Papier", width, height,
+                     "domino", 2362, 7400)
+    size = 550
     graphics = [
-        _element("Domino Symbol links", "Graphic", 88, 85, size, size, domino_variable(0)),
-        _element("Domino Symbol rechts", "Graphic", 673, 85, size, size, domino_variable(1)),
+        _element("Memory Domino Symbol links", "Graphic", 27, 19,
+                 size, size, domino_variable(0)),
+        _element("Memory Domino Symbol rechts", "Graphic", 602, 15,
+                 size, size, domino_variable(1)),
     ]
-    divider = _element("Domino Trennlinie", "Text", 586, 45, 9, 500, "''",
-                       lockaspect="false", backgroundcolor="0x333333FF")
-    frame = _element("Domino Rahmen", "Text", 20, 12, 1141, 566, "''",
-                     lockaspect="false", borderthickness="5",
-                     bordercolor="0x333333FF", backgroundcolor="0xF7FBFFFF")
-    _insert_elements(layout, [*graphics, divider, frame, _background(width, height)])
+    card_borders = [
+        _element("Kartenrand links", "Shape", 22, 12, 560, 560,
+                 "'roundedrect;7;-;-;25'", lockaspect="false",
+                 elementcolor="0x585858FF"),
+        _element("Kartenrand rechts", "Shape", 598, 12, 560, 560,
+                 "'roundedrect;7;-;-;25'", lockaspect="false",
+                 elementcolor="0x585858FF"),
+    ]
+    frame_bands = [
+        _element("Rand oben", "Shape", -2, -4, 1181, 12,
+                 "'rect;0;-;-'", lockaspect="false",
+                 elementcolor="0xFFFFFFFF"),
+        _element("Schnittzone", "Shape", 579, -2, 22, 590,
+                 "'rect;0;-;-'", lockaspect="false",
+                 elementcolor="0xFFFFFFFF"),
+        _element("Rand unten", "Shape", 0, 578, 1181, 12,
+                 "'rect;0;-;-'", lockaspect="false",
+                 elementcolor="0xFFFFFFFF"),
+        _element("Rand links", "Shape", -4, 0, 12, 590,
+                 "'rect;0;-;-'", lockaspect="false",
+                 elementcolor="0xFFFFFFFF"),
+        _element("Rand rechts", "Shape", 1181, 0, 12, 590,
+                 "'rect;0;-;-'", lockaspect="false",
+                 elementcolor="0xFFFFFFFF"),
+    ]
+    front = _element("Memory Domino Front", "Graphic", 27, 15, 1134, 553,
+                     "'images/ui/gruselino_front.png'", lockaspect="false",
+                     opacity="150")
+    twirls = [
+        _element("Twirl links", "Graphic", 19, -22, 600, 600,
+                 "'images/ui/twirl.png'"),
+        _element("Twirl rechts", "Graphic", 583, -3, 600, 600,
+                 "'images/ui/twirl.png'"),
+    ]
+    background = _element("Memory Domino Hintergrund", "Graphic", 7, 6,
+                          1120, 560, "'images/ui/gruselino-bg1.png'",
+                          lockaspect="false")
+    _insert_elements(layout, [*card_borders, *frame_bands, front,
+                              graphics[0], twirls[0], graphics[1], twirls[1],
+                              background, _background(width, height)])
     return layout
 
 
 def _dobble_layout() -> ET.Element:
     width, height = 1122, 826
-    layout = _layout("Dobble Papier", width, height, _reference("dobble"), count=31)
+    layout = _layout("Dobble Papier", width, height, "dobble", 7860, 7602)
     specs = (
-        (561, 145, 235), (285, 300, 230), (837, 300, 230),
-        (285, 610, 230), (837, 610, 230), (561, 485, 270),
+        (165, 145, 205), (555, 125, 230), (945, 190, 200),
+        (185, 640, 225), (555, 465, 265), (930, 645, 215),
     )
     graphics = [
         _element(f"Dobble Symbol {slot}", "Graphic", round(x - size / 2),
@@ -365,7 +394,6 @@ def _write_symbol_config(folder: Path) -> None:
         "symbol_set", "symbol_folder", "symbol_count", "symbol_names",
         "symbol_scale_map", "symbol_available_map",
         "gruselino_start", "gruselino_end", "gruselino_shift",
-        "memory_start", "memory_end", "memory_shift",
         "domino_start", "domino_end", "domino_shift",
         "dobble_start", "dobble_end", "dobble_shift",
     ]
@@ -377,7 +405,6 @@ def _write_symbol_config(folder: Path) -> None:
         "symbol_scale_map": "|".join(f"{scale:.4g}" for scale in SCALE_VALUES),
         "symbol_available_map": "",
         "gruselino_start": "1", "gruselino_end": "10", "gruselino_shift": "0",
-        "memory_start": "1", "memory_end": "10", "memory_shift": "0",
         "domino_start": "1", "domino_end": "10", "domino_shift": "0",
         "dobble_start": "1", "dobble_end": str(DOBBLE_SYMBOL_COUNT), "dobble_shift": "0",
     }
@@ -448,7 +475,6 @@ def write_mode_reference_files() -> None:
         set_name = row["symbol_set"]
         counts = {
             "gruselino": 12,
-            "memory": 2 * (int(row["memory_end"]) - int(row["memory_start"]) + 1),
             "domino": int(row["domino_end"]) - int(row["domino_start"]) + 1,
             "dobble": len(DOBBLE),
         }
@@ -478,9 +504,7 @@ def build() -> None:
         "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
     })
     root.extend([
-        _gruselino_layout("Gruselino Karten", 1488, 897),
-        _gruselino_layout("Gruselino Papier", 1122, 826),
-        _memory_layout(),
+        _gruselino_layout(),
         _domino_layout(),
         _dobble_layout(),
     ])

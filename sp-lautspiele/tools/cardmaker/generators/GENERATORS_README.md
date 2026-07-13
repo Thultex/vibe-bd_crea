@@ -7,9 +7,10 @@ Die Generatoren trennen Bildbeschaffung, Bildsatz-Konfiguration und CardMaker-Pr
 | Datei | Aufgabe |
 |---|---|
 | `symbols_download_arasaac.py` | Sucht Begriffe über die ARASAAC-API, lädt Hauptbilder und Alternativen und dokumentiert deren Quellen. Ruft danach automatisch `symbols_generate_sets.py` auf. |
-| `symbols_generate_sets.py` | Erzeugt aus einer Namensliste und einem vorhandenen nummerierten Bildordner die Master-CSV sowie die vier CardMaker-Modus-CSVs. Benötigt kein Netzwerk. |
+| `symbols_generate_sets.py` | Erzeugt aus einer Namensliste und einem vorhandenen nummerierten Bildordner die Master-CSV sowie die drei CardMaker-Modus-CSVs. Benötigt kein Netzwerk. |
 | `build_lautspiele_project.py` | Erzeugt `lautspiele.cmp`, aktualisiert die vorhandenen Master-CSVs und leitet alle technischen Modus-CSVs erneut ab. |
 | `symbol_names.csv` | Beispiel für die gemeinsame Namens- und ARASAAC-Suchliste. |
+| `symbol_ids.csv` | Leere Vorlage für bekannte ARASAAC-IDs ohne Suchlauf. |
 
 ## Eingabeformat `symbol_names.csv`
 
@@ -27,6 +28,18 @@ Ei,egg,2
 - Spalte 3 gibt an, wie viele zusätzliche Kandidaten **je vorhandener Sprache** geladen werden.
 - Leerzeilen und Zeilen, deren erste Spalte mit `#` beginnt, werden ignoriert.
 - `symbols_generate_sets.py` verwendet nur die erste Spalte als Anzeigenamen.
+
+## Eingabeformat `symbol_ids.csv`
+
+Wenn die gewünschten ARASAAC-IDs bereits bekannt sind, werden unter der erklärenden Kopfzeile ausschließlich positive Ganzzahlen eingetragen:
+
+```csv
+arasaac_id,"Eine ARASAAC-ID pro Folgezeile eintragen; nur positive Ganzzahlen, keine Suchbegriffe."
+35371
+3241
+```
+
+Der Downloader erkennt `symbol_ids.csv` am Dateinamen. Er überspringt die Kopfzeile, ruft jede ID direkt über den deutschen ARASAAC-Piktogramm-Endpunkt ab, verwendet den ersten deutschen Begriff als Namen und lädt das zugehörige PNG. Doppelte oder ungültige IDs führen zu einer verständlichen Fehlermeldung.
 
 ## 1. ARASAAC-Bilder herunterladen
 
@@ -47,7 +60,6 @@ images/symbols/k/
 symbols_k.csv
 symbols_k_sources.csv
 gruselino_k.csv
-memory_k.csv
 domino_k.csv
 dobble_k.csv
 ```
@@ -55,6 +67,12 @@ dobble_k.csv
 `01.png` ist der ausgewählte Haupttreffer. `01-d1.png` und `01-e1.png` sind deutsche beziehungsweise englische Alternativen. Eine Alternative kann später durch Umbenennen zur Hauptdatei gemacht werden. Doppelte ARASAAC-IDs werden nicht zweimal gespeichert.
 
 Ohne `--set-name` wird der Dateiname der Namensliste als Satzname verwendet. Bestehende Ausgaben werden nur mit `--force` überschrieben.
+
+Direkter Abruf bekannter IDs:
+
+```powershell
+python generators/symbols_download_arasaac.py generators/symbol_ids.csv --set-name k --force
+```
 
 ## 2. Vorhandene Bilder als Bildsatz einbinden
 
@@ -78,7 +96,6 @@ Das Skript erzeugt:
 
 - `symbols_<satz>.csv` als editierbaren Master,
 - `gruselino_<satz>.csv`,
-- `memory_<satz>.csv`,
 - `domino_<satz>.csv`,
 - `dobble_<satz>.csv`.
 
@@ -93,17 +110,15 @@ python validate_lautspiele_project.py
 
 Der Builder erzeugt `lautspiele.cmp` mit diesen Layouts:
 
-- Gruselino Karten,
 - Gruselino Papier,
-- Memory Papier,
-- Domino Papier,
+- Memory / Domino Papier,
 - Dobble Papier.
 
-Er aktualisiert außerdem die Verfügbarkeitskarten anhand der tatsächlich vorhandenen nummerierten PNGs und erzeugt die Modus-CSVs erneut. Der Validator prüft anschließend Struktur, Referenzen, Counts, Gruselino-Ausblendung, Memory-Paare, Domino-Ring und die perfekte Dobble-Matrix.
+Er aktualisiert außerdem die Verfügbarkeitskarten anhand der tatsächlich vorhandenen nummerierten PNGs, erzeugt die Modus-CSVs erneut und bindet sämtliche vorhandenen Satz-CSVs an jedes passende Layout. Der Validator prüft anschließend Struktur, vollständige Referenzauswahl, Counts, Gruselino-Ausblendung, das trennbare Memory-/Domino-Doppelmodul und die perfekte Dobble-Matrix.
 
 ## Empfohlener Ablauf
 
-1. `symbol_names.csv` kopieren und Begriffe eintragen.
+1. `symbol_names.csv` für Suchbegriffe oder `symbol_ids.csv` für bekannte ARASAAC-IDs kopieren und befüllen.
 2. Bilder mit `symbols_download_arasaac.py` laden oder manuell als nummerierte PNGs bereitstellen.
 3. Bei manuellen Bildern `symbols_generate_sets.py` ausführen.
 4. Größenfaktoren oder Shifts bei Bedarf ausschließlich in `symbols_<satz>.csv` anpassen.

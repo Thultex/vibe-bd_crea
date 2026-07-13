@@ -2,9 +2,9 @@
 
 ## Gemeinsames Datenmodell
 
-Der Spielmodus ist durch das CardMaker-Layout festgelegt. Jeder Bildsatz besitzt eine editierbare Master-CSV mit Bildordner, Namen, Größenwertfolge, Verfügbarkeit sowie Start-, End- und Verschiebungswerten für Gruselino, Memory, Domino und Dobble. Drehung, Position, Ausblendung und Nachbarschaft werden im jeweiligen CardMaker-Feld berechnet.
+Der Spielmodus ist durch das CardMaker-Layout festgelegt. Jeder Bildsatz besitzt eine editierbare Master-CSV mit Bildordner, Namen, Größenwertfolge, Verfügbarkeit sowie Start-, End- und Verschiebungswerten für Gruselino, Domino und Dobble. Drehung, Position, Ausblendung und Nachbarschaft werden im jeweiligen CardMaker-Feld berechnet.
 
-Die fachliche Größenkorrektur steht in einer nach dem Bildsatz benannten Tabelle neben dem CardMaker-Projekt: `symbols_default.csv` gehört zu `images/symbols/default`, `symbols_k.csv` zu `images/symbols/k`. Weil CardMaker die Kartenanzahl nur über `Count` in der Referenz steuert, erzeugt der Builder daraus technische Modusdateien wie `gruselino_k.csv`. Diese spiegeln den Master vollständig und ergänzen nur `Count`. Globale CardMaker-Defines werden dafür nicht benutzt.
+Die fachliche Größenkorrektur steht in einer nach dem Bildsatz benannten Tabelle neben dem CardMaker-Projekt: `symbols_default.csv` gehört zu `images/symbols/default`, `symbols_k.csv` zu `images/symbols/k`. Weil CardMaker die Kartenanzahl nur über `Count` in der Referenz steuert, erzeugt der Builder daraus technische Modusdateien wie `gruselino_k.csv`. Diese spiegeln den Master vollständig und ergänzen nur `Count`; für Memory/Domino wird dieser Wert aus der konfigurierten Symbolspanne berechnet. Alle zum Modus gehörenden Satz-CSVs werden am Layout angeschlossen. Globale CardMaker-Defines werden dafür nicht benutzt.
 
 `symbols_generate_sets.py` ist die gemeinsame Grenze zwischen Bildbeschaffung und Layoutdaten. Es zählt ausschließlich lückenlose Hauptdateien `01.png`, `02.png` usw., übernimmt die erste Spalte der Namensliste und aktualisiert Master plus Modusdateien. `symbols_download_arasaac.py` beschafft Bilder und Quellen und delegiert danach an diese Funktion. `generators/symbol_names.csv` dokumentiert das gemeinsame Eingabeformat.
 
@@ -15,20 +15,17 @@ Die fachliche Größenkorrektur steht in einer nach dem Bildsatz benannten Tabel
 - Die folgenden acht Suchkarten blenden jeweils ein anderes Symbol aus und zeigen sieben.
 - Reihenfolge und Rotation werden je Karte zufällig variiert, die historischen acht Positionen bleiben fest.
 - `gruselino_shift` verschiebt das aktive Achterfenster zyklisch im durch Start und Ende definierten Ring.
-- Symbole werden um bis zu fünf Prozent vergrößert oder verkleinert und vollständig zufällig gedreht.
+- Die historischen Papierpositionen bleiben erhalten, ihre Grundgrößen sind um 20 Prozent reduziert.
+- Symbole variieren zusätzlich um bis zu fünf Prozent und drehen nur um ±20 Grad.
 
-## Memory
-
-- Start und Ende bestimmen den inklusiven Symbolbereich.
-- Jede Symbol-ID wird auf zwei aufeinanderfolgenden Karten ausgegeben.
-- Memory verändert weder Größenkorrektur noch Ausrichtung zufällig.
-
-## Domino
+## Memory / Domino Papier
 
 - Start und Ende bestimmen den inklusiven Symbolring.
-- Karte `n` zeigt Ringelement `n` und dessen Nachfolger.
+- Jedes Modul zeigt auf zwei verbundenen 560er Karten Ringelement `n` und dessen Nachfolger.
 - Das letzte Symbol wird mit dem ersten verbunden.
-- Die Quelldateien bleiben unverschoben und ungedreht; CardMaker korrigiert die Größe mittig und dreht anschließend das gesamte Graphic-Element.
+- Die 22 Pixel breite weiße Mitte ist die Schnittzone.
+- Verbunden dienen die Module als Domino; getrennt bilden die doppelt vorkommenden Symbole das Memory.
+- Die Quelldateien bleiben unverschoben und ungedreht; CardMaker korrigiert nur die individuelle Grundgröße mittig.
 
 ## Dobble
 
@@ -36,6 +33,7 @@ Die fachliche Größenkorrektur steht in einer nach dem Bildsatz benannten Tabel
 - 31 Symbole bilden 31 Karten mit jeweils sechs Symbolen.
 - Zwei Karten besitzen immer genau ein gemeinsames Symbol.
 - Nicht vorhandene nummerierte PNGs werden über `symbol_available_map` leer gelassen.
+- Die sechs Positionen sind weit über die Papierkarte verteilt; die Größe variiert um ±18 Prozent.
 - Die Grundfläche entspricht ungefähr dem Gruselino-Papierlayout und kann über CardMakers PDF-Ausgabe auf A4 ausgeschossen werden.
 
 ## Dateiregeln

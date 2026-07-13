@@ -6,13 +6,9 @@ Lautspiele verwendet nummerierte Bildsymbole für mehrere bekannte Such- und Zuo
 
 Vier Grundkarten zeigen dieselben acht Symbole. Auf jeder der acht Suchkarten fehlt genau eines davon; Position, Reihenfolge und Drehung variieren. Die Spielenden vergleichen die Karten und nennen oder markieren das fehlende Symbol.
 
-## Memory
+## Memory / Domino Papier
 
-Jedes ausgewählte Symbol kommt auf genau zwei Karten vor. Die Karten werden verdeckt ausgelegt und paarweise aufgedeckt.
-
-## Domino
-
-Jede Karte verbindet zwei aufeinanderfolgende Symbole. Die Karten werden so aneinandergelegt, dass gleiche Symbole zusammentreffen; die Folge schließt sich vom letzten Symbol wieder zum ersten.
+Jedes Druckmodul enthält zwei verbundene Karten mit aufeinanderfolgenden Symbolen. Verbunden werden die Module als Domino aneinandergelegt; die Folge schließt sich vom letzten Symbol wieder zum ersten. Werden alle Module an der weißen Mitte getrennt, kommt durch diesen geschlossenen Ring jedes Symbol genau zweimal vor und die Einzelkarten können als Memory gespielt werden.
 
 ## Dobble
 
@@ -20,6 +16,6 @@ Zwei beliebige Karten besitzen genau ein gemeinsames Symbol. Wer es zuerst entde
 
 ## Material erzeugen
 
-Das CardMaker-Projekt liegt unter `tools/cardmaker/`. Die editierbaren Master heißen `symbols_k.csv` und `symbols_default.csv`. Der Builder erzeugt daraus die CardMaker-Referenzen `gruselino_k.csv`, `memory_k.csv`, `domino_k.csv` und `dobble_k.csv` mit der jeweils nötigen Kartenanzahl. Danach wird das gewünschte Layout als Bilder oder PDF exportiert.
+Das CardMaker-Projekt liegt unter `tools/cardmaker/`. Die editierbaren Master heißen `symbols_k.csv` und `symbols_default.csv`. Der Builder erzeugt daraus die CardMaker-Referenzen für Gruselino, Memory/Domino und Dobble mit der jeweils nötigen Kartenanzahl. In jedem Layout sind alle vorhandenen Bildsätze als Referenzen angeschlossen und können direkt in CardMaker gewechselt werden; `k` ist der Standard. Danach wird das gewünschte Layout als Bilder oder PDF exportiert.
 
-Neue Laut-/Bildsätze können dort mit `symbols_download_arasaac.py` aus einer Wortliste geladen werden. Eine Zeile `Katze,cat,2` lädt neben dem deutschen Hauptbild zusätzliche deutsche und englische Kandidaten, die vor dem Druck durch Umbenennen ausgewählt werden können. Für bereits vorhandene, als `01.png`, `02.png` usw. nummerierte Bilder erzeugt `symbols_generate_sets.py` dieselben CSVs ohne Netzwerkabruf. Eine direkt verwendbare Vorlage liegt als `generators/symbol_names.csv` bei.
+Neue Laut-/Bildsätze können dort mit `symbols_download_arasaac.py` aus einer Wortliste geladen werden. Eine Zeile `Katze,cat,2` lädt neben dem deutschen Hauptbild zusätzliche deutsche und englische Kandidaten, die vor dem Druck durch Umbenennen ausgewählt werden können. Bekannte ARASAAC-IDs können stattdessen direkt in `generators/symbol_ids.csv` eingetragen werden. Für bereits vorhandene, als `01.png`, `02.png` usw. nummerierte Bilder erzeugt `symbols_generate_sets.py` dieselben CSVs ohne Netzwerkabruf. Vorlagen liegen als `generators/symbol_names.csv` und `generators/symbol_ids.csv` bei.

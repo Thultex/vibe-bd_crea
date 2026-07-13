@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Erzeugt einen Lautspiele-Bildsatz aus ARASAAC-Suchergebnissen.
+"""Erzeugt einen Lautspiele-Bildsatz aus ARASAAC-Suche oder direkten IDs.
 
-Eingabe je Zeile: Deutsch[,Englisch][,zusätzliche Kandidaten je Sprache]
+Eingabe: symbol_names.csv oder symbol_ids.csv.
 """
 
 from __future__ import annotations
@@ -21,6 +21,7 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parent.parent
 API_SEARCH = "https://api.arasaac.org/api/pictograms/{language}/search/{query}"
+API_PICTOGRAM = "https://api.arasaac.org/api/pictograms/de/{id}"
 STATIC_IMAGE = "https://static.arasaac.org/pictograms/{id}/{id}_500.png"
 PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
 GENERATED_IMAGE = re.compile(r"^\d{2,}(?:-[de]\d+)?\.png$")
@@ -70,6 +71,30 @@ def parse_word_file(path: Path) -> list[WordEntry]:
     return entries
 
 
+def parse_id_file(path: Path) -> list[int]:
+    ids: list[int] = []
+    with path.open(encoding="utf-8-sig", newline="") as handle:
+        for line_number, row in enumerate(csv.reader(handle), start=1):
+            if not row or not row[0].strip():
+                continue
+            value = row[0].strip()
+            if value.lstrip().startswith("#") or value.lower().startswith("arasaac_id"):
+                continue
+            if not value.isdecimal():
+                raise ValueError(
+                    f"Zeile {line_number}: ARASAAC-ID muss eine positive Ganzzahl sein."
+                )
+            arasaac_id = int(value)
+            if arasaac_id <= 0:
+                raise ValueError(f"Zeile {line_number}: ungültige ARASAAC-ID.")
+            if arasaac_id in ids:
+                raise ValueError(f"Zeile {line_number}: doppelte ARASAAC-ID {arasaac_id}.")
+            ids.append(arasaac_id)
+    if not ids:
+        raise ValueError("Die ID-Liste enthält keine ARASAAC-IDs.")
+    return ids
+
+
 def fetch_json(url: str) -> Any:
     request = urllib.request.Request(
         url,
@@ -93,6 +118,13 @@ def search(language: str, query: str) -> list[dict[str, Any]]:
             f"Unerwartete ARASAAC-Antwort für {language}:{query!r}."
         )
     return [item for item in payload if isinstance(item.get("_id"), int)]
+
+
+def pictogram(arasaac_id: int) -> dict[str, Any]:
+    payload = fetch_json(API_PICTOGRAM.format(id=arasaac_id))
+    if not isinstance(payload, dict) or int(payload.get("_id", 0)) != arasaac_id:
+        raise RuntimeError(f"ARASAAC-ID {arasaac_id} wurde nicht gefunden.")
+    return payload
 
 
 def keywords(item: dict[str, Any]) -> str:
@@ -280,14 +312,61 @@ def import_symbols(input_path: Path, set_name: str, force: bool) -> None:
     print(f"Quellen: {sources_path}", file=sys.stderr)
 
 
+def import_ids(input_path: Path, set_name: str, force: bool) -> None:
+    arasaac_ids = parse_id_file(input_path)
+    output_folder = ROOT / "images" / "symbols" / set_name
+    config_path = ROOT / f"symbols_{set_name}.csv"
+    sources_path = ROOT / f"symbols_{set_name}_sources.csv"
+    output_folder.mkdir(parents=True, exist_ok=True)
+    existing_images = any(
+        path.is_file() and GENERATED_IMAGE.fullmatch(path.name)
+        for path in output_folder.iterdir()
+    )
+    if (config_path.exists() or sources_path.exists() or existing_images) and not force:
+        raise FileExistsError(
+            "Ausgabe existiert bereits. Mit --force bewusst neu erzeugen."
+        )
+    if force:
+        clean_generated_images(output_folder)
+
+    names: list[str] = []
+    source_rows: list[dict[str, str | int]] = []
+    for symbol_id, arasaac_id in enumerate(arasaac_ids, start=1):
+        print(
+            f"[{symbol_id:02}/{len(arasaac_ids):02}] ARASAAC {arasaac_id}",
+            file=sys.stderr,
+        )
+        candidate = pictogram(arasaac_id)
+        label = keywords(candidate).split(" | ", 1)[0] or f"ARASAAC {arasaac_id}"
+        names.append(label)
+        filename = f"{symbol_id:02}.png"
+        image_url = download_png(arasaac_id, output_folder / filename)
+        source_rows.append(source_row(
+            symbol_id, WordEntry(label, "", 0), "de", str(arasaac_id), 0,
+            filename, candidate, image_url, True,
+        ))
+        time.sleep(0.12)
+
+    from symbols_generate_sets import create_symbol_set_config
+    create_symbol_set_config(names, output_folder, set_name, force=True)
+    write_sources(sources_path, source_rows)
+    write_attribution(output_folder, sources_path.name)
+    print(f"Erstellt: {config_path}", file=sys.stderr)
+    print(f"Bilder: {output_folder}", file=sys.stderr)
+    print(f"Quellen: {sources_path}", file=sys.stderr)
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="ARASAAC-Bilder und Lautspiele-Symbol-CSV erzeugen."
     )
-    parser.add_argument("wortliste", type=Path, help="UTF-8-Textdatei/CSV ohne Kopfzeile")
+    parser.add_argument(
+        "eingabe", type=Path,
+        help="symbol_names.csv oder symbol_ids.csv",
+    )
     parser.add_argument(
         "--set-name",
-        help="Bildsatzname; standardmäßig der Dateiname der Wortliste",
+        help="Bildsatzname; standardmäßig der Dateiname der Eingabe",
     )
     parser.add_argument(
         "--force",
@@ -299,8 +378,12 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    set_name = normalized_set_name(args.set_name or args.wortliste.stem)
-    import_symbols(args.wortliste.resolve(), set_name, args.force)
+    input_path = args.eingabe.resolve()
+    set_name = normalized_set_name(args.set_name or input_path.stem)
+    if input_path.name.lower() == "symbol_ids.csv":
+        import_ids(input_path, set_name, args.force)
+    else:
+        import_symbols(input_path, set_name, args.force)
 
 
 if __name__ == "__main__":
