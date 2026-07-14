@@ -227,8 +227,28 @@ def validate() -> None:
         fail("Dobble braucht die Größenvarianz von plus/minus 18 Prozent.")
     centers_x = [int(e.get("x", "0")) + int(e.get("width", "0")) / 2 for e in dobble]
     centers_y = [int(e.get("y", "0")) + int(e.get("height", "0")) / 2 for e in dobble]
-    if max(centers_x) - min(centers_x) < 700 or max(centers_y) - min(centers_y) < 450:
-        fail("Dobble-Symbole sind nicht weit genug über die Karte verteilt.")
+    if max(centers_x) - min(centers_x) > 720 or max(centers_y) - min(centers_y) > 480:
+        fail("Dobble-Symbole sollen kompakter über die Karte verteilt sein.")
+    if min(int(e.get("width", "0")) for e in dobble) < 245:
+        fail("Dobble-Symbole sind nicht groß genug.")
+    for left in range(len(dobble)):
+        for right in range(left + 1, len(dobble)):
+            distance = math.dist(
+                (centers_x[left], centers_y[left]),
+                (centers_x[right], centers_y[right]),
+            )
+            max_radii = 0.59 * (
+                int(dobble[left].get("width", "0"))
+                + int(dobble[right].get("width", "0"))
+            )
+            if distance <= max_radii:
+                fail("Dobble-Symbole können sich bei Maximalgröße zu stark überdecken.")
+    dobble_outline = [
+        e for e in layouts["Dobble (31 Symbole)"].findall("Element")
+        if e.get("name") == "Dobble Kartenrand"
+    ]
+    if len(dobble_outline) != 1 or "#roundedrect" not in dobble_outline[0].get("variable", ""):
+        fail("Dobble braucht eine abgerundete Kartenkontur.")
     cards = [set(card) for card in builder.DOBBLE]
     if len(cards) != 31 or any(len(card) != 6 for card in cards):
         fail("Dobble-Matrix hat nicht 31 Karten mit je 6 Symbolen.")
@@ -260,7 +280,7 @@ def validate() -> None:
     ]
     if len(board_symbols) != builder.BOARD_SYMBOL_COUNT or len(stations) != 10:
         fail("Minimalspiel braucht zehn feste Symbolstationen.")
-    if len(path_fields) < 24:
+    if len(path_fields) != 29:
         fail("Minimalspiel braucht einen ausreichend langen Laufweg.")
     if any(e.get("width") != "97" for e in path_fields):
         fail("Minimalspiel braucht die vergrößerten normalen Spielfelder.")
@@ -270,9 +290,9 @@ def validate() -> None:
         fail("Die Symbolfelder des Minimalspiels müssen weiß gefüllt sein.")
     reddish_fields = {
         e.get("name") for e in path_fields
-        if e.get("backgroundcolor") == "0xF1E6E6FF"
+        if e.get("backgroundcolor") == "0xE8CACAFF"
     }
-    if reddish_fields != {"Spielfeld 18", "Spielfeld 28"}:
+    if reddish_fields != {"Spielfeld 17", "Spielfeld 27"}:
         fail("Genau die beiden Rücksprungfelder müssen dezent rötlich sein.")
     if any(e.get("backgroundcolor") != "0xF4F4F4FF"
            for e in path_fields if e.get("name") not in reddish_fields):
@@ -309,14 +329,14 @@ def validate() -> None:
         )
         if any(math.dist(head_center, center) < 180 for center in station_centers):
             fail("Ein Rückwärtspfeil darf nicht auf einem Symbolfeld enden.")
-    first_station = stations[0]
-    station_cx = int(first_station.get("x", "0")) + int(first_station.get("width", "0")) / 2
-    station_cy = int(first_station.get("y", "0")) + int(first_station.get("height", "0")) / 2
-    for field in path_fields:
-        field_cx = int(field.get("x", "0")) + int(field.get("width", "0")) / 2
-        field_cy = int(field.get("y", "0")) + int(field.get("height", "0")) / 2
-        if math.hypot(field_cx - station_cx, field_cy - station_cy) < 183:
-            fail("Oben überlappt eine große Symbolstation mit einem normalen Feld.")
+    for station in stations:
+        station_cx = int(station.get("x", "0")) + int(station.get("width", "0")) / 2
+        station_cy = int(station.get("y", "0")) + int(station.get("height", "0")) / 2
+        for field in path_fields:
+            field_cx = int(field.get("x", "0")) + int(field.get("width", "0")) / 2
+            field_cy = int(field.get("y", "0")) + int(field.get("height", "0")) / 2
+            if math.hypot(field_cx - station_cx, field_cy - station_cy) < 183:
+                fail("Eine Symbolstation überlappt mit einem normalen Spielfeld.")
     if len([e for e in board.findall("Element")
             if (e.get("name") or "").startswith("Ziel ") and "ring" in (e.get("name") or "").lower()]) != 2:
         fail("Das Ziel muss doppelt umkreist sein.")
@@ -339,6 +359,25 @@ def validate() -> None:
     if any("logical<n" in e.get("variable", "") or "mod(shift+logical,n)" not in e.get("variable", "")
            for e in bingo_symbols):
         fail("Bingo muss alle 16 Felder zyklisch und ohne Lücken füllen.")
+    if any("safeOrders[n]" not in e.get("variable", "") for e in bingo_symbols):
+        fail("Die ersten beiden Bingo-Karten brauchen sichere Wiederholungspositionen.")
+    bingo_lines = (
+        (0, 1, 2, 3), (4, 5, 6, 7), (8, 9, 10, 11), (12, 13, 14, 15),
+        (0, 4, 8, 12), (1, 5, 9, 13), (2, 6, 10, 14), (3, 7, 11, 15),
+        (0, 5, 10, 15), (3, 6, 9, 12),
+    )
+    if set(builder.BINGO_SAFE_ORDERS) != set(range(8, 16)):
+        fail("Bingo braucht sichere Anordnungen für 8 bis 15 Symbole.")
+    for symbol_count, orders in builder.BINGO_SAFE_ORDERS.items():
+        if len(orders) != 2:
+            fail("Bingo braucht je zwei sichere Anfangskarten.")
+        for order in orders:
+            if sorted(order) != list(range(16)):
+                fail("Eine sichere Bingo-Anordnung ist keine 16er-Permutation.")
+            for line in bingo_lines:
+                residues = [order[position] % symbol_count for position in line]
+                if len(set(residues)) != 4:
+                    fail("Gleiche Bingo-Symbole teilen eine Gewinnlinie.")
 
     print("OK: Lautspiele-CardMaker-Projekt ist konsistent.")
     print("Layouts: 5 | Master-CSVs: 2 | Modus-CSVs: 10")

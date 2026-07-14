@@ -4,21 +4,21 @@
 
 Ausgangsdatum: 2026-07-13
 
-*Diese Woche (ca. 5,3h, 2 Tage, Inhalte):* Altbestand archiviert und CardMaker-Skripte samt ARASAAC-Bildsatzimport für Gruselino, Memory/Domino, Dobble, Spielplan und Bingo aufgebaut.
+*Diese Woche (ca. 5,7h, 2 Tage, Inhalte):* Altbestand archiviert und CardMaker-Skripte samt ARASAAC-Bildsatzimport für Gruselino, Memory/Domino, Dobble, Spielplan und Bingo aufgebaut.
 
 *Letzte Woche (0h, 0 Tage, Inhalte):* Keine Einträge.
 
-*Dieser Monat (ca. 5,3h, 2 Tage, Inhalte):* Lautspiele v1.09 als Repo-Projekt angelegt, Datenkopplung korrigiert und um Spielplan sowie Bingo ergänzt.
+*Dieser Monat (ca. 5,7h, 2 Tage, Inhalte):* Lautspiele v1.10 als Repo-Projekt angelegt, Datenkopplung korrigiert und um Spielplan sowie Bingo ergänzt.
 
 *Letzter Monat (0h, 0 Tage, Inhalte):* Keine Einträge.
 
-*Jahr (ca. 5,3h, 2 Tage, Inhalte):* Lautspiele v1.09 begonnen.
+*Jahr (ca. 5,7h, 2 Tage, Inhalte):* Lautspiele v1.10 begonnen.
 
-*Insgesamt (ca. 5,3h, 2 Tage, Inhalte):* Lautspiele v1.09 begonnen.
+*Insgesamt (ca. 5,7h, 2 Tage, Inhalte):* Lautspiele v1.10 begonnen.
 
 ## Log
 
-### 2026-07-14 - laut, tools, daten, assets, fix, doku (ca. 3,8h)
+### 2026-07-14 - laut, tools, daten, assets, fix, doku (ca. 4,2h)
 
 - Summary: CardMaker-Counts und Datenkopplung repariert, Layouts und Satzreferenzen originalnah zusammengeführt sowie Symbolauswahl, Namen und Größen beim jeweiligen Bildsatz gebündelt.
 - Fix: Doppelte `symbol_01` bis `symbol_50` beseitigt; CardMaker hatte `lautspiele_defines.csv` sowohl projekt- als auch referenzbezogen geladen.
@@ -62,13 +62,19 @@ Ausgangsdatum: 2026-07-13
 - Fix: Memory+Domino in der originalen Geometrie 1181 × 590 belassen; die frühere funktionierende A4-PDF-Konfiguration mit 5-mm-Rändern dokumentiert.
 - Design: Sprungpfeile hinter den Spielfeldern angeordnet und exakt von Ausgangs- zu Endfeld geführt; Symbolfelder sind weiß, normale Felder sehr hellgrau und Rücksprung-Ausgänge dezent rötlich. Rücksprünge enden nicht auf Symbolfeldern.
 - Export: Minimalspiel proportional auf die bei CardMakers Standardrändern verfügbare A4-Fläche `2250 × 3150 px` skaliert; die frühere Warnung für `595,2 × 841,92 pt` entfällt.
+- Fix: Überzähliges Kleinfeld an der Kuh entfernt, Kabelstation und Ziel freigestellt sowie Rücksprungfelder deutlicher hellrot markiert.
+- Design: Dobble-Karte abgerundet; Symbole vergrößert und kompakter angeordnet, ohne sich bei maximaler Zufallsgröße stark zu überschneiden.
+- Fix: Obere Startsequenz des Minimalspiels begradigt; das zuvor unterhalb des Käses stehende Kleinfeld liegt nun im Laufweg, der Käse wurde kollisionsfrei leicht nach rechts versetzt.
+- Balance: Bingo benötigt mindestens acht Bilder; bei 8–15 Bildern liegen Wiederholungen auf den ersten beiden Karten nie gemeinsam in einer horizontalen, vertikalen oder diagonalen Gewinnlinie.
+- Doku: `build.ini` benennt `start_symbol` und `symbol_count` nun unmittelbar als erstes Symbol und Anzahl verwendeter Symbole.
+- Doku: Memory/Domino-Stitched-Export (`2 × 12`, `2362 × 7400`) vom direkten PDF-Ausschuss getrennt; vier Karten nebeneinander benötigen dort weiterhin den originalen globalen Rand von `5 mm`.
 - Refactor: Die funktionslose `lautspiele_defines.csv` entfernt; Satz- und Modusdaten kommen ausschließlich aus den Layout-Referenzen.
 - Fix: Gruselino anhand von `Logospiele.xlsx` auf den belegten Ursprungswert 32 gesetzt: eine `c=4`-Grundzeile und 28 `c=1`-Suchzeilen; die frühere Erinnerung an 52 wurde damit korrigiert.
 - UI: Layouts nach Symbolbedarf sortiert: Memory+Domino, Gruselino, Minimalspiel, Bingo und Dobble.
 - Material: Eine der vier vollständigen Bingokarten kann entlang des statischen Rasters als Ziehsatz ausgeschnitten werden; eine separate Ziehseite ist nicht nötig.
 - Daten: `spiel_*` und `bingo_*` ergänzen Start, Ende und Shift in Master- und Modus-CSVs; bei weniger als 16 Bingo-Symbolen wird zyklisch ohne leere Felder aufgefüllt.
 - Test: Zwei Master-CSVs, zehn abgeleitete Modus-CSVs, fünf Layouts, Sprunggrenzen, Doppelziel und vollständige Bingo-Raster validiert.
-- Versionen: build_lautspiele_files v1.09, validate_lautspiele_project v1.09, symbols_generate_sets v1.04, symbols_download_arasaac v1.02.
+- Versionen: build_lautspiele_files v1.10, validate_lautspiele_project v1.10, symbols_generate_sets v1.05, symbols_download_arasaac v1.02.
 
 ### 2026-07-13 - laut, struktur, tools, design, material, doku (ca. 1,5h)
 

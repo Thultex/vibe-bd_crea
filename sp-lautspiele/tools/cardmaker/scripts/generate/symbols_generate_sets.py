@@ -110,9 +110,9 @@ def ensure_build_config(image_folder: Path) -> Path:
     if not path.is_file():
         path.write_text(
             "[symbols]\n"
-            "# Erste verwendete Hauptdatei; 1 entspricht 01.png.\n"
+            "# Erstes Symbol: Erste verwendete Hauptdatei; 1 entspricht 01.png.\n"
             "start_symbol = 1\n"
-            "# -1 verwendet automatisch alle ab start_symbol vorhandenen Symbole.\n"
+            "# Anzahl verwendeter Symbole: -1 verwendet automatisch alle ab start_symbol vorhandenen Symbole.\n"
             "symbol_count = -1\n",
             encoding="utf-8",
         )

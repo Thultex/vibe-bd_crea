@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import csv
 import configparser
+import json
 import math
 import shutil
 import xml.etree.ElementTree as ET
@@ -32,6 +33,27 @@ BOARD_LAYOUT_WIDTH = 2250
 BOARD_LAYOUT_HEIGHT = 3150
 BINGO_SYMBOL_COUNT = 16
 BINGO_CARD_COUNT = 4
+
+# Bei 8 bis 15 Bildern wiederholen sich einzelne Symbole im 4x4-Raster.
+# Auf den ersten beiden Karten teilen gleiche Bilder deshalb keine Gewinnlinie.
+BINGO_SAFE_ORDERS = {
+    8: ((0, 5, 1, 14, 7, 4, 11, 2, 3, 8, 10, 12, 9, 15, 6, 13),
+        (1, 13, 10, 11, 4, 15, 14, 8, 6, 9, 3, 2, 7, 0, 5, 12)),
+    9: ((4, 10, 3, 5, 9, 7, 11, 6, 15, 8, 1, 0, 12, 13, 14, 2),
+        (2, 12, 10, 14, 5, 4, 0, 15, 1, 11, 8, 3, 13, 7, 6, 9)),
+    10: ((1, 8, 9, 2, 10, 13, 11, 7, 14, 0, 15, 6, 3, 5, 12, 4),
+         (6, 15, 10, 9, 5, 8, 4, 2, 14, 12, 1, 3, 13, 11, 7, 0)),
+    11: ((4, 10, 13, 1, 3, 0, 15, 5, 11, 9, 12, 14, 2, 6, 7, 8),
+         (8, 11, 6, 10, 0, 15, 12, 5, 2, 14, 9, 4, 7, 1, 13, 3)),
+    12: ((12, 8, 14, 1, 15, 10, 7, 5, 6, 0, 13, 3, 11, 9, 4, 2),
+         (10, 7, 14, 1, 8, 13, 4, 0, 3, 12, 9, 6, 2, 15, 11, 5)),
+    13: ((13, 14, 8, 9, 6, 10, 15, 1, 2, 7, 5, 0, 4, 11, 12, 3),
+         (9, 6, 11, 1, 7, 13, 8, 10, 0, 4, 5, 15, 12, 14, 2, 3)),
+    14: ((14, 9, 6, 12, 15, 4, 13, 0, 7, 10, 3, 5, 2, 1, 8, 11),
+         (6, 3, 14, 8, 10, 11, 4, 2, 5, 15, 9, 13, 12, 0, 1, 7)),
+    15: ((7, 14, 5, 1, 10, 9, 11, 12, 0, 3, 2, 6, 13, 15, 4, 8),
+         (0, 13, 2, 1, 3, 14, 4, 10, 8, 7, 12, 5, 9, 11, 15, 6)),
+}
 
 GRUSELINO_PAPER_BASE_POSITIONS = (
     (-18, 81, 400), (309, -17, 335), (638, -15, 335), (786, 166, 335),
@@ -91,9 +113,9 @@ def _ensure_set_build_config(folder: Path) -> Path:
     if not path.is_file():
         path.write_text(
             "[symbols]\n"
-            "# Erste verwendete Hauptdatei; 1 entspricht 01.png.\n"
+            "# Erstes Symbol: Erste verwendete Hauptdatei; 1 entspricht 01.png.\n"
             "start_symbol = 1\n"
-            "# -1 verwendet automatisch alle ab start_symbol vorhandenen Symbole.\n"
+            "# Anzahl verwendeter Symbole: -1 verwendet automatisch alle ab start_symbol vorhandenen Symbole.\n"
             "symbol_count = -1\n",
             encoding="utf-8",
         )
@@ -268,16 +290,18 @@ def bingo_symbol_variable(slot: int, shuffled: bool) -> str:
         "var state=(seed*1664525+1013904223)>>>0;"
         "for(var i=15;i>0;i--){state=(state*1664525+1013904223)>>>0;"
         "var j=state%(i+1);var t=p[i];p[i]=p[j];p[j]=t;}return p[slot];}"
-        f"var logical=shuffledSlot({slot - 1},cardIndex);"
+        f"var safeOrders={json.dumps(BINGO_SAFE_ORDERS, separators=(',', ':'))};"
+        f"var logical=(cardIndex<=2&&safeOrders[n])?safeOrders[n][cardIndex-1][{slot - 1}]"
+        f":shuffledSlot({slot - 1},cardIndex);"
         if shuffled else f"var logical={slot - 1};"
     )
     return (
         "(function(){"
-        + logical
         + "var start=parseInt(bingo_start,10)||1;"
           "var end=parseInt(bingo_end,10)||start;"
           "var n=Math.max(1,end-start+1);"
-          "var shift=parseInt(bingo_shift,10)||0;"
+        + logical
+        + "var shift=parseInt(bingo_shift,10)||0;"
           "function mod(v,m){return ((v%m)+m)%m;}"
           "var id=start+mod(shift+logical,n);"
           "var scales=String(symbol_scale_map||'1').split('|').map(function(v){return parseFloat(v)||1;});"
@@ -508,18 +532,27 @@ def _dobble_layout() -> ET.Element:
     width, height = 1122, 826
     layout = _layout("Dobble (31 Symbole)", width, height, "dobble", 7860, 7602)
     specs = (
-        (165, 145, 205), (555, 125, 230), (945, 190, 200),
-        (185, 640, 225), (555, 465, 265), (930, 645, 215),
+        (210, 180, 250), (560, 180, 270), (910, 210, 245),
+        (220, 640, 265), (555, 530, 290), (895, 640, 260),
     )
     graphics = [
         _element(f"Dobble Symbol {slot}", "Graphic", round(x - size / 2),
                  round(y - size / 2), size, size, dobble_variable(slot))
         for slot, (x, y, size) in enumerate(specs, start=1)
     ]
-    card = _element("Dobble Kartenflaeche", "Text", 20, 12, 1082, 802, "''",
-                    lockaspect="false", borderthickness="5",
-                    bordercolor="0x5A7D8AFF", backgroundcolor="0xF7FBFFFF")
-    _insert_elements(layout, [*graphics, card, _background(width, height)])
+    card_outline = _element(
+        "Dobble Kartenrand", "Shape", 20, 12, 1082, 802,
+        "'#roundedrect;5;-;-;40#'", lockaspect="false",
+        elementcolor="0x5A7D8AFF",
+    )
+    card_fill = _element(
+        "Dobble Kartenflaeche", "Shape", 25, 17, 1072, 792,
+        "'#roundedrect;0;-;-;35#'", lockaspect="false",
+        elementcolor="0xF7FBFFFF",
+    )
+    _insert_elements(
+        layout, [*graphics, card_outline, card_fill, _background(width, height)],
+    )
     return layout
 
 
@@ -531,14 +564,14 @@ def _minimal_board_layout() -> ET.Element:
     )
 
     symbol_centers = (
-        (880, 390), (1800, 420), (1910, 990), (1150, 920), (430, 1160),
+        (960, 390), (1800, 420), (1990, 990), (1150, 920), (430, 1160),
         (1050, 1570), (1900, 1580), (1940, 2240), (1080, 2320), (520, 2840),
     )
     path_centers = (
-        (560, 360), (675, 560), (1170, 390), (1360, 400), (1550, 410),
+        (560, 360), (720, 380), (1200, 390), (1380, 400), (1560, 410),
         (2070, 570), (2110, 750), (1700, 950), (1490, 930), (830, 940),
         (650, 1020), (390, 1400), (560, 1510), (760, 1560), (1330, 1570),
-        (1530, 1575), (1730, 1580), (2110, 1770), (2120, 1970), (2100, 2420),
+        (1530, 1575), (2110, 1770), (2120, 1970), (2100, 2420),
         (1900, 2490), (1680, 2470), (1460, 2400), (850, 2430), (660, 2550),
         (420, 3060), (590, 3170), (790, 3230), (1000, 3240), (1210, 3240),
     )
@@ -553,13 +586,13 @@ def _minimal_board_layout() -> ET.Element:
                      elementcolor="0xE11B22FF", backgroundcolor="0xFFFFFFFF"),
         ])
 
-    backward_start_fields = {18, 28}
+    backward_start_fields = {17, 27}
     path = [
         _element(f"Spielfeld {index}", "Shape", cx - 54, cy - 54, 108, 108,
                  "'#ellipse;7;-;-#'", lockaspect="false",
                  elementcolor="0x202020FF",
                  backgroundcolor=(
-                     "0xF1E6E6FF" if index in backward_start_fields else "0xF4F4F4FF"
+                     "0xE8CACAFF" if index in backward_start_fields else "0xF4F4F4FF"
                  ))
         for index, (cx, cy) in enumerate(path_centers, start=1)
     ]
@@ -600,9 +633,9 @@ def _minimal_board_layout() -> ET.Element:
                         150, 54, "0x178A3BFF"),
         *arrow_elements("Vorwaerts 9", symbol_centers[5], path_centers[20],
                         150, 54, "0x178A3BFF"),
-        *arrow_elements("Rueckwaerts 4", path_centers[17], path_centers[14],
+        *arrow_elements("Rueckwaerts 4", path_centers[16], path_centers[14],
                         54, 54, "0xC62828FF"),
-        *arrow_elements("Rueckwaerts 6", path_centers[27], path_centers[21],
+        *arrow_elements("Rueckwaerts 6", path_centers[26], path_centers[20],
                         54, 54, "0xC62828FF"),
     ]
     start = [
@@ -614,16 +647,16 @@ def _minimal_board_layout() -> ET.Element:
                  elementcolor="0xFFF200FF"),
     ]
     goal = [
-        _element("Ziel Text", "Text", 1290, 3060, 330, 330, "'ZIEL'",
+        _element("Ziel Text", "Text", 1450, 3060, 330, 330, "'ZIEL'",
                  lockaspect="false", font="Arial;42;1;0;0;0",
                  horizontalalign="1", verticalalign="1"),
-        _element("Ziel Außenring", "Shape", 1270, 3040, 370, 370,
+        _element("Ziel Außenring", "Shape", 1430, 3040, 370, 370,
                  "'#ellipse;9;-;-#'", lockaspect="false",
                  elementcolor="0xE11B22FF"),
-        _element("Ziel Innenring", "Shape", 1300, 3070, 310, 310,
+        _element("Ziel Innenring", "Shape", 1460, 3070, 310, 310,
                  "'#ellipse;7;-;-#'", lockaspect="false",
                  elementcolor="0xE11B22FF"),
-        _element("Ziel Fläche", "Shape", 1310, 3080, 290, 290,
+        _element("Ziel Fläche", "Shape", 1470, 3080, 290, 290,
                  "'#ellipse;8;-;-#'", lockaspect="false",
                  elementcolor="0xFFF200FF", backgroundcolor="0xFFF200FF"),
     ]
