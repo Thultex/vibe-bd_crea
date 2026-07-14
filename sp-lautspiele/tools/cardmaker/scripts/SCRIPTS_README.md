@@ -7,7 +7,7 @@ Die Skripte trennen Bildbeschaffung und Bildsatz-Erzeugung unter `scripts/genera
 | Datei | Aufgabe |
 |---|---|
 | `generate/symbols_download_arasaac.py` | Sucht Begriffe über die ARASAAC-API, lädt Hauptbilder und Alternativen und dokumentiert deren Quellen. Ruft danach automatisch den Set-Generator auf. |
-| `generate/symbols_generate_sets.py` | Erzeugt aus einer Namensliste und einem vorhandenen nummerierten Bildordner die Master-CSV sowie die drei CardMaker-Modus-CSVs. Benötigt kein Netzwerk. |
+| `generate/symbols_generate_sets.py` | Erzeugt aus einer Namensliste und einem vorhandenen nummerierten Bildordner die Master-CSV sowie die fünf CardMaker-Modus-CSVs. Benötigt kein Netzwerk. |
 | `generate/symbol_names.csv` | Beispiel für die gemeinsame Namens- und ARASAAC-Suchliste. |
 | `generate/symbol_ids.csv` | Leere Vorlage für bekannte ARASAAC-IDs ohne Suchlauf. |
 | `build/build_lautspiele_files.py` | Erzeugt `lautspiele.cmp`, aktualisiert die vorhandenen Master-CSVs und leitet alle technischen Modus-CSVs erneut ab. |
@@ -80,6 +80,8 @@ symbols_k_sources.csv
 gruselino_k.csv
 domino_k.csv
 dobble_k.csv
+spiel_k.csv
+bingo_k.csv
 ```
 
 `01.png` ist der ausgewählte Haupttreffer. `01-d1.png` und `01-e1.png` sind deutsche beziehungsweise englische Alternativen. Eine Alternative kann später durch Umbenennen zur Hauptdatei gemacht werden. Doppelte ARASAAC-IDs werden nicht zweimal gespeichert.
@@ -115,7 +117,9 @@ Das Skript erzeugt:
 - `symbols_<satz>.csv` als editierbaren Master,
 - `gruselino_<satz>.csv`,
 - `domino_<satz>.csv`,
-- `dobble_<satz>.csv`.
+- `dobble_<satz>.csv`,
+- `spiel_<satz>.csv`,
+- `bingo_<satz>.csv`.
 
 Vorhandene Größenkorrekturen und Modus-Shifts werden beim Neuerzeugen soweit möglich beibehalten. Die Modus-CSVs sind technische Ableitungen und sollten nicht von Hand bearbeitet werden.
 
@@ -130,9 +134,11 @@ Der Builder erzeugt `lautspiele.cmp` mit diesen Layouts:
 
 - Gruselino Papier,
 - Memory / Domino Papier,
-- Dobble Papier.
+- Dobble Papier,
+- Minimalspiel A4,
+- Bingo 4x4.
 
-Er aktualisiert außerdem die Verfügbarkeitskarten anhand der tatsächlich vorhandenen nummerierten PNGs, erzeugt die Modus-CSVs erneut und bindet sämtliche vorhandenen Satz-CSVs an jedes passende Layout. Der Validator prüft anschließend Struktur, vollständige Referenzauswahl, Counts, Gruselino-Ausblendung, das trennbare Memory-/Domino-Doppelmodul und die perfekte Dobble-Matrix.
+Er aktualisiert außerdem die Verfügbarkeitskarten anhand der tatsächlich vorhandenen nummerierten PNGs, erzeugt die Modus-CSVs erneut und bindet sämtliche vorhandenen Satz-CSVs an jedes passende Layout. Der Validator prüft anschließend Struktur, vollständige Referenzauswahl, Counts, Gruselino-Ausblendung, das trennbare Memory-/Domino-Doppelmodul, die perfekte Dobble-Matrix, den statischen A4-Spielplan und vier vollständige 4x4-Bingokarten.
 
 ## Empfohlener Ablauf
 

@@ -25,6 +25,9 @@ GRUSELINO_SYMBOLS = 8
 GRUSELINO_BASE_CARDS = 4
 DOBBLE_ORDER = 5
 DOBBLE_SYMBOL_COUNT = DOBBLE_ORDER * DOBBLE_ORDER + DOBBLE_ORDER + 1
+BOARD_SYMBOL_COUNT = 10
+BINGO_SYMBOL_COUNT = 16
+BINGO_CARD_COUNT = 4
 
 GRUSELINO_PAPER_BASE_POSITIONS = (
     (-18, 81, 400), (309, -17, 335), (638, -15, 335), (786, 166, 335),
@@ -213,6 +216,60 @@ def domino_variable(offset: int) -> str:
     )
 
 
+def board_symbol_variable(slot: int) -> str:
+    """Wählt ein Symbol ohne Wiederholung aus dem gemeinsamen Fenster."""
+    return (
+        "(function(){"
+        "var start=parseInt(spiel_start,10)||1;"
+        "var end=parseInt(spiel_end,10)||start;"
+        "var n=Math.max(1,end-start+1);"
+        "var shift=parseInt(spiel_shift,10)||0;"
+        "function mod(v,m){return ((v%m)+m)%m;}"
+        f"var logical={slot - 1};"
+        "var id=start+mod(shift+logical,n);"
+        "var scales=String(symbol_scale_map||'1').split('|').map(function(v){return parseFloat(v)||1;});"
+        "var correction=scales[id-1]||1;"
+        "var available=String(symbol_available_map||'').split('|');"
+        "var exists=logical<n&&(available.length?available[id-1]==='1':id<=scales.length);"
+        "var file=id.toString().padStart(2,'0');"
+        "if(!exists){AddOverrideField('enabled','false');return '';}"
+        "AddOverrideField('enabled','true');"
+        + _transform(0, 0)
+        + "return symbol_folder+'/'+file+'.png';})()"
+    )
+
+
+def bingo_symbol_variable(slot: int, shuffled: bool) -> str:
+    """Wählt eines von bis zu 16 Bingo-Symbolen, optional je Karte gemischt."""
+    logical = (
+        "function shuffledSlot(slot,seed){var p=[];for(var k=0;k<16;k++)p.push(k);"
+        "var state=(seed*1664525+1013904223)>>>0;"
+        "for(var i=15;i>0;i--){state=(state*1664525+1013904223)>>>0;"
+        "var j=state%(i+1);var t=p[i];p[i]=p[j];p[j]=t;}return p[slot];}"
+        f"var logical=shuffledSlot({slot - 1},cardIndex);"
+        if shuffled else f"var logical={slot - 1};"
+    )
+    return (
+        "(function(){"
+        + logical
+        + "var start=parseInt(bingo_start,10)||1;"
+          "var end=parseInt(bingo_end,10)||start;"
+          "var n=Math.max(1,end-start+1);"
+          "var shift=parseInt(bingo_shift,10)||0;"
+          "function mod(v,m){return ((v%m)+m)%m;}"
+          "var id=start+mod(shift+logical,n);"
+          "var scales=String(symbol_scale_map||'1').split('|').map(function(v){return parseFloat(v)||1;});"
+          "var correction=scales[id-1]||1;"
+          "var available=String(symbol_available_map||'').split('|');"
+          "var exists=available.length?available[id-1]==='1':id<=scales.length;"
+          "var file=id.toString().padStart(2,'0');"
+          "if(!exists){AddOverrideField('enabled','false');return '';}"
+          "AddOverrideField('enabled','true');"
+        + _transform(0, 0)
+        + "return symbol_folder+'/'+file+'.png';})()"
+    )
+
+
 def _projective_plane(order: int) -> tuple[tuple[int, ...], ...]:
     cards: list[tuple[int, ...]] = []
     for slope in range(order):
@@ -264,7 +321,13 @@ def _layout(name: str, width: int, height: int, mode: str,
         "buffer": "0", "Name": name, "defaultCount": "1",
         "dpi": "300", "drawBorder": "false",
     })
-    references = sorted(ROOT.glob(f"{mode}_*.csv"))
+    set_names = sorted(
+        path.stem.removeprefix("symbols_")
+        for path in ROOT.glob("symbols_*.csv")
+        if not path.name.endswith("_sources.csv")
+    )
+    references = [ROOT / f"{mode}_{set_name}.csv" for set_name in set_names]
+    references = [reference for reference in references if reference.is_file()]
     if not references:
         raise FileNotFoundError(f"Keine CardMaker-Referenz fuer Modus {mode!r} gefunden.")
     default_name = f"{mode}_{DEFAULT_SYMBOL_SET}.csv"
@@ -438,6 +501,104 @@ def _dobble_layout() -> ET.Element:
     return layout
 
 
+def _minimal_board_layout() -> ET.Element:
+    """Ein minimalistischer A4-Laufweg mit zehn festen Symbolstationen."""
+    width, height = 2480, 3508
+    layout = _layout("Minimalspiel A4", width, height, "spiel", 2480, 3508)
+
+    symbol_centers = (
+        (880, 390), (1800, 420), (1910, 990), (1150, 920), (430, 1160),
+        (1050, 1570), (1900, 1580), (1940, 2240), (1080, 2320), (520, 2840),
+    )
+    path_centers = (
+        (560, 360), (710, 365), (1170, 390), (1360, 400), (1550, 410),
+        (2070, 570), (2110, 750), (1700, 950), (1490, 930), (830, 940),
+        (650, 1020), (390, 1400), (560, 1510), (760, 1560), (1330, 1570),
+        (1530, 1575), (1730, 1580), (2110, 1770), (2120, 1970), (2100, 2420),
+        (1900, 2490), (1680, 2470), (1460, 2400), (850, 2430), (660, 2550),
+        (420, 3060), (590, 3170), (790, 3230), (1000, 3240), (1210, 3240),
+    )
+
+    board_symbols: list[ET.Element] = []
+    for slot, (cx, cy) in enumerate(symbol_centers, start=1):
+        board_symbols.extend([
+            _element(f"Spiel Symbol {slot}", "Graphic", cx - 118, cy - 118,
+                     236, 236, board_symbol_variable(slot)),
+            _element(f"Spiel Station {slot}", "Shape", cx - 150, cy - 150,
+                     300, 300, "'#ellipse;8;-;-#'", lockaspect="false",
+                     elementcolor="0xE11B22FF"),
+        ])
+
+    path = [
+        _element(f"Spielfeld {index}", "Shape", cx - 54, cy - 54, 108, 108,
+                 "'#ellipse;7;-;-#'", lockaspect="false",
+                 elementcolor="0x202020FF")
+        for index, (cx, cy) in enumerate(path_centers, start=1)
+    ]
+    # Vorwaertspfeile beginnen ausschliesslich an roten Symbolstationen.
+    # Die Beschriftung gibt die Zahl der uebersprungenen Felder an.
+    jumps = [
+        ("Vorwaerts 8", 1540, 480, 390, 180, "'➜  +8'", "-18", "0x178A3BFF"),
+        ("Vorwaerts 9", 1100, 1660, 430, 180, "'➜  +9'", "18", "0x178A3BFF"),
+        ("Rueckwaerts 4", 1640, 1120, 390, 180, "'➜  -4'", "145", "0xC62828FF"),
+        ("Rueckwaerts 6", 980, 2530, 390, 180, "'➜  -6'", "205", "0xC62828FF"),
+    ]
+    jump_elements = [
+        _element(name, "Text", x, y, w, h, label, lockaspect="false",
+                 font="Segoe UI Symbol;62;1;0;0;0", rotation=rotation,
+                 elementcolor=color)
+        for name, x, y, w, h, label, rotation, color in jumps
+    ]
+    start = [
+        _element("Start Text", "Text", 95, 245, 390, 170, "'START'",
+                 lockaspect="false", font="Arial;42;1;0;0;0",
+                 horizontalalign="1", verticalalign="1"),
+        _element("Start Fläche", "Shape", 95, 245, 390, 170,
+                 "'#roundedrect;7;-;-;22#'", lockaspect="false",
+                 elementcolor="0xFFF200FF"),
+    ]
+    goal = [
+        _element("Ziel Text", "Text", 1290, 3060, 330, 330, "'ZIEL'",
+                 lockaspect="false", font="Arial;42;1;0;0;0",
+                 horizontalalign="1", verticalalign="1"),
+        _element("Ziel Außenring", "Shape", 1270, 3040, 370, 370,
+                 "'#ellipse;9;-;-#'", lockaspect="false",
+                 elementcolor="0xE11B22FF"),
+        _element("Ziel Innenring", "Shape", 1300, 3070, 310, 310,
+                 "'#ellipse;7;-;-#'", lockaspect="false",
+                 elementcolor="0xE11B22FF"),
+        _element("Ziel Fläche", "Shape", 1310, 3080, 290, 290,
+                 "'#ellipse;8;-;-#'", lockaspect="false",
+                 elementcolor="0xFFF200FF", backgroundcolor="0xFFF200FF"),
+    ]
+    _insert_elements(layout, [*start, *goal, *jump_elements, *board_symbols, *path,
+                              _background(width, height)])
+    return layout
+
+
+def _bingo_card_layout() -> ET.Element:
+    """Vier 4x4-Karten; zwei halbe Karten passen auf eine A4-Seite."""
+    width, height = 2480, 1754
+    layout = _layout("Bingo 4x4", width, height, "bingo", 2480, 3508)
+    cell = 350
+    grid_x, grid_y = 540, 245
+    elements: list[ET.Element] = []
+    for slot in range(1, BINGO_SYMBOL_COUNT + 1):
+        row, col = divmod(slot - 1, 4)
+        x, y = grid_x + col * cell, grid_y + row * cell
+        elements.extend([
+            _element(f"Bingo Symbol {slot}", "Graphic", x + 42, y + 42,
+                     cell - 84, cell - 84, bingo_symbol_variable(slot, True)),
+            _element(f"Bingo Feld {slot}", "Shape", x, y, cell, cell,
+                     "'#rect;6;-;-#'", lockaspect="false",
+                     elementcolor="0x202020FF"),
+        ])
+    title = _element("Bingo Titel", "Text", 540, 65, 1400, 145, "'BINGO 4 × 4'",
+                     lockaspect="false", font="Arial;42;1;0;0;0")
+    _insert_elements(layout, [title, *elements, _background(width, height)])
+    return layout
+
+
 def _symbol_config_path(folder: Path) -> Path:
     return ROOT / f"symbols_{folder.name}.csv"
 
@@ -451,6 +612,8 @@ def _write_symbol_config(folder: Path) -> None:
         "gruselino_start", "gruselino_end", "gruselino_shift",
         "domino_start", "domino_end", "domino_shift",
         "dobble_start", "dobble_end", "dobble_shift",
+        "spiel_start", "spiel_end", "spiel_shift",
+        "bingo_start", "bingo_end", "bingo_shift",
     ]
     row = {
         "symbol_set": folder.name,
@@ -462,6 +625,8 @@ def _write_symbol_config(folder: Path) -> None:
         "gruselino_start": "1", "gruselino_end": "10", "gruselino_shift": "0",
         "domino_start": "1", "domino_end": "10", "domino_shift": "0",
         "dobble_start": "1", "dobble_end": str(DOBBLE_SYMBOL_COUNT), "dobble_shift": "0",
+        "spiel_start": "1", "spiel_end": "10", "spiel_shift": "0",
+        "bingo_start": "1", "bingo_end": "10", "bingo_shift": "0",
     }
     if path.exists():
         with path.open(encoding="utf-8-sig", newline="") as handle:
@@ -487,7 +652,7 @@ def _write_symbol_config(folder: Path) -> None:
     row["symbol_scale_map"] = "|".join(scales)
     row["symbol_count"] = str(len(names))
     selection_start, selection_end = selection_range(len(names))
-    for mode in ("gruselino", "domino", "dobble"):
+    for mode in ("gruselino", "domino", "dobble", "spiel", "bingo"):
         row[f"{mode}_start"] = str(selection_start)
         row[f"{mode}_end"] = str(selection_end)
     availability_length = max(DOBBLE_SYMBOL_COUNT, len(names))
@@ -532,6 +697,8 @@ def write_mode_reference_files() -> None:
             "gruselino": 12,
             "domino": int(row["domino_end"]) - int(row["domino_start"]) + 1,
             "dobble": len(DOBBLE),
+            "spiel": 1,
+            "bingo": BINGO_CARD_COUNT,
         }
         for mode, count in counts.items():
             target = ROOT / f"{mode}_{set_name}.csv"
@@ -562,6 +729,8 @@ def build() -> None:
         _gruselino_layout(),
         _domino_layout(),
         _dobble_layout(),
+        _minimal_board_layout(),
+        _bingo_card_layout(),
     ])
     for tag, value in (
         ("translatorName", "JavaScript"), ("exportNameFormat", "##_#L"),

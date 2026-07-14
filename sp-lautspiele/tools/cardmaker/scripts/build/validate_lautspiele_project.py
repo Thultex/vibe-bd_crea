@@ -12,7 +12,14 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 BUILD_SCRIPT = Path(__file__).with_name("build_lautspiele_files.py")
 SETS = ("default", "k")
-MODES = ("gruselino", "domino", "dobble")
+CONFIG_MODES = ("gruselino", "domino", "dobble", "spiel", "bingo")
+REFERENCE_COUNTS = {
+    "gruselino": 12,
+    "domino": None,
+    "dobble": 31,
+    "spiel": 1,
+    "bingo": 4,
+}
 
 
 def fail(message: str) -> None:
@@ -46,6 +53,8 @@ def validate() -> None:
         "gruselino_start", "gruselino_end", "gruselino_shift",
         "domino_start", "domino_end", "domino_shift",
         "dobble_start", "dobble_end", "dobble_shift",
+        "spiel_start", "spiel_end", "spiel_shift",
+        "bingo_start", "bingo_end", "bingo_shift",
     }
     for set_name in SETS:
         master = ROOT / f"symbols_{set_name}.csv"
@@ -68,7 +77,7 @@ def validate() -> None:
         if any(float(value) <= 0 for value in scales):
             fail(f"{master.name} enthält eine ungültige Größenkorrektur.")
         expected_start, expected_end = builder.selection_range(len(names))
-        for mode in MODES:
+        for mode in CONFIG_MODES:
             start = int(row[f"{mode}_start"])
             end = int(row[f"{mode}_end"])
             int(row[f"{mode}_shift"])
@@ -76,12 +85,11 @@ def validate() -> None:
                 fail(f"Ungültige Start-/Endspanne für {mode} in {master.name}.")
             if (start, end) != (expected_start, expected_end):
                 fail(f"{master.name} übernimmt die Auswahl aus build.ini nicht.")
-        expected_counts = {
-            "gruselino": 12,
-            "domino": int(row["domino_end"]) - int(row["domino_start"]) + 1,
-            "dobble": 31,
-        }
-        for mode in MODES:
+        expected_counts = dict(REFERENCE_COUNTS)
+        expected_counts["domino"] = (
+            int(row["domino_end"]) - int(row["domino_start"]) + 1
+        )
+        for mode in REFERENCE_COUNTS:
             derived = ROOT / f"{mode}_{set_name}.csv"
             derived_row = read_one(derived)
             if int(derived_row.get("Count", "0")) != expected_counts[mode]:
@@ -106,9 +114,11 @@ def validate() -> None:
         "Gruselino Papier": ("gruselino", "7860", "7602"),
         "Memory / Domino Papier": ("domino", "2362", "7400"),
         "Dobble Papier": ("dobble", "7860", "7602"),
+        "Minimalspiel A4": ("spiel", "2480", "3508"),
+        "Bingo 4x4": ("bingo", "2480", "3508"),
     }
     if set(layouts) != set(expected):
-        fail("Die drei erwarteten Layouts fehlen oder wurden umbenannt.")
+        fail("Die fünf erwarteten Layouts fehlen oder wurden umbenannt.")
     for name, (mode, export_width, export_height) in expected.items():
         layout = layouts[name]
         refs = layout.findall("Reference")
@@ -208,10 +218,76 @@ def validate() -> None:
     if set(occurrences.values()) != {6}:
         fail("Dobble-Symbole erscheinen nicht jeweils sechsmal.")
 
+    board = layouts["Minimalspiel A4"]
+    if (board.get("width"), board.get("height"), board.get("dpi")) != (
+        "2480", "3508", "300"
+    ):
+        fail("Minimalspiel muss A4-Hochformat mit 300 DPI verwenden.")
+    board_symbols = [
+        e for e in board.findall("Element")
+        if (e.get("name") or "").startswith("Spiel Symbol ")
+    ]
+    stations = [
+        e for e in board.findall("Element")
+        if (e.get("name") or "").startswith("Spiel Station ")
+    ]
+    path_fields = [
+        e for e in board.findall("Element")
+        if (e.get("name") or "").startswith("Spielfeld ")
+    ]
+    if len(board_symbols) != builder.BOARD_SYMBOL_COUNT or len(stations) != 10:
+        fail("Minimalspiel braucht zehn feste Symbolstationen.")
+    if len(path_fields) < 24:
+        fail("Minimalspiel braucht einen ausreichend langen Laufweg.")
+    if any(e.get("width") != "108" for e in path_fields):
+        fail("Minimalspiel braucht die vergrößerten normalen Spielfelder.")
+    if any("Math.random" in e.get("variable", "") for e in board_symbols):
+        fail("Minimalspiel darf Symbolgröße und Drehung nicht zufällig verändern.")
+    forward_jumps = [
+        e for e in board.findall("Element")
+        if (e.get("name") or "").startswith("Vorwaerts ")
+    ]
+    backward_jumps = [
+        e for e in board.findall("Element")
+        if (e.get("name") or "").startswith("Rueckwaerts ")
+    ]
+    if len(forward_jumps) != 2 or len(backward_jumps) != 2:
+        fail("Minimalspiel braucht zwei Vorwärts- und zwei Rückwärtspfeile.")
+    if any("+9" not in e.get("variable", "") and "+8" not in e.get("variable", "")
+           for e in forward_jumps):
+        fail("Vorwärtspfeile müssen maximal neun Felder überspringen.")
+    if any("-6" not in e.get("variable", "") and "-4" not in e.get("variable", "")
+           for e in backward_jumps):
+        fail("Rückwärtspfeile müssen maximal sechs Felder zurücksetzen.")
+    if len([e for e in board.findall("Element")
+            if (e.get("name") or "").startswith("Ziel ") and "ring" in (e.get("name") or "").lower()]) != 2:
+        fail("Das Ziel muss doppelt umkreist sein.")
+
+    bingo = layouts["Bingo 4x4"]
+    if (bingo.get("width"), bingo.get("height"), bingo.get("dpi")) != (
+        "2480", "1754", "300"
+    ):
+        fail("Bingo-Karten müssen exakt eine halbe A4-Seite bei 300 DPI belegen.")
+    bingo_symbols = [e for e in bingo.findall("Element")
+                     if (e.get("name") or "").startswith("Bingo Symbol ")]
+    bingo_fields = [e for e in bingo.findall("Element")
+                    if (e.get("name") or "").startswith("Bingo Feld ")]
+    if len(bingo_symbols) != 16 or len(bingo_fields) != 16:
+        fail("Bingo braucht ein statisches 4x4-Raster mit 16 Symbolfeldern.")
+    if any("shuffledSlot" not in e.get("variable", "") for e in bingo_symbols):
+        fail("Bingo-Karten müssen denselben Symbolbestand unterschiedlich anordnen.")
+    if any("Math.random" in e.get("variable", "") for e in bingo_symbols):
+        fail("Bingo darf beim Rendern nicht zufällig variieren.")
+    if any("logical<n" in e.get("variable", "") or "mod(shift+logical,n)" not in e.get("variable", "")
+           for e in bingo_symbols):
+        fail("Bingo muss alle 16 Felder zyklisch und ohne Lücken füllen.")
+
     print("OK: Lautspiele-CardMaker-Projekt ist konsistent.")
-    print("Layouts: 3 | Master-CSVs: 2 | Modus-CSVs: 6")
+    print("Layouts: 5 | Master-CSVs: 2 | Modus-CSVs: 10")
     print("Gruselino Papier: 4 Grundkarten + 8 Suchkarten, 80 Prozent Größe")
     print("Memory/Domino: ein trennbares Doppelmodul | Dobble: 31x6, perfekt")
+    print("Minimalspiel A4: 10 Stationen, Sprungpfeile und Doppelziel")
+    print("Bingo: 4 vollständige Karten im 4x4-Raster, zwei je A4-Seite")
 
 
 if __name__ == "__main__":

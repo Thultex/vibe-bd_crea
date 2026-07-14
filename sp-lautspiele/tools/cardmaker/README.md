@@ -9,7 +9,7 @@ Das aktive Projekt ist für [nhmkdev/cardmaker](https://github.com/nhmkdev/cardm
 | `lautspiele.cmp` | CardMaker-Projekt mit allen Layouts |
 | `lautspiele_defines.csv` | bewusst leere technische Kopfzeile für CardMaker |
 | `symbols_default.csv`, `symbols_k.csv` | editierbare Master-Konfigurationen je Bildsatz |
-| `<modus>_<satz>.csv` | drei automatisch erzeugte CardMaker-Referenzen mit technischem `Count` |
+| `<modus>_<satz>.csv` | fünf automatisch erzeugte CardMaker-Referenzen mit technischem `Count` |
 | `images/symbols/default/` | neutraler Standardsatz `01.png` bis `10.png` |
 | `images/symbols/k/` | aktueller K-Laut-Satz `01.png` bis `10.png` |
 | `images/ui/` | Oberflächenbilder des bestehenden Designs |
@@ -32,10 +32,10 @@ Das aktive Projekt ist für [nhmkdev/cardmaker](https://github.com/nhmkdev/cardm
 | `symbol_names` | Namen aller nummerierten Symbole, durch `|` getrennt |
 | `symbol_scale_map` | Größenfaktoren aller nummerierten Symbole, durch `|` getrennt |
 | `symbol_available_map` | `1`/`0` je ID; fehlende Bilddateien bleiben im Layout leer |
-| `<modus>_start` / `<modus>_end` | inklusive Ringgrenzen für Gruselino, Domino oder Dobble |
+| `<modus>_start` / `<modus>_end` | inklusive Auswahlgrenzen für Gruselino, Domino, Dobble, Spielplan oder Bingo |
 | `<modus>_shift` | zyklischer Versatz des jeweiligen Modus |
 
-Alle fachlich editierbaren Informationen eines Bildsatzes stehen in genau einer Master-Zeile. CardMaker benötigt seine Kartenanzahl jedoch in einer Spalte `Count`. Der Builder leitet deshalb aus jedem Master drei technische Referenzen ab: `gruselino_k.csv`, `domino_k.csv` und `dobble_k.csv`. Memory und Domino verwenden gemeinsam `domino_k.csv`. Jedes Layout bindet automatisch alle vorhandenen Satz-CSVs seines Modus ein; der Bildsatz kann daher direkt in CardMaker zwischen `default`, `k` und später ergänzten Sätzen gewechselt werden. Der K-Satz ist zunächst als Standard markiert. Der Layout-Standardcount bleibt wie im Original bei `1`; die tatsächliche Ausgabezahl kommt aus der gewählten Modus-CSV. Bei Memory/Domino entspricht sie automatisch der Länge von `domino_start` bis `domino_end`. Abgeleitete Dateien werden nicht von Hand gepflegt.
+Alle fachlich editierbaren Informationen eines Bildsatzes stehen in genau einer Master-Zeile. CardMaker benötigt seine Kartenanzahl jedoch in einer Spalte `Count`. Der Builder leitet deshalb aus jedem Master fünf technische Referenzen ab: `gruselino`, `domino`, `dobble`, `spiel` und `bingo`. Memory und Domino verwenden gemeinsam `domino_k.csv`. Jedes Layout bindet automatisch alle vorhandenen Satz-CSVs seines Modus ein; der Bildsatz kann daher direkt in CardMaker zwischen `default`, `k` und später ergänzten Sätzen gewechselt werden. Der K-Satz ist zunächst als Standard markiert. Der Layout-Standardcount bleibt wie im Original bei `1`; die tatsächliche Ausgabezahl kommt aus der gewählten Modus-CSV. Bei Memory/Domino entspricht sie automatisch der Länge von `domino_start` bis `domino_end`. Abgeleitete Dateien werden nicht von Hand gepflegt.
 
 Das gemeinsame Symbolfenster wird in `scripts/build/build.ini` eingestellt. `start_symbol = 1` beginnt bei `01.png`; `symbol_count = -1` übernimmt automatisch alle ab dort vorhandenen Hauptsymbole. Ein positiver Count begrenzt die Auswahl. Der Builder schreibt das Fenster in alle Start-/Endfelder, während die modusspezifischen Shifts in den Master-CSVs erhalten bleiben. Mindestens acht Symbole sind für Gruselino erforderlich.
 
@@ -66,7 +66,7 @@ Der Satzname bestimmt automatisch:
 
 - `images/symbols/<satz>/` für Bilder und `ATTRIBUTION.md`
 - `symbols_<satz>.csv` als editierbarer Master
-- drei `<modus>_<satz>.csv` als direkt auswählbare CardMaker-Referenzen
+- fünf `<modus>_<satz>.csv` als direkt auswählbare CardMaker-Referenzen
 - `symbols_<satz>_sources.csv` mit ARASAAC-IDs, Suchsprache und Quelllinks
 
 Ohne `--set-name` wird der Dateiname der Wortliste verwendet. Bestehende Ausgaben werden nur mit `--force` ersetzt. Neu erzeugte Größenfaktoren beginnen bei `1` und können danach in `symbol_scale_map` korrigiert werden.
@@ -85,13 +85,15 @@ Der unabhängige CSV-Generator kann auch ohne ARASAAC verwendet werden. Die erst
 python scripts/generate/symbols_generate_sets.py scripts/generate/symbol_names.csv images/symbols/k --set-name k --force
 ```
 
-Der Ordnername ist ohne `--set-name` zugleich der Satzname. Vorhandene Größenkorrekturen und Shifts werden beim bewussten Neuerzeugen soweit möglich beibehalten. Danach sind Master und alle drei technischen Modus-CSVs aktuell. Der ARASAAC-Importer benutzt intern genau dieselbe Funktion.
+Der Ordnername ist ohne `--set-name` zugleich der Satzname. Vorhandene Größenkorrekturen und Shifts werden beim bewussten Neuerzeugen soweit möglich beibehalten. Danach sind Master und alle fünf technischen Modus-CSVs aktuell. Der ARASAAC-Importer benutzt intern genau dieselbe Funktion.
 
 ## Spiellogik
 
 - **Gruselino Papier:** Vier Grundkarten zeigen dieselben acht Symbole. Acht Suchkarten zeigen diese Symbole jeweils zufällig vertauscht; auf jeder Suchkarte fehlt genau ein anderes Symbol. Die historischen Positionen bleiben erhalten, die Symbolflächen sind um 20 % verkleinert und drehen nur um ±20°. `gruselino_shift` verschiebt das aktive 8er-Fenster zyklisch.
 - **Memory / Domino Papier:** Ein Modul enthält zwei klar getrennte, abgerundete 560er Kartenkästchen aus dem Original und dazwischen die ursprüngliche 22-Pixel-Schnittzone. Verbunden bilden aufeinanderfolgende Symbole den Domino-Ring. Getrennt kommt durch den geschlossenen Ring jedes Symbol zweimal vor und bildet ein Memory-Set. Es gibt keine Zufallsdrehung oder -skalierung.
 - **Dobble:** Das nächstkleinere perfekte System unterhalb der 8er-Karten nutzt 31 Symbole, 31 Karten und sechs Symbole pro Karte. Jedes Kartenpaar teilt exakt ein Symbol. Bei kleineren Bildsätzen bleiben nicht vorhandene IDs leer. Die Positionen nutzen die Kartenfläche weitläufig; die Größe variiert um ±18 %.
+- **Minimalspiel A4:** Ein statischer Laufweg verbindet zehn rote Symbolstationen. Größere normale Felder, zwei grüne Vorwärtssprünge von Symbolstationen (+8/+9), zwei rote Rücksprünge (-4/-6) und ein doppelt umkreistes Ziel bilden ein einfaches Leiterspiel.
+- **Bingo 4x4:** Vier vollständige Karten verwenden denselben Bestand von 16 Symbolfeldern in reproduzierbar verschiedenen Anordnungen. Jede Karte ist eine halbe A4-Seite, sodass zwei Karten pro PDF-Seite stehen. Eine der vier Karten kann an den Rasterlinien als Ziehkärtchen zerschnitten werden. Bei weniger als 16 ausgewählten Symbolen wird der Bestand zyklisch aufgefüllt.
 
 Gruselino variiert zur Laufzeit um ±5 % in der Größe und ±20° in der Drehung. Dobble variiert um ±18 % und 0–359°. Die Grundpositionen und Grundgrößen bleiben direkt im CardMaker-Editor editierbar.
 
@@ -104,4 +106,4 @@ python scripts/build/build_lautspiele_files.py
 python scripts/build/validate_lautspiele_project.py
 ```
 
-CardMaker-Version des Werkzeugstands: v1.07. `symbols_generate_sets`: v1.02. `symbols_download_arasaac`: v1.02.
+CardMaker-Version des Werkzeugstands: v1.08. `symbols_generate_sets`: v1.03. `symbols_download_arasaac`: v1.02.

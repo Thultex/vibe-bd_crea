@@ -1,6 +1,6 @@
 # Lautspiele
 
-Lautspiele bündelt bildbasierte Sprachspiele, die aus einem gemeinsamen Symbolsatz erzeugt werden. Der aktuelle Werkzeugstand umfasst Gruselino Papier, ein doppelt nutzbares Memory-/Domino-Papiermodul und eine kompakte perfekte Dobble-Variante.
+Lautspiele bündelt bildbasierte Sprachspiele, die aus einem gemeinsamen Symbolsatz erzeugt werden. Der aktuelle Werkzeugstand umfasst Gruselino Papier, ein doppelt nutzbares Memory-/Domino-Papiermodul, eine kompakte perfekte Dobble-Variante, einen A4-Spielplan und 4x4-Bingo.
 
 ## Struktur
 

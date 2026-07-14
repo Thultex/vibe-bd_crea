@@ -21,6 +21,8 @@ CONFIG_FIELDS = [
     "gruselino_start", "gruselino_end", "gruselino_shift",
     "domino_start", "domino_end", "domino_shift",
     "dobble_start", "dobble_end", "dobble_shift",
+    "spiel_start", "spiel_end", "spiel_shift",
+    "bingo_start", "bingo_end", "bingo_shift",
 ]
 
 
@@ -119,6 +121,12 @@ def create_symbol_set_config(
         "dobble_start": str(selection_start),
         "dobble_end": str(selection_end),
         "dobble_shift": previous.get("dobble_shift", "0") or "0",
+        "spiel_start": str(selection_start),
+        "spiel_end": str(selection_end),
+        "spiel_shift": previous.get("spiel_shift", "0") or "0",
+        "bingo_start": str(selection_start),
+        "bingo_end": str(selection_end),
+        "bingo_shift": previous.get("bingo_shift", "0") or "0",
     }
     with config_path.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=CONFIG_FIELDS)

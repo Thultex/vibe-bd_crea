@@ -2,7 +2,7 @@
 
 ## Gemeinsames Datenmodell
 
-Der Spielmodus ist durch das CardMaker-Layout festgelegt. Jeder Bildsatz besitzt eine editierbare Master-CSV mit Bildordner, Namen, Größenwertfolge, Verfügbarkeit sowie Start-, End- und Verschiebungswerten für Gruselino, Domino und Dobble. Drehung, Position, Ausblendung und Nachbarschaft werden im jeweiligen CardMaker-Feld berechnet.
+Der Spielmodus ist durch das CardMaker-Layout festgelegt. Jeder Bildsatz besitzt eine editierbare Master-CSV mit Bildordner, Namen, Größenwertfolge, Verfügbarkeit sowie Start-, End- und Verschiebungswerten für Gruselino, Domino, Dobble, Minimalspiel und Bingo. Drehung, Position, Ausblendung und Nachbarschaft werden im jeweiligen CardMaker-Feld berechnet.
 
 Die fachliche Größenkorrektur steht in einer nach dem Bildsatz benannten Tabelle neben dem CardMaker-Projekt: `symbols_default.csv` gehört zu `images/symbols/default`, `symbols_k.csv` zu `images/symbols/k`. Weil CardMaker die Kartenanzahl nur über `Count` in der Referenz steuert, erzeugt der Builder daraus technische Modusdateien wie `gruselino_k.csv`. Diese spiegeln den Master vollständig und ergänzen nur `Count`; für Memory/Domino wird dieser Wert aus der konfigurierten Symbolspanne berechnet. Alle zum Modus gehörenden Satz-CSVs werden am Layout angeschlossen. Globale CardMaker-Defines werden dafür nicht benutzt.
 
@@ -37,6 +37,22 @@ Die fachliche Größenkorrektur steht in einer nach dem Bildsatz benannten Tabel
 - Nicht vorhandene nummerierte PNGs werden über `symbol_available_map` leer gelassen.
 - Die sechs Positionen sind weit über die Papierkarte verteilt; die Größe variiert um ±18 Prozent.
 - Die Grundfläche entspricht ungefähr dem Gruselino-Papierlayout und kann über CardMakers PDF-Ausgabe auf A4 ausgeschossen werden.
+
+## Minimalspiel A4
+
+- Der Spielplan verwendet A4-Hochformat mit 2480 × 3508 Pixeln bei 300 DPI.
+- Zehn Symbolstationen, größere normale Felder, Sprungpfeile, Start und Ziel besitzen feste Layoutkoordinaten.
+- Das Ziel besitzt zwei rote Umkreisungen.
+- Vorwärtssprünge starten nur an Symbolstationen und überspringen höchstens neun Felder; Rücksprünge gehen höchstens sechs Felder zurück.
+- JavaScript wählt nur die nummerierten Bilder aus und berücksichtigt `spiel_shift`; Geometrie und Pfeile bleiben im Layout.
+
+## Bingo 4x4
+
+- Vier Karten verwenden denselben Bestand von 16 Feldern und unterscheiden sich nur durch eine reproduzierbare Permutation.
+- Eine Karte misst 2480 × 1754 Pixel; die Exportfläche 2480 × 3508 Pixel nimmt zwei Karten auf einer A4-Seite auf.
+- Eine vollständige Karte kann über die statischen Rasterlinien in 16 Ziehkärtchen getrennt werden.
+- Bei weniger als 16 ausgewählten Symbolen werden die vorhandenen Symbole zyklisch wiederholt, sodass kein Feld leer bleibt.
+- JavaScript wählt nur Bilder und Kartenpermutation; Raster, Linien und Maße bleiben im Layout.
 
 ## Dateiregeln
 
