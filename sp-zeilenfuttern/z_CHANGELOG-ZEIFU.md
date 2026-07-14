@@ -4,25 +4,33 @@
 
 Ausgangsdatum: 2026-06-21
 
-*Diese Woche (ca. 2,7h, 2 Tage, 48 Inhalte):*
-Zeifu: Grundstruktur angelegt, Spielinhalte direkt im Spielordner gebuendelt, README-/Changelog-Namen vereinheitlicht, Wortanalyse-Tool ergaenzt und erweitert, Regex101-Absprung ergaenzt, Eingabebereiche neu geordnet, Dateiimport und Textspeicherung ergaenzt, Textstandards `Nordwind & Sonne` und `Leibnitz 100k (mixed typical)` ergaenzt, Print-Cleanup und Cleanup-/Ausgabeoptionen ergaenzt, Print-Schriftauswahl ergaenzt, Basisschreibweise auf `=`/`#` umgestellt, Positionsmarker auf `p` umgestellt, gerichtete `c`-Kombos ergaenzt, `k` auf `#k` fuer Konsonanten reserviert, nummerierte Regex-Aufgaben ergaenzt, Copy-Buttons verschoben und gekuerzt, Standardtext gesetzt sowie Anleitung v1.08 und Designdokument v1.01 eingebunden.
+*Diese Woche (ca. 0,2h, 1 Tag, 1 Inhalt):*
+Zeifu: Wortmenge nach Wort- und Silbenfiltern deterministisch skalierbar gemacht.
 
 *Letzte Woche (0,0h, 0 Tage, 0 Inhalte):*
 Keine Eintraege.
 
-*Dieser Monat (ca. 2,7h, 2 Tage, 48 Inhalte):*
-Zeifu: Grundstruktur angelegt, Spielinhalte direkt im Spielordner gebuendelt, README-/Changelog-Namen vereinheitlicht, Wortanalyse-Tool ergaenzt und erweitert, Regex101-Absprung ergaenzt, Eingabebereiche neu geordnet, Dateiimport und Textspeicherung ergaenzt, Textstandards `Nordwind & Sonne` und `Leibnitz 100k (mixed typical)` ergaenzt, Print-Cleanup und Cleanup-/Ausgabeoptionen ergaenzt, Print-Schriftauswahl ergaenzt, Basisschreibweise auf `=`/`#` umgestellt, Positionsmarker auf `p` umgestellt, gerichtete `c`-Kombos ergaenzt, `k` auf `#k` fuer Konsonanten reserviert, nummerierte Regex-Aufgaben ergaenzt, Copy-Buttons verschoben und gekuerzt, Standardtext gesetzt sowie Anleitung v1.08 und Designdokument v1.01 eingebunden.
+*Dieser Monat (ca. 2,9h, 3 Tage, 49 Inhalte):*
+Zeifu: Wortanalyse-Tool um skalierbare Wortmengen ergänzt; bestehende Spielstruktur, Analyse-, Print- und Aufgabenfunktionen bleiben erhalten.
 
 *Letzter Monat (0,0h, 0 Tage, 0 Inhalte):*
 Keine Eintraege.
 
-*Jahr (ca. 2,7h, 2 Tage, 48 Inhalte):*
-Zeifu: Grundstruktur angelegt, Spielinhalte direkt im Spielordner gebuendelt, README-/Changelog-Namen vereinheitlicht, Wortanalyse-Tool ergaenzt und erweitert, Regex101-Absprung ergaenzt, Eingabebereiche neu geordnet, Dateiimport und Textspeicherung ergaenzt, Textstandards `Nordwind & Sonne` und `Leibnitz 100k (mixed typical)` ergaenzt, Print-Cleanup und Cleanup-/Ausgabeoptionen ergaenzt, Print-Schriftauswahl ergaenzt, Basisschreibweise auf `=`/`#` umgestellt, Positionsmarker auf `p` umgestellt, gerichtete `c`-Kombos ergaenzt, `k` auf `#k` fuer Konsonanten reserviert, nummerierte Regex-Aufgaben ergaenzt, Copy-Buttons verschoben und gekuerzt, Standardtext gesetzt sowie Anleitung v1.08 und Designdokument v1.01 eingebunden.
+*Jahr (ca. 2,9h, 3 Tage, 49 Inhalte):*
+Zeifu: Grundstruktur und Wortanalyse-Tool einschließlich Aufgaben-, Print-, Text- und Wortmengenkonfiguration aufgebaut.
 
-*Insgesamt (ca. 2,7h, 2 Tage, 48 Inhalte):*
-Zeifu: Grundstruktur angelegt, Spielinhalte direkt im Spielordner gebuendelt, README-/Changelog-Namen vereinheitlicht, Wortanalyse-Tool ergaenzt und erweitert, Regex101-Absprung ergaenzt, Eingabebereiche neu geordnet, Dateiimport und Textspeicherung ergaenzt, Textstandards `Nordwind & Sonne` und `Leibnitz 100k (mixed typical)` ergaenzt, Print-Cleanup und Cleanup-/Ausgabeoptionen ergaenzt, Print-Schriftauswahl ergaenzt, Basisschreibweise auf `=`/`#` umgestellt, Positionsmarker auf `p` umgestellt, gerichtete `c`-Kombos ergaenzt, `k` auf `#k` fuer Konsonanten reserviert, nummerierte Regex-Aufgaben ergaenzt, Copy-Buttons verschoben und gekuerzt, Standardtext gesetzt sowie Anleitung v1.08 und Designdokument v1.01 eingebunden.
+*Insgesamt (ca. 2,9h, 3 Tage, 49 Inhalte):*
+Zeifu: Grundstruktur und Wortanalyse-Tool einschließlich Aufgaben-, Print-, Text- und Wortmengenkonfiguration aufgebaut.
 
 ## Log
+
+### 2026-07-14 - zeifu, tools, doku (ca. 0,2h)
+
+- Feature: Zahlenoption `Wortanzahl anpassen` im Abschnitt `Skalierung` direkt unter der groben Silbenzahl ergänzt; `1` belässt die Liste, `1,5` dupliziert jedes dritte Wort, `2` jedes Wort und `0,5` lässt jedes zweite Wort aus.
+- Feature: Schaltfläche `Auf eine Seite` führt zuerst die aktuelle Wortsuche aus, berechnet die Seitenkapazität aus A4-Nutzfläche, aktueller Print-Schriftgröße und Spaltenzahl, setzt daraus den Skalierungsfaktor und analysiert anschließend erneut.
+- Tooling: Skalierung wird nach Cleanup sowie Wort-/Silbenfiltern deterministisch auf Ausgabe und Aufgabenanalyse angewendet und zusammen mit den übrigen Optionen lokal gespeichert.
+- Doku: Wortanalyse-Tool in der Spielübersicht als filter- und skalierbar beschrieben.
+- Versionen: word-task-analyzer v1.85.
 
 ### 2026-06-22 - zeifu, memo #1 (ca. 0,7h)
 

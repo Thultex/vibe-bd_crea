@@ -321,6 +321,11 @@
       gap: 10px;
     }
 
+    .scale-action {
+      align-self: end;
+      width: 100%;
+    }
+
     .check-option {
       display: flex;
       align-items: center;
@@ -370,7 +375,7 @@
   <main>
     <header>
       <h1>Zeilenfutter Wortanalyse</h1>
-      <div class="version">Tool v1.84</div>
+      <div class="version">Tool v1.85</div>
     </header>
 
     <div class="layout">
@@ -513,6 +518,18 @@
                 <input id="maxSyllableCount" type="number" min="0" step="1">
               </div>
             </div>
+          </div>
+
+          <div class="field">
+            <label>Skalierung</label>
+            <div class="option-grid">
+              <div>
+                <label for="wordAmountScale">Wortanzahl anpassen:</label>
+                <input id="wordAmountScale" type="number" min="0.000001" step="any" inputmode="decimal">
+              </div>
+              <button id="scaleToPageButton" class="secondary scale-action" type="button">Auf eine Seite</button>
+            </div>
+            <div class="task-meta">1 = unverändert · 1,5 = jedes dritte Wort doppelt · 2 = jedes Wort doppelt · 0,5 = jedes zweite Wort auslassen</div>
           </div>
 
           <div class="field">
@@ -710,6 +727,7 @@
       defaultMaxWordLength: 0,
       defaultMinSyllableCount: 0,
       defaultMaxSyllableCount: 0,
+      defaultWordAmountScale: 1,
       defaultRemoveDuplicates: true,
       defaultReplaceUmlauts: false,
       defaultRemoveDiacritics: false,
@@ -763,6 +781,8 @@
       maxWordLength: document.getElementById("maxWordLength"),
       minSyllableCount: document.getElementById("minSyllableCount"),
       maxSyllableCount: document.getElementById("maxSyllableCount"),
+      wordAmountScale: document.getElementById("wordAmountScale"),
+      scaleToPageButton: document.getElementById("scaleToPageButton"),
       removeDuplicates: document.getElementById("removeDuplicates"),
       replaceUmlauts: document.getElementById("replaceUmlauts"),
       removeDiacritics: document.getElementById("removeDiacritics"),
@@ -815,6 +835,7 @@
       elements.resetTasksButton.addEventListener("click", resetTasks);
       elements.clearTasksButton.addEventListener("click", clearTasks);
       elements.resetOptionsButton.addEventListener("click", resetOptions);
+      elements.scaleToPageButton.addEventListener("click", scaleToApproximatePage);
       elements.clearButton.addEventListener("click", clearInput);
       elements.copyWordsButtons.forEach((button) => button.addEventListener("click", copyPrintWords));
       elements.copyTableButtons.forEach((button) => button.addEventListener("click", copyHtmlTable));
@@ -826,10 +847,8 @@
       saveOptions(options);
       saveText(elements.sourceText.value);
       saveTasks(elements.taskInput.value);
-      const normalizedText = normalizeSourceText(elements.sourceText.value, options);
-      const rawWords = formatOutputWords(extractWords(normalizedText, options), options);
-      const cleanedWords = options.removeDuplicates ? removeDuplicateWords(rawWords).words : rawWords;
-      const words = filterWords(cleanedWords, options);
+      const filteredWords = collectFilteredWords(options);
+      const words = scaleWordAmount(filteredWords, options.wordAmountScale);
       const uniqueStatWords = removeDuplicateWords(words).words;
       const sortedWords = sortWords(words);
       const generalStats = calculateGeneralStats(uniqueStatWords);
@@ -859,6 +878,28 @@
       }
 
       return normalizedText;
+    }
+
+    function collectFilteredWords(options) {
+      const normalizedText = normalizeSourceText(elements.sourceText.value, options);
+      const rawWords = formatOutputWords(extractWords(normalizedText, options), options);
+      const cleanedWords = options.removeDuplicates ? removeDuplicateWords(rawWords).words : rawWords;
+      return filterWords(cleanedWords, options);
+    }
+
+    function scaleToApproximatePage() {
+      analyzeInput();
+      const options = getAnalysisOptions();
+      const words = collectFilteredWords(options);
+      if (words.length === 0) {
+        elements.wordAmountScale.value = CONFIG.defaultWordAmountScale;
+        analyzeInput();
+        return;
+      }
+      const targetCount = calculateWordsPerPrintPage(options);
+      const factor = findScaleFactorForTarget(words, targetCount);
+      elements.wordAmountScale.value = formatScaleFactor(factor);
+      analyzeInput();
     }
 
     function extractWords(text, options) {
@@ -924,6 +965,7 @@
         maxWordLength: parseFilterLimit(elements.maxWordLength.value),
         minSyllableCount: parseFilterLimit(elements.minSyllableCount.value),
         maxSyllableCount: parseFilterLimit(elements.maxSyllableCount.value),
+        wordAmountScale: parseScaleFactor(elements.wordAmountScale.value),
         removeDuplicates: elements.removeDuplicates.checked,
         replaceUmlauts: elements.replaceUmlauts.checked,
         removeDiacritics: elements.removeDiacritics.checked,
@@ -950,6 +992,7 @@
         maxWordLength: CONFIG.defaultMaxWordLength,
         minSyllableCount: CONFIG.defaultMinSyllableCount,
         maxSyllableCount: CONFIG.defaultMaxSyllableCount,
+        wordAmountScale: CONFIG.defaultWordAmountScale,
         removeDuplicates: CONFIG.defaultRemoveDuplicates,
         replaceUmlauts: CONFIG.defaultReplaceUmlauts,
         removeDiacritics: CONFIG.defaultRemoveDiacritics,
@@ -976,6 +1019,7 @@
       elements.maxWordLength.value = mergedOptions.maxWordLength;
       elements.minSyllableCount.value = mergedOptions.minSyllableCount;
       elements.maxSyllableCount.value = mergedOptions.maxSyllableCount;
+      elements.wordAmountScale.value = mergedOptions.wordAmountScale;
       elements.removeDuplicates.checked = mergedOptions.removeDuplicates;
       elements.replaceUmlauts.checked = mergedOptions.replaceUmlauts;
       elements.removeDiacritics.checked = mergedOptions.removeDiacritics;
@@ -1052,6 +1096,75 @@
     function parseFilterLimit(value) {
       const parsedValue = Number.parseInt(value, 10);
       return Number.isFinite(parsedValue) && parsedValue > 0 ? parsedValue : null;
+    }
+
+    function parseScaleFactor(value) {
+      const parsedValue = Number.parseFloat(String(value).trim().replace(",", "."));
+      if (!Number.isFinite(parsedValue) || parsedValue <= 0) {
+        return CONFIG.defaultWordAmountScale;
+      }
+      return parsedValue;
+    }
+
+    function formatScaleFactor(factor) {
+      return factor.toFixed(6).replace(/0+$/, "").replace(/\.$/, "");
+    }
+
+    function findScaleFactorForTarget(words, targetCount) {
+      const directFactor = targetCount / words.length;
+      if (directFactor <= 1 || directFactor >= 2) {
+        return directFactor;
+      }
+      const duplicateShare = directFactor - 1;
+      const normalizedFactor = (-1 + Math.sqrt(1 + 24 * duplicateShare)) / 4;
+      return 1 + normalizedFactor;
+    }
+
+    function scaleWordAmount(words, factor) {
+      if (Math.abs(factor - 1) < 0.000001) {
+        return [...words];
+      }
+
+      if (factor < 1) {
+        const result = [];
+        let accumulator = 1 - factor;
+        for (const word of words) {
+          accumulator += factor;
+          if (accumulator >= 1 - 0.000001) {
+            result.push(word);
+            accumulator -= 1;
+          }
+        }
+        return result;
+      }
+
+      if (factor >= 2) {
+        const result = [];
+        let accumulator = 0;
+        for (const word of words) {
+          accumulator += factor;
+          const copies = Math.floor(accumulator + 0.000001);
+          accumulator -= copies;
+          for (let copy = 0; copy < copies; copy += 1) {
+            result.push(word);
+          }
+        }
+        return result;
+      }
+
+      const normalizedFactor = factor - 1;
+      const duplicateShare = (2 * normalizedFactor * normalizedFactor + normalizedFactor) / 3;
+      const result = [];
+      let accumulator = 0;
+      words.forEach((word) => {
+        result.push(word);
+        accumulator += duplicateShare;
+        if (accumulator >= 1 - 0.000001) {
+          result.push(word);
+          accumulator -= 1;
+        }
+      });
+      return result;
     }
 
     function filterWords(words, options) {
@@ -2050,8 +2163,10 @@
     }
 
     function createPrintPages(words, fontSize, columnCount, fontFamilyKey, showTableGrid) {
-      const rowsPerColumn = Math.max(18, Math.floor(760 / (fontSize * 1.35)));
-      const wordsPerPage = rowsPerColumn * columnCount;
+      const wordsPerPage = calculateWordsPerPrintPage({
+        printFontSize: fontSize,
+        printColumnCount: columnCount,
+      });
       const pages = [];
       for (let index = 0; index < words.length; index += wordsPerPage) {
         const pageWords = words.slice(index, index + wordsPerPage);
@@ -2061,6 +2176,16 @@
         });
       }
       return pages;
+    }
+
+    function calculateWordsPerPrintPage(options) {
+      const millimetersToCssPixels = 96 / 25.4;
+      const printableHeight = (297 - 2 * 14) * millimetersToCssPixels;
+      const lineHeight = options.printFontSize * 1.25;
+      const verticalCellPadding = 4 * millimetersToCssPixels;
+      const rowHeight = lineHeight + verticalCellPadding;
+      const rowsPerColumn = Math.max(1, Math.floor(printableHeight / rowHeight));
+      return rowsPerColumn * Math.max(1, options.printColumnCount);
     }
 
     function createPrintPageHtml(words, fontSize, columnCount, fontFamilyKey, showTableGrid) {
