@@ -39,13 +39,18 @@ class WordEntry:
     additional: int
 
 
-def parse_word_file(path: Path) -> list[WordEntry]:
+def parse_word_file(path: Path, allow_empty: bool = False) -> list[WordEntry]:
     entries: list[WordEntry] = []
     with path.open(encoding="utf-8-sig", newline="") as handle:
         for line_number, row in enumerate(csv.reader(handle), start=1):
             if not row or not any(cell.strip() for cell in row):
                 continue
             if row[0].lstrip().startswith("#"):
+                continue
+            first_value = row[0].strip().lower()
+            if line_number == 1 and first_value in {"deutsch", "name_de"}:
+                continue
+            if line_number == 2 and first_value == "name":
                 continue
             if len(row) > 3:
                 raise ValueError(f"Zeile {line_number}: höchstens drei Felder erlaubt.")
@@ -66,18 +71,20 @@ def parse_word_file(path: Path) -> list[WordEntry]:
             if not 0 <= additional <= 20:
                 raise ValueError(f"Zeile {line_number}: Anzahl muss zwischen 0 und 20 liegen.")
             entries.append(WordEntry(german, english, additional))
-    if not entries:
+    if not entries and not allow_empty:
         raise ValueError("Die Wortliste enthält keine Einträge.")
     return entries
 
 
-def parse_id_file(path: Path) -> list[int]:
+def parse_id_file(path: Path, allow_empty: bool = False) -> list[int]:
     ids: list[int] = []
     with path.open(encoding="utf-8-sig", newline="") as handle:
         for line_number, row in enumerate(csv.reader(handle), start=1):
             if not row or not row[0].strip():
                 continue
             value = row[0].strip()
+            if line_number == 2 and value.lower() == "name":
+                continue
             if value.lstrip().startswith("#") or value.lower().startswith("arasaac_id"):
                 continue
             if not value.isdecimal():
@@ -90,7 +97,7 @@ def parse_id_file(path: Path) -> list[int]:
             if arasaac_id in ids:
                 raise ValueError(f"Zeile {line_number}: doppelte ARASAAC-ID {arasaac_id}.")
             ids.append(arasaac_id)
-    if not ids:
+    if not ids and not allow_empty:
         raise ValueError("Die ID-Liste enthält keine ARASAAC-IDs.")
     return ids
 
@@ -361,8 +368,9 @@ def parse_args() -> argparse.Namespace:
         description="ARASAAC-Bilder und Lautspiele-Symbol-CSV erzeugen."
     )
     parser.add_argument(
-        "eingabe", type=Path,
-        help="symbol_names.csv oder symbol_ids.csv",
+        "eingabe", type=Path, nargs="?",
+        help=("symbol_names.csv oder symbol_ids.csv; ohne Angabe wird eine "
+              "befüllte symbol_ids.csv bevorzugt, sonst symbol_names.csv"),
     )
     parser.add_argument(
         "--set-name",
@@ -378,12 +386,34 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    input_path = args.eingabe.resolve()
-    set_name = normalized_set_name(args.set_name or input_path.stem)
-    if input_path.name.lower() == "symbol_ids.csv":
-        import_ids(input_path, set_name, args.force)
+    from symbols_generate_sets import input_set_name
+
+    if args.eingabe:
+        input_paths = [args.eingabe.resolve()]
     else:
-        import_symbols(input_path, set_name, args.force)
+        script_folder = Path(__file__).resolve().parent
+        ids_path = script_folder / "symbol_ids.csv"
+        names_path = script_folder / "symbol_names.csv"
+        if parse_id_file(ids_path, allow_empty=True):
+            input_paths = [ids_path]
+        elif parse_word_file(names_path, allow_empty=True):
+            input_paths = [names_path]
+        else:
+            raise ValueError(
+                "Weder symbol_ids.csv noch symbol_names.csv enthält Einträge."
+            )
+
+    tasks: list[tuple[Path, str]] = []
+    for input_path in input_paths:
+        set_name = normalized_set_name(
+            args.set_name or input_set_name(input_path) or input_path.stem
+        )
+        tasks.append((input_path, set_name))
+    for input_path, set_name in tasks:
+        if input_path.name.lower() == "symbol_ids.csv":
+            import_ids(input_path, set_name, args.force)
+        else:
+            import_symbols(input_path, set_name, args.force)
 
 
 if __name__ == "__main__":

@@ -36,11 +36,31 @@ def normalized_set_name(value: str) -> str:
     return result
 
 
+def input_set_name(path: Path) -> str | None:
+    """Liest optional `name,<satz>` aus der ersten Tabellenzeile nach dem Kopf."""
+    with path.open(encoding="utf-8-sig", newline="") as handle:
+        reader = csv.reader(handle)
+        next(reader, [])
+        name_row = next(reader, [])
+    if not name_row or name_row[0].strip().lower() != "name":
+        return None
+    if len(name_row) < 2 or not name_row[1].strip():
+        raise ValueError(
+            "Die erste Tabellenzeile nach dem Kopf muss `name,<satzname>` enthalten."
+        )
+    return normalized_set_name(name_row[1])
+
+
 def read_names(path: Path) -> list[str]:
     names: list[str] = []
     with path.open(encoding="utf-8-sig", newline="") as handle:
-        for row in csv.reader(handle):
+        for line_number, row in enumerate(csv.reader(handle), start=1):
             if not row or not row[0].strip() or row[0].lstrip().startswith("#"):
+                continue
+            first_value = row[0].strip().lower()
+            if line_number == 1 and first_value in {"deutsch", "name_de"}:
+                continue
+            if line_number == 2 and first_value == "name":
                 continue
             names.append(row[0].strip())
     if not names:
@@ -195,9 +215,11 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
-    names = read_names(args.namensliste.resolve())
+    input_path = args.namensliste.resolve()
+    names = read_names(input_path)
+    set_name = args.set_name or input_set_name(input_path)
     path = create_symbol_set_config(
-        names, args.bildordner, args.set_name, args.force,
+        names, args.bildordner, set_name, args.force,
     )
     print(f"Erstellt: {path}")
 

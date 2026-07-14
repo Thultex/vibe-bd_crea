@@ -67,6 +67,9 @@ Ausgangsdatum: 2026-07-13
 - Fix: Obere Startsequenz des Minimalspiels begradigt; das zuvor unterhalb des Käses stehende Kleinfeld liegt nun im Laufweg, der Käse wurde kollisionsfrei leicht nach rechts versetzt.
 - Balance: Bingo benötigt mindestens acht Bilder; bei 8–15 Bildern liegen Wiederholungen auf den ersten beiden Karten nie gemeinsam in einer horizontalen, vertikalen oder diagonalen Gewinnlinie.
 - Doku: `build.ini` benennt `start_symbol` und `symbol_count` nun unmittelbar als erstes Symbol und Anzahl verwendeter Symbole.
+- Feature: `name,<satz>` in der ersten Tabellenzeile unter dem CSV-Kopf von `symbol_names.csv` und `symbol_ids.csv` steuert den Bildsatznamen, ohne selbst als Symbol oder ID zu zählen; die ID-Vorlage besitzt zusätzlich eine lesbare `note`-Spalte.
+- Tool: Der argumentlose ARASAAC-Downloader bevorzugt eine tatsächlich befüllte ID-Liste und greift nur bei leerer ID-Liste auf die Namensliste zurück; reine Metadatenzeilen lösen keinen Abruf aus.
+- Doku: Die dritte Spalte der Namensvorlage heißt verständlich `extra Bilder pro Sprache`.
 - Doku: Memory/Domino-Stitched-Export (`2 × 12`, `2362 × 7400`) vom direkten PDF-Ausschuss getrennt; vier Karten nebeneinander benötigen dort weiterhin den originalen globalen Rand von `5 mm`.
 - Refactor: Die funktionslose `lautspiele_defines.csv` entfernt; Satz- und Modusdaten kommen ausschließlich aus den Layout-Referenzen.
 - Fix: Gruselino anhand von `Logospiele.xlsx` auf den belegten Ursprungswert 32 gesetzt: eine `c=4`-Grundzeile und 28 `c=1`-Suchzeilen; die frühere Erinnerung an 52 wurde damit korrigiert.
@@ -74,7 +77,7 @@ Ausgangsdatum: 2026-07-13
 - Material: Eine der vier vollständigen Bingokarten kann entlang des statischen Rasters als Ziehsatz ausgeschnitten werden; eine separate Ziehseite ist nicht nötig.
 - Daten: `spiel_*` und `bingo_*` ergänzen Start, Ende und Shift in Master- und Modus-CSVs; bei weniger als 16 Bingo-Symbolen wird zyklisch ohne leere Felder aufgefüllt.
 - Test: Zwei Master-CSVs, zehn abgeleitete Modus-CSVs, fünf Layouts, Sprunggrenzen, Doppelziel und vollständige Bingo-Raster validiert.
-- Versionen: build_lautspiele_files v1.10, validate_lautspiele_project v1.10, symbols_generate_sets v1.05, symbols_download_arasaac v1.02.
+- Versionen: build_lautspiele_files v1.10, validate_lautspiele_project v1.10, symbols_generate_sets v1.06, symbols_download_arasaac v1.03.
 
 ### 2026-07-13 - laut, struktur, tools, design, material, doku (ca. 1,5h)
 

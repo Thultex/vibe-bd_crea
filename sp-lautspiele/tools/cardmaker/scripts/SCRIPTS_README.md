@@ -35,13 +35,16 @@ Der Builder übernimmt die Auswahl beim Neuerzeugen in die Start-/Endfelder alle
 Eine Zeile beschreibt ein Symbol:
 
 ```csv
-# Deutsch,Englisch,zusaetzliche Kandidaten je Sprache
+deutsch,englisch,extra Bilder pro Sprache
+name,k,
 Käse,cheese,2
 Keks,cookie,2
 Ei,egg,2
 ```
 
-- Spalte 1 ist der deutsche Symbolname und immer erforderlich.
+- Die Kopfzeile benennt die drei Tabellenspalten.
+- Die erste Tabellenzeile darunter (`name,k,`) legt den Bildsatznamen fest und ist selbst kein Symbol.
+- Ab der folgenden Zeile ist Spalte 1 der deutsche Symbolname und immer erforderlich.
 - Spalte 2 ist ein optionaler englischer alternativer Suchbegriff.
 - Spalte 3 gibt an, wie viele zusätzliche Kandidaten **je vorhandener Sprache** geladen werden.
 - Leerzeilen und Zeilen, deren erste Spalte mit `#` beginnt, werden ignoriert.
@@ -52,14 +55,23 @@ Ei,egg,2
 Wenn die gewünschten ARASAAC-IDs bereits bekannt sind, werden unter der erklärenden Kopfzeile ausschließlich positive Ganzzahlen eingetragen:
 
 ```csv
-arasaac_id,"Eine ARASAAC-ID pro Folgezeile eintragen; nur positive Ganzzahlen, keine Suchbegriffe."
-35371
-3241
+arasaac_id,note
+name,k
+35371,
+3241,
 ```
 
-Der Downloader erkennt `symbol_ids.csv` am Dateinamen. Er überspringt die Kopfzeile, ruft jede ID direkt über den deutschen ARASAAC-Piktogramm-Endpunkt ab, verwendet den ersten deutschen Begriff als Namen und lädt das zugehörige PNG. Doppelte oder ungültige IDs führen zu einer verständlichen Fehlermeldung.
+Die Kopfzeile `arasaac_id,note` hält die Datei als normale zweispaltige CSV-Tabelle lesbar. Die erste Tabellenzeile darunter (`name,k`) legt den Bildsatznamen fest. Sie allein aktiviert keinen ID-Abruf. Der Downloader überspringt Kopf- und Namenszeile, ruft jede tatsächlich eingetragene ID direkt über den deutschen ARASAAC-Piktogramm-Endpunkt ab, verwendet den ersten deutschen Begriff als Namen und lädt das zugehörige PNG. Die optionale Spalte `note` kann eigene Hinweise enthalten. Doppelte oder ungültige IDs führen zu einer verständlichen Fehlermeldung.
 
 ## 1. ARASAAC-Bilder herunterladen
+
+Argumentlos wird zuerst `symbol_ids.csv` geprüft. Enthält die Datei echte IDs, wird ausschließlich dieser Satz erzeugt. Nur wenn keine IDs eingetragen sind, wird auf die Suchbegriffe aus `symbol_names.csv` zurückgegriffen. Reine `name,<satz>`-Zeilen gelten nicht als Inhalt:
+
+```powershell
+python scripts/generate/symbols_download_arasaac.py --force
+```
+
+Einzelne Eingaben können weiterhin explizit ausgeführt werden:
 
 ```powershell
 python scripts/generate/symbols_download_arasaac.py scripts/generate/symbol_names.csv --set-name k --force
@@ -86,7 +98,7 @@ bingo_k.csv
 
 `01.png` ist der ausgewählte Haupttreffer. `01-d1.png` und `01-e1.png` sind deutsche beziehungsweise englische Alternativen. Eine Alternative kann später durch Umbenennen zur Hauptdatei gemacht werden. Doppelte ARASAAC-IDs werden nicht zweimal gespeichert.
 
-Ohne `--set-name` wird der Dateiname der Namensliste als Satzname verwendet. Bestehende Ausgaben werden nur mit `--force` überschrieben.
+Ohne `--set-name` wird zuerst `name,<satz>` aus der ersten Tabellenzeile unter dem Kopf und andernfalls der Dateiname verwendet. Bestehende Ausgaben werden nur mit `--force` überschrieben.
 
 Direkter Abruf bekannter IDs:
 
@@ -143,7 +155,7 @@ Er aktualisiert außerdem die Verfügbarkeitskarten anhand der tatsächlich vorh
 
 ## Empfohlener Ablauf
 
-1. `symbol_names.csv` für Suchbegriffe oder `symbol_ids.csv` für bekannte ARASAAC-IDs kopieren und befüllen.
+1. Unter der Kopfzeile jeder verwendeten Vorlage mit `name,<satz>` den Satznamen festlegen; darunter `symbol_names.csv` für Suchbegriffe und/oder `symbol_ids.csv` für bekannte ARASAAC-IDs befüllen.
 2. Bilder mit `symbols_download_arasaac.py` laden oder manuell als nummerierte PNGs bereitstellen.
 3. Bei manuellen Bildern `symbols_generate_sets.py` ausführen.
 4. Startsymbol und Anzahl bei Bedarf in `images/symbols/<satz>/build.ini` anpassen.
