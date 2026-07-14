@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import csv
 import importlib.util
+import math
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
@@ -14,7 +15,7 @@ BUILD_SCRIPT = Path(__file__).with_name("build_lautspiele_files.py")
 SETS = ("default", "k")
 CONFIG_MODES = ("gruselino", "domino", "dobble", "spiel", "bingo")
 REFERENCE_COUNTS = {
-    "gruselino": 12,
+    "gruselino": 32,
     "domino": None,
     "dobble": 31,
     "spiel": 1,
@@ -46,7 +47,6 @@ def read_one(path: Path) -> dict[str, str]:
 def validate() -> None:
     builder = load_builder()
     project = ROOT / "lautspiele.cmp"
-    empty_defines = ROOT / "lautspiele_defines.csv"
     required_fields = {
         "symbol_set", "symbol_folder", "symbol_count", "symbol_names",
         "symbol_scale_map", "symbol_available_map",
@@ -76,7 +76,29 @@ def validate() -> None:
             fail(f"{master.name} hat keine vollständige Verfügbarkeitskarte.")
         if any(float(value) <= 0 for value in scales):
             fail(f"{master.name} enthält eine ungültige Größenkorrektur.")
-        expected_start, expected_end = builder.selection_range(len(names))
+        manifest = ROOT / row["symbol_folder"] / "symbols.csv"
+        if not manifest.is_file():
+            fail(f"Ordnerlokale Symboltabelle fehlt: {manifest}")
+        with manifest.open(encoding="utf-8-sig", newline="") as handle:
+            manifest_rows = list(csv.DictReader(handle))
+        if not manifest_rows or not {"symbol_id", "name", "scale"}.issubset(manifest_rows[0]):
+            fail(f"{manifest} benötigt symbol_id, name und scale.")
+        manifest_ids = [int(item["symbol_id"]) for item in manifest_rows]
+        if manifest_ids != list(range(1, len(manifest_rows) + 1)):
+            fail(f"{manifest} ist nicht lückenlos ab 1 nummeriert.")
+        manifest_names = [item["name"].strip() for item in manifest_rows]
+        manifest_scales = [item["scale"].strip() for item in manifest_rows]
+        if manifest_names != names:
+            fail(f"Namen in {master.name} weichen von {manifest} ab.")
+        if [float(value) for value in manifest_scales] != [float(value) for value in scales]:
+            fail(f"Größen in {master.name} weichen von {manifest} ab.")
+        if any(not value or float(scale) <= 0
+               for value, scale in zip(manifest_names, manifest_scales)):
+            fail(f"{manifest} enthält leere Namen oder ungültige Größen.")
+        set_build_config = ROOT / row["symbol_folder"] / "build.ini"
+        if not set_build_config.is_file():
+            fail(f"Satzlokale build.ini fehlt: {set_build_config}")
+        expected_start, expected_end = builder.selection_range(len(names), set_build_config)
         for mode in CONFIG_MODES:
             start = int(row[f"{mode}_start"])
             end = int(row[f"{mode}_end"])
@@ -100,22 +122,21 @@ def validate() -> None:
         if (ROOT / f"memory_{set_name}.csv").exists():
             fail(f"Veraltete separate Memory-Datei vorhanden: memory_{set_name}.csv")
 
-    if not project.is_file() or not empty_defines.is_file():
-        fail("Projekt oder technische Defines-Datei fehlt.")
-    with empty_defines.open(encoding="utf-8-sig", newline="") as handle:
-        if list(csv.reader(handle)) != [["define", "value"]]:
-            fail("Die technische Projekt-Defines-Datei muss leer bleiben.")
+    if not project.is_file():
+        fail("CardMaker-Projekt fehlt.")
+    if (ROOT / "lautspiele_defines.csv").exists():
+        fail("Eine separate Defines-Datei ist für das Projekt nicht vorgesehen.")
 
     root = ET.parse(project).getroot()
     if root.findtext("translatorName") != "JavaScript":
         fail("Das Projekt muss den JavaScript-Translator verwenden.")
     layouts = {layout.get("Name"): layout for layout in root.findall("Layout")}
     expected = {
-        "Gruselino Papier": ("gruselino", "7860", "7602"),
-        "Memory / Domino Papier": ("domino", "2362", "7400"),
-        "Dobble Papier": ("dobble", "7860", "7602"),
-        "Minimalspiel A4": ("spiel", "2480", "3508"),
-        "Bingo 4x4": ("bingo", "2480", "3508"),
+        "Gruselino (8)": ("gruselino", "7860", "7602"),
+        "Memory + Domino (ab 2)": ("domino", "2362", "7400"),
+        "Dobble (31 Symbole)": ("dobble", "7860", "7602"),
+        "Minimalspiel A4 (10)": ("spiel", "2480", "3508"),
+        "Bingo 4x4 (16 Felder)": ("bingo", "2480", "3508"),
     }
     if set(layouts) != set(expected):
         fail("Die fünf erwarteten Layouts fehlen oder wurden umbenannt.")
@@ -138,29 +159,31 @@ def validate() -> None:
         if layout.findtext("zoom") != "0.6081989":
             fail(f"{name} übernimmt nicht den historischen Layout-Zoom.")
 
-    gruselino = layouts["Gruselino Papier"].findall("Element")
+    gruselino = layouts["Gruselino (8)"].findall("Element")
     bases = [e for e in gruselino if (e.get("name") or "").startswith("Grundsymbol ")]
     searches = [e for e in gruselino if (e.get("name") or "").startswith("Suchsymbol ")]
     if len(bases) != 8 or len(searches) != 8:
-        fail("Gruselino Papier braucht acht Grund- und acht Suchsymbolfelder.")
+        fail("Gruselino braucht acht Grund- und acht Suchsymbolfelder.")
     for element in [*bases, *searches]:
         code = element.get("variable", "")
         if "shuffledLogical" not in code or "Math.random()*41" not in code:
             fail("Gruselino-Permutation oder dezente Rotation fehlt.")
+    if any("%8" not in e.get("variable", "") for e in searches):
+        fail("Das fehlende Gruselino-Symbol muss über 28 Suchkarten zyklisch laufen.")
     expected_sizes = sorted(
         size for _, _, size in builder._scaled_positions(
             builder.GRUSELINO_PAPER_BASE_POSITIONS, 0.8
         )
     )
     if sorted(int(e.get("width", "0")) for e in bases) != expected_sizes:
-        fail("Gruselino-Papiersymbole sind nicht um 20 Prozent verkleinert.")
+        fail("Gruselino-Symbole sind nicht um 20 Prozent verkleinert.")
     if len([e for e in gruselino if (e.get("name") or "").startswith("Twirl ")]) != 8:
-        fail("Gruselino Papier braucht acht Suchkarten-Effekte.")
+        fail("Gruselino braucht acht Suchkarten-Effekte.")
     fronts = [e for e in gruselino if e.get("name") == "Gruselino Front"]
     if len(fronts) != 1 or "cardIndex<=4" not in fronts[0].get("variable", ""):
-        fail("Gruselino Papier braucht die historische Suchkarten-Front.")
+        fail("Gruselino braucht die historische Suchkarten-Front.")
 
-    double_layout = layouts["Memory / Domino Papier"]
+    double_layout = layouts["Memory + Domino (ab 2)"]
     double_symbols = [
         e for e in double_layout.findall("Element")
         if (e.get("name") or "").startswith("Memory Domino Symbol")
@@ -195,7 +218,7 @@ def validate() -> None:
         fail("Memory/Domino fehlen originale Hintergrund-, Front- oder Twirl-Ebenen.")
 
     dobble = [
-        e for e in layouts["Dobble Papier"].findall("Element")
+        e for e in layouts["Dobble (31 Symbole)"].findall("Element")
         if (e.get("name") or "").startswith("Dobble Symbol")
     ]
     if len(dobble) != 6:
@@ -218,9 +241,9 @@ def validate() -> None:
     if set(occurrences.values()) != {6}:
         fail("Dobble-Symbole erscheinen nicht jeweils sechsmal.")
 
-    board = layouts["Minimalspiel A4"]
+    board = layouts["Minimalspiel A4 (10)"]
     if (board.get("width"), board.get("height"), board.get("dpi")) != (
-        "2480", "3508", "300"
+        str(builder.BOARD_LAYOUT_WIDTH), str(builder.BOARD_LAYOUT_HEIGHT), "300"
     ):
         fail("Minimalspiel muss A4-Hochformat mit 300 DPI verwenden.")
     board_symbols = [
@@ -239,10 +262,21 @@ def validate() -> None:
         fail("Minimalspiel braucht zehn feste Symbolstationen.")
     if len(path_fields) < 24:
         fail("Minimalspiel braucht einen ausreichend langen Laufweg.")
-    if any(e.get("width") != "108" for e in path_fields):
+    if any(e.get("width") != "97" for e in path_fields):
         fail("Minimalspiel braucht die vergrößerten normalen Spielfelder.")
     if any("Math.random" in e.get("variable", "") for e in board_symbols):
         fail("Minimalspiel darf Symbolgröße und Drehung nicht zufällig verändern.")
+    if any(e.get("backgroundcolor") != "0xFFFFFFFF" for e in stations):
+        fail("Die Symbolfelder des Minimalspiels müssen weiß gefüllt sein.")
+    reddish_fields = {
+        e.get("name") for e in path_fields
+        if e.get("backgroundcolor") == "0xF1E6E6FF"
+    }
+    if reddish_fields != {"Spielfeld 18", "Spielfeld 28"}:
+        fail("Genau die beiden Rücksprungfelder müssen dezent rötlich sein.")
+    if any(e.get("backgroundcolor") != "0xF4F4F4FF"
+           for e in path_fields if e.get("name") not in reddish_fields):
+        fail("Die übrigen normalen Spielfelder müssen sehr hellgrau sein.")
     forward_jumps = [
         e for e in board.findall("Element")
         if (e.get("name") or "").startswith("Vorwaerts ")
@@ -251,23 +285,47 @@ def validate() -> None:
         e for e in board.findall("Element")
         if (e.get("name") or "").startswith("Rueckwaerts ")
     ]
-    if len(forward_jumps) != 2 or len(backward_jumps) != 2:
-        fail("Minimalspiel braucht zwei Vorwärts- und zwei Rückwärtspfeile.")
-    if any("+9" not in e.get("variable", "") and "+8" not in e.get("variable", "")
-           for e in forward_jumps):
-        fail("Vorwärtspfeile müssen maximal neun Felder überspringen.")
-    if any("-6" not in e.get("variable", "") and "-4" not in e.get("variable", "")
-           for e in backward_jumps):
-        fail("Rückwärtspfeile müssen maximal sechs Felder zurücksetzen.")
+    if len(forward_jumps) != 4 or len(backward_jumps) != 4:
+        fail("Minimalspiel braucht je zwei vollständige Vorwärts- und Rückwärtspfeile.")
+    element_order = list(board.findall("Element"))
+    field_indices = [element_order.index(e) for e in [*stations, *path_fields]]
+    jump_indices = [element_order.index(e) for e in [*forward_jumps, *backward_jumps]]
+    if max(field_indices) >= min(jump_indices):
+        fail("Sprungpfeile müssen hinter allen Spiel- und Symbolfeldern liegen.")
+    if any("+" in e.get("variable", "") or "-4" in e.get("variable", "")
+           or "-6" in e.get("variable", "") for e in [*forward_jumps, *backward_jumps]):
+        fail("Sprungpfeile dürfen keine sichtbaren Zahlen tragen.")
+    station_centers = [
+        (
+            int(station.get("x", "0")) + int(station.get("width", "0")) / 2,
+            int(station.get("y", "0")) + int(station.get("height", "0")) / 2,
+        )
+        for station in stations
+    ]
+    for head in [e for e in backward_jumps if (e.get("name") or "").endswith("Spitze")]:
+        head_center = (
+            int(head.get("x", "0")) + int(head.get("width", "0")) / 2,
+            int(head.get("y", "0")) + int(head.get("height", "0")) / 2,
+        )
+        if any(math.dist(head_center, center) < 180 for center in station_centers):
+            fail("Ein Rückwärtspfeil darf nicht auf einem Symbolfeld enden.")
+    first_station = stations[0]
+    station_cx = int(first_station.get("x", "0")) + int(first_station.get("width", "0")) / 2
+    station_cy = int(first_station.get("y", "0")) + int(first_station.get("height", "0")) / 2
+    for field in path_fields:
+        field_cx = int(field.get("x", "0")) + int(field.get("width", "0")) / 2
+        field_cy = int(field.get("y", "0")) + int(field.get("height", "0")) / 2
+        if math.hypot(field_cx - station_cx, field_cy - station_cy) < 183:
+            fail("Oben überlappt eine große Symbolstation mit einem normalen Feld.")
     if len([e for e in board.findall("Element")
             if (e.get("name") or "").startswith("Ziel ") and "ring" in (e.get("name") or "").lower()]) != 2:
         fail("Das Ziel muss doppelt umkreist sein.")
 
-    bingo = layouts["Bingo 4x4"]
+    bingo = layouts["Bingo 4x4 (16 Felder)"]
     if (bingo.get("width"), bingo.get("height"), bingo.get("dpi")) != (
-        "2480", "1754", "300"
+        "2250", "1575", "300"
     ):
-        fail("Bingo-Karten müssen exakt eine halbe A4-Seite bei 300 DPI belegen.")
+        fail("Bingo-Karten müssen die halbe A4-Nutzfläche bei 300 DPI belegen.")
     bingo_symbols = [e for e in bingo.findall("Element")
                      if (e.get("name") or "").startswith("Bingo Symbol ")]
     bingo_fields = [e for e in bingo.findall("Element")
@@ -284,7 +342,7 @@ def validate() -> None:
 
     print("OK: Lautspiele-CardMaker-Projekt ist konsistent.")
     print("Layouts: 5 | Master-CSVs: 2 | Modus-CSVs: 10")
-    print("Gruselino Papier: 4 Grundkarten + 8 Suchkarten, 80 Prozent Größe")
+    print("Gruselino: 4 Grundkarten + 28 Suchkarten, 80 Prozent Größe")
     print("Memory/Domino: ein trennbares Doppelmodul | Dobble: 31x6, perfekt")
     print("Minimalspiel A4: 10 Stationen, Sprungpfeile und Doppelziel")
     print("Bingo: 4 vollständige Karten im 4x4-Raster, zwei je A4-Seite")

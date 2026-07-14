@@ -12,9 +12,9 @@ Die Skripte trennen Bildbeschaffung und Bildsatz-Erzeugung unter `scripts/genera
 | `generate/symbol_ids.csv` | Leere Vorlage für bekannte ARASAAC-IDs ohne Suchlauf. |
 | `build/build_lautspiele_files.py` | Erzeugt `lautspiele.cmp`, aktualisiert die vorhandenen Master-CSVs und leitet alle technischen Modus-CSVs erneut ab. |
 | `build/validate_lautspiele_project.py` | Prüft Struktur, Referenzen, Counts, Layoutregeln und Dobble-Kombinatorik. |
-| `build/build.ini` | Legt das gemeinsame Startsymbol und die automatisch oder fest bestimmte Zahl verwendeter Symbole fest. |
+| `images/symbols/<satz>/build.ini` | Legt Startsymbol und automatisch oder fest bestimmte Symbolzahl eines Bildsatzes fest. |
 
-## Symbolauswahl in `build.ini`
+## Symbolauswahl in der satzlokalen `build.ini`
 
 ```ini
 [symbols]
@@ -114,6 +114,7 @@ Alternativen wie `01-d1.png` oder `01-e1.png` erhöhen die Symbolzahl nicht. Die
 
 Das Skript erzeugt:
 
+- `images/symbols/<satz>/symbols.csv` mit `symbol_id,name,scale` direkt beim Bildsatz,
 - `symbols_<satz>.csv` als editierbaren Master,
 - `gruselino_<satz>.csv`,
 - `domino_<satz>.csv`,
@@ -121,7 +122,7 @@ Das Skript erzeugt:
 - `spiel_<satz>.csv`,
 - `bingo_<satz>.csv`.
 
-Vorhandene Größenkorrekturen und Modus-Shifts werden beim Neuerzeugen soweit möglich beibehalten. Die Modus-CSVs sind technische Ableitungen und sollten nicht von Hand bearbeitet werden.
+Neue Hauptbilder erhalten in der ordnerlokalen `symbols.csv` zunächst die Größe `1.00`. Vorhandene Größenkorrekturen in dieser Datei und Modus-Shifts werden beim Neuerzeugen beibehalten. Namen und Größen werden dort gepflegt; Master- und Modus-CSVs sind technische Ableitungen und sollten nicht von Hand bearbeitet werden.
 
 ## 3. CardMaker-Projekt neu erzeugen
 
@@ -132,11 +133,11 @@ python scripts/build/validate_lautspiele_project.py
 
 Der Builder erzeugt `lautspiele.cmp` mit diesen Layouts:
 
-- Gruselino Papier,
-- Memory / Domino Papier,
-- Dobble Papier,
-- Minimalspiel A4,
-- Bingo 4x4.
+- Memory + Domino (ab 2),
+- Gruselino (8),
+- Minimalspiel A4 (10),
+- Bingo 4x4 (16 Felder),
+- Dobble (31 Symbole).
 
 Er aktualisiert außerdem die Verfügbarkeitskarten anhand der tatsächlich vorhandenen nummerierten PNGs, erzeugt die Modus-CSVs erneut und bindet sämtliche vorhandenen Satz-CSVs an jedes passende Layout. Der Validator prüft anschließend Struktur, vollständige Referenzauswahl, Counts, Gruselino-Ausblendung, das trennbare Memory-/Domino-Doppelmodul, die perfekte Dobble-Matrix, den statischen A4-Spielplan und vier vollständige 4x4-Bingokarten.
 
@@ -145,7 +146,7 @@ Er aktualisiert außerdem die Verfügbarkeitskarten anhand der tatsächlich vorh
 1. `symbol_names.csv` für Suchbegriffe oder `symbol_ids.csv` für bekannte ARASAAC-IDs kopieren und befüllen.
 2. Bilder mit `symbols_download_arasaac.py` laden oder manuell als nummerierte PNGs bereitstellen.
 3. Bei manuellen Bildern `symbols_generate_sets.py` ausführen.
-4. Gemeinsames Startsymbol und Anzahl bei Bedarf in `build.ini` anpassen.
+4. Startsymbol und Anzahl bei Bedarf in `images/symbols/<satz>/build.ini` anpassen.
 5. Größenfaktoren oder Shifts bei Bedarf ausschließlich in `symbols_<satz>.csv` anpassen.
 6. `build_lautspiele_files.py` ausführen.
 7. `validate_lautspiele_project.py` ausführen.

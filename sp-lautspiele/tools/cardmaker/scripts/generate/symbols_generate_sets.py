@@ -24,6 +24,7 @@ CONFIG_FIELDS = [
     "spiel_start", "spiel_end", "spiel_shift",
     "bingo_start", "bingo_end", "bingo_shift",
 ]
+MANIFEST_FIELDS = ["symbol_id", "name", "scale"]
 
 
 def normalized_set_name(value: str) -> str:
@@ -72,6 +73,52 @@ def previous_values(path: Path) -> dict[str, str]:
     return rows[0] if len(rows) == 1 else {}
 
 
+def read_manifest_scales(path: Path) -> dict[int, str]:
+    """Bewahrt manuell korrigierte Groessen eines vorhandenen Bildsatzes."""
+    if not path.is_file():
+        return {}
+    with path.open(encoding="utf-8-sig", newline="") as handle:
+        rows = list(csv.DictReader(handle))
+    result: dict[int, str] = {}
+    for row in rows:
+        symbol_id = int(row["symbol_id"])
+        scale = float(row["scale"])
+        if symbol_id < 1 or scale <= 0:
+            raise ValueError(f"Ungültiger Eintrag in {path}.")
+        result[symbol_id] = f"{scale:.2f}"
+    return result
+
+
+def write_symbol_manifest(
+    image_folder: Path, names: list[str], preserve_existing: bool = True,
+) -> list[str]:
+    """Schreibt Namen/Groessen direkt in den Ordner des Bildsatzes."""
+    path = image_folder / "symbols.csv"
+    previous_scales = read_manifest_scales(path) if preserve_existing else {}
+    scales = [previous_scales.get(index, "1.00") for index in range(1, len(names) + 1)]
+    with path.open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=MANIFEST_FIELDS)
+        writer.writeheader()
+        for index, (name, scale) in enumerate(zip(names, scales), start=1):
+            writer.writerow({"symbol_id": index, "name": name, "scale": scale})
+    return scales
+
+
+def ensure_build_config(image_folder: Path) -> Path:
+    """Erzeugt die satzlokale Auswahlkonfiguration mit Standardwerten."""
+    path = image_folder / "build.ini"
+    if not path.is_file():
+        path.write_text(
+            "[symbols]\n"
+            "# Erste verwendete Hauptdatei; 1 entspricht 01.png.\n"
+            "start_symbol = 1\n"
+            "# -1 verwendet automatisch alle ab start_symbol vorhandenen Symbole.\n"
+            "symbol_count = -1\n",
+            encoding="utf-8",
+        )
+    return path
+
+
 def create_symbol_set_config(
     names: list[str], image_folder: Path, set_name: str | None = None,
     force: bool = False,
@@ -94,14 +141,11 @@ def create_symbol_set_config(
     if config_path.exists() and not force:
         raise FileExistsError("Master-CSV existiert bereits; mit --force neu erzeugen.")
 
-    old_scales = previous.get("symbol_scale_map", "").split("|")
-    scales = [
-        old_scales[index] if index < len(old_scales) and old_scales[index] else "1"
-        for index in range(amount)
-    ]
+    scales = write_symbol_manifest(image_folder, selected_names)
+    build_config = ensure_build_config(image_folder)
     availability_length = max(31, amount)
     from build_lautspiele_files import selection_range
-    selection_start, selection_end = selection_range(amount)
+    selection_start, selection_end = selection_range(amount, build_config)
     row = {
         "symbol_set": set_name,
         "symbol_folder": relative_folder,

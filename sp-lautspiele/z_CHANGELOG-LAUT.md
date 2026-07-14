@@ -4,31 +4,31 @@
 
 Ausgangsdatum: 2026-07-13
 
-*Diese Woche (ca. 4,8h, 2 Tage, Inhalte):* Altbestand archiviert und CardMaker-Skripte samt ARASAAC-Bildsatzimport für Gruselino, Memory/Domino, Dobble, Spielplan und Bingo aufgebaut.
+*Diese Woche (ca. 5,3h, 2 Tage, Inhalte):* Altbestand archiviert und CardMaker-Skripte samt ARASAAC-Bildsatzimport für Gruselino, Memory/Domino, Dobble, Spielplan und Bingo aufgebaut.
 
 *Letzte Woche (0h, 0 Tage, Inhalte):* Keine Einträge.
 
-*Dieser Monat (ca. 4,8h, 2 Tage, Inhalte):* Lautspiele v1.08 als Repo-Projekt angelegt, Datenkopplung korrigiert und um Spielplan sowie Bingo ergänzt.
+*Dieser Monat (ca. 5,3h, 2 Tage, Inhalte):* Lautspiele v1.09 als Repo-Projekt angelegt, Datenkopplung korrigiert und um Spielplan sowie Bingo ergänzt.
 
 *Letzter Monat (0h, 0 Tage, Inhalte):* Keine Einträge.
 
-*Jahr (ca. 4,8h, 2 Tage, Inhalte):* Lautspiele v1.08 begonnen.
+*Jahr (ca. 5,3h, 2 Tage, Inhalte):* Lautspiele v1.09 begonnen.
 
-*Insgesamt (ca. 4,8h, 2 Tage, Inhalte):* Lautspiele v1.08 begonnen.
+*Insgesamt (ca. 5,3h, 2 Tage, Inhalte):* Lautspiele v1.09 begonnen.
 
 ## Log
 
-### 2026-07-14 - laut, tools, daten, assets, fix, doku (ca. 3,3h)
+### 2026-07-14 - laut, tools, daten, assets, fix, doku (ca. 3,8h)
 
-- Summary: CardMaker-Counts und Datenkopplung repariert, Layouts und Satzreferenzen originalnah zusammengeführt sowie die gemeinsame Symbolauswahl über `build.ini` konfigurierbar gemacht.
+- Summary: CardMaker-Counts und Datenkopplung repariert, Layouts und Satzreferenzen originalnah zusammengeführt sowie Symbolauswahl, Namen und Größen beim jeweiligen Bildsatz gebündelt.
 - Fix: Doppelte `symbol_01` bis `symbol_50` beseitigt; CardMaker hatte `lautspiele_defines.csv` sowohl projekt- als auch referenzbezogen geladen.
 - Fix: Nicht verfügbare JavaScript-Namen wie `symbol_01__scale` entfernt; Skalierungsfaktoren werden nun aus `symbol_scale_map` der aktiven Bildsatzzeile gelesen.
 - Fix: CardMaker-Referenzen erhalten nun die erforderliche Spalte `Count`; dadurch werden nicht mehr nur einzelne Karten pro Layout erzeugt.
-- Refactor: `symbols_default.csv` und `symbols_k.csv` bleiben alleinige editierbare Master; Modus-CSVs werden technisch und reproduzierbar daraus abgeleitet.
-- Daten: Größenkorrektur, Symbolnamen und Bildordner in `symbols_default.csv` und `symbols_k.csv` zusammengeführt; der Dateiname weist den jeweiligen Bildsatz eindeutig aus.
+- Refactor: `images/symbols/<satz>/symbols.csv` ist die fachliche Quelle für Namen und Größen; Master- und Modus-CSVs werden technisch und reproduzierbar daraus abgeleitet.
+- Daten: Die vorhandenen Größenkorrekturen wurden verlustfrei in die ordnerlokalen Tabellen migriert; neue Sets beginnen mit `1.00`.
 - Tool: Generiert je Bildsatz `gruselino`, `domino`, `dobble`, `spiel` und `bingo` als CardMaker-Referenz mit korrekt berechnetem Count.
 - Tool: `lautspiele_defines.csv` auf eine absichtlich leere Kompatibilitätskopfzeile reduziert, damit CardMaker keine fehlenden oder doppelten Defines meldet.
-- Feature: Ausschließlich Gruselino Papier erzeugt vier Grundkarten und acht Suchkarten; Symbolflächen um 20 Prozent reduziert und Drehung auf ±20 Grad begrenzt.
+- Feature: Gruselino erzeugt vier Grundkarten und 28 Suchkarten; Symbolflächen um 20 Prozent reduziert und Drehung auf ±20 Grad begrenzt.
 - Feature: Memory und Domino teilen ein originalnahes Doppelmodul mit zwei identischen 560er Karten, 550er Symbolflächen, UI-Ebenen und mittiger Schnittzone; Rotation bleibt null.
 - Feature: Dobble verwendet die perfekte projektive Ebene der Ordnung 5 mit 31 Karten und sechs weiter verteilten Symbolen; Größenvarianz auf ±18 Prozent erweitert.
 - Test: Zwei Master-CSVs, zehn abgeleitete Modus-CSVs und fünf Layouts einschließlich Spielplan und Bingo validiert.
@@ -47,7 +47,7 @@ Ausgangsdatum: 2026-07-13
 - Sicherheit: Vorhandene Bildsätze werden nur mit explizitem `--force` ersetzt; Suchlisten, Satznamen, PNG-Antworten und Kandidatenzahlen werden validiert.
 - Feature: Jedes Layout bindet alle vorhandenen Satz-CSVs seines Modus ein; `default` und `k` lassen sich dadurch unmittelbar in CardMaker wechseln.
 - Export: Historische Layout-Standardcounts und PDF-Seitenflächen übernommen; Memory/Domino bezieht seine Ausgabezahl weiterhin dynamisch aus der Symbolspanne.
-- Konfiguration: `scripts/build/build.ini` steuert das gemeinsame Symbolfenster mit Startsymbol und automatischer oder fester Anzahl und dokumentiert die Symbolzahlen der Layouts.
+- Konfiguration: Jeder Bildsatz besitzt eine eigene, beim Erzeugen angelegte `build.ini` mit Startsymbol und automatischer oder fester Anzahl.
 - Refactor: Builder prägnant in `build_lautspiele_files.py` umbenannt und alle Aufrufe angepasst.
 - Refactor: Sämtliche aktiven Pfade, Importe und Befehlsbeispiele von `generators` auf die getrennte `scripts`-Struktur umgestellt.
 - Fix: Memory/Domino verwendet wieder die vollständigen `#roundedrect…#`-Shape-Strings; dadurch erscheinen die zwei getrennten Kartenkästchen wie im Original.
@@ -57,10 +57,18 @@ Ausgangsdatum: 2026-07-13
 - Regel: Vorwärtspfeile beginnen ausschließlich an Symbolstationen und springen höchstens neun Felder; Rückwärtspfeile setzen höchstens sechs Felder zurück.
 - Feature: Vier vollständige 4x4-Bingokarten ergänzt; derselbe Symbolbestand wird je Karte reproduzierbar neu angeordnet.
 - Export: Eine Bingokarte belegt eine halbe A4-Seite bei 300 DPI, sodass zwei Karten je Seite und alle vier Karten auf zwei Seiten ausgegeben werden.
+- Fix: Bingo auf CardMakers A4-Nutzfläche von 2250 × 1575 Pixeln skaliert; die frühere 595,2-pt-Breite überschritt wegen des PDF-Standardrands die verfügbaren 540 pt.
+- UI: Aktive Layoutnamen zeigen den Symbolbedarf und stehen in aufsteigender Reihenfolge: `Memory + Domino (ab 2)` bis `Dobble (31 Symbole)`.
+- Fix: Memory+Domino in der originalen Geometrie 1181 × 590 belassen; die frühere funktionierende A4-PDF-Konfiguration mit 5-mm-Rändern dokumentiert.
+- Design: Sprungpfeile hinter den Spielfeldern angeordnet und exakt von Ausgangs- zu Endfeld geführt; Symbolfelder sind weiß, normale Felder sehr hellgrau und Rücksprung-Ausgänge dezent rötlich. Rücksprünge enden nicht auf Symbolfeldern.
+- Export: Minimalspiel proportional auf die bei CardMakers Standardrändern verfügbare A4-Fläche `2250 × 3150 px` skaliert; die frühere Warnung für `595,2 × 841,92 pt` entfällt.
+- Refactor: Die funktionslose `lautspiele_defines.csv` entfernt; Satz- und Modusdaten kommen ausschließlich aus den Layout-Referenzen.
+- Fix: Gruselino anhand von `Logospiele.xlsx` auf den belegten Ursprungswert 32 gesetzt: eine `c=4`-Grundzeile und 28 `c=1`-Suchzeilen; die frühere Erinnerung an 52 wurde damit korrigiert.
+- UI: Layouts nach Symbolbedarf sortiert: Memory+Domino, Gruselino, Minimalspiel, Bingo und Dobble.
 - Material: Eine der vier vollständigen Bingokarten kann entlang des statischen Rasters als Ziehsatz ausgeschnitten werden; eine separate Ziehseite ist nicht nötig.
 - Daten: `spiel_*` und `bingo_*` ergänzen Start, Ende und Shift in Master- und Modus-CSVs; bei weniger als 16 Bingo-Symbolen wird zyklisch ohne leere Felder aufgefüllt.
 - Test: Zwei Master-CSVs, zehn abgeleitete Modus-CSVs, fünf Layouts, Sprunggrenzen, Doppelziel und vollständige Bingo-Raster validiert.
-- Versionen: build_lautspiele_files v1.08, validate_lautspiele_project v1.08, symbols_generate_sets v1.03, symbols_download_arasaac v1.02.
+- Versionen: build_lautspiele_files v1.09, validate_lautspiele_project v1.09, symbols_generate_sets v1.04, symbols_download_arasaac v1.02.
 
 ### 2026-07-13 - laut, struktur, tools, design, material, doku (ca. 1,5h)
 

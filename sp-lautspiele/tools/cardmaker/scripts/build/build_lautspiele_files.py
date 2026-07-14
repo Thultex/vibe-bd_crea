@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import csv
 import configparser
+import math
 import shutil
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -17,15 +18,18 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 PROJECT = ROOT / "lautspiele.cmp"
-EMPTY_DEFINES = ROOT / "lautspiele_defines.csv"
 BUILD_CONFIG = Path(__file__).with_name("build.ini")
 SYMBOL_ROOT = ROOT / "images" / "symbols"
 DEFAULT_SYMBOL_SET = "k"
 GRUSELINO_SYMBOLS = 8
 GRUSELINO_BASE_CARDS = 4
+GRUSELINO_SEARCH_CARDS = 28
+GRUSELINO_CARD_COUNT = GRUSELINO_BASE_CARDS + GRUSELINO_SEARCH_CARDS
 DOBBLE_ORDER = 5
 DOBBLE_SYMBOL_COUNT = DOBBLE_ORDER * DOBBLE_ORDER + DOBBLE_ORDER + 1
 BOARD_SYMBOL_COUNT = 10
+BOARD_LAYOUT_WIDTH = 2250
+BOARD_LAYOUT_HEIGHT = 3150
 BINGO_SYMBOL_COUNT = 16
 BINGO_CARD_COUNT = 4
 
@@ -49,11 +53,14 @@ SYMBOL_NAMES = [
 ]
 
 
-def selection_range(available_count: int) -> tuple[int, int]:
-    """Liest das gemeinsame, inklusive Symbolfenster aus build.ini."""
+def selection_range(
+    available_count: int, config_path: Path | None = None,
+) -> tuple[int, int]:
+    """Liest das inklusive Symbolfenster aus der build.ini des Bildsatzes."""
+    config_path = config_path or BUILD_CONFIG
     parser = configparser.ConfigParser()
-    if not parser.read(BUILD_CONFIG, encoding="utf-8"):
-        raise FileNotFoundError(f"Generator-Konfiguration fehlt: {BUILD_CONFIG}")
+    if not parser.read(config_path, encoding="utf-8"):
+        raise FileNotFoundError(f"Generator-Konfiguration fehlt: {config_path}")
     try:
         start = parser.getint("symbols", "start_symbol")
         requested = parser.getint("symbols", "symbol_count")
@@ -76,6 +83,21 @@ def selection_range(available_count: int) -> tuple[int, int]:
             "Symbole für Gruselino."
         )
     return start, start + count - 1
+
+
+def _ensure_set_build_config(folder: Path) -> Path:
+    """Legt die Auswahlkonfiguration beim Bildsatz mit Standardwerten an."""
+    path = folder / "build.ini"
+    if not path.is_file():
+        path.write_text(
+            "[symbols]\n"
+            "# Erste verwendete Hauptdatei; 1 entspricht 01.png.\n"
+            "start_symbol = 1\n"
+            "# -1 verwendet automatisch alle ab start_symbol vorhandenen Symbole.\n"
+            "symbol_count = -1\n",
+            encoding="utf-8",
+        )
+    return path
 
 
 def _element(name: str, kind: str, x: int, y: int, width: int, height: int,
@@ -176,7 +198,7 @@ def gruselino_variable(slot: int, base: bool) -> str:
     visibility = (
         f"if(cardIndex>{GRUSELINO_BASE_CARDS}||!exists)"
         if base else
-        f"var hidden=cardIndex-{GRUSELINO_BASE_CARDS + 1};"
+        f"var hidden=(cardIndex-{GRUSELINO_BASE_CARDS + 1})%{GRUSELINO_SYMBOLS};"
         f"if(cardIndex<={GRUSELINO_BASE_CARDS}||shuffledLogical===hidden||!exists)"
     )
     return (
@@ -194,7 +216,7 @@ def gruselino_twirl_variable(slot: int) -> str:
     return (
         "(function(){"
         + _gruselino_permutation(slot)
-        + f"var hidden=cardIndex-{GRUSELINO_BASE_CARDS + 1};"
+        + f"var hidden=(cardIndex-{GRUSELINO_BASE_CARDS + 1})%{GRUSELINO_SYMBOLS};"
           f"if(cardIndex<={GRUSELINO_BASE_CARDS}||shuffledLogical===hidden){{"
           "AddOverrideField('enabled','false');return '';}"
           "AddOverrideField('enabled','true');"
@@ -375,7 +397,7 @@ def _scaled_positions(
 
 
 def _gruselino_layout() -> ET.Element:
-    name, width, height = "Gruselino Papier", 1122, 826
+    name, width, height = "Gruselino (8)", 1122, 826
     layout = _layout(name, width, height, "gruselino", 7860, 7602)
     base_positions = _scaled_positions(GRUSELINO_PAPER_BASE_POSITIONS, 0.8)
     search_positions = _scaled_positions(GRUSELINO_PAPER_SEARCH_POSITIONS, 0.8)
@@ -418,7 +440,7 @@ def _gruselino_layout() -> ET.Element:
 
 def _domino_layout() -> ET.Element:
     width, height = 1181, 590
-    layout = _layout("Memory / Domino Papier", width, height,
+    layout = _layout("Memory + Domino (ab 2)", width, height,
                      "domino", 2362, 7400, export_crop_definition=True)
     size = 550
     graphics = [
@@ -484,7 +506,7 @@ def _domino_layout() -> ET.Element:
 
 def _dobble_layout() -> ET.Element:
     width, height = 1122, 826
-    layout = _layout("Dobble Papier", width, height, "dobble", 7860, 7602)
+    layout = _layout("Dobble (31 Symbole)", width, height, "dobble", 7860, 7602)
     specs = (
         (165, 145, 205), (555, 125, 230), (945, 190, 200),
         (185, 640, 225), (555, 465, 265), (930, 645, 215),
@@ -503,15 +525,17 @@ def _dobble_layout() -> ET.Element:
 
 def _minimal_board_layout() -> ET.Element:
     """Ein minimalistischer A4-Laufweg mit zehn festen Symbolstationen."""
-    width, height = 2480, 3508
-    layout = _layout("Minimalspiel A4", width, height, "spiel", 2480, 3508)
+    source_width, source_height = 2480, 3508
+    layout = _layout(
+        "Minimalspiel A4 (10)", source_width, source_height, "spiel", 2480, 3508,
+    )
 
     symbol_centers = (
         (880, 390), (1800, 420), (1910, 990), (1150, 920), (430, 1160),
         (1050, 1570), (1900, 1580), (1940, 2240), (1080, 2320), (520, 2840),
     )
     path_centers = (
-        (560, 360), (710, 365), (1170, 390), (1360, 400), (1550, 410),
+        (560, 360), (675, 560), (1170, 390), (1360, 400), (1550, 410),
         (2070, 570), (2110, 750), (1700, 950), (1490, 930), (830, 940),
         (650, 1020), (390, 1400), (560, 1510), (760, 1560), (1330, 1570),
         (1530, 1575), (1730, 1580), (2110, 1770), (2120, 1970), (2100, 2420),
@@ -526,28 +550,60 @@ def _minimal_board_layout() -> ET.Element:
                      236, 236, board_symbol_variable(slot)),
             _element(f"Spiel Station {slot}", "Shape", cx - 150, cy - 150,
                      300, 300, "'#ellipse;8;-;-#'", lockaspect="false",
-                     elementcolor="0xE11B22FF"),
+                     elementcolor="0xE11B22FF", backgroundcolor="0xFFFFFFFF"),
         ])
 
+    backward_start_fields = {18, 28}
     path = [
         _element(f"Spielfeld {index}", "Shape", cx - 54, cy - 54, 108, 108,
                  "'#ellipse;7;-;-#'", lockaspect="false",
-                 elementcolor="0x202020FF")
+                 elementcolor="0x202020FF",
+                 backgroundcolor=(
+                     "0xF1E6E6FF" if index in backward_start_fields else "0xF4F4F4FF"
+                 ))
         for index, (cx, cy) in enumerate(path_centers, start=1)
     ]
-    # Vorwaertspfeile beginnen ausschliesslich an roten Symbolstationen.
-    # Die Beschriftung gibt die Zahl der uebersprungenen Felder an.
-    jumps = [
-        ("Vorwaerts 8", 1540, 480, 390, 180, "'➜  +8'", "-18", "0x178A3BFF"),
-        ("Vorwaerts 9", 1100, 1660, 430, 180, "'➜  +9'", "18", "0x178A3BFF"),
-        ("Rueckwaerts 4", 1640, 1120, 390, 180, "'➜  -4'", "145", "0xC62828FF"),
-        ("Rueckwaerts 6", 980, 2530, 390, 180, "'➜  -6'", "205", "0xC62828FF"),
-    ]
+    def arrow_elements(
+        name: str, start_center: tuple[int, int], end_center: tuple[int, int],
+        start_radius: int, end_radius: int, color: str,
+    ) -> list[ET.Element]:
+        """Zeichnet einen statischen Pfeil exakt von Feldrand zu Feldrand."""
+        sx, sy = start_center
+        ex, ey = end_center
+        dx, dy = ex - sx, ey - sy
+        distance = math.hypot(dx, dy)
+        ux, uy = dx / distance, dy / distance
+        start_x, start_y = sx + ux * start_radius, sy + uy * start_radius
+        end_x, end_y = ex - ux * end_radius, ey - uy * end_radius
+        angle = math.degrees(math.atan2(dy, dx))
+        shaft_length = max(40, round(math.hypot(end_x - start_x, end_y - start_y) - 42))
+        mid_x = (start_x + end_x) / 2 - ux * 21
+        mid_y = (start_y + end_y) / 2 - uy * 21
+        shaft = _element(
+            f"{name} Schaft", "Shape", round(mid_x - shaft_length / 2),
+            round(mid_y - 13), shaft_length, 26, "'#roundedrect;0;-;-;13#'",
+            lockaspect="false", rotation=f"{angle:.2f}", elementcolor=color,
+            backgroundcolor=color,
+        )
+        head = _element(
+            f"{name} Spitze", "Text", round(end_x - 48), round(end_y - 48),
+            96, 96, "'▶'", lockaspect="false",
+            font="Segoe UI Symbol;58;1;0;0;0", rotation=f"{angle:.2f}",
+            elementcolor=color,
+        )
+        return [head, shaft]
+
+    # Indizes folgen dem Laufweg. Vorwaerts beginnt nur an Symbolstationen:
+    # Symbol 2 -> Spielfeld 11 (+8), Symbol 6 -> Spielfeld 21 (+9).
     jump_elements = [
-        _element(name, "Text", x, y, w, h, label, lockaspect="false",
-                 font="Segoe UI Symbol;62;1;0;0;0", rotation=rotation,
-                 elementcolor=color)
-        for name, x, y, w, h, label, rotation, color in jumps
+        *arrow_elements("Vorwaerts 8", symbol_centers[1], path_centers[10],
+                        150, 54, "0x178A3BFF"),
+        *arrow_elements("Vorwaerts 9", symbol_centers[5], path_centers[20],
+                        150, 54, "0x178A3BFF"),
+        *arrow_elements("Rueckwaerts 4", path_centers[17], path_centers[14],
+                        54, 54, "0xC62828FF"),
+        *arrow_elements("Rueckwaerts 6", path_centers[27], path_centers[21],
+                        54, 54, "0xC62828FF"),
     ]
     start = [
         _element("Start Text", "Text", 95, 245, 390, 170, "'START'",
@@ -571,29 +627,53 @@ def _minimal_board_layout() -> ET.Element:
                  "'#ellipse;8;-;-#'", lockaspect="false",
                  elementcolor="0xFFF200FF", backgroundcolor="0xFFF200FF"),
     ]
-    _insert_elements(layout, [*start, *goal, *jump_elements, *board_symbols, *path,
-                              _background(width, height)])
+    _insert_elements(layout, [*start, *goal, *board_symbols, *path, *jump_elements,
+                              _background(source_width, source_height)])
+    # CardMakers A4-PDF-Standardrand lässt 2250 x 3150 px Nutzfläche.
+    # Einheitliche Skalierung erhält Kreisformen; horizontal wird zentriert.
+    scale = min(
+        BOARD_LAYOUT_WIDTH / source_width,
+        BOARD_LAYOUT_HEIGHT / source_height,
+    )
+    offset_x = round((BOARD_LAYOUT_WIDTH - source_width * scale) / 2)
+    for element in layout.findall("Element"):
+        for attr in ("x", "width", "height"):
+            element.set(attr, str(round(int(element.get(attr, "0")) * scale)))
+        element.set(
+            "y", str(round(int(element.get("y", "0")) * scale)),
+        )
+        element.set("x", str(int(element.get("x", "0")) + offset_x))
+        if element.get("name") == "White Background":
+            element.set("x", "0")
+            element.set("y", "0")
+            element.set("width", str(BOARD_LAYOUT_WIDTH))
+            element.set("height", str(BOARD_LAYOUT_HEIGHT))
+    layout.set("width", str(BOARD_LAYOUT_WIDTH))
+    layout.set("height", str(BOARD_LAYOUT_HEIGHT))
     return layout
 
 
 def _bingo_card_layout() -> ET.Element:
     """Vier 4x4-Karten; zwei halbe Karten passen auf eine A4-Seite."""
-    width, height = 2480, 1754
-    layout = _layout("Bingo 4x4", width, height, "bingo", 2480, 3508)
-    cell = 350
-    grid_x, grid_y = 540, 245
+    # CardMakers A4-PDF-Voreinstellung reserviert ringsum 0,5 Zoll Rand.
+    # 2250 x 1575 px entsprechen bei 300 DPI exakt der verbleibenden
+    # Nutzbreite und der halben Nutzhöhe: zwei Karten passen ohne Warnung.
+    width, height = 2250, 1575
+    layout = _layout("Bingo 4x4 (16 Felder)", width, height, "bingo", 2480, 3508)
+    cell = 315
+    grid_x, grid_y = 495, 210
     elements: list[ET.Element] = []
     for slot in range(1, BINGO_SYMBOL_COUNT + 1):
         row, col = divmod(slot - 1, 4)
         x, y = grid_x + col * cell, grid_y + row * cell
         elements.extend([
-            _element(f"Bingo Symbol {slot}", "Graphic", x + 42, y + 42,
-                     cell - 84, cell - 84, bingo_symbol_variable(slot, True)),
+            _element(f"Bingo Symbol {slot}", "Graphic", x + 38, y + 38,
+                     cell - 76, cell - 76, bingo_symbol_variable(slot, True)),
             _element(f"Bingo Feld {slot}", "Shape", x, y, cell, cell,
                      "'#rect;6;-;-#'", lockaspect="false",
                      elementcolor="0x202020FF"),
         ])
-    title = _element("Bingo Titel", "Text", 540, 65, 1400, 145, "'BINGO 4 × 4'",
+    title = _element("Bingo Titel", "Text", 495, 45, 1260, 125, "'BINGO 4 × 4'",
                      lockaspect="false", font="Arial;42;1;0;0;0")
     _insert_elements(layout, [title, *elements, _background(width, height)])
     return layout
@@ -601,6 +681,43 @@ def _bingo_card_layout() -> ET.Element:
 
 def _symbol_config_path(folder: Path) -> Path:
     return ROOT / f"symbols_{folder.name}.csv"
+
+
+def _symbol_manifest_path(folder: Path) -> Path:
+    return folder / "symbols.csv"
+
+
+def _write_symbol_manifest(folder: Path, names: list[str], scales: list[str]) -> None:
+    """Schreibt die ordnerlokale Quelle fuer Symbolnamen und Groessen."""
+    with _symbol_manifest_path(folder).open("w", encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(handle, fieldnames=["symbol_id", "name", "scale"])
+        writer.writeheader()
+        for index, (name, scale) in enumerate(zip(names, scales), start=1):
+            writer.writerow({
+                "symbol_id": index,
+                "name": name,
+                "scale": f"{float(scale):.2f}",
+            })
+
+
+def _read_symbol_manifest(folder: Path) -> tuple[list[str], list[str]]:
+    """Liest und validiert Namen/Groessen aus dem jeweiligen Bildordner."""
+    path = _symbol_manifest_path(folder)
+    with path.open(encoding="utf-8-sig", newline="") as handle:
+        rows = list(csv.DictReader(handle))
+    if not rows or not {"symbol_id", "name", "scale"}.issubset(rows[0]):
+        raise ValueError(f"{path} benoetigt symbol_id,name,scale und Datenzeilen.")
+    ordered = sorted(rows, key=lambda item: int(item["symbol_id"]))
+    ids = [int(item["symbol_id"]) for item in ordered]
+    if ids != list(range(1, len(ordered) + 1)):
+        raise ValueError(f"{path} muss lueckenlose symbol_id ab 1 enthalten.")
+    names = [item["name"].strip() for item in ordered]
+    scales = [item["scale"].strip() for item in ordered]
+    if any(not name for name in names):
+        raise ValueError(f"{path} enthaelt einen leeren Symbolnamen.")
+    if any(float(scale) <= 0 for scale in scales):
+        raise ValueError(f"{path} enthaelt eine ungueltige Groesse.")
+    return names, scales
 
 
 def _write_symbol_config(folder: Path) -> None:
@@ -648,10 +765,19 @@ def _write_symbol_config(folder: Path) -> None:
         names = names[1:]
     if len(scales) == len(names) + 1:
         scales = scales[1:]
+    manifest = _symbol_manifest_path(folder)
+    if manifest.is_file():
+        names, scales = _read_symbol_manifest(folder)
+    else:
+        # Einmalige Migration: vorhandene Korrekturen aus dem Master bleiben
+        # erhalten; neue Bildsaetze werden vom Generator mit 1.00 angelegt.
+        _write_symbol_manifest(folder, names, scales)
     row["symbol_names"] = "|".join(names)
-    row["symbol_scale_map"] = "|".join(scales)
+    row["symbol_scale_map"] = "|".join(f"{float(scale):.2f}" for scale in scales)
     row["symbol_count"] = str(len(names))
-    selection_start, selection_end = selection_range(len(names))
+    selection_start, selection_end = selection_range(
+        len(names), _ensure_set_build_config(folder),
+    )
     for mode in ("gruselino", "domino", "dobble", "spiel", "bingo"):
         row[f"{mode}_start"] = str(selection_start)
         row[f"{mode}_end"] = str(selection_end)
@@ -694,7 +820,7 @@ def write_mode_reference_files() -> None:
         row = rows[0]
         set_name = row["symbol_set"]
         counts = {
-            "gruselino": 12,
+            "gruselino": GRUSELINO_CARD_COUNT,
             "domino": int(row["domino_end"]) - int(row["domino_start"]) + 1,
             "dobble": len(DOBBLE),
             "spiel": 1,
@@ -712,11 +838,6 @@ def write_mode_reference_files() -> None:
 def write_csv_files() -> None:
     _ensure_symbol_sets()
     write_mode_reference_files()
-    # CardMaker sucht automatisch <projekt>_defines.csv. Eine reine Kopfzeile
-    # verhindert die irreführende "No defines found"-Meldung, enthält aber
-    # bewusst keine globalen Daten und kann daher nichts doppelt definieren.
-    with EMPTY_DEFINES.open("w", encoding="utf-8", newline="") as handle:
-        csv.writer(handle).writerow(["define", "value"])
 
 
 def build() -> None:
@@ -726,15 +847,14 @@ def build() -> None:
         "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
     })
     root.extend([
-        _gruselino_layout(),
         _domino_layout(),
-        _dobble_layout(),
+        _gruselino_layout(),
         _minimal_board_layout(),
         _bingo_card_layout(),
+        _dobble_layout(),
     ])
     for tag, value in (
         ("translatorName", "JavaScript"), ("exportNameFormat", "##_#L"),
-        ("defaultDefineReferenceType", "CSV"), ("overrideDefineReferenceName", ""),
         ("jsTildeMeansCode", "true"), ("jsKeepFunctions", "true"),
         ("jsSingleQuoteStartsCode", "true"), ("collapsedNodes", ""),
     ):

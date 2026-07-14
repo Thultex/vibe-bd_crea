@@ -4,9 +4,9 @@ Lautspiele verwendet nummerierte Bildsymbole für mehrere bekannte Such- und Zuo
 
 ## Gruselino
 
-Vier Grundkarten zeigen dieselben acht Symbole. Auf jeder der acht Suchkarten fehlt genau eines davon; Position, Reihenfolge und Drehung variieren. Die Spielenden vergleichen die Karten und nennen oder markieren das fehlende Symbol.
+Vier Grundkarten zeigen dieselben acht Symbole. Auf den 28 Suchkarten fehlt zyklisch genau eines davon. Position, Reihenfolge und Drehung variieren. Die insgesamt 32 Karten entsprechen der ursprünglichen Arbeitsmappe. Die Spielenden vergleichen die Karten und nennen oder markieren das fehlende Symbol.
 
-## Memory / Domino Papier
+## Memory + Domino
 
 Jedes Druckmodul enthält zwei verbundene Karten mit aufeinanderfolgenden Symbolen. Verbunden werden die Module als Domino aneinandergelegt; die Folge schließt sich vom letzten Symbol wieder zum ersten. Werden alle Module an der weißen Mitte getrennt, kommt durch diesen geschlossenen Ring jedes Symbol genau zweimal vor und die Einzelkarten können als Memory gespielt werden.
 
@@ -24,6 +24,6 @@ Vier Bingokarten zeigen denselben Symbolbestand in unterschiedlicher Anordnung. 
 
 ## Material erzeugen
 
-Das CardMaker-Projekt liegt unter `tools/cardmaker/`. Die editierbaren Master heißen `symbols_k.csv` und `symbols_default.csv`. Der Builder erzeugt daraus die CardMaker-Referenzen für Gruselino, Memory/Domino, Dobble, Minimalspiel und Bingo mit der jeweils nötigen Kartenanzahl. In jedem Layout sind alle vorhandenen Bildsätze als Referenzen angeschlossen und können direkt in CardMaker gewechselt werden; `k` ist der Standard. Danach wird das gewünschte Layout als Bilder oder PDF exportiert.
+Das CardMaker-Projekt liegt unter `tools/cardmaker/`. Namen und Größen werden in `images/symbols/<satz>/symbols.csv`, Start und Anzahl in der dortigen `build.ini` gepflegt. Der Builder erzeugt daraus die Master- und CardMaker-Referenzen für Gruselino, Memory/Domino, Dobble, Minimalspiel und Bingo mit der jeweils nötigen Kartenanzahl. In jedem Layout sind alle vorhandenen Bildsätze als Referenzen angeschlossen und können direkt in CardMaker gewechselt werden; `k` ist der Standard. Danach wird das gewünschte Layout als Bilder oder PDF exportiert.
 
 Neue Laut-/Bildsätze können dort mit `scripts/generate/symbols_download_arasaac.py` aus einer Wortliste geladen werden. Eine Zeile `Katze,cat,2` lädt neben dem deutschen Hauptbild zusätzliche deutsche und englische Kandidaten, die vor dem Druck durch Umbenennen ausgewählt werden können. Bekannte ARASAAC-IDs können stattdessen direkt in `scripts/generate/symbol_ids.csv` eingetragen werden. Für bereits vorhandene, als `01.png`, `02.png` usw. nummerierte Bilder erzeugt `scripts/generate/symbols_generate_sets.py` dieselben CSVs ohne Netzwerkabruf. Vorlagen liegen als `scripts/generate/symbol_names.csv` und `scripts/generate/symbol_ids.csv` bei.
