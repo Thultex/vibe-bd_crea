@@ -1,4 +1,4 @@
-# Emotronic v1.78
+# Emotronic v1.79
 
 Emotronic ist eine installierbare, offlinefähige PWA zur Auswahl, Darstellung, Kombination und Wiedergabe von Gefühlen. Die Oberfläche ist an ein kompaktes Retro-Handgerät angelehnt und für Touch, Maus und Tastatur ausgelegt.
 
@@ -45,7 +45,7 @@ Ohne `mode`-Parameter startet Emotronic wie `mode=on`.
 | Datei | Zweck |
 |---|---|
 | `index.html` | Hauptanwendung mit Oberfläche, CSS und JavaScript |
-| `Emotronic-v1.78.html` | Versionierte Kopie der Hauptanwendung |
+| `Emotronic-v1.79.html` | Versionierte Kopie der Hauptanwendung |
 | `manifest.webmanifest` | PWA-Metadaten und Installationskonfiguration |
 | `sw.js` | Service Worker für Offline-Cache |
 | `icon-192.png`, `icon-512.png` | PWA-Symbole |
@@ -187,7 +187,7 @@ Die Zwischenablage verwendet zuerst die moderne Clipboard API und danach einen k
 
 Das Gedächtnisspiel wird bei ausgeschaltetem Gerät mit `R` geöffnet. Zuerst erscheint die Schwierigkeitsauswahl.
 
-Beim Einstieg baut sich oben klein `SIMON FEELS` auf und ein kurzer Startjingle erklingt. Die Auswahl bleibt dabei sofort bedienbar; jede Spielaktion beendet den Titelaufbau. Der Direktlink `?mode=simon` wartet zunächst auf einem weißen Bildschirm mit kleinem Spielsymbol auf einen Tipp, damit Animation und Ton erst nach dieser Interaktion starten.
+Beim Einstieg baut sich oben `SIMON FEELS` in derselben Schriftgröße wie die normale Introanzeige auf und ein kurzer Startjingle erklingt. Die Auswahl bleibt dabei sofort bedienbar; jede Spielaktion beendet den Titelaufbau. Der Direktlink `?mode=simon` wartet zunächst auf einem weißen Bildschirm mit kleinem Spielsymbol auf einen Tipp, damit Animation und Ton erst nach dieser Interaktion starten.
 
 ### Schwierigkeitsgrade
 
@@ -227,6 +227,7 @@ Beim Einstieg baut sich oben klein `SIMON FEELS` auf und ein kurzer Startjingle 
 - Ein sichtbares Herz entspricht einem erlaubten Fehler.
 - Nach dem Verlust des letzten sichtbaren Herzens darf mit 0 Herzen weitergespielt werden; der nächste Fehler beendet das Spiel.
 - Beim Lebensverlust erscheinen eine große Herzanimation und ein eigener Ton.
+- Der Geschafft-Jingle beginnt rund 0,3 Sekunden nach dem letzten korrekten Tastendruck, damit beide Töne klarer getrennt bleiben.
 - Bei 10, 20, 30 usw. Punkten wird ein zusätzliches Leben vergeben.
 - Alle 5 Punkte läuft eine Kirby-artige Retro-Bonusanimation; ab 10 Punkten stehen zusätzliche Varianten bereit.
 - Bei Spielende werden Punktzahl und Leistungs-Kommentar angezeigt.
@@ -276,7 +277,7 @@ Diese Reihenfolge soll bei weiteren Änderungen erhalten bleiben.
 ## Offline/PWA
 
 - Der Service Worker cached die Kernressourcen.
-- Die aktuelle Cache-Version lautet `emotronic-v78`.
+- Die aktuelle Cache-Version lautet `emotronic-v79`.
 - Beim Aktivieren werden nur ältere Emotronic-Caches entfernt; Caches anderer Anwendungen auf derselben Domain bleiben erhalten.
 - Nicht gecachte GET-Anfragen werden aus dem Netz geladen und anschließend gespeichert.
 - Bei einem Netzfehler wird als Fallback `index.html` verwendet.

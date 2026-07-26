@@ -1,4 +1,4 @@
-# Codex-Handoff: Emotronic v1.78
+# Codex-Handoff: Emotronic v1.79
 
 ## Auftrag
 
@@ -7,7 +7,7 @@ Diese Übergabe beschreibt den aktuellen Stand der installierbaren Emotronic-PWA
 ## Relevante Dateien
 
 - `sp-emotronic/tools/emotronic-pwa/index.html` – maßgebliche Quelle
-- `sp-emotronic/tools/emotronic-pwa/Emotronic-v1.78.html` – versionierter Snapshot, nach Änderungen neu erzeugen
+- `sp-emotronic/tools/emotronic-pwa/Emotronic-v1.79.html` – versionierter Snapshot, nach Änderungen neu erzeugen
 - `sp-emotronic/tools/emotronic-pwa/sw.js` – Service Worker und Cache-Version
 - `sp-emotronic/tools/emotronic-pwa/manifest.webmanifest` – PWA-Manifest
 - `sp-emotronic/tools/emotronic-pwa/README.md` – Nutzer- und Funktionsdokumentation
@@ -15,10 +15,10 @@ Diese Übergabe beschreibt den aktuellen Stand der installierbaren Emotronic-PWA
 
 ## Versionierung
 
-- Aktuell: **Emotronic v1.78**
-- `APP_META.version`: `1.78`
-- `APP_META.revision`: `78`
-- Service-Worker-Cache: `emotronic-v78`
+- Aktuell: **Emotronic v1.79**
+- `APP_META.version`: `1.79`
+- `APP_META.revision`: `79`
+- Service-Worker-Cache: `emotronic-v79`
 - Beim Aktivieren nur ältere Caches mit dem Präfix `emotronic-v` entfernen; andere Anwendungen können dieselbe Domain verwenden.
 - Jede abgeschlossene Revision erhöht die Version um `0.01` und die Revision um `1`.
 - Codekopf, `APP_META`, Service Worker, versionierte HTML-Datei, README und ZIP müssen synchron bleiben.
@@ -150,9 +150,9 @@ rm emotronic_check.js
 Für ein auslieferbares ZIP vom Repository-Root aus:
 
 ```bash
-rm -f emotronic-pwa-v1.78.zip
-zip -rq emotronic-pwa-v1.78.zip sp-emotronic/tools/emotronic-pwa
-unzip -t emotronic-pwa-v1.78.zip
+rm -f emotronic-pwa-v1.79.zip
+zip -rq emotronic-pwa-v1.79.zip sp-emotronic/tools/emotronic-pwa
+unzip -t emotronic-pwa-v1.79.zip
 ```
 
 ## Vorsicht bei Änderungen
