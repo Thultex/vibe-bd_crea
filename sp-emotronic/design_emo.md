@@ -45,6 +45,7 @@ Der Laufzeitspiegel enthält ausschließlich `index.html`, Manifest, Service Wor
 - Beim Game Over versucht die App den Score-Link automatisch zu kopieren; Telefon wiederholt dies manuell und `R` spielt die mitgeteilte Folge erneut ab.
 - Die Telefontaste wird am Game Over ausdrücklich für das manuelle Kopieren freigeschaltet.
 - Am Game Over bleiben Neugier, Neutral und Unsicherheit eingeblendet und starten direkt ein neues Spiel in Leicht, Normal beziehungsweise Profi; `R` bleibt Replay und `⏻` Schluss.
+- Während des Score-Replays entfällt der Game-over-Auswahlzustand: Die drei Modustasten werden wieder zu normalen Gefühlen und gemeinsam mit den übrigen inaktiven Tasten abgedunkelt.
 - Aus führt vom Game Over zurück zur Simon-Titelauswahl und schaltet die App erst bei erneutem Drücken in dieser Auswahl aus.
 - Der Geschafft-Jingle folgt mit rund 0,2 Sekunden Abstand auf den letzten korrekten Tastendruck.
 

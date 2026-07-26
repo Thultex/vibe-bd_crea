@@ -1,10 +1,10 @@
 <!--
   ============================================================================
-  Emotronic v1.87
+  Emotronic v1.88
   Projektname: Emotronic
   Autor: Rasmus Klette
   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-  Aktuelle Revision: 87
+  Aktuelle Revision: 88
   ============================================================================
 -->
 <!doctype html>
@@ -171,16 +171,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v1.87 — CODEKOPF
+   Emotronic v1.88 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 87
+   Aktuelle Revision: 88
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'1.87',
-  revision:87,
+  version:'1.88',
+  revision:88,
   author:'Rasmus Klette'
 });
 
@@ -1061,7 +1061,7 @@ function showSharedGameScore(payload){
 function replayGameOverSequence(){
  const g=state.game;if(!g.active||!g.awaitingShutdown)return;
  g.actions=gameActions(validSharedGameSequence(g.sequence));if(!g.actions.length){setGameMeta('Keine Folge gespeichert · Leicht · Normal · Profi · ⏻: Schluss');return}
- clearGameTimers();g.phase='score-review';el('currentEmotion').textContent='REPLAY';setGameMeta('Gespielte Folge');renderGameKeypad(null,false);runGamePlayback(220,true)
+ clearGameTimers();g.phase='score-review';document.querySelector('.app').classList.remove('game-over');el('currentEmotion').textContent='REPLAY';setGameMeta('Gespielte Folge');renderGameKeypad(null,false);runGamePlayback(220,true)
 }
 function shutdownGame(){
  clearGameTimers();state.game.active=false;state.game.awaitingShutdown=false;document.querySelector('.app').classList.remove('game-mode','game-select','game-over');el('currentStrength').classList.remove('game-score');el('currentEmotion').classList.remove('game-over-score');el('senderStream').classList.remove('active');document.querySelectorAll('.emotion-key').forEach(b=>b.classList.remove('game-flash','game-disabled','replay-dim'));state.powered=true;powerToggle();
