@@ -4,19 +4,23 @@
 
 Ausgangsdatum: 2026-07-12
 
-*Diese Woche (ca. 1,5h, 2 Tage, Inhalte):* Projektgrundlage eingebracht und Kartengenerator auf MPC-Jumboformat umgestellt.
+*Diese Woche (ca. 0,1h, 1 Tag, Inhalte):* Privaten lokalen Projektpfad aus dem nanDECK-Startskript entfernt.
 
-*Letzte Woche (0h, 0 Tage, Inhalte):* Keine Einträge.
+*Letzte Woche (ca. 0,7h, 1 Tag, Inhalte):* Kartengenerator auf MPC-Jumboformat umgestellt.
 
-*Dieser Monat (ca. 1,5h, 2 Tage, Inhalte):* Ruckpacken-Projektgrundlage angelegt und Drucklayout vorbereitet.
+*Dieser Monat (ca. 1,6h, 3 Tage, Inhalte):* Ruckpacken-Projektgrundlage angelegt, Drucklayout vorbereitet und Startskript portabel gemacht.
 
 *Letzter Monat (0h, 0 Tage, Inhalte):* Keine Einträge.
 
-*Jahr (ca. 1,5h, 2 Tage, Inhalte):* Ruckpacken v1.00 begonnen.
+*Jahr (ca. 1,6h, 3 Tage, Inhalte):* Ruckpacken v1.00 begonnen und Werkzeugpfade portabel gehalten.
 
-*Insgesamt (ca. 1,5h, 2 Tage, Inhalte):* Ruckpacken v1.00 begonnen.
+*Insgesamt (ca. 1,6h, 3 Tage, Inhalte):* Ruckpacken v1.00 begonnen und Werkzeugpfade portabel gehalten.
 
 ## Log
+
+### 2026-07-26 - rupa, tools, datenschutz (ca. 0,1h)
+
+- Fix: Absoluten privaten Projektpfad im nanDECK-Startskript durch den relativen Pfad `%~dp0ruckpacken.nde` ersetzt; das Skript bleibt unabhängig vom lokalen Checkout-Ort nutzbar.
 
 ### 2026-07-13 - rupa, cardmaker, layout, druck (ca. 0,7h)
 

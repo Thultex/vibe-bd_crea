@@ -1,0 +1,1243 @@
+<!--
+  ============================================================================
+  Emotronic v1.66
+  Projektname: Emotronic
+  Autor: Rasmus Klette
+  Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
+  Aktuelle Revision: 66
+  ============================================================================
+-->
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Emotronic</title>
+<meta name="theme-color" content="#d6cec0" />
+<meta name="application-name" content="Emotronic" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="apple-mobile-web-app-title" content="Emotronic" />
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="icon" type="image/png" href="favicon.png" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+<style>
+:root{--ink:#24272c;--paper:#f8f3e9;--screen:#edf5e7;--case:#d6cec0;--shadow:rgba(28,30,34,.22);--green:#bfe7a3;--yellow:#f7df70;--red:#ef8f86}
+*{box-sizing:border-box}html{width:100%;max-width:100%;overflow-x:clip;overscroll-behavior-x:none}button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
+body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;padding:max(0px,env(safe-area-inset-top)) max(0px,env(safe-area-inset-right)) max(0px,env(safe-area-inset-bottom)) max(0px,env(safe-area-inset-left));display:grid;place-items:center;overflow:hidden;overscroll-behavior:none;touch-action:manipulation;position:relative;background:radial-gradient(circle at top,#fbf8f2,#ddd6ca);font-family:ui-rounded,"Arial Rounded MT Bold",system-ui,sans-serif;color:var(--ink)}
+.app{width:100%;max-width:430px;min-width:0;margin-inline:auto;padding:12px;background:linear-gradient(145deg,#e7e0d4,#bbb2a4);border:2px solid #81796e;box-shadow:0 18px 40px var(--shadow);display:flex;flex-direction:column;gap:8px;overflow:hidden;transform:scale(var(--app-fit-scale,1));transform-origin:center center;will-change:transform}.app>*{min-width:0;max-width:100%}
+@media(max-width:760px){.app{background:transparent;border:0;box-shadow:none}}
+@media(min-width:520px){.app{border-radius:42px;margin:24px}}
+.top-shell{position:relative;background:var(--screen);--emotion-bg:#edf5e7;background:var(--emotion-bg);border:3px solid var(--ink);border-radius:30px 30px 18px 18px;min-height:286px;padding:52px 14px 12px;overflow:hidden;box-shadow:inset 0 0 0 4px rgba(255,255,255,.5);transition:filter .25s,background .65s cubic-bezier(.2,.8,.2,1)}
+.top-shell.offline{background:#aeb4aa;filter:saturate(.25) brightness(.74)}
+.top-shell.power-confirm{--emotion-bg:#fff!important;background:#fff!important;filter:none}
+.top-shell.power-confirm .emotion-name,.top-shell.power-confirm .emotion-detail{opacity:0}
+.top-shell.power-confirm .screen-emoji-bg{opacity:0!important}
+.emotion-name,.emotion-detail{transition:opacity .28s ease}.emotion-detail.boot-credit{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:38px;opacity:1}.emotion-detail.boot-credit span{display:block;opacity:0;transform:translateY(6px);animation:bootCreditIn .52s ease forwards}.emotion-detail.boot-credit span:nth-child(2){animation-delay:.38s}@keyframes bootCreditIn{0%{opacity:0;transform:translateY(6px)}100%{opacity:.78;transform:translateY(0)}}.legacy-status{opacity:0;pointer-events:none}.top-shell.special-status .legacy-status{opacity:1}.top-shell.special-status .emotion-info{opacity:0}.top-shell.ready-status .legacy-status{transform:translateY(26px)}
+.screen-emoji-bg{position:absolute;inset:8px 8px 78px;display:grid;place-items:center;pointer-events:none;z-index:0;opacity:var(--ghost-opacity,0);transition:opacity 1s cubic-bezier(.2,.8,.2,1);transform:translateY(18px) translateZ(0)}
+.screen-emoji-bg .bg-layer{position:absolute;top:50%;left:50%;max-width:148%;max-height:185%;width:auto;height:auto;object-fit:contain;opacity:0;transition:opacity 1s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1),filter .7s ease;transform:translate(-50%,-50%) scale(1.04);filter:var(--ghost-filter,brightness(0) opacity(.92)) drop-shadow(0 1px 0 rgba(255,255,255,.08))}
+.screen-emoji-bg .bg-layer.show{opacity:1;transform:translate(-50%,-50%) scale(var(--ghost-scale,1))}.screen-emoji-bg .bg-layer.fading-out{transition-duration:.52s,1s,.7s}
+.corner{position:absolute;top:-3px;width:91px;height:72px;border:3px solid var(--ink);background:#eee8dc;display:grid;place-items:center;cursor:pointer;transition:.18s transform,.18s background,.18s box-shadow}
+.corner.left{left:-3px;border-radius:0 0 38px 0}.corner.right{right:-3px;border-radius:0 0 0 38px}.corner.active{background:#fff0a7;box-shadow:inset 0 0 0 4px #fff,0 0 0 2px var(--ink)}
+.phone-icon{font-size:34px;transform:rotate(-20deg);line-height:1;transform-origin:50% 55%}.corner.phone-ringing .phone-icon{animation:phoneRing .72s ease-in-out 2}@keyframes phoneRing{0%,100%{transform:rotate(-20deg) translateX(0)}15%{transform:rotate(-31deg) translateX(-2px)}30%{transform:rotate(-10deg) translateX(2px)}45%{transform:rotate(-29deg) translateX(-2px)}60%{transform:rotate(-12deg) translateX(2px)}75%{transform:rotate(-24deg) translateX(-1px)}}.wifi-icon{width:45px;height:34px;position:relative}.wifi-icon:before,.wifi-icon:after,.wifi-icon i{content:"";position:absolute;left:50%;transform:translateX(-50%);border:4px solid var(--ink);border-bottom:0;border-left-color:transparent;border-right-color:transparent;border-radius:50% 50% 0 0}.wifi-icon:before{width:42px;height:22px;top:0}.wifi-icon:after{width:28px;height:15px;top:9px}.wifi-icon i{width:14px;height:8px;top:18px}.wifi-icon b{position:absolute;width:7px;height:7px;border-radius:50%;background:var(--ink);bottom:0;left:50%;transform:translateX(-50%)}
+.ascii-stage{position:relative;z-index:2;width:100%;min-width:0;max-width:100%;height:60px;display:flex;align-items:center;justify-content:center;text-align:center;font:800 clamp(25px,7.5vw,40px)/1 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre;overflow:hidden;filter:drop-shadow(0 2px 0 #fff);padding:0 58px;transition:font-size .25s ease,opacity .2s ease,letter-spacing .2s ease}.ascii-stage.intense{font-size:clamp(30px,9vw,46px)}
+.emotion-name{position:relative;z-index:2;text-align:center;min-height:27px;font-size:21px;font-weight:950;margin-top:-2px}.emotion-detail{position:relative;z-index:2;text-align:center;min-height:20px;font-size:13px;font-weight:750;opacity:.72}
+.emotion-info{position:relative;z-index:3;width:calc(100% - 14px);min-width:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,auto);align-items:end;gap:12px;margin:9px 7px 0;padding:0 3px;min-height:47px;transition:opacity .28s ease;color:rgba(36,39,44,.82)}.emotion-info-left{min-width:0;padding-bottom:1px}.current-emotion{max-width:100%;font-size:21px;font-weight:900;line-height:1.18;min-height:25px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.current-category{max-width:100%;font-size:13px;font-weight:760;opacity:.60;line-height:1.25;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.current-strength{min-width:0;max-width:82px;font-size:13px;font-weight:800;opacity:.60;text-align:right;padding-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.emotion-info.empty .current-emotion{opacity:.46}.emotion-info.empty .current-category,.emotion-info.empty .current-strength{opacity:0}
+.meter-wrap{position:relative;z-index:2;margin-top:2px}
+.meter{position:relative;height:82px;display:grid;grid-template-columns:34px repeat(3,1fr) 34px;gap:5px;align-items:end;padding:24px 0 0}
+.meter-track{position:absolute;left:39px;right:39px;top:14px;height:9px;border:2px solid var(--ink);border-radius:999px;background:linear-gradient(90deg,#9fd88b 0%,#efe281 50%,#e98c86 100%);box-shadow:inset 0 1px 2px rgba(0,0,0,.14);opacity:.9}
+.segment{height:48px;border:2px solid var(--ink);display:grid;place-items:center;font-size:21px;font-weight:950;cursor:pointer;position:relative;z-index:3;transition:transform .22s ease,box-shadow .22s ease,outline .22s ease,filter .5s ease;background:var(--seg)}
+.segment[data-level="1"]{--seg:var(--green);border-radius:16px 8px 8px 16px}.segment[data-level="2"]{--seg:var(--yellow);border-radius:8px}.segment[data-level="3"]{--seg:var(--red);border-radius:8px 16px 16px 8px}
+.segment.active{outline:4px solid #fff;box-shadow:0 0 0 3px var(--ink),0 5px 10px rgba(0,0,0,.14);z-index:4;font-size:30px;transform:translateY(-4px) scale(1.04)}
+/* Normaler Bereitschaftszustand: immer echte Intensität 0, unabhängig von Spiel-/Kombi-Resten. */
+.top-shell.ready-status .segment.active{outline:none;box-shadow:none;z-index:3;font-size:21px;transform:none}
+.top-shell.ready-status .needle{left:39px!important;background:#9aa09a!important;transition:none!important}
+.top-shell.ready-status .needle:after{background:#9aa09a!important}
+.top-shell.ready-status .segment{outline:none!important;box-shadow:none!important;z-index:3!important;font-size:21px!important;transform:none!important}.top-shell.ready-status .segment.active{outline:none!important;box-shadow:none!important;font-size:21px!important;transform:none!important}
+.meter.off .segment{filter:grayscale(1) brightness(.9);opacity:.72}.meter.combo-locked .segment{cursor:not-allowed}.meter.combo-locked .segment:not(.active){opacity:.58;filter:saturate(.55)}
+.needle{position:absolute;top:4px;left:calc(39px + (100% - 78px) * var(--needle-pos,0));width:5px;height:28px;background:var(--needle-color,var(--ink));border-radius:6px;transform:translateX(-50%);transition:left .62s cubic-bezier(.18,.92,.22,1.12),background-color .28s ease;z-index:6;box-shadow:0 0 0 2px rgba(255,255,255,.75)}
+.needle:after{content:"";position:absolute;left:50%;bottom:-5px;width:13px;height:13px;border-radius:50%;background:var(--needle-color,var(--ink));transform:translateX(-50%);transition:background-color .28s ease}
+.needle.swing{animation:needleSwing .72s ease-out}
+@keyframes needleSwing{0%{transform:translateX(-50%)}45%{transform:translateX(calc(-50% + var(--overshoot,6px)))}72%{transform:translateX(calc(-50% - var(--rebound,3px)))}100%{transform:translateX(-50%)}}
+.meter-arrow{height:48px;border:0;background:transparent;font-size:30px;font-weight:950;cursor:pointer;display:grid;place-items:center;padding:0;line-height:1;transition:transform .15s ease,opacity .2s ease}.meter-arrow:active{transform:scale(.88)}.meter-arrow:disabled{opacity:.28;cursor:default}
+.keypad-shell{background:linear-gradient(#d7d0c4,#bdb5a8);border:3px solid var(--ink);border-radius:25px;padding:9px;box-shadow:inset 0 0 0 3px rgba(255,255,255,.35);margin-bottom:0}
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.emotion-key{position:relative;aspect-ratio:1.34;border:2px solid var(--ink);border-radius:24px 16px 24px 16px;background:var(--c,#eee);box-shadow:0 4px 0 #7e776d;cursor:pointer;display:grid;place-items:center;padding:4px 4px 20px;transition:.16s transform,.16s box-shadow,.16s outline,.16s filter}.emotion-key:active{transform:translateY(3px);box-shadow:0 1px 0 #7e776d}.emotion-key.selected{outline:5px solid #fff;box-shadow:0 0 0 4px var(--ink),0 4px 0 #7e776d;transform:translateY(-2px)}.emotion-key.partner{outline:4px dashed var(--ink);outline-offset:2px}.emotion-key img{grid-area:1/1;width:49px;height:49px;object-fit:contain;transition:width .25s ease,height .25s ease,transform .25s ease}.emotion-key b{grid-area:1/1}.emotion-key.selected img{width:var(--active-emoji-size,54px);height:var(--active-emoji-size,54px);transform:translateY(-1px)}.emotion-key span{position:absolute;left:4px;right:4px;bottom:5px;font-size:11px;font-weight:950;line-height:1.05;text-align:center}.emotion-key.disabled{filter:grayscale(.8) brightness(.72)}
+.utility{display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:9px;margin-top:8px}.utility button{min-height:43px;border:2px solid var(--ink);border-radius:18px;background:#ece7dd;font-weight:950;font-size:22px;cursor:pointer}.utility .combo.active{background:#fff0a1;box-shadow:inset 0 0 0 4px white}.utility .off{background:#efaaa3}.power-symbol{position:relative;display:inline-block;width:24px;height:24px;border:3px solid currentColor;border-radius:50%;vertical-align:middle}.power-symbol:before{content:"";position:absolute;left:50%;top:-6px;width:4px;height:13px;border-radius:4px;background:currentColor;transform:translateX(-50%);box-shadow:0 0 0 3px #efaaa3}.utility .repeat{background:#b8d8ed;position:relative}.replay-count{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:11px;font-weight:850;color:#6f747b;opacity:0;transition:opacity .18s ease;pointer-events:none}.replay-count.visible{opacity:1}.combo-symbol{display:inline-block;position:relative;width:30px;height:24px}.combo-symbol:before,.combo-symbol:after{content:"";position:absolute;width:15px;height:15px;border:3px solid currentColor;border-radius:50%;top:2px}.combo-symbol:before{left:1px}.combo-symbol:after{right:1px}.combo-symbol i{position:absolute;width:10px;height:3px;background:currentColor;left:10px;top:10px;transform:rotate(-35deg)}
+.credit{display:none}.pulse{animation:pulse .34s ease}.shake{animation:shake .35s ease}.boot{animation:boot .55s steps(3,end)}.shutdown{animation:shutdown .55s ease forwards}@keyframes pulse{0%,100%{opacity:1;letter-spacing:0}50%{opacity:.72;letter-spacing:.04em}}}@keyframes shake{0%,100%{letter-spacing:0}25%{letter-spacing:.05em}50%{letter-spacing:-.025em}75%{letter-spacing:.025em}}50%{transform:translateX(6px)}75%{transform:translateX(-3px)}}@keyframes boot{0%{opacity:0;filter:blur(5px)}50%{opacity:1;filter:blur(0)}70%{opacity:.3}100%{opacity:1}}@keyframes shutdown{0%{transform:scaleY(1);opacity:1}65%{transform:scaleY(.04);opacity:.9}100%{transform:scaleY(0);opacity:0}}
+
+.ascii-stage.booting{animation:bootDynamic .52s cubic-bezier(.2,.9,.25,1) infinite alternate}
+.ascii-stage.title-build{justify-content:center;padding-left:58px;padding-right:58px;letter-spacing:.06em;text-align:center}
+.ascii-stage.booting.title-build{animation-name:bootTitleDynamic}
+.ascii-stage.shutting{animation:shutdownDynamic .55s ease-in-out infinite alternate}
+@keyframes bootDynamic{0%{transform:translateY(5px) scale(.94);opacity:.5}100%{transform:translateY(-3px) scale(1.05);opacity:1}}
+@keyframes bootTitleDynamic{0%{transform:translateY(1px) scale(.95) rotate(-1deg);opacity:.62;letter-spacing:.035em}55%{transform:translateY(5px) scale(1.035) rotate(1deg);opacity:1;letter-spacing:.075em}100%{transform:translateY(3px) scale(1.01) rotate(0);opacity:.92;letter-spacing:.055em}}
+@keyframes shutdownDynamic{0%{transform:translateY(0) scale(1);opacity:1}100%{transform:translateY(5px) scale(.96);opacity:.72}}
+
+/* OpenMoji motion: runs parallel to the ASCII sequence. */
+.bg-layer.om-motion,:is(.emotion-key.selected,.emotion-key.game-flash) img.om-motion{animation-duration:var(--om-duration,.72s);animation-timing-function:cubic-bezier(.2,.8,.25,1);animation-fill-mode:both;transform-origin:50% 55%}
+.bg-layer.om-motion{animation-name:omSoftPulse}
+:is(.emotion-key.selected,.emotion-key.game-flash) img.om-motion{animation-name:omSoftPulseKey}
+.om-joy{animation-name:omJoy!important}:is(.emotion-key.selected,.emotion-key.game-flash) img.om-joy{animation-name:omJoyKey!important}
+.om-affection{animation-name:omAffection!important}:is(.emotion-key.selected,.emotion-key.game-flash) img.om-affection{animation-name:omAffectionKey!important}
+.om-curiosity{animation-name:omCuriosity!important}:is(.emotion-key.selected,.emotion-key.game-flash) img.om-curiosity{animation-name:omCuriosityKey!important}
+.om-anger{animation-name:omAnger!important}:is(.emotion-key.selected,.emotion-key.game-flash) img.om-anger{animation-name:omAngerKey!important}
+.om-fear{animation-name:omFear!important}:is(.emotion-key.selected,.emotion-key.game-flash) img.om-fear{animation-name:omFearKey!important}
+.om-disgust{animation-name:omDisgust!important}:is(.emotion-key.selected,.emotion-key.game-flash) img.om-disgust{animation-name:omDisgustKey!important}
+.om-sadness{animation-name:omSadness!important}:is(.emotion-key.selected,.emotion-key.game-flash) img.om-sadness{animation-name:omSadnessKey!important}
+.om-surprise{animation-name:omSurprise!important}:is(.emotion-key.selected,.emotion-key.game-flash) img.om-surprise{animation-name:omSurpriseKey!important}
+.om-neutral{animation-name:omNeutral!important}:is(.emotion-key.selected,.emotion-key.game-flash) img.om-neutral{animation-name:omNeutralKey!important}
+.om-combo{animation-name:omCombo!important}:is(.emotion-key.selected,.emotion-key.game-flash) img.om-combo{animation-name:omComboKey!important}
+.om-starr{animation-name:omStarr!important}:is(.emotion-key.selected,.emotion-key.game-flash) img.om-starr{animation-name:omStarrKey!important}
+@keyframes omSoftPulse{0%,100%{transform:translate(-50%,-50%) scale(var(--ghost-scale,1))}45%{transform:translate(-50%,-50%) scale(calc(var(--ghost-scale,1) * 1.035))}}
+@keyframes omSoftPulseKey{0%,100%{transform:translateY(-1px) scale(1)}45%{transform:translateY(-3px) scale(1.07)}}
+@keyframes omJoy{0%,100%{transform:translate(-50%,-50%) scale(var(--ghost-scale,1)) rotate(0)}35%{transform:translate(-50%,calc(-50% - 7px)) scale(calc(var(--ghost-scale,1) * 1.04)) rotate(-2deg)}65%{transform:translate(-50%,calc(-50% + 2px)) scale(calc(var(--ghost-scale,1) * .99)) rotate(2deg)}}
+@keyframes omJoyKey{0%,100%{transform:translateY(-1px) rotate(0)}35%{transform:translateY(-7px) scale(1.08) rotate(-3deg)}65%{transform:translateY(0) scale(.99) rotate(3deg)}}
+@keyframes omAffection{0%,100%{transform:translate(-50%,-50%) scale(var(--ghost-scale,1))}35%{transform:translate(-50%,-50%) scale(calc(var(--ghost-scale,1) * 1.045)) rotate(-2deg)}70%{transform:translate(-50%,-50%) scale(calc(var(--ghost-scale,1) * 1.015)) rotate(2deg)}}
+@keyframes omAffectionKey{0%,100%{transform:translateY(-1px) scale(1)}35%{transform:translateY(-3px) scale(1.1) rotate(-3deg)}70%{transform:translateY(-1px) scale(1.03) rotate(3deg)}}
+@keyframes omCuriosity{0%,100%{transform:translate(-50%,-50%) scale(var(--ghost-scale,1)) rotate(0)}30%{transform:translate(calc(-50% - 5px),calc(-50% - 2px)) scale(calc(var(--ghost-scale,1) * 1.02)) rotate(-4deg)}70%{transform:translate(calc(-50% + 5px),-50%) scale(var(--ghost-scale,1)) rotate(4deg)}}
+@keyframes omCuriosityKey{0%,100%{transform:translateY(-1px) rotate(0)}30%{transform:translate(-3px,-3px) rotate(-6deg)}70%{transform:translate(3px,-1px) rotate(5deg)}}
+@keyframes omAnger{0%,100%{transform:translate(-50%,-50%) scale(var(--ghost-scale,1))}20%{transform:translate(calc(-50% - 5px),-50%) scale(calc(var(--ghost-scale,1) * 1.025))}40%{transform:translate(calc(-50% + 5px),-50%) scale(calc(var(--ghost-scale,1) * 1.04))}60%{transform:translate(calc(-50% - 3px),-50%) scale(calc(var(--ghost-scale,1) * 1.02))}}
+@keyframes omAngerKey{0%,100%{transform:translateY(-1px)}20%{transform:translate(-4px,-2px) rotate(-2deg)}40%{transform:translate(4px,-2px) rotate(2deg)}60%{transform:translate(-2px,-1px)}}
+@keyframes omFear{0%,100%{transform:translate(-50%,-50%) scale(var(--ghost-scale,1))}20%{transform:translate(calc(-50% - 3px),calc(-50% + 1px)) scale(calc(var(--ghost-scale,1) * .99))}40%{transform:translate(calc(-50% + 3px),calc(-50% - 2px)) scale(calc(var(--ghost-scale,1) * 1.02))}60%{transform:translate(calc(-50% - 2px),calc(-50% + 1px)) scale(var(--ghost-scale,1))}}
+@keyframes omFearKey{0%,100%{transform:translateY(-1px)}20%{transform:translate(-3px,1px)}40%{transform:translate(3px,-2px) scale(1.04)}60%{transform:translate(-2px,0)}}
+@keyframes omDisgust{0%,100%{transform:translate(-50%,-50%) scale(var(--ghost-scale,1)) rotate(0)}40%{transform:translate(calc(-50% - 5px),calc(-50% + 3px)) scale(calc(var(--ghost-scale,1) * .98)) rotate(-4deg)}70%{transform:translate(calc(-50% + 2px),-50%) scale(var(--ghost-scale,1)) rotate(2deg)}}
+@keyframes omDisgustKey{0%,100%{transform:translateY(-1px) rotate(0)}40%{transform:translate(-4px,2px) scale(.96) rotate(-5deg)}70%{transform:translate(2px,-1px) rotate(2deg)}}
+@keyframes omSadness{0%,100%{transform:translate(-50%,-50%) scale(var(--ghost-scale,1))}40%{transform:translate(-50%,calc(-50% + 7px)) scale(calc(var(--ghost-scale,1) * .985))}75%{transform:translate(-50%,calc(-50% + 3px)) scale(calc(var(--ghost-scale,1) * .995))}}
+@keyframes omSadnessKey{0%,100%{transform:translateY(-1px)}40%{transform:translateY(5px) scale(.97)}75%{transform:translateY(2px)}}
+@keyframes omSurprise{0%,100%{transform:translate(-50%,-50%) scale(var(--ghost-scale,1))}35%{transform:translate(-50%,calc(-50% - 5px)) scale(calc(var(--ghost-scale,1) * 1.08))}70%{transform:translate(-50%,-50%) scale(calc(var(--ghost-scale,1) * .99))}}
+@keyframes omSurpriseKey{0%,100%{transform:translateY(-1px) scale(1)}35%{transform:translateY(-5px) scale(1.14)}70%{transform:translateY(-1px) scale(.99)}}
+@keyframes omNeutral{0%,100%{transform:translate(-50%,-50%) scale(var(--ghost-scale,1))}48%{transform:translate(-50%,-50%) scale(calc(var(--ghost-scale,1) * .985))}58%{transform:translate(-50%,-50%) scale(var(--ghost-scale,1))}}
+@keyframes omNeutralKey{0%,100%{transform:translateY(-1px)}48%{transform:translateY(0) scale(.97)}58%{transform:translateY(-1px)}}
+@keyframes omCombo{0%,100%{transform:translate(-50%,-50%) scale(var(--ghost-scale,1)) rotate(0)}30%{transform:translate(calc(-50% - 4px),calc(-50% - 3px)) scale(calc(var(--ghost-scale,1) * 1.035)) rotate(-3deg)}65%{transform:translate(calc(-50% + 4px),calc(-50% - 2px)) scale(calc(var(--ghost-scale,1) * 1.05)) rotate(3deg)}}
+@keyframes omComboKey{0%,100%{transform:translateY(-1px) rotate(0)}30%{transform:translate(-3px,-4px) scale(1.07) rotate(-4deg)}65%{transform:translate(3px,-3px) scale(1.1) rotate(4deg)}}
+/* Starr: kurzer Rückzug, dann abruptes Einfrieren ohne Schwingen. */
+@keyframes omStarr{0%{transform:translate(-50%,-50%) scale(var(--ghost-scale,1));filter:var(--ghost-filter) brightness(1)}28%{transform:translate(-50%,calc(-50% + 4px)) scale(calc(var(--ghost-scale,1) * .94));filter:var(--ghost-filter) brightness(.92)}42%,88%{transform:translate(-50%,calc(-50% + 2px)) scale(calc(var(--ghost-scale,1) * .965));filter:var(--ghost-filter) brightness(.96)}100%{transform:translate(-50%,-50%) scale(var(--ghost-scale,1));filter:var(--ghost-filter) brightness(1)}}
+@keyframes omStarrKey{0%{transform:translateY(-1px) scale(1)}28%{transform:translateY(3px) scale(.91)}42%,88%{transform:translateY(1px) scale(.94)}100%{transform:translateY(-1px) scale(1)}}
+
+/* Gedächtnisspiel im ausgeschalteten Zustand */
+.app.game-mode .corner{pointer-events:none;opacity:.62}
+.app.game-mode .corner.active{opacity:1}
+.app.game-mode .utility .combo{opacity:.55}
+.app.game-mode .utility .repeat,.app.game-mode .utility .off{opacity:1}
+.emotion-key.game-flash{outline:6px solid #fff;box-shadow:0 0 0 5px var(--ink),0 7px 0 #7e776d;transform:translateY(-5px) scale(1.055);filter:saturate(1.18) brightness(1.08)}
+.emotion-key.game-disabled{filter:grayscale(.45) brightness(.78);cursor:default}
+.emotion-key.replay-dim{filter:grayscale(.5) brightness(.70)}
+.current-strength.game-score{font-size:17px;opacity:.86;font-weight:950}.current-emotion.game-over-score{font-size:30px;font-weight:1000;line-height:1.05;letter-spacing:.02em}.utility .combo.game-flash{background:#fff0a1;box-shadow:0 0 0 4px #fff,0 0 0 7px var(--ink);transform:translateY(-3px) scale(1.05);opacity:1!important}
+.ascii-stage.game-bonus{font-size:clamp(20px,6.2vw,34px);padding-left:38px;padding-right:38px}
+.ascii-stage.game-over-animation{animation:gameOverJolt .24s steps(2,end) 3,gameOverFade .9s ease both;font-size:clamp(24px,7vw,40px)}
+.ascii-stage.game-over-score-final{font-size:clamp(30px,8.5vw,46px);font-weight:950;letter-spacing:.02em;transform:translateY(5px);transform-origin:center}
+@keyframes gameOverJolt{0%,100%{transform:translateX(0)}25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+@keyframes gameOverFade{0%{opacity:.55;filter:blur(2px)}35%,100%{opacity:1;filter:blur(0)}}
+.game-life-line{display:flex;align-items:center;gap:7px;min-width:0}.game-lives{display:inline-flex;align-items:center;gap:2px;white-space:nowrap}.game-heart{display:inline-block;color:#d84f55;font-size:15px;line-height:1;filter:drop-shadow(0 1px 0 rgba(255,255,255,.75));transform-origin:center}.game-heart.losing{animation:gameHeartLose .42s cubic-bezier(.2,.85,.35,1) forwards}@keyframes gameHeartLose{0%{opacity:1;transform:scale(1) rotate(0)}38%{opacity:1;transform:scale(1.35) rotate(-10deg)}100%{opacity:0;transform:translateY(7px) scale(.15) rotate(18deg)}}.game-meta{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.life-loss-center{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:ui-rounded,system-ui,sans-serif}.life-loss-center .game-heart{font-size:42px;filter:drop-shadow(0 2px 0 rgba(255,255,255,.8))}.life-loss-center .game-heart.losing{animation:gameHeartLoseCenter .58s cubic-bezier(.2,.85,.35,1) forwards}@keyframes gameHeartLoseCenter{0%{opacity:1;transform:scale(1) rotate(0)}35%{opacity:1;transform:scale(1.5) rotate(-12deg)}70%{opacity:.8;transform:translateY(-8px) scale(1.2) rotate(10deg)}100%{opacity:0;transform:translateY(18px) scale(.12) rotate(24deg)}}
+
+.meter-wrap,.meter,.keypad-shell,.keypad,.utility{min-width:0;max-width:100%}.keypad,.utility{width:100%}.emotion-key{min-width:0;overflow:hidden}.emotion-key span{max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.app.game-select .emotion-key{filter:grayscale(.82) brightness(.72);opacity:.58}.app.game-select .emotion-key[data-key="neutral"]{filter:none;opacity:1;outline:4px solid #fff;box-shadow:0 0 0 3px var(--ink),0 4px 0 #7e776d}.app.game-select .corner{opacity:1;filter:none;pointer-events:auto;cursor:pointer}.app.game-select .corner.active{background:#eee8dc;box-shadow:none}
+.sender-stream{display:none;position:absolute;right:10px;top:76px;width:64px;height:38px;overflow:hidden;z-index:4;font:950 27px/38px ui-monospace,SFMono-Regular,Consolas,monospace;text-align:right;white-space:pre;color:rgba(36,39,44,.82);pointer-events:none}.sender-stream.active{display:block}.sender-stream span{position:absolute;inset:0;opacity:0;animation:senderStream 1.56s steps(1,end) 1}.sender-stream span:nth-child(2){animation-delay:.36s}.sender-stream span:nth-child(3){animation-delay:.72s}.sender-stream span:nth-child(4){animation-delay:1.08s}@keyframes senderStream{0%,22%{opacity:1;transform:translateX(-2px)}23%,100%{opacity:0;transform:translateX(4px)}}
+</style>
+</head>
+<body>
+<main class="app" aria-label="Emotronic">
+<section class="top-shell" id="screen">
+<button class="corner left active" id="sendBtn" aria-label="Senden"><span class="phone-icon">☎</span></button>
+<button class="corner right" id="receiveBtn" aria-label="Empfangen"><span class="wifi-icon"><i></i><b></b></span></button>
+<div class="screen-emoji-bg" id="bgEmoji" aria-hidden="true"><img class="bg-layer show" id="bgEmojiA" alt=""><img class="bg-layer" id="bgEmojiB" alt=""></div>
+<div class="sender-stream" id="senderStream" aria-hidden="true"><span>&gt;&gt;&gt;</span><span>&nbsp;&gt;&gt;</span><span>&gt;&nbsp;&gt;</span><span>&gt;&gt;</span></div>
+<div class="ascii-stage" id="asciiStage">&nbsp;</div>
+<div class="legacy-status">
+<div class="emotion-name" id="emotionName">Bereit</div>
+<div class="emotion-detail" id="emotionDetail">...</div>
+</div>
+<div class="emotion-info empty" id="emotionInfo">
+<div class="emotion-info-left"><div class="current-emotion" id="currentEmotion">...</div><div class="current-category" id="currentCategory"></div></div>
+<div class="current-strength" id="currentStrength"></div>
+</div>
+<div class="meter-wrap">
+<div class="meter" id="meter">
+<div class="meter-track"></div><div class="needle" id="needle"></div>
+<button class="meter-arrow" id="less" aria-label="weniger">◀</button><button class="segment" data-level="1">1</button><button class="segment" data-level="2">2</button><button class="segment" data-level="3">3</button><button class="meter-arrow" id="more" aria-label="mehr">▶</button>
+</div>
+</div>
+</section>
+<section class="keypad-shell">
+<div class="keypad" id="keypad"></div>
+<div class="utility"><button class="repeat" id="repeat" aria-label="Wiederholen">R<span class="replay-count" id="replayCount" aria-live="polite"></span></button><button class="combo" id="combo" aria-label="Emotionen kombinieren"><span class="combo-symbol"><i></i></span></button><button class="off" id="off" aria-label="Ein oder Aus"><span class="power-symbol" aria-hidden="true"></span></button></div>
+
+</section>
+</main>
+<script>
+/* ==========================================================================
+   Emotronic v1.66 — CODEKOPF
+   Projektname: Emotronic
+   Autor: Rasmus Klette
+   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
+   Aktuelle Revision: 66
+   ========================================================================== */
+const APP_META=Object.freeze({
+  name:'Emotronic',
+  version:'1.66',
+  revision:66,
+  author:'Rasmus Klette'
+});
+
+/* ==========================================================================
+   Emotronic – ZENTRALE KONFIGURATION
+   Hier können die wichtigsten Funktionen angepasst werden, ohne den übrigen
+   Programmcode zu verändern. Zahlen sind Millisekunden, sofern nicht anders
+   angegeben. Ungültige Werte werden vom Programm möglichst sicher abgefangen.
+   ========================================================================== */
+const APP_CONFIG={
+  startup:{
+    // 'normal' = normaler Gefühlsmodus, 'off' = ausgeschaltet, 'simon' = Schwierigkeitsauswahl
+    mode:'normal',
+    bootFrameMs:165,           // Tempo der Einschaltsequenz
+    titleHoldFrames:2          // kurze Haltezeit für den fertigen Emotronic-Schriftzug
+  },
+  audio:{
+    enabled:true,              // false = App bleibt vollständig lautlos
+    masterVolume:1             // 0 bis 1
+  },
+  normalMode:{
+    minEmotionLevel:1,         // Grundemotionen dürfen nicht unter diese Stufe fallen
+    neutralLevel:0,
+    defaultSource:'self',        // 'self' = Senden/Telefon, 'other' = Empfangen/Wifi
+    senderAnimation:true,
+    senderAnimationMs:1720,
+    emojiTransitionDelayMs:240,
+    emojiDurationMs:[1000,1280,1550],
+    asciiFrameMs:[210,165,125],
+    backgroundEmojiOpacity:[0.14,0.60,0.50],
+    backgroundEmojiScale:[1.48,1.55,1.63]
+  },
+  replay:{
+    itemMs:750,
+    emojiDurationMs:680,
+    dimInactiveKeys:true
+  },
+  confirmations:{
+    powerOffMs:5000,
+    simonRestartMs:1200,
+    simonShutdownMs:1200,
+    requireDoubleRestartDuringGame:true,
+    requireDoubleShutdownDuringGame:true
+  },
+  simon:{
+    // Ab diesen Punktzahlen werden die Intensitätsstufen dauerhaft höher.
+    level2At:5,
+    level3At:10,
+    comboAt:13,              // Standard/Leicht: Kombis ab 13 Punkten
+    proComboAt:5,              // Profi: Kombis bereits ab 5 Punkten
+    proComboLimitUntil:10,     // Bis 10 Punkten höchstens eine Kombi in der gesamten Folge
+    comboChance:0.22,          // 0 bis 1
+    speedupStartsAfter:5,
+    maximumSpeedAt:20,
+    baseFlashMs:680,
+    fastestFlashMs:260,
+    baseGapMs:260,
+    fastestGapMs:80,
+    firstRoundDelayMs:700,
+    nextRoundDelayMs:700,
+    roundJingleDelayMs:180,
+    keyAnimationStrength:0.5,  // 0.5 = halb so stark wie im Normalmodus
+    allowInputDuringLastFade:true,
+    extraLifeEvery:10,         // bei 10, 20, 30 ... Punkten ein zusätzliches Leben
+    modes:{
+      normal:{name:'NORMAL',lives:1,flashFactor:1,gapFactor:1,startScore:0,bonus:0,allowRepeat:false},
+      easy:{name:'RUHIG',lives:3,flashFactor:1.16,gapFactor:1.18,startScore:0,bonus:0,allowRepeat:true},
+      pro:{name:'PROFI',lives:1,flashFactor:0.78,gapFactor:0.74,startScore:5,bonus:0.25,allowRepeat:true}
+    },
+    praise:{
+      goodAt:5,
+      superAt:10,
+      fantasticAt:15,
+      legendaryAt:20,
+      extraExclamationEvery:2.5
+    },
+    kirby:{
+      everyPoints:5,
+      specialAnimationsAt:10,
+      level2ColorsAt:10,
+      level3ColorsAt:15,
+      frameMs:150
+    }
+  }
+};
+
+/* ==========================================================================
+   DATENTABELLEN
+   Alle Inhalte stehen direkt hinter der globalen Konfiguration: Ressourcen,
+   Grundemotionen, Kombinationen und Sounds. Die Spiellogik folgt danach.
+   ========================================================================== */
+const OM='https://openmoji.org/data/color/svg/';
+const OM_BLACK='https://openmoji.org/data/black/svg/';
+const strengthWords=['aus','schwach','mittel','stark'];
+// Grundemotionen: Texte, OpenMoji-Codes, ASCII-Folgen und Basisfarben.
+const base={
+ curiosity:{category:'Neugier',labels:['interessiert','neugierig','begeistert'],codes:['1F60F','1FAE2','1F929'],ascii:[[':-?',':-?'],[':-?',':-o?',':-?'],[':-?','8-?',':-D?']],color:'#f4b56d',pos:'left top'},
+ joy:{category:'Freude',labels:['zufrieden','fröhlich','glücklich'],codes:['1F60C','1F60A','1F602'],ascii:[[':-)',':-)'],[':-)',':-D',':-)'],[':-D','X-D',':-D']],color:'#f5df6f',pos:'top'},
+ affection:{category:'Zuneigung',labels:['freundlich','zugewandt','liebevoll'],codes:['1F609','1F917','1F60D'],ascii:[[';-)',';-)'],[';-)',';-D',';-)'],[':-*',';-*',':-*']],color:'#bfe36f',pos:'right top'},
+ anger:{category:'Wut',labels:['gereizt','wütend','rasend'],codes:['1F620','1F621','1F92C'],ascii:[['>:-/',':-#','>:-/'],['>:-(',':-#','>:-('],['>:-O','>:-O!','>:-O!!!']],color:'#ef938b',pos:'left'},
+ neutral:{category:'Neutral',labels:['neutral'],codes:['1F610'],ascii:[[':-|',':-|']],color:'#ddd9d0',pos:'center'},
+ fear:{category:'Angst',labels:['besorgt','ängstlich','panisch'],codes:['1F61F','1F630','1F631'],ascii:[[':-s',':-S',':-s'],[':-S',':-O',':-S'],['D-:','D:','D-:!!!']],color:'#6f9f68',pos:'right'},
+ disgust:{category:'Ekel',labels:['unwohl','angeekelt','angewidert'],codes:['1F62C','1F616','1F922'],ascii:[[':-X',':-E',':-X'],['X-(',':-&','X-('],['x-X',':-&','x-X!']],color:'#c2a8dc',pos:'left bottom'},
+ sadness:{category:'Trauer',labels:['niedergeschlagen','traurig','verzweifelt'],codes:['1F641','1F622','1F62D'],ascii:[[':-(',':-<',':-('],[';-[',':-(', ';-['],['T-T',';---;','T-T']],color:'#6381d7',pos:'bottom'},
+ surprise:{category:'Unsicherheit',labels:['unsicher','überrascht','schockiert'],codes:['1F615','1F62E','1F635-200D-1F4AB'],ascii:[[':-/',':-\\',':-/'],[':-o',':-O',':-o'],['@-@','@_@','@-@']],color:'#83d4cf',pos:'right bottom'}
+};
+const order=['curiosity','joy','affection','anger','neutral','fear','disgust','sadness','surprise'];
+// Gültige Nachbarschafts-Kombinationen.
+const combos={
+ 'joy|affection':{name:'verliebt',code:'1F618',ascii:[':-*',';-*',':-*'],partners:['joy','affection']},
+ 'joy|curiosity':{name:'lustig',code:'1F61C',ascii:[';-P',':-P',';-P'],partners:['joy','curiosity']},
+ 'curiosity|anger':{name:'streitlustig',code:'1F608',ascii:['}:-)', '}:-D', '}:-)'],partners:['curiosity','anger']},
+ 'affection|fear':{name:'starr',code:'1F636',ascii:[':-',':-',':-'],partners:['affection','fear']},
+ 'disgust|anger':{name:'abwertend',code:'1F644',ascii:['>:-/','>:-|','>:-/'],partners:['disgust','anger']},
+ 'sadness|disgust':{name:'bereuend',code:'1F614',ascii:[':-<',':-(',':-<'],partners:['sadness','disgust']},
+ 'fear|surprise':{name:'genervt',code:'1F928',ascii:[':-?',':-/',':-?'],partners:['fear','surprise']},
+ 'surprise|sadness':{name:'verlegen',code:'1F605',ascii:[':-$',':-$',':-$'],partners:['surprise','sadness']}
+};
+
+// Kurze eigenständige Retro-Handheld-Signale. Audio ist rein optional:
+// Fehlt Web Audio oder blockiert der Browser den Ton, läuft die App unverändert weiter.
+// Klangtabellen pro Grundemotion und Intensitätsstufe.
+const soundPatterns={
+ curiosity:[[523,659],[523,659,784],[659,784,988]],
+ joy:[[659,784],[659,784,988],[784,988,1175]],
+ affection:[[587,740],[587,740,880],[740,880,1109]],
+ anger:[[220,196],[247,220,196],[294,247,196,165]],
+ neutral:[[330]],
+ fear:[[392,330],[392,330,277],[440,370,294,247]],
+ disgust:[[277,247],[294,247,220],[330,277,233,196]],
+ sadness:[[440,392],[440,370,330],[440,392,330,262]],
+ surprise:[[494,659],[494,659,831],[587,784,988,1175]]
+};
+const specialSoundPatterns={
+ gameWin:[659,784,988,1175,1319],
+ gameLose:[392,330,262,196],
+ lifeLose:[523,440,349,294],
+ lifeGain:[523,659,784,1047,1319],
+ powerOn:[262,392,523,784],
+ powerOff:[659,523,392,262]
+};
+let audioCtx=null;
+function ensureAudio(){
+ try{
+  const AC=window.AudioContext||window.webkitAudioContext;
+  if(!AC)return null;
+  if(!audioCtx)audioCtx=new AC();
+  if(audioCtx.state==='suspended')audioCtx.resume().catch(()=>{});
+  return audioCtx;
+ }catch(_){return null}
+}
+function playTonePattern(notes,level=1){
+ if(!APP_CONFIG.audio.enabled)return;
+ try{
+  const ctx=ensureAudio();if(!ctx||!Array.isArray(notes)||!notes.length)return;
+  const now=ctx.currentTime+.012,step=level>=3?.082:level===2?.095:.11;
+  notes.forEach((freq,i)=>{
+   const osc=ctx.createOscillator(),gain=ctx.createGain();
+   osc.type=i%2?'square':'triangle';osc.frequency.setValueAtTime(freq,now+i*step);
+   gain.gain.setValueAtTime(0.0001,now+i*step);
+   gain.gain.exponentialRampToValueAtTime((level>=3?.055:level===2?.045:.035)*Math.max(0,Math.min(1,APP_CONFIG.audio.masterVolume)),now+i*step+.008);
+   gain.gain.exponentialRampToValueAtTime(0.0001,now+i*step+step*.78);
+   osc.connect(gain);gain.connect(ctx.destination);osc.start(now+i*step);osc.stop(now+i*step+step);
+  });
+ }catch(_){/* Ton darf die App niemals unterbrechen. */}
+}
+function playEmotionSound(key,level=1){
+ const patterns=soundPatterns[key];if(!patterns)return;
+ const index=key==='neutral'?0:Math.max(0,Math.min(2,(level||1)-1));
+ playTonePattern(patterns[index],Math.max(1,level||1));
+}
+function playComboSound(combo){
+ if(!combo)return;
+ const a=soundPatterns[combo.partners[0]]?.[2]||[],b=soundPatterns[combo.partners[1]]?.[2]||[];
+ playTonePattern([a[0],b[0],a.at(-1),b.at(-1)].filter(Boolean),3);
+}
+function playSpecialSound(name){
+ const notes=specialSoundPatterns[name];if(!notes)return;
+ playTonePattern(notes,name==='gameLose'||name==='lifeLose'||name==='powerOff'?2:3);
+}
+let state={selected:null,displayKey:null,intensity:0,last:null,comboMode:false,comboFirst:null,source:APP_CONFIG.normalMode.defaultSource,timer:null,powered:true,history:[],powerArmed:false,powerArmTimer:null,longPressTimer:null,longPressTriggered:false,bgCode:null,bgFlip:false,replaying:false,repeatClickTimer:null,powerAnimating:false,replayRun:0,bootTimer:null,omDelayTimer:null,senderStreamTimer:null,shareStatus:'',shareStatusTimer:null,lastPhoneTap:0,lastWifiTap:0,game:{active:false,phase:'idle',sequence:[],inputIndex:0,score:0,level:1,flashKey:null,awaitingShutdown:false,timers:[],inputTimer:null,actions:[],comboInput:[]}};
+const el=id=>document.getElementById(id);
+function imgMarkup(code,alt){return `<img src="${OM}${code}.svg" alt="${alt}" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><b style="display:none;font-size:38px">${alt}</b>`}
+function build(){state.game.active=false;state.game.phase='idle';state.game.awaitingShutdown=false;const pad=el('keypad');order.forEach(k=>{const e=base[k],b=document.createElement('button');b.className='emotion-key';b.style.setProperty('--c',e.color);b.dataset.key=k;b.innerHTML=imgMarkup(e.codes[0],e.category)+`<span>${e.category}</span>`;b.onclick=()=>pressEmotion(k);pad.appendChild(b)});document.querySelectorAll('.segment').forEach(s=>{s.classList.remove('active');s.onclick=()=>setIntensity(Number(s.dataset.level))});state.selected=null;state.displayKey=null;state.intensity=0;const startNeedle=el('needle');startNeedle.style.transition='none';startNeedle.style.setProperty('--needle-pos','0');startNeedle.style.setProperty('--needle-color','#9aa09a');if(APP_CONFIG.startup.mode==='off'){state.powered=false}else{state.powered=true}render();requestAnimationFrame(()=>{startNeedle.style.transition='';if(APP_CONFIG.startup.mode==='simon')enterMemoryGameSelection()})}
+function pairKey(a,b){return combos[`${a}|${b}`]?`${a}|${b}`:combos[`${b}|${a}`]?`${b}|${a}`:null}
+function allowedPartners(k){return Object.values(combos).filter(c=>c.partners.includes(k)).flatMap(c=>c.partners.filter(x=>x!==k))}
+function snapshot(){return {selected:state.selected,displayKey:state.displayKey}}
+function triggerSenderStream(){
+ // Die rechte >>>-Animation gehört nur zum Wifi/Sender-Zustand.
+ if(state.game.active||!state.powered||state.source!=='other'||!APP_CONFIG.normalMode.senderAnimation)return;
+ const stream=el('senderStream');
+ clearTimeout(state.senderStreamTimer);
+ stream.classList.remove('active');void stream.offsetWidth;stream.classList.add('active');
+ state.senderStreamTimer=setTimeout(()=>{stream.classList.remove('active');state.senderStreamTimer=null},APP_CONFIG.normalMode.senderAnimationMs);
+}
+function pressEmotion(k){
+ if(state.game.active){gamePress(k);return}
+ if(!state.powered)return;
+ // Bei einer fertigen Kombination spielt die aktive Taste die Kombi erneut ab.
+ if(typeof state.selected==='object'&&k===state.displayKey){playComboSound(combos[state.selected.combo]);render();animateCurrent();return}
+ // Eine Gefühlstaste überspringt die laufende Einschaltanimation sofort.
+ if(state.powerAnimating&&state.bootTimer){
+  clearInterval(state.bootTimer);state.bootTimer=null;state.powerAnimating=false;
+  const stage=el('asciiStage'),screen=el('screen');
+  stage.className='ascii-stage';screen.classList.remove('special-status');
+ }
+ if(state.comboMode){if(k==='neutral')return;handleCombo(k);return}
+ if(k==='neutral'){
+   if(state.selected==='neutral'){state.last=snapshot();state.selected=null;state.displayKey=null;state.intensity=0;render();animateCurrent();return}
+   if(state.selected)state.last=snapshot();state.selected='neutral';state.displayKey='neutral';state.intensity=0;recordHistory();triggerSenderStream();playEmotionSound('neutral',1);render();animateCurrent();return
+ }
+ if(state.selected===k){playEmotionSound(k,state.intensity);animateCurrent();return}
+ else{if(state.selected)state.last=snapshot();state.selected=k;state.displayKey=k;state.intensity=1;recordHistory();triggerSenderStream()}
+ playEmotionSound(k,state.intensity);render();animateCurrent()
+}
+function exitCombo(){state.comboMode=false;state.comboFirst=null;render()}
+function handleCombo(k){
+ if(k==='neutral')return;
+ if(!state.comboFirst){state.comboFirst=k;render();return}
+ // Erneutes Auswählen der Startemotion beendet die Auswahl und kehrt zur Grundemotion zurück.
+ if(k===state.comboFirst){
+  state.comboMode=false;state.comboFirst=null;state.selected=k;state.displayKey=k;
+  state.intensity=Math.max(1,Math.min(3,state.intensity||1));
+  playEmotionSound(k,state.intensity);render();animateCurrent();return
+ }
+ const ck=pairKey(state.comboFirst,k);
+ // Nach der ersten Auswahl werden nicht benachbarte Emotionen ignoriert.
+ if(!ck)return;
+ const c=combos[ck],first=state.comboFirst;
+ if(state.selected)state.last=snapshot();
+ state.selected={combo:ck,name:c.name,code:c.code,ascii:c.ascii,parts:c.partners};
+ state.displayKey=first;
+ state.intensity=3;
+ state.comboMode=false;state.comboFirst=null;
+ recordHistory();playComboSound(c);render();animateCurrent()
+}
+function setIntensity(n){if(state.game.active)return;if(!state.powered)return;if(typeof state.selected==='object'){state.intensity=3;render();return}n=Math.max(0,Math.min(3,n));if(!state.selected){state.intensity=0;render();return}if(state.selected==='neutral'){state.intensity=0;render();return}n=Math.max(APP_CONFIG.normalMode.minEmotionLevel,n);state.intensity=n;recordHistory();playEmotionSound(state.selected,n);animateNeedle(n);render();animateCurrent()}
+function animateNeedle(target=state.intensity){const n=el('needle');const dir=target>Number(n.dataset.prev||0)?1:-1;n.dataset.prev=target;n.style.setProperty('--overshoot',`${dir*7}px`);n.style.setProperty('--rebound',`${dir*3}px`);n.classList.remove('swing');void n.offsetWidth;n.classList.add('swing')}
+function getFrames(){if(!state.powered)return [''];if(!state.selected)return [''];if(typeof state.selected==='object')return state.selected.ascii;const e=base[state.selected];if(state.selected==='neutral')return e.ascii[0];return e.ascii[Math.max(0,state.intensity-1)]}
+function setStagePosition(){const stage=el('asciiStage');stage.classList.remove('intense');if(state.intensity>=3)stage.classList.add('intense')}
+function openMojiMotionClass(){if(typeof state.selected==='object')return state.selected.name==='starr'?'om-starr':'om-combo';return state.selected?`om-${state.selected}`:'om-neutral'}
+function animateOpenMoji(replayMode=false,levelOverride=null,motionOverride=null){
+ const cls=motionOverride||(openMojiMotionClass());
+ const level=Math.max(1,Math.min(3,levelOverride??state.intensity??1));
+ const duration=replayMode?APP_CONFIG.replay.emojiDurationMs:APP_CONFIG.normalMode.emojiDurationMs[level-1];
+ const extraMotion={
+  1:[{translate:'0 0',scale:1},{translate:'0 -1px',scale:1.012},{translate:'0 0',scale:1}],
+  2:[{translate:'0 0',scale:1},{translate:'-2px -3px',scale:1.028},{translate:'2px 1px',scale:1.012},{translate:'0 0',scale:1}],
+  3:[{translate:'0 0',scale:1},{translate:'-4px -5px',scale:1.055},{translate:'4px 2px',scale:1.025},{translate:'-2px -2px',scale:1.04},{translate:'0 0',scale:1}]
+ };
+ const targets=[...document.querySelectorAll('.screen-emoji-bg .bg-layer.show,.emotion-key.selected img,.emotion-key.game-flash img')];
+ targets.forEach(node=>{
+  node.getAnimations().forEach(animation=>{if(animation.id==='intensity-motion')animation.cancel()});
+  node.classList.remove('om-motion','om-joy','om-affection','om-curiosity','om-anger','om-fear','om-disgust','om-sadness','om-surprise','om-neutral','om-combo','om-starr');
+  node.style.setProperty('--om-duration',duration+'ms');
+  void node.offsetWidth;
+  node.classList.add('om-motion',cls);
+  const isSimonKey=state.game.active&&!!node.closest('.emotion-key');
+  const motionFrames=isSimonKey?extraMotion[level].map(frame=>({
+   translate:(()=>{const parts=String(frame.translate||'0 0').split(' '),x=parseFloat(parts[0])||0,y=parseFloat(parts[1])||0;return `${x*APP_CONFIG.simon.keyAnimationStrength}px ${y*APP_CONFIG.simon.keyAnimationStrength}px`})(),
+   scale:1+((frame.scale||1)-1)*APP_CONFIG.simon.keyAnimationStrength
+  })):extraMotion[level];
+  const accent=node.animate(motionFrames,{duration,easing:'cubic-bezier(.2,.8,.25,1)',fill:'both'});
+  accent.id='intensity-motion';
+ });
+}
+function animateCurrent(){clearInterval(state.timer);clearTimeout(state.omDelayTimer);setStagePosition();const frames=getFrames();let i=0,stage=el('asciiStage');stage.classList.remove('pulse','shake');void stage.offsetWidth;stage.classList.add(state.intensity>=3?'shake':'pulse');stage.textContent=frames[0]||' ';state.omDelayTimer=setTimeout(()=>{state.omDelayTimer=null;requestAnimationFrame(()=>animateOpenMoji())},APP_CONFIG.normalMode.emojiTransitionDelayMs);const speed=APP_CONFIG.normalMode.asciiFrameMs[Math.max(0,Math.min(2,state.intensity-1))];state.timer=setInterval(()=>{i++;if(i>=frames.length){clearInterval(state.timer);state.timer=null;stage.textContent=frames.at(-1)||' ';return}stage.textContent=frames[i]},speed)}
+function keyCode(k){if(typeof state.selected==='object'&&state.displayKey===k)return state.selected.code;if(state.selected===k&&k!=='neutral')return base[k].codes[Math.max(0,state.intensity-1)];return base[k].codes[0]}
+function currentGhostCode(){if(!state.powered||!state.selected)return null;if(typeof state.selected==='object')return state.selected.code;if(state.selected==='neutral')return base.neutral.codes[0];return base[state.selected].codes[Math.max(0,state.intensity-1)]}
+function updateGhostEmoji(code,levelOverride=null,comboOverride=null){const box=el('bgEmoji'),a=el('bgEmojiA'),b=el('bgEmojiB');const active=state.bgFlip?b:a;const next=state.bgFlip?a:b;if(!code){box.style.setProperty('--ghost-opacity','0');a.classList.remove('show');b.classList.remove('show');state.bgCode=null;return}const src=`${OM_BLACK}${code}.svg`;const combo=comboOverride===null?typeof state.selected==='object':comboOverride;const level=levelOverride===null?(combo?3:state.intensity):levelOverride;const opacity=!state.powered?0:APP_CONFIG.normalMode.backgroundEmojiOpacity[Math.max(0,Math.min(2,level-1))];const scale=APP_CONFIG.normalMode.backgroundEmojiScale[Math.max(0,Math.min(2,level-1))];const ghostFilter=level<=1?'brightness(0) opacity(.92)':'brightness(0) invert(1) opacity(.98)';box.style.setProperty('--ghost-opacity',String(opacity));box.style.setProperty('--ghost-scale',String(scale));box.style.setProperty('--ghost-filter',ghostFilter);if(state.bgCode===code){active.src=src;active.style.filter=`${ghostFilter} drop-shadow(0 1px 0 rgba(0,0,0,.08))`;active.classList.add('show');return}const swapLayers=()=>{active.classList.add('fading-out');void active.offsetWidth;next.classList.add('show');active.classList.remove('show');setTimeout(()=>active.classList.remove('fading-out'),560)};next.onload=swapLayers;next.onerror=()=>{next.src=`${OM}${code}.svg`;next.style.filter=`${ghostFilter} grayscale(1) drop-shadow(0 1px 0 rgba(0,0,0,.08))`;swapLayers()};next.style.filter=`${ghostFilter} drop-shadow(0 1px 0 rgba(0,0,0,.08))`;next.src=src;state.bgFlip=!state.bgFlip;state.bgCode=code}
+function render(){
+ if(state.game.active){renderGame();return}
+ // Normalmodus vollständig von allen Simon-Anzeigezuständen trennen.
+ document.querySelector('.app').classList.remove('game-mode','game-select');
+ el('currentStrength').classList.remove('game-score');
+ el('currentEmotion').classList.remove('game-over-score');
+ const readyStatus=state.powered&&!state.selected&&!state.powerAnimating&&!state.powerArmed&&!state.game.active;
+ if(readyStatus){
+  state.intensity=0;
+  state.game.phase='idle';
+  state.game.flashKey=null;
+  state.game.awaitingShutdown=false;
+  document.querySelectorAll('.segment').forEach(s=>s.classList.remove('active'));
+  const readyNeedle=el('needle');
+  readyNeedle.style.transition='none';
+  readyNeedle.style.setProperty('--needle-pos','0');
+  readyNeedle.style.setProperty('--needle-color','#9aa09a');
+ }
+ el('screen').classList.toggle('ready-status',readyStatus);
+ el('screen').classList.toggle('special-status',!!state.powerAnimating||!!state.powerArmed||readyStatus);
+ const selectedKey=typeof state.selected==='object'?state.displayKey:state.selected;
+ document.querySelectorAll('.emotion-key').forEach(b=>{const k=b.dataset.key;b.classList.toggle('selected',selectedKey===k);b.classList.toggle('partner',!!state.comboFirst&&allowedPartners(state.comboFirst).includes(k));b.classList.toggle('disabled',!state.powered);b.classList.remove('game-flash','game-disabled','replay-dim');const e=base[k],code=keyCode(k);const size=(selectedKey===k?(typeof state.selected==='object'?60:[54,59,65][Math.max(0,state.intensity-1)]):49);b.style.setProperty('--active-emoji-size',size+'px');b.innerHTML=imgMarkup(code,typeof state.selected==='object'&&state.displayKey===k?state.selected.name:e.category)+`<span>${typeof state.selected==='object'&&state.displayKey===k?state.selected.name:e.category}</span>`});
+ let title='Bereit',detail='...';
+ if(!state.powered){title='Aus';detail='Stärke 0'}
+ else if(state.selected){if(typeof state.selected==='object'){title=state.selected.name;detail=`${base[state.selected.parts[0]].category} + ${base[state.selected.parts[1]].category} · ${strengthWords[state.intensity]}`}else if(state.selected==='neutral'){title='Neutral';detail='Grundzustand · Stärke 0'}else{title=base[state.selected].labels[state.intensity-1];detail=`${base[state.selected].category} · ${strengthWords[state.intensity]}`}}
+ el('emotionName').textContent=title;el('emotionDetail').textContent=detail;
+ const info=el('emotionInfo');let currentEmotion='...',currentCategory='',currentStrength='';
+ if(state.powered&&state.selected){
+  if(typeof state.selected==='object'){currentEmotion=state.selected.name;currentCategory=`${base[state.selected.parts[0]].category} + ${base[state.selected.parts[1]].category}`;currentStrength='stark'}
+  else if(state.selected==='neutral'){currentEmotion='Neutral';currentCategory='Grundzustand';currentStrength=''}
+  else{currentEmotion=base[state.selected].labels[state.intensity-1]||base[state.selected].category;currentCategory=base[state.selected].category;currentStrength=strengthWords[state.intensity]||''}
+ }
+ if(state.shareStatus)currentCategory=state.shareStatus;el('currentEmotion').textContent=currentEmotion;el('currentCategory').textContent=currentCategory;el('currentStrength').textContent=currentStrength;info.classList.toggle('empty',(!state.selected||!state.powered)&&!state.shareStatus);
+ const comboLocked=typeof state.selected==='object';if(comboLocked)state.intensity=3;const positions={0:0,1:0.17,2:0.5,3:0.83};const needle=el('needle');needle.style.setProperty('--needle-pos',positions[state.intensity]);needle.style.setProperty('--needle-color',state.intensity===0?'#9aa09a':'var(--ink)');el('meter').classList.toggle('off',!state.powered);el('meter').classList.toggle('combo-locked',comboLocked);document.querySelectorAll('.segment').forEach(s=>{s.classList.toggle('active',state.powered&&Number(s.dataset.level)===state.intensity);s.setAttribute('aria-disabled',comboLocked?'true':'false')});el('less').disabled=!state.powered||comboLocked||!state.selected||state.selected==='neutral'||state.intensity<=1;el('more').disabled=!state.powered||comboLocked||!state.selected||state.selected==='neutral'||state.intensity>=3;
+ const screen=el('screen');let bg='#ffffff';if(!state.powered)bg='#aeb4aa';else if(state.selected&&state.selected!=='neutral'){if(comboLocked){const c1=base[state.selected.parts[0]].color,c2=base[state.selected.parts[1]].color;bg=`color-mix(in srgb, color-mix(in srgb, ${c1} 50%, ${c2}) 66%, #3f4348 34%)`}else{const c=base[state.selected].color;if(state.intensity<=1)bg=`color-mix(in srgb, ${c} 30%, white 70%)`;else if(state.intensity===2)bg=`color-mix(in srgb, color-mix(in srgb, ${c} 50%, white 50%) 78%, #62666b 22%)`;else bg=`color-mix(in srgb, ${c} 66%, #3f4348 34%)`}}screen.style.transitionDuration=state.intensity===0?'0.5s':'1s';screen.style.setProperty('--emotion-bg',bg);updateGhostEmoji(currentGhostCode());
+ el('combo').classList.toggle('active',state.comboMode);el('sendBtn').classList.toggle('active',state.powered&&state.source==='self');el('receiveBtn').classList.toggle('active',state.powered&&state.source==='other');el('screen').classList.toggle('offline',!state.powered);setStagePosition();if(!state.timer)el('asciiStage').textContent=getFrames().at(-1)||' ';
+}
+function animateSource(mode){
+ if(!state.powered)return;
+ clearInterval(state.timer);
+ const stage=el('asciiStage');
+ const endFrame=getFrames().at(-1)||' ';
+ const phoneButton=el('sendBtn');
+ // Telefon = eingehend/klingelnd: keine Pfeile vom Hörer weg.
+ const frames=mode==='self'?['☎','(☎)','((☎))','(☎)','☎']:['((•))','  ((•))','   ((•))','    ((•))'];
+ if(mode==='self'){
+  phoneButton.classList.remove('phone-ringing');void phoneButton.offsetWidth;phoneButton.classList.add('phone-ringing');
+ }
+ let i=0;stage.textContent=frames[0];stage.classList.remove('pulse','shake');void stage.offsetWidth;stage.classList.add('pulse');
+ state.timer=setInterval(()=>{i++;if(i>=frames.length){clearInterval(state.timer);state.timer=null;phoneButton.classList.remove('phone-ringing');setTimeout(()=>{stage.textContent=endFrame;render()},110);return}stage.textContent=frames[i]},145)
+}
+function historyItem(){if(!state.selected)return null;if(typeof state.selected==='object')return {frames:state.selected.ascii,colorParts:state.selected.parts,displayKey:state.displayKey,intensity:state.intensity,code:state.selected.code,name:state.selected.name,isCombo:true};const e=base[state.selected];return {frames:state.selected==='neutral'?e.ascii[0]:e.ascii[Math.max(0,state.intensity-1)],key:state.selected,intensity:state.intensity,code:currentGhostCode(),isCombo:false}}
+function recordHistory(){if(!state.powered)return;const item=historyItem();if(!item)return;const sig=JSON.stringify(item);if(state.history.length&&JSON.stringify(state.history.at(-1))===sig)return;state.history.push(item);if(state.history.length>40)state.history.shift()}
+
+/* Teilbare Zustandslinks ---------------------------------------------------
+   Der Zustand wird ausschließlich im URL-Fragment gespeichert. Dadurch wird
+   beim Teilen nichts an einen Server übertragen. Clipboard-Fehler bleiben
+   folgenlos; die normale Tastenfunktion läuft immer weiter. */
+function encodeSharePayload(payload){
+ try{return btoa(unescape(encodeURIComponent(JSON.stringify(payload)))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}
+ catch{return null}
+}
+function decodeSharePayload(value){
+ try{const padded=value.replace(/-/g,'+').replace(/_/g,'/')+'==='.slice((value.length+3)%4);return JSON.parse(decodeURIComponent(escape(atob(padded))))}
+ catch{return null}
+}
+function shareReference(payload){
+ const encoded=encodeSharePayload(payload);
+ if(!encoded)return null;
+ const fragment=`#share=${encoded}`;
+ // content:// und file:// sind geräteinterne Adressen und in normalen Browsern
+ // nicht als teilbare Links nutzbar. Nur HTTP(S) ergibt einen echten Link.
+ if(location.protocol==='http:'||location.protocol==='https:'){
+  const url=new URL(location.href);
+  url.hash=fragment.slice(1);
+  return {text:url.toString(),isLink:true};
+ }
+ return {text:fragment,isLink:false};
+}
+function flashShareStatus(message){
+ if(!state.powered||state.game.active)return;
+ clearTimeout(state.shareStatusTimer);
+ state.shareStatus=message;
+ render();
+ state.shareStatusTimer=setTimeout(()=>{state.shareStatus='';render()},1250)
+}
+function legacyCopyText(text){
+ const field=document.createElement('textarea');
+ field.value=text;
+ field.setAttribute('aria-hidden','true');
+ field.style.cssText='position:fixed;left:-9999px;top:0;width:1px;height:1px;opacity:0';
+ document.body.appendChild(field);
+ field.focus({preventScroll:true});
+ field.select();
+ field.setSelectionRange(0,field.value.length);
+ let copied=false;
+ try{copied=document.execCommand('copy')}catch{copied=false}
+ field.remove();
+ return copied
+}
+async function copyTextRobust(text){
+ if(navigator.clipboard&&window.isSecureContext){
+  try{await navigator.clipboard.writeText(text);return true}catch{}
+ }
+ return legacyCopyText(text)
+}
+async function copySharePayload(payload,label){
+ const reference=shareReference(payload);
+ if(!reference){flashShareStatus('Teilen nicht möglich');return}
+ const copied=await copyTextRobust(reference.text);
+ if(!copied){flashShareStatus('Kopieren nicht möglich');return}
+ flashShareStatus(reference.isLink?`${label} kopiert`:`${label.replace('-Link','')}-Code kopiert`)
+}
+function isDoubleTap(slot){
+ const now=Date.now(),property=slot==='phone'?'lastPhoneTap':'lastWifiTap';
+ const doubled=now-state[property]>0&&now-state[property]<=520;
+ state[property]=doubled?0:now;
+ return doubled
+}
+function restoreHistoryItem(item){
+ if(!item||typeof item!=='object')return false;
+ if(item.isCombo&&Array.isArray(item.colorParts)){
+  const ck=pairKey(item.colorParts[0],item.colorParts[1]);if(!ck)return false;const c=combos[ck];
+  state.selected={combo:ck,name:c.name,code:c.code,ascii:c.ascii,parts:c.partners};state.displayKey=item.displayKey||c.partners[0];state.intensity=3;return true
+ }
+ if(item.key&&base[item.key]){
+  state.selected=item.key;state.displayKey=item.key;state.intensity=item.key==='neutral'?0:Math.max(1,Math.min(3,Number(item.intensity)||1));return true
+ }
+ return false
+}
+function applySharedPayload(){
+ const match=location.hash.match(/^#share=(.+)$/);if(!match)return;
+ const payload=decodeSharePayload(match[1]);if(!payload||!['emotion','replay'].includes(payload.type))return;
+ state.powered=true;state.game.active=false;state.comboMode=false;state.comboFirst=null;state.source=APP_CONFIG.normalMode.defaultSource;
+ document.querySelector('.app').classList.remove('game-mode','game-select');
+ if(payload.type==='emotion'&&restoreHistoryItem(payload.item)){
+  state.history=[historyItem()].filter(Boolean);render();animateCurrent();return
+ }
+ if(payload.type==='replay'&&Array.isArray(payload.items)){
+  const valid=payload.items.filter(item=>item&&typeof item==='object').slice(-40);if(!valid.length)return;
+  state.history=valid;restoreHistoryItem(valid.at(-1));render();setTimeout(replayHistory,180)
+ }
+}
+function stopReplay(restore=true){
+ state.replayRun++;
+ state.replaying=false;
+ clearInterval(state.timer);
+ state.timer=null;
+ const replayCount=el('replayCount');
+ replayCount.classList.remove('visible');
+ replayCount.textContent='';
+ if(restore)render();
+}
+function renderReplayKeypad(item){
+ const selectedKey=item.isCombo?(item.displayKey||item.colorParts?.[0]):item.key;
+ document.querySelectorAll('.emotion-key').forEach(b=>{
+  const k=b.dataset.key,e=base[k];
+  const selected=k===selectedKey;
+  b.classList.toggle('selected',selected);
+  b.classList.remove('partner','game-flash','game-disabled');
+  b.classList.toggle('replay-dim',!selected);
+  let code=e.codes[0],label=e.category;
+  if(selected){
+   if(item.isCombo){code=item.code;label=item.name||'Kombi'}
+   else if(k!=='neutral'){code=e.codes[Math.max(0,(item.intensity||1)-1)]}
+  }
+  const size=selected?(item.isCombo?60:[54,59,65][Math.max(0,(item.intensity||1)-1)]):49;
+  b.style.setProperty('--active-emoji-size',size+'px');
+  b.innerHTML=imgMarkup(code,label)+`<span>${label}</span>`;
+ });
+}
+const gameKeys=order.filter(k=>k!=='neutral');
+const kirbyAnimations=[
+ ['(>^.^)>',' <(^.^<)','^(^.^)^','(>^.^)>'],
+ ['(o.o)','(o.o)  *','(o.o) * *','(^.^) ***'],
+ ['( ^-^)','(  ^-)>','(   ^)>','  ★  ','<(^   )'],
+ ['(._.)','(._.) z','(._.) zZ','(^o^)!'],
+ ['<(^.^)>','\\(^.^)/','<(^.^)>','\\(^o^)/'],
+ ['(>.<)','(>.<)っ','(>.<)っ♥','(^.^)♥'],
+ ['(•‿•)','(•‿•)ノ','(•‿•)ノ☆','☆\\(•‿•)'],
+ ['  ★  ','★(^.^)★','★★(^o^)★★','★  WIN  ★'],
+ ['(>^.^)>  ☆',' ☆ <(^.^<)','☆  ^(^.^)^  ☆','★★ KIRBY ★★'],
+ ['(._.)','( O.O)','(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧','✧･ﾟ: *✧･ﾟ:*']
+];
+const gameModes=APP_CONFIG.simon.modes;
+function currentGameMode(){return gameModes[state.game.mode]||gameModes.normal}
+function finalGameScore(){const g=state.game,mode=currentGameMode();return Math.round(g.score*(1+mode.bonus))}
+function gameTiming(score){
+ const mode=currentGameMode();
+ let flash=APP_CONFIG.simon.baseFlashMs,gap=APP_CONFIG.simon.baseGapMs;
+ // Bis einschließlich 5 Punkte bleibt das Grundtempo unverändert; danach wird es bis 20 schneller.
+ if(score>APP_CONFIG.simon.speedupStartsAfter){const span=Math.max(1,APP_CONFIG.simon.maximumSpeedAt-APP_CONFIG.simon.speedupStartsAfter);const progress=Math.min(1,(score-APP_CONFIG.simon.speedupStartsAfter)/span);flash=APP_CONFIG.simon.baseFlashMs-((APP_CONFIG.simon.baseFlashMs-APP_CONFIG.simon.fastestFlashMs)*progress);gap=APP_CONFIG.simon.baseGapMs-((APP_CONFIG.simon.baseGapMs-APP_CONFIG.simon.fastestGapMs)*progress)}
+ return {flash:Math.round(flash*mode.flashFactor),gap:Math.round(gap*mode.gapFactor)};
+}
+function gameScoreText(score){return `${score} PUNKTE`}
+function gamePraise(score){
+ const p=APP_CONFIG.simon.praise;
+ if(score<p.goodAt)return '';
+ const marks=Math.max(1,Math.floor((score-p.fantasticAt)/p.extraExclamationEvery)+1);
+ if(score>=p.legendaryAt)return `Sagenhaft${'!'.repeat(marks)}`;
+ if(score>=p.fantasticAt)return `Fantastisch${'!'.repeat(marks)}`;
+ if(score>=p.superAt)return 'Super!';
+ return 'Gute Arbeit.';
+}
+function setGameScore(score){
+ const node=el('currentStrength');node.textContent=gameScoreText(score);
+ requestAnimationFrame(()=>{if(node.scrollWidth>node.clientWidth)node.textContent=`${score} P.`});
+}
+function gameLivesMarkup(lives,maxLives,{losing=false}={}){
+ const shown=Math.max(0,Math.min(maxLives,lives));
+ const hearts=Array.from({length:shown},(_,i)=>`<span class="game-heart${losing&&i===shown-1?' losing':''}" aria-hidden="true">♥</span>`).join('');
+ return `<span class="game-lives" aria-label="${shown} ${shown===1?'Leben':'Leben'}">${hearts}</span>`;
+}
+function setGameMeta(text='',options={}){
+ const g=state.game,node=el('currentCategory');
+ node.innerHTML=`<span class="game-life-line">${gameLivesMarkup(g.lives,g.maxLives,options)}<span class="game-meta">${text}</span></span>`;
+}
+function gameColorFor(key,level){
+ const c=base[key].color;
+ return level===1?`color-mix(in srgb, ${c} 30%, white 70%)`:level===2?`color-mix(in srgb, color-mix(in srgb, ${c} 50%, white 50%) 78%, #62666b 22%)`:`color-mix(in srgb, ${c} 66%, #3f4348 34%)`;
+}
+function gameLevel(score){return score>=APP_CONFIG.simon.level3At?3:score>=APP_CONFIG.simon.level2At?2:1}
+function gameActionLevel(action){return typeof action==='object'&&action.combo?3:(typeof action==='object'&&action.level?action.level:state.game.level)}
+function gameActionKey(action){return typeof action==='object'&&!action.combo?action.key:action}
+function gameLater(fn,ms){const id=setTimeout(()=>{state.game.timers=state.game.timers.filter(x=>x!==id);fn()},ms);state.game.timers.push(id);return id}
+function clearGameTimers(){state.game.timers.forEach(clearTimeout);state.game.timers=[];clearTimeout(state.game.inputTimer);state.game.inputTimer=null}
+function renderGameKeypad(activeKey=null,allowInput=false){
+ const activeKeys=Array.isArray(activeKey)?activeKey:[activeKey];
+ document.querySelectorAll('.emotion-key').forEach(b=>{
+  const k=b.dataset.key,e=base[k],isNeutral=k==='neutral',active=activeKeys.includes(k);
+  b.classList.toggle('selected',false);b.classList.toggle('partner',false);b.classList.toggle('disabled',false);
+  b.classList.toggle('game-flash',active);b.classList.toggle('game-disabled',isNeutral||(!allowInput&&!active));b.classList.remove('replay-dim');
+  const code=!isNeutral&&active?e.codes[state.game.level-1]:e.codes[0];
+  const size=active?[54,59,65][state.game.level-1]:49;
+  b.style.setProperty('--active-emoji-size',size+'px');
+  b.innerHTML=imgMarkup(code,e.category)+`<span>${e.category}</span>`;
+ });
+}
+function renderGameSelection(){
+ const g=state.game,screen=el('screen'),stage=el('asciiStage');
+ state.intensity=0;document.querySelector('.app').classList.add('game-mode','game-select');
+ el('sendBtn').classList.remove('active');el('receiveBtn').classList.remove('active');el('senderStream').classList.remove('active');
+ screen.classList.remove('offline','power-confirm','special-status','ready-status');screen.style.setProperty('--emotion-bg','#f8f3e9');
+ el('emotionInfo').classList.remove('empty');el('currentEmotion').textContent='Wie schwer?';
+ el('currentCategory').textContent='Tel. (1), Gesicht (2), Wifi (3)';
+ el('currentStrength').textContent='';el('currentStrength').classList.remove('game-score');
+ el('emotionName').textContent='';el('emotionDetail').textContent='';stage.className='ascii-stage';stage.textContent='WIE SCHWER?';
+ updateGhostEmoji(null);el('combo').classList.remove('active','game-flash');
+ const n=el('needle');n.style.transition='none';n.style.setProperty('--needle-pos',0);n.style.setProperty('--needle-color','#9aa09a');void n.offsetWidth;requestAnimationFrame(()=>{n.style.transition=''});
+ document.querySelectorAll('.segment').forEach(s=>s.classList.remove('active'));el('less').disabled=true;el('more').disabled=true;
+ document.querySelectorAll('.emotion-key').forEach(b=>{const k=b.dataset.key,e=base[k],normal=k==='neutral';b.classList.remove('selected','partner','disabled','game-flash','replay-dim');b.classList.toggle('game-disabled',!normal);b.style.setProperty('--active-emoji-size',normal?'54px':'49px');b.innerHTML=imgMarkup(e.codes[0],e.category)+`<span>${normal?'Normal':e.category}</span>`});
+}
+function enterMemoryGameSelection(){
+ ensureAudio();clearGameTimers();stopReplay(false);clearInterval(state.bootTimer);state.bootTimer=null;state.history=[];
+ state.game={active:true,mode:null,phase:'select',sequence:[],inputIndex:0,score:0,level:1,lives:1,maxLives:1,flashKey:null,awaitingShutdown:false,timers:[],inputTimer:null,actions:[],comboInput:[],repeatUsed:false,restartClicks:0,restartTimer:null};
+ state.powered=true;state.selected=null;state.displayKey=null;state.intensity=0;state.powerAnimating=false;state.powerArmed=false;state.source=null;
+ renderGameSelection();
+}
+function renderGame(){
+ const g=state.game,screen=el('screen'),stage=el('asciiStage');
+ if(g.phase==='select'){renderGameSelection();return}
+ document.querySelector('.app').classList.remove('game-select');
+ const displayLevel=g.phase==='idle'?0:g.level;
+ state.intensity=displayLevel;
+ el('currentEmotion').classList.remove('game-over-score');el('combo').classList.remove('game-flash');
+ document.querySelector('.app').classList.add('game-mode');
+ el('sendBtn').classList.toggle('active',g.mode==='easy');
+ el('receiveBtn').classList.toggle('active',g.mode==='pro');
+ el('senderStream').classList.toggle('active',g.mode==='easy'&&!g.awaitingShutdown);
+ screen.classList.remove('offline','power-confirm','special-status','ready-status');
+ el('emotionInfo').classList.remove('empty');
+ el('currentEmotion').textContent=g.phase==='shutdown-confirm'?'AUS?':g.awaitingShutdown?(gamePraise(finalGameScore())||'GAME OVER'):g.phase==='restart-confirm'?'NEUSTART?':g.phase==='show'?'MERKEN':g.phase==='input'?'NACHTIPPEN':g.phase==='ready'?'Geschafft!':'GEDÄCHTNIS';
+ if(g.phase==='shutdown-confirm')setGameMeta('Aus-Taste nochmal drücken');else if(g.awaitingShutdown)setGameMeta('R: Neustart · Aus-Taste: Aus');else if(g.phase==='restart-confirm')setGameMeta('R nochmal drücken');else if(g.phase==='ready')setGameMeta('');else setGameMeta(`${currentGameMode().name} · Folge ${g.sequence.length||1}`);
+ setGameScore(g.score);el('currentStrength').classList.add('game-score');
+ el('emotionName').textContent='';el('emotionDetail').textContent='';
+ const positions={0:0,1:0.17,2:0.5,3:0.83},gameNeedle=el('needle');
+ // Bei BEREIT muss Stufe 0 sofort sichtbar sein, ohne noch von Stufe 3 zurückzugleiten.
+ if(displayLevel===0){gameNeedle.style.transition='none'}
+ gameNeedle.style.setProperty('--needle-pos',positions[displayLevel]);gameNeedle.style.setProperty('--needle-color',displayLevel===0?'#9aa09a':'var(--ink)');
+ if(displayLevel===0){void gameNeedle.offsetWidth;requestAnimationFrame(()=>{gameNeedle.style.transition=''})}
+ el('meter').classList.remove('off','combo-locked');document.querySelectorAll('.segment').forEach(s=>{s.classList.remove('active');if(displayLevel>0&&Number(s.dataset.level)===displayLevel)s.classList.add('active')});
+ el('less').disabled=true;el('more').disabled=true;el('combo').classList.remove('active');
+ if(g.awaitingShutdown){stage.className='ascii-stage game-over-score-final';stage.textContent=`${finalGameScore()} PUNKTE`;renderGameKeypad(null,false)}
+ else if(g.phase==='idle'){stage.className='ascii-stage';stage.textContent='BEREIT';renderGameKeypad(null,false)}
+ else if(g.phase==='ready'){stage.className='ascii-stage';stage.textContent='GESCHAFFT!';renderGameKeypad(null,false)}
+ else if(g.phase==='restart-confirm'){stage.className='ascii-stage pulse';stage.textContent='NEUSTART?';renderGameKeypad(null,false)}
+ else if(g.phase==='shutdown-confirm'){stage.className='ascii-stage pulse';stage.textContent='AUS?';renderGameKeypad(null,false)}
+}
+function renderGameCombo(action,allowInput=false){
+ const ck=pairKey(action.first,action.second),combo=ck?combos[ck]:null,anchor=action.second;
+ document.querySelectorAll('.emotion-key').forEach(b=>{
+  const k=b.dataset.key,e=base[k],isNeutral=k==='neutral',active=k===anchor;
+  b.classList.toggle('selected',false);b.classList.toggle('partner',false);b.classList.toggle('disabled',false);
+  b.classList.toggle('game-flash',active);b.classList.toggle('game-disabled',isNeutral||(!allowInput&&!active));b.classList.remove('replay-dim');
+  const code=active&&combo?combo.code:e.codes[0];
+  b.style.setProperty('--active-emoji-size',active?'65px':'49px');
+  b.innerHTML=imgMarkup(code,active&&combo?combo.name:e.category)+`<span>${active&&combo?combo.name:e.category}</span>`;
+ });
+}
+function gameShowAction(action){
+ const screen=el('screen');el('combo').classList.remove('game-flash');
+ if(typeof action==='object'&&action.combo){
+  const ck=pairKey(action.first,action.second),combo=ck?combos[ck]:null;
+  renderGameCombo(action,false);screen.style.transitionDuration='.28s';
+  const c1=base[action.first].color,c2=base[action.second].color;
+  screen.style.setProperty('--emotion-bg',`color-mix(in srgb, color-mix(in srgb, ${c1} 50%, ${c2}) 66%, #3f4348 34%)`);
+  updateGhostEmoji(combo?combo.code:null,3,true);playComboSound(combo);el('asciiStage').textContent=combo?combo.ascii.at(-1):'KOMBI';
+  requestAnimationFrame(()=>animateOpenMoji(false,3,combo&&combo.name==='starr'?'om-starr':'om-combo'));return;
+ }
+ const key=gameActionKey(action),level=gameActionLevel(action),e=base[key],code=e.codes[level-1];
+ const previousLevel=state.game.level;state.game.level=level;renderGameKeypad(key,false);state.game.level=previousLevel;screen.style.transitionDuration='.28s';
+ const c=e.color;screen.style.setProperty('--emotion-bg',level===1?`color-mix(in srgb, ${c} 30%, white 70%)`:level===2?`color-mix(in srgb, color-mix(in srgb, ${c} 50%, white 50%) 78%, #62666b 22%)`:`color-mix(in srgb, ${c} 66%, #3f4348 34%)`);
+ updateGhostEmoji(code,level,false);playEmotionSound(key,level);el('asciiStage').textContent=e.ascii[level-1].at(-1)||' ';
+ requestAnimationFrame(()=>animateOpenMoji(false,level,`om-${key}`));
+}
+function makeGameToken(){
+ const g=state.game,last=g.sequence.at(-1);
+ const comboStart=g.mode==='pro'?APP_CONFIG.simon.proComboAt:APP_CONFIG.simon.comboAt;
+ const earlyProLimit=g.mode==='pro'&&g.score<APP_CONFIG.simon.proComboLimitUntil&&g.sequence.some(token=>typeof token==='object'&&token.combo);
+ if(g.score>=comboStart&&!earlyProLimit&&last&&Math.random()<APP_CONFIG.simon.comboChance){
+  const anchor=typeof last==='object'&&last.combo?last.second:gameActionKey(last);
+  const partners=allowedPartners(anchor).filter(partner=>!!pairKey(anchor,partner));
+  if(partners.length){const partner=partners[Math.floor(Math.random()*partners.length)];return {combo:true,first:anchor,second:partner}}
+ }
+ return {key:gameKeys[Math.floor(Math.random()*gameKeys.length)],level:gameLevel(g.score)};
+}
+function gameActions(sequence){return sequence.slice()}
+function startMemoryGame(mode='normal'){
+ document.querySelector('.app').classList.remove('game-select');
+ ensureAudio();clearGameTimers();stopReplay(false);clearInterval(state.bootTimer);state.bootTimer=null;state.history=[];
+ const cfg=gameModes[mode]||gameModes.normal;state.game={active:true,mode,phase:'idle',sequence:[],inputIndex:0,score:cfg.startScore,level:gameLevel(cfg.startScore),lives:cfg.lives,maxLives:cfg.lives,flashKey:null,awaitingShutdown:false,timers:[],inputTimer:null,actions:[],comboInput:[],repeatUsed:false,restartClicks:0,restartTimer:null};
+ state.powered=true;state.selected=null;state.displayKey=null;state.intensity=0;state.powerAnimating=false;state.powerArmed=false;state.source=mode==='easy'?'self':mode==='pro'?'other':null;
+ el('screen').style.setProperty('--emotion-bg','#f8f3e9');updateGhostEmoji(null);renderGame();gameLater(gameNextRound,APP_CONFIG.simon.firstRoundDelayMs);
+}
+function runGamePlayback(startDelay){
+ const g=state.game,timing=gameTiming(g.score);let index=0;
+ const finishAction=()=>{
+  const isLast=index===g.actions.length-1;
+  el('bgEmoji').style.setProperty('--ghost-opacity','0');index++;
+  if(isLast){g.phase='input';el('currentEmotion').textContent='NACHTIPPEN';renderGameKeypad(null,true);return}
+  renderGameKeypad(null,false);gameLater(step,timing.gap);
+ };
+ const step=()=>{
+  if(!g.active||g.awaitingShutdown||index>=g.actions.length)return;
+  const action=g.actions[index];
+  if(typeof action==='object'&&action.combo){
+   const level=gameLevel(g.score);
+   gameShowAction({key:action.first,level});
+   gameLater(()=>{
+    renderGameKeypad(null,false);el('bgEmoji').style.setProperty('--ghost-opacity','0');
+    gameLater(()=>{
+     gameShowAction({key:action.second,level});
+     gameLater(()=>{
+      gameShowAction(action);
+      gameLater(finishAction,Math.max(180,Math.round(timing.flash*.62)));
+     },Math.max(120,Math.round(timing.flash*.55)));
+    },Math.max(45,Math.round(timing.gap*.62)));
+   },Math.max(220,Math.round(timing.flash*.82)));
+   return;
+  }
+  gameShowAction(action);gameLater(finishAction,timing.flash);
+ };
+ gameLater(step,startDelay);
+}
+function gameNextRound(){
+ const g=state.game;if(!g.active||g.awaitingShutdown)return;
+ g.level=gameLevel(g.score);state.intensity=g.level;g.sequence.push(makeGameToken());g.actions=gameActions(g.sequence);g.inputIndex=0;g.comboInput=[];g.repeatUsed=false;g.phase='show';renderGame();
+ runGamePlayback(500);
+}
+function requestGameRestart(){
+ const g=state.game;if(!g.active||g.awaitingShutdown||g.phase==='select')return;
+ if(g.phase==='restart-confirm'){
+  clearTimeout(g.restartTimer);g.restartClicks=0;startMemoryGame(g.mode||'normal');return;
+ }
+ clearGameTimers();g.restartClicks=1;g.restartReturnPhase=g.phase;g.phase='restart-confirm';renderGame();
+ clearTimeout(g.restartTimer);g.restartTimer=setTimeout(()=>{
+  if(!g.active||g.awaitingShutdown||g.phase!=='restart-confirm')return;
+  g.restartClicks=0;g.phase='show';g.inputIndex=0;g.comboInput=[];g.actions=gameActions(g.sequence);renderGame();runGamePlayback(260);
+ },APP_CONFIG.confirmations.simonRestartMs);
+}
+function requestGameShutdown(){
+ const g=state.game;if(!g.active)return;
+ if(g.phase==='shutdown-confirm'){
+  clearTimeout(g.shutdownTimer);g.shutdownClicks=0;shutdownGame();return;
+ }
+ const wasOver=g.awaitingShutdown,previousPhase=g.phase;
+ clearGameTimers();g.shutdownClicks=1;g.shutdownReturnPhase=previousPhase;g.shutdownWasOver=wasOver;g.phase='shutdown-confirm';renderGame();
+ clearTimeout(g.shutdownTimer);g.shutdownTimer=setTimeout(()=>{
+  if(!g.active||g.phase!=='shutdown-confirm')return;
+  g.shutdownClicks=0;
+  if(g.shutdownWasOver){g.phase='over';g.awaitingShutdown=true;renderGame();return}
+  if(g.shutdownReturnPhase==='select'){g.phase='select';renderGameSelection();return}
+  g.awaitingShutdown=false;g.phase='show';g.inputIndex=0;g.comboInput=[];g.actions=gameActions(g.sequence);renderGame();runGamePlayback(260);
+ },APP_CONFIG.confirmations.simonShutdownMs);
+}
+function repeatCurrentGameSequence(){
+ const g=state.game;if(!g.active||g.awaitingShutdown||g.repeatUsed||!g.actions.length||!currentGameMode().allowRepeat)return;
+ if(g.phase!=='input'&&g.phase!=='show')return;
+ clearGameTimers();g.repeatUsed=true;g.inputIndex=0;g.comboInput=[];g.phase='show';renderGame();runGamePlayback(220);
+}
+function armGameInputTimer(){clearTimeout(state.game.inputTimer);state.game.inputTimer=null}
+function gamePress(k){
+ const g=state.game;if(!g.active||g.awaitingShutdown)return;
+ if(g.phase==='select'){if(k==='neutral')startMemoryGame('normal');return}
+ if(g.phase!=='input'||k==='neutral')return;
+ const expected=g.actions[g.inputIndex];
+ if(typeof expected==='object'&&expected.combo){
+  const level=gameLevel(g.score);
+  if(g.comboInput.length===0){
+   gameShowAction({key:expected.first,level});
+   if(k!==expected.first){gameLater(loseLife,260);return}
+   g.comboInput=[k];
+   gameLater(()=>{renderGameKeypad(null,true);el('bgEmoji').style.setProperty('--ghost-opacity','0')},150);
+   return;
+  }
+  gameShowAction({key:expected.second,level});
+  if(k!==expected.second){gameLater(loseLife,260);return}
+  g.comboInput=[];
+  gameLater(()=>gameShowAction(expected),110);
+  g.inputIndex++;
+ }else{
+  const expectedKey=gameActionKey(expected);gameShowAction(expected);if(k!==expectedKey){gameLater(loseLife,260);return}g.inputIndex++;
+ }
+ if(g.inputIndex>=g.actions.length){g.score++;g.level=gameLevel(g.score);state.intensity=g.level;gameLater(()=>playSpecialSound('gameWin'),APP_CONFIG.simon.roundJingleDelayMs);gameLater(()=>{renderGameKeypad(null,false);if(APP_CONFIG.simon.extraLifeEvery>0&&g.score%APP_CONFIG.simon.extraLifeEvery===0)playExtraLifeBonus();else if(g.score%APP_CONFIG.simon.kirby.everyPoints===0)playKirbyBonus();else{g.phase='ready';renderGame();gameLater(gameNextRound,APP_CONFIG.simon.nextRoundDelayMs)}},330)}
+ else{gameLater(()=>{renderGameKeypad(null,true);el('bgEmoji').style.setProperty('--ghost-opacity','0')},220)}
+}
+function playKirbyBonus(){
+ const g=state.game;if(!g.active)return;g.phase='bonus';renderGameKeypad(null,false);
+ const pool=g.score>=APP_CONFIG.simon.kirby.specialAnimationsAt?kirbyAnimations:kirbyAnimations.slice(0,7),frames=pool[Math.floor(Math.random()*pool.length)];
+ const bonusLevel=g.score>=APP_CONFIG.simon.kirby.level3ColorsAt?3:g.score>=APP_CONFIG.simon.kirby.level2ColorsAt?2:1,screen=el('screen'),stage=el('asciiStage');
+ stage.className='ascii-stage game-bonus';let i=0;stage.textContent=frames[0];
+ const paint=()=>{const key=gameKeys[i%gameKeys.length];screen.style.transitionDuration='.12s';screen.style.setProperty('--emotion-bg',gameColorFor(key,bonusLevel))};
+ paint();
+ const advance=()=>{i++;if(i>=frames.length){stage.className='ascii-stage';g.phase='ready';gameLater(()=>{renderGame();gameLater(gameNextRound,APP_CONFIG.simon.nextRoundDelayMs)},420);return}paint();stage.textContent=frames[i];gameLater(advance,APP_CONFIG.simon.kirby.frameMs)};
+ gameLater(advance,APP_CONFIG.simon.kirby.frameMs);
+}
+function playExtraLifeBonus(){
+ const g=state.game;if(!g.active)return;
+ g.phase='bonus';renderGameKeypad(null,false);
+ const screen=el('screen'),stage=el('asciiStage');
+ const bonusLevel=g.score>=APP_CONFIG.simon.kirby.level3ColorsAt?3:g.score>=APP_CONFIG.simon.kirby.level2ColorsAt?2:1;
+ const frames=['(•ᴗ•)  [■]','(•ᴗ•)  [✦]','(•ᴗ•)  [♥]','   ♥',' +1 LEBEN'];
+ let i=0;
+ stage.className='ascii-stage game-bonus';stage.textContent=frames[0];
+ const paint=()=>{const key=gameKeys[i%gameKeys.length];screen.style.transitionDuration='.12s';screen.style.setProperty('--emotion-bg',gameColorFor(key,bonusLevel))};
+ paint();
+ const advance=()=>{
+  i++;
+  if(i>=frames.length){
+   g.lives=Math.max(0,g.lives)+1;
+   g.maxLives=Math.max(g.maxLives,g.lives);
+   playSpecialSound('lifeGain');
+   stage.className='ascii-stage';
+   setGameMeta('+1 LEBEN');setGameScore(g.score);
+   gameLater(()=>{g.phase='ready';renderGame();gameLater(gameNextRound,APP_CONFIG.simon.nextRoundDelayMs)},650);
+   return;
+  }
+  paint();stage.textContent=frames[i];gameLater(advance,APP_CONFIG.simon.kirby.frameMs+25);
+ };
+ gameLater(advance,APP_CONFIG.simon.kirby.frameMs+25);
+}
+function loseLife(){
+ const g=state.game;if(!g.active||g.awaitingShutdown)return;
+ clearGameTimers();playSpecialSound('lifeLose');
+ const screen=el('screen'),stage=el('asciiStage');
+ screen.style.transitionDuration='.18s';screen.style.setProperty('--emotion-bg','#f2b0aa');updateGhostEmoji(null);renderGameKeypad(null,false);
+ const visibleLives=Math.max(0,g.lives);
+ el('currentEmotion').textContent=visibleLives===1?'1 LEBEN':`${visibleLives} LEBEN`;
+ setGameMeta('',{losing:visibleLives>0});setGameScore(g.score);
+ stage.className='ascii-stage';
+ stage.innerHTML=visibleLives>0?`<span class="life-loss-center">${gameLivesMarkup(visibleLives,g.maxLives,{losing:true})}</span>`:'X_X';
+ gameLater(()=>{
+  g.lives-=1;
+  setGameMeta('');
+  stage.className='ascii-stage';
+  stage.innerHTML=g.lives>=0?`<span class="life-loss-center">${gameLivesMarkup(g.lives,g.maxLives)}</span>`:'X_X';
+ },620);
+ gameLater(()=>{
+  if(g.lives<0){playSpecialSound('gameLose');gameOver();return}
+  g.inputIndex=0;g.comboInput=[];g.phase='show';renderGame();runGamePlayback(500)
+ },1120);
+}
+function gameOver(){
+ const g=state.game;if(!g.active||g.awaitingShutdown)return;clearGameTimers();g.awaitingShutdown=true;g.phase='over';const finalScore=finalGameScore();
+ const screen=el('screen'),stage=el('asciiStage');
+ screen.style.transitionDuration='.22s';screen.style.setProperty('--emotion-bg','#f2b0aa');updateGhostEmoji(null);
+ renderGameKeypad(null,false);
+ el('currentEmotion').textContent=gamePraise(finalScore)||'GAME OVER';el('currentEmotion').classList.add('game-over-score');
+ el('currentCategory').textContent='R: Neustart · Aus-Taste: Aus';
+ el('currentStrength').textContent='';
+ const bonus=currentGameMode().bonus?'+25% BONUS':'';const frames=['X_X','FALSCH','...','GAME OVER',bonus||`${finalScore} PUNKTE`,`${finalScore} PUNKTE`];
+ let i=0;stage.className='ascii-stage game-over-animation';stage.textContent=frames[0];
+ const next=()=>{i++;if(i>=frames.length){stage.className='ascii-stage game-over-score-final';stage.textContent=`${finalScore} PUNKTE`;return}stage.textContent=frames[i];gameLater(next,i===1?260:i===2?320:430)};
+ gameLater(next,260);
+}
+function shutdownGame(){
+ clearGameTimers();state.game.active=false;state.game.awaitingShutdown=false;document.querySelector('.app').classList.remove('game-mode','game-select');el('currentStrength').classList.remove('game-score');el('currentEmotion').classList.remove('game-over-score');el('senderStream').classList.remove('active');document.querySelectorAll('.emotion-key').forEach(b=>b.classList.remove('game-flash','game-disabled','replay-dim'));state.powered=true;powerToggle();
+}
+document.addEventListener('click',event=>{if(!state.game.active||!state.game.awaitingShutdown)return;const button=event.target.closest('button');if(!button)return;event.preventDefault();event.stopImmediatePropagation();if(button.id==='repeat'){startMemoryGame(state.game.mode||'normal')}else if(button.id==='off')requestGameShutdown()},true);
+
+function replayHistory(){
+ if(!state.powered||state.replaying)return;
+ // Den aktuell sichtbaren Zustand vor der Wiedergabe als letzten Schritt sichern.
+ recordHistory();
+ if(!state.history.length)return;
+ clearInterval(state.timer);
+ state.replaying=true;
+ const replayCount=el('replayCount');replayCount.textContent=String(state.history.length);replayCount.classList.add('visible');
+ const replayRun=++state.replayRun;
+ state.longPressTriggered=true;
+ const stage=el('asciiStage'),screen=el('screen');
+ const items=state.history.slice();
+ let i=0;
+ const show=()=>{
+  if(replayRun!==state.replayRun||!state.replaying)return;
+  const item=items[i];
+  replayCount.textContent=String(Math.max(0,items.length-i));
+  stage.textContent=item.frames.at(-1)||' ';
+  let bg='#fff';
+  if(item.key&&item.key!=='neutral'){
+   const c=base[item.key].color;
+   if(item.intensity<=1)bg=`color-mix(in srgb, ${c} 30%, white 70%)`;
+   else if(item.intensity===2)bg=`color-mix(in srgb, color-mix(in srgb, ${c} 50%, white 50%) 78%, #62666b 22%)`;
+   else bg=`color-mix(in srgb, ${c} 66%, #3f4348 34%)`;
+  }else if(item.colorParts){
+   bg=`color-mix(in srgb, color-mix(in srgb, ${base[item.colorParts[0]].color} 50%, ${base[item.colorParts[1]].color}) 66%, #3f4348 34%)`;
+  }
+  screen.style.transitionDuration='.62s';
+  screen.style.setProperty('--emotion-bg',bg);
+  updateGhostEmoji(item.code||null,item.intensity||0,!!item.isCombo);
+  if(item.isCombo&&item.colorParts){const ck=pairKey(item.colorParts[0],item.colorParts[1]);playComboSound(ck?combos[ck]:null)}
+  else if(item.key)playEmotionSound(item.key,item.intensity||1);
+  renderReplayKeypad(item);
+  const replayComboKey=item.isCombo&&item.colorParts?pairKey(item.colorParts[0],item.colorParts[1]):null;
+  const replayMotion=item.isCombo&&(replayComboKey&&combos[replayComboKey].name==='starr')?'om-starr':item.isCombo?'om-combo':`om-${item.key||'neutral'}`;
+  requestAnimationFrame(()=>animateOpenMoji(true,item.intensity||1,replayMotion));
+  i++;
+  if(i>=items.length){
+   setTimeout(()=>{if(replayRun!==state.replayRun)return;state.replaying=false;replayCount.classList.remove('visible');replayCount.textContent='';render()},APP_CONFIG.replay.itemMs);
+   return;
+  }
+  setTimeout(show,750);
+ };
+ show();
+}
+function powerToggle(){
+ if(state.game.active){clearGameTimers();state.game.active=false;document.querySelector('.app').classList.remove('game-mode','game-select');el('currentStrength').classList.remove('game-score')}
+ stopReplay(false);
+ const stage=el('asciiStage'),screen=el('screen'),name=el('emotionName'),detail=el('emotionDetail');
+ if(state.powerAnimating)return;
+ state.powerAnimating=true;
+ clearInterval(state.timer);clearTimeout(state.powerArmTimer);state.powerArmed=false;
+ screen.classList.remove('power-confirm');screen.classList.add('special-status');el('off').classList.remove('pulse');
+ if(state.powered){
+  playSpecialSound('powerOff');
+  stage.className='ascii-stage shutting';
+  name.textContent='';detail.textContent='';
+  const outro=[':-|','(-_-)','(-.-)','(-.-) z','(-.-) zZ','(-.-) zZz'];
+  let i=0;stage.textContent=outro[0];
+  const t=setInterval(()=>{
+   i++;
+   if(i>=outro.length){
+    clearInterval(t);
+    setTimeout(()=>{
+     state.powered=false;state.selected=null;state.displayKey=null;state.intensity=0;state.comboMode=false;state.comboFirst=null;state.powerAnimating=false;
+     stage.className='ascii-stage';render();
+    },260);
+    return;
+   }
+   stage.textContent=outro[i];
+  },240);
+ }else{
+  playSpecialSound('powerOn');
+  state.powered=true;state.selected=null;state.displayKey=null;state.intensity=0;state.history=[];state.comboMode=false;state.comboFirst=null;state.source=APP_CONFIG.normalMode.defaultSource;
+  screen.classList.remove('offline');screen.style.setProperty('--emotion-bg','#fff');
+  updateGhostEmoji(null);
+  stage.className='ascii-stage booting';
+  name.textContent='';
+  detail.className='emotion-detail boot-credit';
+  detail.innerHTML='<span>von Rasmus Klette</span><span>(c) OpenMoji</span>';
+  const titleFrames=['E','Em','Emo','Emot','Emotr','Emotro','Emotron','Emotroni','Emotronic'];
+  const intro=[...titleFrames,...Array(Math.max(0,APP_CONFIG.startup.titleHoldFrames||0)).fill('Emotronic')];
+  let i=0;
+  stage.classList.add('title-build');
+  stage.textContent=intro[0];
+  state.bootTimer=setInterval(()=>{
+   i++;
+   if(i>=intro.length){
+    clearInterval(state.bootTimer);state.bootTimer=null;
+    // Ohne Neutral-Zwischenbild direkt in den echten Bereitschaftszustand wechseln.
+    stage.className='ascii-stage';stage.textContent=' ';
+    detail.className='emotion-detail';detail.textContent='';
+    state.powerAnimating=false;state.selected=null;state.displayKey=null;state.intensity=0;
+    render();return;
+   }
+   stage.textContent=intro[i];
+  },Math.max(80,Number(APP_CONFIG.startup.bootFrameMs)||165));
+ }
+}
+function armPower(){
+ if(state.game.active){requestGameShutdown();return}
+ if(state.powerAnimating)return;
+ stopReplay(false);
+ if(!state.powered){powerToggle();return}
+ if(state.powerArmed){powerToggle();return}
+ state.powerArmed=true;
+ const screen=el('screen'),stage=el('asciiStage');
+ screen.classList.add('power-confirm','special-status');screen.style.setProperty('--emotion-bg','#fff');
+ el('bgEmoji').style.setProperty('--ghost-opacity','0');
+ el('emotionName').textContent='';el('emotionDetail').textContent='';
+ stage.textContent='AUS?';stage.classList.remove('pulse','shake');void stage.offsetWidth;stage.classList.add('pulse');
+ el('off').classList.add('pulse');
+ state.powerArmTimer=setTimeout(()=>{
+  state.powerArmed=false;screen.classList.remove('power-confirm','special-status');el('off').classList.remove('pulse');stage.classList.remove('pulse');render();
+ },APP_CONFIG.confirmations.powerOffMs)
+}
+el('less').onclick=()=>setIntensity(state.intensity-1);el('more').onclick=()=>setIntensity(state.intensity+1);const offBtn=el('off');offBtn.onclick=()=>{if(state.replaying){cancelReplayToReady();state.longPressTriggered=false;return}if(!state.longPressTriggered)armPower();state.longPressTriggered=false};offBtn.onpointerdown=()=>{state.longPressTriggered=false;state.longPressTimer=setTimeout(()=>replayHistory(),700)};offBtn.onpointerup=offBtn.onpointercancel=()=>clearTimeout(state.longPressTimer);
+function toggleCombo(){
+ if(state.game.active){gamePress('__combo__');return}
+ if(!state.powered)return;
+ if(state.comboMode){exitCombo();return}
+ // Die aktuell gewählte Grundemotion ist sofort der Startpunkt.
+ // Ohne Auswahl, bei Neutral oder bei einer bestehenden Kombination bleibt die Taste ohne Funktion.
+ if(!state.selected||state.selected==='neutral'||typeof state.selected==='object')return;
+ state.comboMode=true;state.comboFirst=state.selected;render()
+}
+el('combo').onclick=toggleCombo;
+const repeatBtn=el('repeat');
+function cancelReplayToLatest(){
+ // R während der normalen Verlauf-Wiedergabe bricht nur ab.
+ // Der zuletzt gewählte normale Zustand bleibt erhalten und wird sofort wieder angezeigt.
+ stopReplay(false);
+ clearTimeout(state.omDelayTimer);
+ state.omDelayTimer=null;
+ document.querySelectorAll('.emotion-key').forEach(button=>button.classList.remove('replay-dim'));
+ render();
+}
+function cancelReplayToReady(){
+ // Aus während der Verlauf-Wiedergabe beendet und löscht den Verlauf,
+ // ohne das Gerät auszuschalten. Danach steht die App im echten Bereitschaftszustand.
+ stopReplay(false);
+ clearTimeout(state.omDelayTimer);
+ state.omDelayTimer=null;
+ state.history=[];
+ state.selected=null;
+ state.displayKey=null;
+ state.intensity=0;
+ state.last=null;
+ state.comboMode=false;
+ state.comboFirst=null;
+ state.bgCode=null;
+ state.source=APP_CONFIG.normalMode.defaultSource;
+ updateGhostEmoji(null);
+ document.querySelectorAll('.emotion-key').forEach(button=>button.classList.remove('selected','partner','replay-dim'));
+ render();
+}
+function repeatAllHistory(){
+ if(!state.powered){enterMemoryGameSelection();return}
+ if(state.game.active){if(state.game.awaitingShutdown){startMemoryGame(state.game.mode||'normal');return}requestGameRestart();return}
+ if(state.replaying){cancelReplayToLatest();return}
+ clearTimeout(state.repeatClickTimer);
+ replayHistory();
+}
+repeatBtn.onclick=repeatAllHistory;
+repeatBtn.ondblclick=event=>{event.preventDefault();repeatAllHistory()};
+el('sendBtn').onclick=event=>{if(!state.powered)return;if(state.game.active&&state.game.phase==='select'){startMemoryGame('easy');return}state.source='self';render();animateSource('self');if(isDoubleTap('phone')){event.preventDefault();const item=historyItem();if(item)copySharePayload({type:'emotion',item},'Gefühl-Link');else flashShareStatus('Kein Gefühl gewählt')}};
+el('receiveBtn').onclick=event=>{if(!state.powered)return;if(state.game.active&&state.game.phase==='select'){startMemoryGame('pro');return}state.source='other';render();animateSource('other');if(isDoubleTap('wifi')){event.preventDefault();recordHistory();if(state.history.length)copySharePayload({type:'replay',items:state.history.slice(-40)},'Replay-Link');else flashShareStatus('Replay ist leer')}};
+
+// Tastatursteuerung: Ziffern entsprechen der sichtbaren 3×3-Tastenanordnung.
+const keyboardEmotionMap={
+ 'Digit7':'curiosity','Numpad7':'curiosity',
+ 'Digit8':'joy','Numpad8':'joy',
+ 'Digit9':'affection','Numpad9':'affection',
+ 'Digit4':'anger','Numpad4':'anger',
+ 'Digit5':'neutral','Numpad5':'neutral',
+ 'Digit6':'fear','Numpad6':'fear',
+ 'Digit1':'disgust','Numpad1':'disgust',
+ 'Digit2':'sadness','Numpad2':'sadness',
+ 'Digit3':'surprise','Numpad3':'surprise'
+};
+const keyGrid=[
+ ['curiosity','joy','affection'],
+ ['anger','neutral','fear'],
+ ['disgust','sadness','surprise']
+];
+function currentGridKey(){
+ if(state.comboMode&&state.comboFirst)return state.comboFirst;
+ if(typeof state.selected==='object')return state.displayKey;
+ return state.selected;
+}
+function moveSelection(dx,dy){
+ if(!state.powered)return;
+ const current=currentGridKey();
+ let row=1,col=1;
+ if(current){
+  for(let r=0;r<keyGrid.length;r++){
+   const c=keyGrid[r].indexOf(current);
+   if(c!==-1){row=r;col=c;break}
+  }
+ }
+ const nextRow=Math.max(0,Math.min(2,row+dy));
+ const nextCol=Math.max(0,Math.min(2,col+dx));
+ if(nextRow===row&&nextCol===col)return;
+ const nextKey=keyGrid[nextRow][nextCol];
+ // In der zweiten Kombinationsstufe reagieren Pfeile nur auf zulässige Nachbarn.
+ if(state.comboMode&&state.comboFirst&&!allowedPartners(state.comboFirst).includes(nextKey))return;
+ pressEmotion(nextKey);
+}
+window.addEventListener('keydown',event=>{
+ // Wiederholtes Gedrückthalten soll keine Emotion oder Funktion mehrfach auslösen.
+ const repeatable=event.code==='NumpadAdd'||event.code==='NumpadSubtract'||event.key==='+'||event.key==='-';
+ if(event.repeat&&!repeatable)return;
+
+ // Nach GAME OVER reagieren ausschließlich R und die Aus-Taste.
+ if(state.game.active&&state.game.awaitingShutdown){
+  const restart=event.code==='KeyR'||event.code==='Comma'||event.key===',';
+  const powerOff=event.code==='Escape'||event.code==='Digit0'||event.code==='Numpad0';
+  event.preventDefault();
+  if(restart)startMemoryGame(state.game.mode||'normal')
+  else if(powerOff)shutdownGame();
+  return;
+ }
+
+ // Ein/Aus: Escape sowie 0 auf Haupttastatur und Numpad.
+ if(event.code==='Escape'||event.code==='Digit0'||event.code==='Numpad0'){
+  event.preventDefault();armPower();return
+ }
+ // Wiederholen: R oder Komma.
+ if(event.code==='KeyR'||event.code==='Comma'||event.key===','){
+  event.preventDefault();el('repeat').click();return
+ }
+ // Kombinieren: E oder Multiplikationstaste.
+ if(event.code==='KeyE'||event.code==='NumpadMultiply'||event.key==='*'){
+  event.preventDefault();toggleCombo();return
+ }
+
+ const emotionKey=keyboardEmotionMap[event.code];
+ if(emotionKey){
+  event.preventDefault();
+  // Während der zweiten Kombinationsauswahl werden unzulässige Nummern ignoriert.
+  if(state.comboMode&&state.comboFirst&&emotionKey!==state.comboFirst&&!allowedPartners(state.comboFirst).includes(emotionKey))return;
+  pressEmotion(emotionKey);return
+ }
+ if(event.code==='ArrowLeft'){event.preventDefault();moveSelection(-1,0);return}
+ if(event.code==='ArrowRight'){event.preventDefault();moveSelection(1,0);return}
+ if(event.code==='ArrowUp'){event.preventDefault();moveSelection(0,-1);return}
+ if(event.code==='ArrowDown'){event.preventDefault();moveSelection(0,1);return}
+ if(event.code==='NumpadAdd'||event.key==='+'){event.preventDefault();setIntensity(state.intensity+1);return}
+ if(event.code==='NumpadSubtract'||event.key==='-'){event.preventDefault();setIntensity(state.intensity-1);return}
+});
+
+function fitAppToVisibleHeight(){
+ const app=document.querySelector('.app');
+ if(!app)return;
+ // Erst unskaliert messen, danach die komplette Oberfläche proportional verkleinern.
+ app.style.setProperty('--app-fit-scale','1');
+ const viewport=window.visualViewport;
+ const availableWidth=Math.max(1,(viewport?.width||document.documentElement.clientWidth)-4);
+ const availableHeight=Math.max(1,(viewport?.height||document.documentElement.clientHeight)-4);
+ const rect=app.getBoundingClientRect();
+ const scale=Math.min(1,availableWidth/rect.width,availableHeight/rect.height);
+ app.style.setProperty('--app-fit-scale',String(Math.max(.5,scale)));
+}
+let fitFrame=0;
+function scheduleAppFit(){cancelAnimationFrame(fitFrame);fitFrame=requestAnimationFrame(()=>requestAnimationFrame(fitAppToVisibleHeight))}
+window.addEventListener('resize',scheduleAppFit,{passive:true});
+window.addEventListener('orientationchange',scheduleAppFit,{passive:true});
+if(window.visualViewport)window.visualViewport.addEventListener('resize',scheduleAppFit,{passive:true});
+
+build();
+applySharedPayload();
+scheduleAppFit();
+// Zweite Absicherung nach dem ersten Layout/PWA-Restore.
+requestAnimationFrame(()=>requestAnimationFrame(()=>{
+ if(state.powered&&!state.selected&&!state.game.active&&!state.powerAnimating&&!state.powerArmed){
+  state.intensity=0;
+  document.querySelectorAll('.segment').forEach(s=>s.classList.remove('active'));
+  const n=el('needle');n.style.transition='none';n.style.setProperty('--needle-pos','0');n.style.setProperty('--needle-color','#9aa09a');
+  void n.offsetWidth;n.style.transition='';
+ }
+}));
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(error => {
+      console.warn('Service Worker konnte nicht registriert werden:', error);
+    });
+  });
+}
+</script>
+</body>
+</html>
