@@ -85,4 +85,6 @@ Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufs- und Zeige
 - Fix: Die Zeigerposition wird als animierbare CSS-Zahl interpoliert, sodass die Nadel zwischen den Intensitäten wieder sichtbar gleitet und nachschwingt. Das gilt auch beim Wechsel zu Neutral und von Neutral zu einem Gefühl; die unabhängige `null`-Absicherung bleibt erhalten.
 - Fix: Bereit setzt die Intensität sofort auf `0`, aktiviert die Transition danach aber wieder, damit die erste Auswahl nach Aus- und Einschalten nicht springt.
 - Fix: Am linken Anschlag wird die sichtbare Position begrenzt und das zusätzliche Nachschwingen unterdrückt, damit die Nadel bei Neutral nicht über den Rand läuft.
+- Fix: Das Nachschwingen startet nur noch bei einer tatsächlichen Positionsänderung und beginnt in der jeweiligen Bewegungsrichtung.
 - Test: Den veröffentlichten Spiegel lokal im Browser mit Aus-/Einschaltzyklus sowie den Übergängen 0→1, 1→3, 3→Neutral und Neutral→1 geprüft.
+- Versionen: Emotronic v2.02.

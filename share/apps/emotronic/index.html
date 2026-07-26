@@ -1,10 +1,10 @@
 <!--
   ============================================================================
-  Emotronic v2.01
+  Emotronic v2.02
   Projektname: Emotronic
   Autor: Rasmus Klette
   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-  Aktuelle Revision: 101
+  Aktuelle Revision: 102
   ============================================================================
 -->
 <!doctype html>
@@ -172,16 +172,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v2.01 — CODEKOPF
+   Emotronic v2.02 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 101
+   Aktuelle Revision: 102
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'2.01',
-  revision:101,
+  version:'2.02',
+  revision:102,
   author:'Rasmus Klette'
 });
 
@@ -424,7 +424,7 @@ function handleCombo(k){
  recordHistory();playComboSound(c);animateNeedle(3);render();animateCurrent()
 }
 function setIntensity(n){if(state.game.active)return;if(!state.powered)return;if(state.selected&&typeof state.selected==='object'){state.intensity=3;render();return}n=Math.max(0,Math.min(3,n));if(!state.selected){state.intensity=0;render();return}if(state.selected==='neutral'){state.intensity=0;render();return}n=Math.max(APP_CONFIG.normalMode.minEmotionLevel,n);state.intensity=n;recordHistory('replace-current');playEmotionSound(state.selected,n);animateNeedle(n);render();animateCurrent()}
-function animateNeedle(target=state.intensity){const n=el('needle');const dir=target>Number(n.dataset.prev||0)?1:-1,atLeftEdge=Number(target)===0;n.dataset.prev=target;n.style.setProperty('--overshoot',atLeftEdge?'0px':`${dir*7}px`);n.style.setProperty('--rebound',atLeftEdge?'0px':`${dir*3}px`);n.classList.remove('swing');void n.offsetWidth;n.classList.add('swing')}
+function animateNeedle(target=state.intensity){const n=el('needle'),previous=Number(n.dataset.prev||0),next=Number(target)||0,dir=next>previous?1:next<previous?-1:0,atLeftEdge=next===0;n.dataset.prev=next;n.classList.remove('swing');if(!dir)return;n.style.setProperty('--overshoot',atLeftEdge?'0px':`${dir*7}px`);n.style.setProperty('--rebound',atLeftEdge?'0px':`${dir*3}px`);void n.offsetWidth;n.classList.add('swing')}
 function getFrames(){if(!state.powered)return [''];if(!state.selected)return [''];if(typeof state.selected==='object')return state.selected.ascii;const e=base[state.selected];if(state.selected==='neutral')return e.ascii[0];return e.ascii[Math.max(0,state.intensity-1)]}
 function setStagePosition(){const stage=el('asciiStage');stage.classList.remove('intense');if(state.intensity>=3)stage.classList.add('intense')}
 function openMojiMotionClass(){if(typeof state.selected==='object')return state.selected.name==='starr'?'om-starr':'om-combo';return state.selected?`om-${state.selected}`:'om-neutral'}
