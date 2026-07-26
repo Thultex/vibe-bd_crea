@@ -1,4 +1,4 @@
-# Emotronic v1.75
+# Emotronic v1.76
 
 Emotronic ist eine installierbare, offlinefähige PWA zur Auswahl, Darstellung, Kombination und Wiedergabe von Gefühlen. Die Oberfläche ist an ein kompaktes Retro-Handgerät angelehnt und für Touch, Maus und Tastatur ausgelegt.
 
@@ -45,7 +45,7 @@ Ohne `mode`-Parameter startet Emotronic wie `mode=on`.
 | Datei | Zweck |
 |---|---|
 | `index.html` | Hauptanwendung mit Oberfläche, CSS und JavaScript |
-| `Emotronic-v1.75.html` | Versionierte Kopie der Hauptanwendung |
+| `Emotronic-v1.76.html` | Versionierte Kopie der Hauptanwendung |
 | `manifest.webmanifest` | PWA-Metadaten und Installationskonfiguration |
 | `sw.js` | Service Worker für Offline-Cache |
 | `icon-192.png`, `icon-512.png` | PWA-Symbole |
@@ -125,6 +125,8 @@ Die Animation von **starr** ist eine kurze Rückzugs- und Erstarrbewegung.
 
 - **Telefon** aktiviert den Telefon-/Eigenmodus und zeigt eine zentrierte Klingelanimation.
 - **Wifi** aktiviert die andere Seite. Bei neu ausgewählten Gefühlen kann dort die `>>>`-Sendeanimation erscheinen.
+- Ein einfacher Telefon-Tipp zeigt unter der kleinen Emotionsanzeige `Gefühl teilen: Zweimal ☎ klicken.`.
+- Ein einfacher Wifi-Tipp zeigt dort `Replay teilen: Zweimal 📶 klicken.`.
 - Die normale Auswahlfunktion bleibt auch bei einem Doppeltipp erhalten.
 
 ### Verlauf und Replay
@@ -174,9 +176,10 @@ Die kleine Zeile unter dem Gefühlsnamen zeigt kurz eine der folgenden Meldungen
 
 Beim Öffnen eines gültigen Share-Links:
 
-- startet die App im Normalmodus,
-- ein einzelnes Gefühl wird direkt angezeigt,
-- ein Replay wird automatisch wiedergegeben.
+- erscheint zuerst die ruhig weiterlaufende Nachrichtenanimation,
+- ein Tipp auf Bildschirm oder eine Taste außer Aus öffnet Gefühl, Replay oder Score,
+- Aus bricht den Empfang ab,
+- ein geteilter Score zeigt in der Warteanimation zusätzlich klein Pokal und Punktzahl.
 
 Die Zwischenablage verwendet zuerst die moderne Clipboard API und danach einen klassischen Android-kompatiblen Fallback. Ein Kopierfehler darf die übrige App-Funktion nicht unterbrechen.
 
@@ -226,13 +229,15 @@ Das Gedächtnisspiel wird bei ausgeschaltetem Gerät mit `R` geöffnet. Zuerst e
 - Alle 5 Punkte läuft eine Kirby-artige Retro-Bonusanimation; ab 10 Punkten stehen zusätzliche Varianten bereit.
 - Bei Spielende werden Punktzahl und Leistungs-Kommentar angezeigt.
 - Im Profi-Modus wird die Endpunktzahl mit 25 % Bonus berechnet.
+- Beim Game Over wird ein Link mit Score, Modus und vollständiger gespielter Folge automatisch in die Zwischenablage kopiert, soweit der Browser dies zulässt.
+- Telefon kopiert denselben Score-Link auf dem Game-Over-Bildschirm erneut manuell.
 
 ### Steuerung im Spiel
 
 - `R` während einer Runde fordert `NEUSTART?` an; ein zweites `R` bestätigt.
-- Nach Game Over startet ein einzelnes `R` neu.
+- Nach Game Over spielt `R` die vollständige gespielte Folge erneut ab und kehrt anschließend zum Score zurück.
 - **Aus** fordert `AUS?` an; ein zweiter Druck bestätigt.
-- Nach Game Over reagieren nur noch `R` und **Aus**.
+- Nach Game Over reagieren `R`, Telefon und **Aus**.
 
 ## Ton
 
@@ -266,7 +271,7 @@ Diese Reihenfolge soll bei weiteren Änderungen erhalten bleiben.
 ## Offline/PWA
 
 - Der Service Worker cached die Kernressourcen.
-- Die aktuelle Cache-Version lautet `emotronic-v75`.
+- Die aktuelle Cache-Version lautet `emotronic-v76`.
 - Beim Aktivieren werden nur ältere Emotronic-Caches entfernt; Caches anderer Anwendungen auf derselben Domain bleiben erhalten.
 - Nicht gecachte GET-Anfragen werden aus dem Netz geladen und anschließend gespeichert.
 - Bei einem Netzfehler wird als Fallback `index.html` verwendet.
