@@ -54,6 +54,12 @@ Regeln:
 - Ausfuehrliche Aenderungslisten gehoeren ins Changelog, nicht in Tool-Kopfkommentare.
 - Kommentare in Tools sollen Entscheidungen erklaeren, nicht offensichtliche Codezeilen wiederholen.
 
+## Git-Arbeitsweise
+
+- Kleine und normale Aenderungen werden in diesem Repository direkt auf `main` committed und gepusht.
+- Ein eigener Branch mit Pull Request wird nur fuer kritische oder sehr grosse Aenderungen angelegt.
+- Bereits gemergte Arbeitsbranches werden lokal und auf dem Remote geloescht.
+
 ## Changelog-Format
 
 - Datum, Kategorien und Dauer im Format `### YYYY-MM-DD - zeifu, design (2,3h)`; bei mehreren Sessions optional mit Anzahl, z. B. `(2,2h, 3x)`.
