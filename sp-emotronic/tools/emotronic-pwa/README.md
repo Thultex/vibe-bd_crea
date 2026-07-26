@@ -1,4 +1,4 @@
-# Emotronic v1.91
+# Emotronic v1.92
 
 Emotronic ist eine installierbare, offlinefähige PWA zur Auswahl, Darstellung, Kombination und Wiedergabe von Gefühlen. Die Oberfläche ist an ein kompaktes Retro-Handgerät angelehnt und für Touch, Maus und Tastatur ausgelegt.
 
@@ -47,7 +47,7 @@ Ein Druck auf Telefon kopiert in **Bereit**, auf der `Simon Feels!`-Auswahl oder
 | Datei | Zweck |
 |---|---|
 | `index.html` | Hauptanwendung mit Oberfläche, CSS und JavaScript |
-| `Emotronic-v1.91.html` | Versionierte Kopie der Hauptanwendung |
+| `Emotronic-v1.92.html` | Versionierte Kopie der Hauptanwendung |
 | `manifest.webmanifest` | PWA-Metadaten und Installationskonfiguration |
 | `sw.js` | Service Worker für Offline-Cache |
 | `icon-192.png`, `icon-512.png` | PWA-Symbole |
@@ -241,6 +241,7 @@ Beim Einstieg baut sich oben `Simon Feels!` in derselben Schriftgröße wie die 
 - Telefon kopiert denselben Score-Link auf dem Game-Over-Bildschirm erneut manuell.
 - Game-over-Links verwenden ausschließlich `#score=…`; `#share=…` akzeptiert nur Gefühle und Replays.
 - Die Telefontaste bleibt dafür am Game Over sichtbar bedienbar.
+- Nach dem Öffnen eines Score-Links startet die gespeicherte Folge automatisch. Währenddessen steht links die Punktzahl und darunter `Replay · Abbruch bei Klick auf irgendeine Taste`; jeder Tastenklick kehrt sofort zum Game Over zurück.
 
 ### Steuerung im Spiel
 
@@ -286,7 +287,7 @@ Diese Reihenfolge soll bei weiteren Änderungen erhalten bleiben.
 ## Offline/PWA
 
 - Der Service Worker cached die Kernressourcen.
-- Die aktuelle Cache-Version lautet `emotronic-v91`.
+- Die aktuelle Cache-Version lautet `emotronic-v92`.
 - Beim Aktivieren werden nur ältere Emotronic-Caches entfernt; Caches anderer Anwendungen auf derselben Domain bleiben erhalten.
 - Nicht gecachte GET-Anfragen werden aus dem Netz geladen und anschließend gespeichert.
 - Bei einem Netzfehler wird als Fallback `index.html` verwendet.
