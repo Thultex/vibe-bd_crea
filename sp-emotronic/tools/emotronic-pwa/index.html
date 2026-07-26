@@ -1,10 +1,10 @@
 <!--
   ============================================================================
-  Emotronic v1.89
+  Emotronic v1.90
   Projektname: Emotronic
   Autor: Rasmus Klette
   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-  Aktuelle Revision: 89
+  Aktuelle Revision: 90
   ============================================================================
 -->
 <!doctype html>
@@ -171,16 +171,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v1.89 — CODEKOPF
+   Emotronic v1.90 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 89
+   Aktuelle Revision: 90
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'1.89',
-  revision:89,
+  version:'1.90',
+  revision:90,
   author:'Rasmus Klette'
 });
 
@@ -535,7 +535,7 @@ function decodeSharePayload(value){
 function shareReference(payload){
  const encoded=encodeSharePayload(payload);
  if(!encoded)return null;
- const fragment=`#share=${encoded}`;
+ const fragment=`#${payload?.type==='score'?'score':'share'}=${encoded}`;
  // content:// und file:// sind geräteinterne Adressen und in normalen Browsern
  // nicht als teilbare Links nutzbar. Nur HTTP(S) ergibt einen echten Link.
  if(location.protocol==='http:'||location.protocol==='https:'){
@@ -657,8 +657,8 @@ function applyDecodedSharedPayload(payload){
  if(payload.type==='score')showSharedGameScore(payload)
 }
 function applySharedPayload(){
- const match=location.hash.match(/^#share=(.+)$/);if(!match)return;
- const payload=decodeSharePayload(match[1]);if(!payload||!['emotion','replay','score'].includes(payload.type))return;
+ const match=location.hash.match(/^#(share|score)=(.+)$/);if(!match)return;
+ const payload=decodeSharePayload(match[2]);if(!payload||match[1]==='score'&&payload.type!=='score'||match[1]==='share'&&!['emotion','replay'].includes(payload.type))return;
  showIncomingShare(()=>applyDecodedSharedPayload(payload),payload)
 }
 document.addEventListener('click',event=>{

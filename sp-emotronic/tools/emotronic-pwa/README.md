@@ -1,4 +1,4 @@
-# Emotronic v1.89
+# Emotronic v1.90
 
 Emotronic ist eine installierbare, offlinefähige PWA zur Auswahl, Darstellung, Kombination und Wiedergabe von Gefühlen. Die Oberfläche ist an ein kompaktes Retro-Handgerät angelehnt und für Touch, Maus und Tastatur ausgelegt.
 
@@ -14,7 +14,7 @@ https://thultex.github.io/vibe-bd_crea/share/apps/emotronic/
 
 Das Repository `Thultex/vibe-bd_crea` ist öffentlich. Quelltexte, Dokumentation und Commit-Historie sind daher allgemein einsehbar; private Kontaktangaben, lokale Benutzerpfade und Zugangsdaten gehören nicht in die versionierten Dateien. Bewusste Urheber- und Namensnennungen bleiben davon unberührt.
 
-Emotronic speichert keine Gefühls- oder Replay-Daten auf einem Server. Share-Daten stehen im URL-Fragment `#share=…`. Das Fragment wird beim normalen HTTP-Aufruf nicht an den Webserver übertragen, kann aber von jeder Person gelesen und decodiert werden, die den vollständigen Link erhält. Vertrauliche Inhalte sollten deshalb nicht über öffentlich zugängliche Kanäle geteilt werden.
+Emotronic speichert keine Gefühls-, Replay- oder Score-Daten auf einem Server. Gefühle und Replays stehen im URL-Fragment `#share=…`, Game-over-Daten in `#score=…`. Das Fragment wird beim normalen HTTP-Aufruf nicht an den Webserver übertragen, kann aber von jeder Person gelesen und decodiert werden, die den vollständigen Link erhält. Vertrauliche Inhalte sollten deshalb nicht über öffentlich zugängliche Kanäle geteilt werden.
 
 ## Schnellstart
 
@@ -45,7 +45,7 @@ Ohne `mode`-Parameter startet Emotronic wie `mode=on`.
 | Datei | Zweck |
 |---|---|
 | `index.html` | Hauptanwendung mit Oberfläche, CSS und JavaScript |
-| `Emotronic-v1.89.html` | Versionierte Kopie der Hauptanwendung |
+| `Emotronic-v1.90.html` | Versionierte Kopie der Hauptanwendung |
 | `manifest.webmanifest` | PWA-Metadaten und Installationskonfiguration |
 | `sw.js` | Service Worker für Offline-Cache |
 | `icon-192.png`, `icon-512.png` | PWA-Symbole |
@@ -147,7 +147,7 @@ Die Animation von **starr** ist eine kurze Rückzugs- und Erstarrbewegung.
 
 ## Sharing
 
-Emotronic speichert geteilte Daten ausschließlich im URL-Fragment hinter `#share=`. Dadurch werden die Gefühlsdaten nicht automatisch an einen Server übertragen.
+Emotronic speichert geteilte Daten ausschließlich im URL-Fragment. Gefühle und Replays verwenden `#share=`, Game-over-Scores verwenden `#score=`. Dadurch werden die Daten nicht automatisch an einen Server übertragen.
 
 ### Gefühl teilen
 
@@ -237,6 +237,7 @@ Beim Einstieg baut sich oben `Simon Feels!` in derselben Schriftgröße wie die 
 - Im Profi-Modus wird die Endpunktzahl mit 25 % Bonus berechnet.
 - Beim Game Over wird ein Link mit Score, Modus und vollständiger gespielter Folge automatisch in die Zwischenablage kopiert, soweit der Browser dies zulässt.
 - Telefon kopiert denselben Score-Link auf dem Game-Over-Bildschirm erneut manuell.
+- Game-over-Links verwenden ausschließlich `#score=…`; `#share=…` akzeptiert nur Gefühle und Replays.
 - Die Telefontaste bleibt dafür am Game Over sichtbar bedienbar.
 
 ### Steuerung im Spiel
@@ -283,7 +284,7 @@ Diese Reihenfolge soll bei weiteren Änderungen erhalten bleiben.
 ## Offline/PWA
 
 - Der Service Worker cached die Kernressourcen.
-- Die aktuelle Cache-Version lautet `emotronic-v89`.
+- Die aktuelle Cache-Version lautet `emotronic-v90`.
 - Beim Aktivieren werden nur ältere Emotronic-Caches entfernt; Caches anderer Anwendungen auf derselben Domain bleiben erhalten.
 - Nicht gecachte GET-Anfragen werden aus dem Netz geladen und anschließend gespeichert.
 - Bei einem Netzfehler wird als Fallback `index.html` verwendet.

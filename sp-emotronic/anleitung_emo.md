@@ -17,7 +17,7 @@ Nach dem Start ist Emotronic eingeschaltet und zeigt **Bereit**. Eine der neun G
 
 ## Teilen
 
-Share-Daten stehen im Fragment `#share=…`. Unter HTTP/HTTPS kopiert Emotronic einen vollständigen Link. Bei lokalen Datei-Adressen wird nur der portable Share-Code kopiert.
+Gefühle und Replays stehen im Fragment `#share=…`, Game-over-Scores in `#score=…`. Unter HTTP/HTTPS kopiert Emotronic einen vollständigen Link. Bei lokalen Datei-Adressen wird nur der portable Fragment-Code kopiert.
 
 Jede Person mit dem vollständigen Link kann den enthaltenen Gefühls- oder Replay-Datensatz decodieren. Vertrauliche Inhalte sollten deshalb nicht öffentlich geteilt werden.
 
