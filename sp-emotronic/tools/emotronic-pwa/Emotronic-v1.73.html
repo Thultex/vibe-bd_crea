@@ -1,10 +1,10 @@
 <!--
   ============================================================================
-  Emotronic v1.72
+  Emotronic v1.73
   Projektname: Emotronic
   Autor: Rasmus Klette
   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-  Aktuelle Revision: 72
+  Aktuelle Revision: 73
   ============================================================================
 -->
 <!doctype html>
@@ -168,16 +168,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v1.72 — CODEKOPF
+   Emotronic v1.73 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 72
+   Aktuelle Revision: 73
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'1.72',
-  revision:72,
+  version:'1.73',
+  revision:73,
   author:'Rasmus Klette'
 });
 
@@ -316,7 +316,6 @@ const specialSoundPatterns={
  gameLose:[392,330,262,196],
  lifeLose:[523,440,349,294],
  lifeGain:[523,659,784,1047,1319],
- incomingMessage:[784,523,0,740,494],
  powerOn:[262,392,523,784],
  powerOff:[659,523,392,262]
 };
@@ -336,7 +335,6 @@ function playTonePattern(notes,level=1){
   const ctx=ensureAudio();if(!ctx||!Array.isArray(notes)||!notes.length)return;
   const now=ctx.currentTime+.012,step=level>=3?.082:level===2?.095:.11;
   notes.forEach((freq,i)=>{
-   if(!Number.isFinite(freq)||freq<=0)return;
    const osc=ctx.createOscillator(),gain=ctx.createGain();
    osc.type=i%2?'square':'triangle';osc.frequency.setValueAtTime(freq,now+i*step);
    gain.gain.setValueAtTime(0.0001,now+i*step);
@@ -608,7 +606,7 @@ function finishIncomingShare(startPlayback){
  document.querySelector('.app').classList.remove('incoming-share-active');el('screen').classList.remove('incoming-share-status');
  el('asciiStage').className='ascii-stage';el('asciiStage').textContent=' ';
  document.querySelectorAll('button').forEach(button=>{button.disabled=false});
- if(startPlayback){playSpecialSound('incomingMessage');if(ready)ready()}else render();
+ if(startPlayback){if(ready)ready()}else render();
  return true
 }
 function cancelIncomingShare(){
