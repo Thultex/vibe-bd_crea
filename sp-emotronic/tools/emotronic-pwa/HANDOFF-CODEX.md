@@ -1,4 +1,4 @@
-# Codex-Handoff: Emotronic v1.92
+# Codex-Handoff: Emotronic v1.93
 
 ## Auftrag
 
@@ -7,7 +7,7 @@ Diese Übergabe beschreibt den aktuellen Stand der installierbaren Emotronic-PWA
 ## Relevante Dateien
 
 - `sp-emotronic/tools/emotronic-pwa/index.html` – maßgebliche Quelle
-- `sp-emotronic/tools/emotronic-pwa/Emotronic-v1.92.html` – versionierter Snapshot, nach Änderungen neu erzeugen
+- `sp-emotronic/tools/emotronic-pwa/Emotronic-v1.93.html` – versionierter Snapshot, nach Änderungen neu erzeugen
 - `sp-emotronic/tools/emotronic-pwa/sw.js` – Service Worker und Cache-Version
 - `sp-emotronic/tools/emotronic-pwa/manifest.webmanifest` – PWA-Manifest
 - `sp-emotronic/tools/emotronic-pwa/README.md` – Nutzer- und Funktionsdokumentation
@@ -15,10 +15,10 @@ Diese Übergabe beschreibt den aktuellen Stand der installierbaren Emotronic-PWA
 
 ## Versionierung
 
-- Aktuell: **Emotronic v1.92**
-- `APP_META.version`: `1.92`
-- `APP_META.revision`: `92`
-- Service-Worker-Cache: `emotronic-v92`
+- Aktuell: **Emotronic v1.93**
+- `APP_META.version`: `1.93`
+- `APP_META.revision`: `93`
+- Service-Worker-Cache: `emotronic-v93`
 - Beim Aktivieren nur ältere Caches mit dem Präfix `emotronic-v` entfernen; andere Anwendungen können dieselbe Domain verwenden.
 - Jede abgeschlossene Revision erhöht die Version um `0.01` und die Revision um `1`.
 - Codekopf, `APP_META`, Service Worker, versionierte HTML-Datei, README und ZIP müssen synchron bleiben.
@@ -150,9 +150,9 @@ rm emotronic_check.js
 Für ein auslieferbares ZIP vom Repository-Root aus:
 
 ```bash
-rm -f emotronic-pwa-v1.92.zip
-zip -rq emotronic-pwa-v1.92.zip sp-emotronic/tools/emotronic-pwa
-unzip -t emotronic-pwa-v1.92.zip
+rm -f emotronic-pwa-v1.93.zip
+zip -rq emotronic-pwa-v1.93.zip sp-emotronic/tools/emotronic-pwa
+unzip -t emotronic-pwa-v1.93.zip
 ```
 
 ## Vorsicht bei Änderungen
@@ -162,7 +162,8 @@ unzip -t emotronic-pwa-v1.92.zip
 - Keine `content://`-Adresse als teilbaren Browser-Link ausgeben.
 - Keine Annahmen über sichtbare Android-Dateipfade treffen.
 - Audio muss fail-safe bleiben.
-- OpenMoji-Fehler dürfen die ASCII-Darstellung nicht verhindern.
+- OpenMoji ist in Emotronic gegenüber plattformabhängigen Emoji-Zeichen zu bevorzugen, wenn Motiv und Darstellung sinnvoll passen.
+- OpenMoji-Fehler dürfen die ASCII-Darstellung oder eine bedienbare Kernfunktion nicht verhindern.
 - Keine ungültigen Kombinationspaare ergänzen.
 
 ## Bekannte Architektur
@@ -170,7 +171,8 @@ unzip -t emotronic-pwa-v1.92.zip
 - Keine Build-Toolchain.
 - Kein Framework.
 - CSS und JavaScript sind in `index.html` eingebettet.
-- Externe OpenMoji-SVGs werden zur Laufzeit geladen; ASCII-Fallback bleibt vorhanden.
+- Externe OpenMoji-SVGs werden zur Laufzeit geladen; Text- und ASCII-Fallbacks bleiben vorhanden.
+- Der farbige Controller `1F3AE` kennzeichnet den direkten Simon-Einstieg; die schwarz-weiße Variante ersetzt im ausgeschalteten Zustand das `R`. Die Score-Empfangsvorschau verwendet den Pokal `1F3C6`.
 - Zustände liegen im zentralen `state`-Objekt.
 - Simon-spezifischer Zustand liegt unter `state.game`.
 - Timer des Spiels müssen über die vorhandenen Game-Timer-Helfer verwaltet werden.

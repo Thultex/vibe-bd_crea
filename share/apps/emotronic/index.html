@@ -1,10 +1,10 @@
 <!--
   ============================================================================
-  Emotronic v1.92
+  Emotronic v1.93
   Projektname: Emotronic
   Autor: Rasmus Klette
   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-  Aktuelle Revision: 92
+  Aktuelle Revision: 93
   ============================================================================
 -->
 <!doctype html>
@@ -136,8 +136,8 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 .meter-wrap,.meter,.keypad-shell,.keypad,.utility{min-width:0;max-width:100%}.keypad,.utility{width:100%}.emotion-key{min-width:0;overflow:hidden}.emotion-key span{max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .app.game-select .emotion-key{filter:grayscale(.82) brightness(.72);opacity:.58}.app.game-select .emotion-key[data-key="curiosity"],.app.game-select .emotion-key[data-key="neutral"],.app.game-select .emotion-key[data-key="surprise"]{filter:none;opacity:1;outline:4px solid #fff;box-shadow:0 0 0 3px var(--ink),0 4px 0 #7e776d}.app.game-select .corner{opacity:.62;filter:none;pointer-events:none;cursor:default}.app.game-select .corner.left{opacity:1;pointer-events:auto;cursor:pointer}.app.game-select .corner.active{background:#eee8dc;box-shadow:none}
 .sender-stream{display:none;position:absolute;right:10px;top:76px;width:64px;height:38px;overflow:hidden;z-index:4;font:950 27px/38px ui-monospace,SFMono-Regular,Consolas,monospace;text-align:right;white-space:pre;color:rgba(36,39,44,.82);pointer-events:none}.sender-stream.active{display:block}.sender-stream span{position:absolute;inset:0;opacity:0;animation:senderStream 1.56s steps(1,end) 1}.sender-stream span:nth-child(2){animation-delay:.36s}.sender-stream span:nth-child(3){animation-delay:.72s}.sender-stream span:nth-child(4){animation-delay:1.08s}@keyframes senderStream{0%,22%{opacity:1;transform:translateX(-2px)}23%,100%{opacity:0;transform:translateX(4px)}}
-.top-shell.simon-link-waiting{--emotion-bg:#fff!important;background:#fff!important;filter:none;cursor:pointer}.simon-link-symbol{display:inline-grid;place-items:center;font-size:32px;animation:simonLinkWaiting 1.2s ease-in-out infinite}@keyframes simonLinkWaiting{0%,100%{opacity:.48;transform:scale(.94) rotate(-2deg)}50%{opacity:.9;transform:scale(1.06) rotate(2deg)}}.ascii-stage.simon-title-build{top:calc(.75em + 3px);letter-spacing:.08em;animation:simonTitleBuild .38s ease both}@keyframes simonTitleBuild{0%{opacity:.2;transform:translateX(-8px);letter-spacing:.02em}70%{opacity:1;transform:translateX(2px);letter-spacing:.11em}100%{opacity:1;transform:translateX(0);letter-spacing:.08em}}
-.app.incoming-share-active button:not(#off){filter:grayscale(.86) brightness(.82);opacity:.46}.top-shell.incoming-share-status{--emotion-bg:#edf5e7!important;background:#edf5e7!important;filter:none;cursor:pointer}.incoming-message-stage{overflow:visible}.incoming-message-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0}.incoming-message-icon{position:relative;width:82px;height:60px;display:grid;place-items:center;font:950 50px/1 ui-rounded,system-ui,sans-serif;animation:incomingMessage .75s cubic-bezier(.2,.8,.2,1) both,incomingWaiting 1.1s ease-in-out .75s infinite}.incoming-message-icon i{position:absolute;right:-7px;top:-4px;font:950 25px/1 ui-rounded,system-ui,sans-serif;animation:incomingArrow .38s ease-in-out infinite alternate}.incoming-score-preview{display:inline-flex;align-items:center;gap:4px;margin-top:-3px;font:900 14px/1 ui-rounded,system-ui,sans-serif;opacity:.68;animation:incomingScoreWaiting 1.1s ease-in-out .75s infinite}.incoming-score-preview b{font-size:15px}@keyframes incomingMessage{0%{opacity:0;transform:translateY(-22px) scale(.72)}38%{opacity:1;transform:translateY(4px) scale(1.08)}100%{opacity:1;transform:translateY(0) scale(1)}}@keyframes incomingWaiting{0%,100%{filter:none}50%{filter:drop-shadow(0 0 7px rgba(36,39,44,.38))}}@keyframes incomingScoreWaiting{0%,100%{opacity:.52;transform:translateY(1px)}50%{opacity:.9;transform:translateY(-2px)}}@keyframes incomingArrow{from{transform:translateY(-3px)}to{transform:translateY(5px)}}
+.top-shell.simon-link-waiting{--emotion-bg:#fff!important;background:#fff!important;filter:none;cursor:pointer}.simon-link-symbol{display:inline-grid;place-items:center;font-size:32px;animation:simonLinkWaiting 1.2s ease-in-out infinite}.simon-link-symbol img{display:block;width:44px;height:44px;object-fit:contain}@keyframes simonLinkWaiting{0%,100%{opacity:.48;transform:scale(.94) rotate(-2deg)}50%{opacity:.9;transform:scale(1.06) rotate(2deg)}}.ascii-stage.simon-title-build{top:calc(.75em + 3px);letter-spacing:.08em;animation:simonTitleBuild .38s ease both}@keyframes simonTitleBuild{0%{opacity:.2;transform:translateX(-8px);letter-spacing:.02em}70%{opacity:1;transform:translateX(2px);letter-spacing:.11em}100%{opacity:1;transform:translateX(0);letter-spacing:.08em}}
+.app.incoming-share-active button:not(#off){filter:grayscale(.86) brightness(.82);opacity:.46}.top-shell.incoming-share-status{--emotion-bg:#edf5e7!important;background:#edf5e7!important;filter:none;cursor:pointer}.incoming-message-stage{overflow:visible}.incoming-message-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0}.incoming-message-icon{position:relative;width:82px;height:60px;display:grid;place-items:center;font:950 50px/1 ui-rounded,system-ui,sans-serif;animation:incomingMessage .75s cubic-bezier(.2,.8,.2,1) both,incomingWaiting 1.1s ease-in-out .75s infinite}.incoming-message-icon i{position:absolute;right:-7px;top:-4px;font:950 25px/1 ui-rounded,system-ui,sans-serif;animation:incomingArrow .38s ease-in-out infinite alternate}.incoming-score-preview{display:inline-flex;align-items:center;gap:4px;margin-top:-3px;font:900 14px/1 ui-rounded,system-ui,sans-serif;opacity:.68;animation:incomingScoreWaiting 1.1s ease-in-out .75s infinite}.incoming-score-preview img{width:19px;height:19px;object-fit:contain}@keyframes incomingMessage{0%{opacity:0;transform:translateY(-22px) scale(.72)}38%{opacity:1;transform:translateY(4px) scale(1.08)}100%{opacity:1;transform:translateY(0) scale(1)}}@keyframes incomingWaiting{0%,100%{filter:none}50%{filter:drop-shadow(0 0 7px rgba(36,39,44,.38))}}@keyframes incomingScoreWaiting{0%,100%{opacity:.52;transform:translateY(1px)}50%{opacity:.9;transform:translateY(-2px)}}@keyframes incomingArrow{from{transform:translateY(-3px)}to{transform:translateY(5px)}}.repeat-symbol{display:inline-grid;place-items:center}.repeat-mode-icon{display:block;width:28px;height:28px;object-fit:contain}
 </style>
 </head>
 <body>
@@ -165,22 +165,22 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </section>
 <section class="keypad-shell">
 <div class="keypad" id="keypad"></div>
-<div class="utility"><button class="repeat" id="repeat" aria-label="Wiederholen">R<span class="replay-count" id="replayCount" aria-live="polite"></span></button><button class="combo" id="combo" aria-label="Emotionen kombinieren"><span class="combo-symbol"><i></i></span></button><button class="off" id="off" aria-label="Ein oder Aus"><span class="power-symbol" aria-hidden="true"></span></button></div>
+<div class="utility"><button class="repeat" id="repeat" aria-label="Wiederholen"><span class="repeat-symbol" id="repeatSymbol">R</span><span class="replay-count" id="replayCount" aria-live="polite"></span></button><button class="combo" id="combo" aria-label="Emotionen kombinieren"><span class="combo-symbol"><i></i></span></button><button class="off" id="off" aria-label="Ein oder Aus"><span class="power-symbol" aria-hidden="true"></span></button></div>
 
 </section>
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v1.92 — CODEKOPF
+   Emotronic v1.93 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 92
+   Aktuelle Revision: 93
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'1.92',
-  revision:92,
+  version:'1.93',
+  revision:93,
   author:'Rasmus Klette'
 });
 
@@ -491,7 +491,7 @@ function render(){
  if(state.shareStatus)currentCategory=state.shareStatus;el('currentEmotion').textContent=currentEmotion;el('currentCategory').textContent=currentCategory;el('currentCategory').classList.toggle('share-hint',!!state.shareStatus);el('currentStrength').textContent=currentStrength;info.classList.toggle('empty',(!state.selected||!state.powered)&&!state.shareStatus);
  const comboLocked=typeof state.selected==='object';if(comboLocked)state.intensity=3;const positions={0:0,1:0.17,2:0.5,3:0.83};const needle=el('needle');needle.style.setProperty('--needle-pos',positions[state.intensity]);needle.style.setProperty('--needle-color',state.intensity===0?'#9aa09a':'var(--ink)');el('meter').classList.toggle('off',!state.powered);el('meter').classList.toggle('combo-locked',comboLocked);document.querySelectorAll('.segment').forEach(s=>{s.classList.toggle('active',state.powered&&Number(s.dataset.level)===state.intensity);s.setAttribute('aria-disabled',comboLocked?'true':'false')});el('less').disabled=!state.powered||comboLocked||!state.selected||state.selected==='neutral'||state.intensity<=1;el('more').disabled=!state.powered||comboLocked||!state.selected||state.selected==='neutral'||state.intensity>=3;
  const screen=el('screen');let bg='#ffffff';if(!state.powered)bg='#aeb4aa';else if(state.selected&&state.selected!=='neutral'){if(comboLocked){const c1=base[state.selected.parts[0]].color,c2=base[state.selected.parts[1]].color;bg=`color-mix(in srgb, color-mix(in srgb, ${c1} 50%, ${c2}) 66%, #3f4348 34%)`}else{const c=base[state.selected].color;if(state.intensity<=1)bg=`color-mix(in srgb, ${c} 30%, white 70%)`;else if(state.intensity===2)bg=`color-mix(in srgb, color-mix(in srgb, ${c} 50%, white 50%) 78%, #62666b 22%)`;else bg=`color-mix(in srgb, ${c} 66%, #3f4348 34%)`}}screen.style.transitionDuration=state.intensity===0?'0.5s':'1s';screen.style.setProperty('--emotion-bg',bg);updateGhostEmoji(currentGhostCode());
- el('combo').classList.toggle('active',state.comboMode);el('sendBtn').classList.toggle('active',state.powered&&state.source==='self');el('receiveBtn').classList.toggle('active',state.powered&&state.source==='other');el('screen').classList.toggle('offline',!state.powered);setStagePosition();if(!state.timer)el('asciiStage').textContent=getFrames().at(-1)||' ';
+ el('repeatSymbol').innerHTML=state.powered?'R':`<img class="repeat-mode-icon" src="${OM_BLACK}1F3AE.svg" alt="" onerror="this.parentElement.textContent='R'">`;el('repeat').setAttribute('aria-label',state.powered?'Wiederholen':'Simon-Spiel öffnen');el('combo').classList.toggle('active',state.comboMode);el('sendBtn').classList.toggle('active',state.powered&&state.source==='self');el('receiveBtn').classList.toggle('active',state.powered&&state.source==='other');el('screen').classList.toggle('offline',!state.powered);setStagePosition();if(!state.timer)el('asciiStage').textContent=getFrames().at(-1)||' ';
 }
 function animateSource(mode){
  if(!state.powered)return;
@@ -625,7 +625,7 @@ function showIncomingShare(ready,payload=null){
  app.classList.add('incoming-share-active');screen.classList.add('incoming-share-status');
  screen.classList.remove('ready-status');screen.style.setProperty('--emotion-bg','#edf5e7');updateGhostEmoji(null);
  const scoreMode=payload?.type==='score'&&APP_CONFIG.simon.modes[payload.mode]?APP_CONFIG.simon.modes[payload.mode]:APP_CONFIG.simon.modes.normal;
- const scorePreview=payload?.type==='score'?`<small class="incoming-score-preview"><b aria-hidden="true">🏆</b>${Math.round(Math.max(0,Number(payload.score)||0)*(1+scoreMode.bonus))} P.</small>`:'';
+ const scorePreview=payload?.type==='score'?`<small class="incoming-score-preview"><img src="${OM}1F3C6.svg" alt="" aria-hidden="true" onerror="this.style.display='none'">${Math.round(Math.max(0,Number(payload.score)||0)*(1+scoreMode.bonus))} P.</small>`:'';
  stage.className='ascii-stage incoming-message-stage';stage.innerHTML=`<span class="incoming-message-wrap"><span class="incoming-message-icon" role="img" aria-label="Eingehende Nachricht"><span>✉</span><i aria-hidden="true">↓</i></span>${scorePreview}</span>`;
  el('emotionName').textContent='';el('emotionDetail').textContent='';
  el('currentEmotion').textContent='';el('currentCategory').textContent='';el('currentStrength').textContent='';el('emotionInfo').classList.add('empty');
@@ -672,7 +672,7 @@ document.addEventListener('click',event=>{
 function showSimonLinkGate(){
  state.simonLinkWaiting=true;const app=document.querySelector('.app'),screen=el('screen'),stage=el('asciiStage');
  app.classList.remove('game-mode','game-select');screen.classList.remove('offline','power-confirm','special-status','ready-status');screen.classList.add('simon-link-waiting');screen.style.setProperty('--emotion-bg','#fff');updateGhostEmoji(null);
- stage.className='ascii-stage';stage.innerHTML='<span class="simon-link-symbol" role="img" aria-label="Simon-Spiel starten">🎮</span>';
+ stage.className='ascii-stage';stage.innerHTML=`<span class="simon-link-symbol" role="img" aria-label="Simon-Spiel starten"><img src="${OM}1F3AE.svg" alt="" onerror="this.parentElement.textContent='🎮'"></span>`;
  el('emotionName').textContent='';el('emotionDetail').textContent='';el('currentEmotion').textContent='';el('currentCategory').textContent='';el('currentStrength').textContent='';el('emotionInfo').classList.add('empty');
  document.querySelectorAll('.segment').forEach(segment=>segment.classList.remove('active'));const needle=el('needle');needle.style.setProperty('--needle-pos','0');needle.style.setProperty('--needle-color','#9aa09a')
 }
@@ -791,6 +791,7 @@ function renderGameOverChoices(){
 }
 function renderGameSelection(){
  const g=state.game,screen=el('screen'),stage=el('asciiStage');
+ el('repeatSymbol').textContent='R';el('repeat').setAttribute('aria-label','Wiederholen');
  state.intensity=0;document.querySelector('.app').classList.remove('game-over');document.querySelector('.app').classList.add('game-mode','game-select');
  el('sendBtn').classList.remove('active');el('receiveBtn').classList.remove('active');el('senderStream').classList.remove('active');
  screen.classList.remove('offline','power-confirm','special-status','ready-status');screen.style.setProperty('--emotion-bg','#f8f3e9');

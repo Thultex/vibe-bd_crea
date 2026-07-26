@@ -1,4 +1,4 @@
-# Emotronic v1.92
+# Emotronic v1.93
 
 Emotronic ist eine installierbare, offlinefähige PWA zur Auswahl, Darstellung, Kombination und Wiedergabe von Gefühlen. Die Oberfläche ist an ein kompaktes Retro-Handgerät angelehnt und für Touch, Maus und Tastatur ausgelegt.
 
@@ -47,7 +47,7 @@ Ein Druck auf Telefon kopiert in **Bereit**, auf der `Simon Feels!`-Auswahl oder
 | Datei | Zweck |
 |---|---|
 | `index.html` | Hauptanwendung mit Oberfläche, CSS und JavaScript |
-| `Emotronic-v1.92.html` | Versionierte Kopie der Hauptanwendung |
+| `Emotronic-v1.93.html` | Versionierte Kopie der Hauptanwendung |
 | `manifest.webmanifest` | PWA-Metadaten und Installationskonfiguration |
 | `sw.js` | Service Worker für Offline-Cache |
 | `icon-192.png`, `icon-512.png` | PWA-Symbole |
@@ -184,15 +184,15 @@ Beim Öffnen eines gültigen Share-Links:
 - ein Tipp auf Bildschirm oder eine Taste außer Aus öffnet Gefühl, Replay oder Score,
 - nach diesem Tipp wartet die App rund 0,1 Sekunden, bevor Gefühl, Replay oder Score tatsächlich starten,
 - Aus bricht den Empfang ab,
-- ein geteilter Score zeigt in der Warteanimation zusätzlich klein Pokal und Punktzahl.
+- ein geteilter Score zeigt in der Warteanimation zusätzlich klein den OpenMoji-Pokal `1F3C6` und die Punktzahl.
 
 Die Zwischenablage verwendet zuerst die moderne Clipboard API und danach einen klassischen Android-kompatiblen Fallback. Ein Kopierfehler darf die übrige App-Funktion nicht unterbrechen.
 
 ## Gedächtnisspiel
 
-Das Gedächtnisspiel wird bei ausgeschaltetem Gerät mit `R` geöffnet. Zuerst erscheint die Schwierigkeitsauswahl.
+Das Gedächtnisspiel wird bei ausgeschaltetem Gerät über das schwarz-weiße OpenMoji-Controller-Symbol `1F3AE` auf der sonstigen `R`-Taste geöffnet. Zuerst erscheint die Schwierigkeitsauswahl.
 
-Beim Einstieg baut sich oben `Simon Feels!` in derselben Schriftgröße wie die normale Introanzeige auf und ein kurzer Startjingle erklingt. Die Auswahl bleibt dabei sofort bedienbar; jede Spielaktion beendet den Titelaufbau. Der Direktlink `#simon` wartet zunächst auf einem weißen Bildschirm mit kleinem Spielsymbol auf einen Tipp, damit Animation und Ton erst nach dieser Interaktion starten.
+Beim Einstieg baut sich oben `Simon Feels!` in derselben Schriftgröße wie die normale Introanzeige auf und ein kurzer Startjingle erklingt. Die Auswahl bleibt dabei sofort bedienbar; jede Spielaktion beendet den Titelaufbau. Der Direktlink `#simon` wartet zunächst auf einem weißen Bildschirm mit dem farbigen OpenMoji-Controller `1F3AE` auf einen Tipp, damit Animation und Ton erst nach dieser Interaktion starten.
 
 ### Schwierigkeitsgrade
 
@@ -287,11 +287,11 @@ Diese Reihenfolge soll bei weiteren Änderungen erhalten bleiben.
 ## Offline/PWA
 
 - Der Service Worker cached die Kernressourcen.
-- Die aktuelle Cache-Version lautet `emotronic-v92`.
+- Die aktuelle Cache-Version lautet `emotronic-v93`.
 - Beim Aktivieren werden nur ältere Emotronic-Caches entfernt; Caches anderer Anwendungen auf derselben Domain bleiben erhalten.
 - Nicht gecachte GET-Anfragen werden aus dem Netz geladen und anschließend gespeichert.
 - Bei einem Netzfehler wird als Fallback `index.html` verwendet.
 
 ## Drittmaterial
 
-Die Emoji-Grafiken werden von OpenMoji geladen. Copyright und Lizenzbedingungen von OpenMoji sind zu beachten. Die App zeigt beim Start `(c) OpenMoji` an.
+Wo es gestalterisch und semantisch passt, sind OpenMoji-Grafiken gegenüber plattformabhängigen Emoji-Zeichen zu bevorzugen. Dazu gehören derzeit insbesondere der Controller `1F3AE` und der Pokal `1F3C6`. Bedienbare Kernfunktionen behalten einen einfachen Text- oder ASCII-Fallback. Copyright und Lizenzbedingungen von OpenMoji sind zu beachten. Die App zeigt beim Start `(c) OpenMoji` an.

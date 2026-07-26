@@ -61,4 +61,4 @@ Geteilte Daten liegen ausschließlich in den URL-Fragmenten `#share=…` beziehu
 
 ## Drittmaterial
 
-OpenMoji-Grafiken werden zur Laufzeit geladen. Der ASCII-Fallback hält die Anwendung auch bei fehlgeschlagenen Grafik- oder Audiozugriffen bedienbar.
+OpenMoji-Grafiken werden zur Laufzeit geladen und sind in Emotronic gegenüber plattformabhängigen Emoji-Zeichen zu bevorzugen, wo Motiv und Darstellung sinnvoll passen. Der Controller `1F3AE` erscheint farbig am direkten Simon-Einstieg und schwarz-weiß auf der `R`-Taste im ausgeschalteten Zustand; die Score-Vorschau verwendet den Pokal `1F3C6`. Text- und ASCII-Fallbacks halten die Anwendung auch bei fehlgeschlagenen Grafik- oder Audiozugriffen bedienbar.
