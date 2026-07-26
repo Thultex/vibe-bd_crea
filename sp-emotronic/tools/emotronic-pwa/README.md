@@ -1,4 +1,4 @@
-# Emotronic v1.77
+# Emotronic v1.78
 
 Emotronic ist eine installierbare, offlinefähige PWA zur Auswahl, Darstellung, Kombination und Wiedergabe von Gefühlen. Die Oberfläche ist an ein kompaktes Retro-Handgerät angelehnt und für Touch, Maus und Tastatur ausgelegt.
 
@@ -45,7 +45,7 @@ Ohne `mode`-Parameter startet Emotronic wie `mode=on`.
 | Datei | Zweck |
 |---|---|
 | `index.html` | Hauptanwendung mit Oberfläche, CSS und JavaScript |
-| `Emotronic-v1.77.html` | Versionierte Kopie der Hauptanwendung |
+| `Emotronic-v1.78.html` | Versionierte Kopie der Hauptanwendung |
 | `manifest.webmanifest` | PWA-Metadaten und Installationskonfiguration |
 | `sw.js` | Service Worker für Offline-Cache |
 | `icon-192.png`, `icon-512.png` | PWA-Symbole |
@@ -187,6 +187,8 @@ Die Zwischenablage verwendet zuerst die moderne Clipboard API und danach einen k
 
 Das Gedächtnisspiel wird bei ausgeschaltetem Gerät mit `R` geöffnet. Zuerst erscheint die Schwierigkeitsauswahl.
 
+Beim Einstieg baut sich oben klein `SIMON FEELS` auf und ein kurzer Startjingle erklingt. Die Auswahl bleibt dabei sofort bedienbar; jede Spielaktion beendet den Titelaufbau. Der Direktlink `?mode=simon` wartet zunächst auf einem weißen Bildschirm mit kleinem Spielsymbol auf einen Tipp, damit Animation und Ton erst nach dieser Interaktion starten.
+
 ### Schwierigkeitsgrade
 
 | Auswahl | Modus | Eigenschaften |
@@ -238,6 +240,9 @@ Das Gedächtnisspiel wird bei ausgeschaltetem Gerät mit `R` geöffnet. Zuerst e
 - Nach Game Over spielt `R` die vollständige gespielte Folge erneut ab und kehrt anschließend zum Score zurück.
 - **Aus** fordert `AUS?` an; ein zweiter Druck bestätigt.
 - Nach Game Over reagieren `R`, Telefon und **Aus**.
+- Nach Game Over bleibt Neutral sichtbar und startet direkt ein neues Spiel im zuletzt verwendeten Schwierigkeitsgrad.
+- Die Hinweise lauten dort `Neutral: Neustart`, `R: Replay` und `⏻: Schluss`.
+- **Aus** führt vom Game Over zunächst zurück zur Simon-Titelauswahl; dort schaltet **Aus** die App direkt aus.
 
 ## Ton
 
@@ -271,7 +276,7 @@ Diese Reihenfolge soll bei weiteren Änderungen erhalten bleiben.
 ## Offline/PWA
 
 - Der Service Worker cached die Kernressourcen.
-- Die aktuelle Cache-Version lautet `emotronic-v77`.
+- Die aktuelle Cache-Version lautet `emotronic-v78`.
 - Beim Aktivieren werden nur ältere Emotronic-Caches entfernt; Caches anderer Anwendungen auf derselben Domain bleiben erhalten.
 - Nicht gecachte GET-Anfragen werden aus dem Netz geladen und anschließend gespeichert.
 - Bei einem Netzfehler wird als Fallback `index.html` verwendet.
