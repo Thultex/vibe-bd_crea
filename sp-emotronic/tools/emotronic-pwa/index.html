@@ -1,10 +1,10 @@
 <!--
   ============================================================================
-  Emotronic v1.73
+  Emotronic v1.74
   Projektname: Emotronic
   Autor: Rasmus Klette
   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-  Aktuelle Revision: 73
+  Aktuelle Revision: 74
   ============================================================================
 -->
 <!doctype html>
@@ -34,7 +34,7 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 .top-shell.power-confirm{--emotion-bg:#fff!important;background:#fff!important;filter:none}
 .top-shell.power-confirm .emotion-name,.top-shell.power-confirm .emotion-detail{opacity:0}
 .top-shell.power-confirm .screen-emoji-bg{opacity:0!important}
-.emotion-name,.emotion-detail{transition:opacity .28s ease}.emotion-detail.boot-credit{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:38px;opacity:1}.emotion-detail.boot-credit span{display:block;opacity:0;transform:translateY(6px);animation:bootCreditIn .52s ease forwards}.emotion-detail.boot-credit span:nth-child(2){animation-delay:.38s}@keyframes bootCreditIn{0%{opacity:0;transform:translateY(6px)}100%{opacity:.78;transform:translateY(0)}}.legacy-status{opacity:0;pointer-events:none}.top-shell.special-status .legacy-status{opacity:1}.top-shell.special-status .emotion-info{opacity:0}.top-shell.ready-status .legacy-status{transform:translateY(26px)}
+.emotion-name,.emotion-detail{transition:opacity .28s ease}.emotion-detail.boot-credit{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;height:20px;min-height:20px;overflow:visible;line-height:12px;opacity:1}.emotion-detail.boot-credit span{display:block;opacity:0;transform:translateY(4px);animation:bootCreditIn .52s ease forwards}.emotion-detail.boot-credit span:nth-child(2){animation-delay:.38s}@keyframes bootCreditIn{0%{opacity:0;transform:translateY(4px)}100%{opacity:.78;transform:translateY(0)}}.legacy-status{opacity:0;pointer-events:none}.top-shell.special-status .legacy-status{opacity:1}.top-shell.special-status .emotion-info{opacity:0}.top-shell.ready-status .legacy-status{transform:translateY(26px)}
 .screen-emoji-bg{position:absolute;inset:8px 8px 78px;display:grid;place-items:center;pointer-events:none;z-index:0;opacity:var(--ghost-opacity,0);transition:opacity 1s cubic-bezier(.2,.8,.2,1);transform:translateY(18px) translateZ(0)}
 .screen-emoji-bg .bg-layer{position:absolute;top:50%;left:50%;max-width:148%;max-height:185%;width:auto;height:auto;object-fit:contain;opacity:0;transition:opacity 1s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1),filter .7s ease;transform:translate(-50%,-50%) scale(1.04);filter:var(--ghost-filter,brightness(0) opacity(.92)) drop-shadow(0 1px 0 rgba(255,255,255,.08))}
 .screen-emoji-bg .bg-layer.show{opacity:1;transform:translate(-50%,-50%) scale(var(--ghost-scale,1))}.screen-emoji-bg .bg-layer.fading-out{transition-duration:.52s,1s,.7s}
@@ -168,16 +168,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v1.73 — CODEKOPF
+   Emotronic v1.74 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 73
+   Aktuelle Revision: 74
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'1.73',
-  revision:73,
+  version:'1.74',
+  revision:74,
   author:'Rasmus Klette'
 });
 
