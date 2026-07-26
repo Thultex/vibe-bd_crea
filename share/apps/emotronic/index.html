@@ -1,10 +1,10 @@
 <!--
   ============================================================================
-  Emotronic v1.66
+  Emotronic v1.67
   Projektname: Emotronic
   Autor: Rasmus Klette
   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-  Aktuelle Revision: 66
+  Aktuelle Revision: 67
   ============================================================================
 -->
 <!doctype html>
@@ -167,16 +167,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v1.66 — CODEKOPF
+   Emotronic v1.67 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 66
+   Aktuelle Revision: 67
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'1.66',
-  revision:66,
+  version:'1.67',
+  revision:67,
   author:'Rasmus Klette'
 });
 
@@ -388,7 +388,7 @@ function pressEmotion(k){
    if(state.selected==='neutral'){state.last=snapshot();state.selected=null;state.displayKey=null;state.intensity=0;render();animateCurrent();return}
    if(state.selected)state.last=snapshot();state.selected='neutral';state.displayKey='neutral';state.intensity=0;recordHistory();triggerSenderStream();playEmotionSound('neutral',1);render();animateCurrent();return
  }
- if(state.selected===k){playEmotionSound(k,state.intensity);animateCurrent();return}
+ if(state.selected===k){recordHistory();playEmotionSound(k,state.intensity);animateCurrent();return}
  else{if(state.selected)state.last=snapshot();state.selected=k;state.displayKey=k;state.intensity=1;recordHistory();triggerSenderStream()}
  playEmotionSound(k,state.intensity);render();animateCurrent()
 }
@@ -413,7 +413,7 @@ function handleCombo(k){
  state.comboMode=false;state.comboFirst=null;
  recordHistory();playComboSound(c);render();animateCurrent()
 }
-function setIntensity(n){if(state.game.active)return;if(!state.powered)return;if(typeof state.selected==='object'){state.intensity=3;render();return}n=Math.max(0,Math.min(3,n));if(!state.selected){state.intensity=0;render();return}if(state.selected==='neutral'){state.intensity=0;render();return}n=Math.max(APP_CONFIG.normalMode.minEmotionLevel,n);state.intensity=n;recordHistory();playEmotionSound(state.selected,n);animateNeedle(n);render();animateCurrent()}
+function setIntensity(n){if(state.game.active)return;if(!state.powered)return;if(typeof state.selected==='object'){state.intensity=3;render();return}n=Math.max(0,Math.min(3,n));if(!state.selected){state.intensity=0;render();return}if(state.selected==='neutral'){state.intensity=0;render();return}n=Math.max(APP_CONFIG.normalMode.minEmotionLevel,n);state.intensity=n;recordHistory('replace-current');playEmotionSound(state.selected,n);animateNeedle(n);render();animateCurrent()}
 function animateNeedle(target=state.intensity){const n=el('needle');const dir=target>Number(n.dataset.prev||0)?1:-1;n.dataset.prev=target;n.style.setProperty('--overshoot',`${dir*7}px`);n.style.setProperty('--rebound',`${dir*3}px`);n.classList.remove('swing');void n.offsetWidth;n.classList.add('swing')}
 function getFrames(){if(!state.powered)return [''];if(!state.selected)return [''];if(typeof state.selected==='object')return state.selected.ascii;const e=base[state.selected];if(state.selected==='neutral')return e.ascii[0];return e.ascii[Math.max(0,state.intensity-1)]}
 function setStagePosition(){const stage=el('asciiStage');stage.classList.remove('intense');if(state.intensity>=3)stage.classList.add('intense')}
@@ -499,7 +499,17 @@ function animateSource(mode){
  state.timer=setInterval(()=>{i++;if(i>=frames.length){clearInterval(state.timer);state.timer=null;phoneButton.classList.remove('phone-ringing');setTimeout(()=>{stage.textContent=endFrame;render()},110);return}stage.textContent=frames[i]},145)
 }
 function historyItem(){if(!state.selected)return null;if(typeof state.selected==='object')return {frames:state.selected.ascii,colorParts:state.selected.parts,displayKey:state.displayKey,intensity:state.intensity,code:state.selected.code,name:state.selected.name,isCombo:true};const e=base[state.selected];return {frames:state.selected==='neutral'?e.ascii[0]:e.ascii[Math.max(0,state.intensity-1)],key:state.selected,intensity:state.intensity,code:currentGhostCode(),isCombo:false}}
-function recordHistory(){if(!state.powered)return;const item=historyItem();if(!item)return;const sig=JSON.stringify(item);if(state.history.length&&JSON.stringify(state.history.at(-1))===sig)return;state.history.push(item);if(state.history.length>40)state.history.shift()}
+function sameHistoryEmotion(a,b){if(!a||!b||!!a.isCombo!==!!b.isCombo)return false;return a.isCombo?a.code===b.code&&a.displayKey===b.displayKey:a.key===b.key}
+function recordHistory(mode='append'){
+ if(!state.powered)return;
+ const item=historyItem();if(!item)return;
+ const lastIndex=state.history.length-1,last=state.history[lastIndex];
+ if(mode==='replace-current'&&sameHistoryEmotion(last,item))state.history[lastIndex]=item;
+ else if(mode==='sync-current'&&last&&JSON.stringify(last)===JSON.stringify(item))return;
+ else if(mode==='sync-current'&&sameHistoryEmotion(last,item))state.history[lastIndex]=item;
+ else state.history.push(item);
+ if(state.history.length>40)state.history.shift()
+}
 
 /* Teilbare Zustandslinks ---------------------------------------------------
    Der Zustand wird ausschließlich im URL-Fragment gespeichert. Dadurch wird
@@ -950,7 +960,7 @@ document.addEventListener('click',event=>{if(!state.game.active||!state.game.awa
 function replayHistory(){
  if(!state.powered||state.replaying)return;
  // Den aktuell sichtbaren Zustand vor der Wiedergabe als letzten Schritt sichern.
- recordHistory();
+ recordHistory('sync-current');
  if(!state.history.length)return;
  clearInterval(state.timer);
  state.replaying=true;
@@ -1113,7 +1123,7 @@ function repeatAllHistory(){
 repeatBtn.onclick=repeatAllHistory;
 repeatBtn.ondblclick=event=>{event.preventDefault();repeatAllHistory()};
 el('sendBtn').onclick=event=>{if(!state.powered)return;if(state.game.active&&state.game.phase==='select'){startMemoryGame('easy');return}state.source='self';render();animateSource('self');if(isDoubleTap('phone')){event.preventDefault();const item=historyItem();if(item)copySharePayload({type:'emotion',item},'Gefühl-Link');else flashShareStatus('Kein Gefühl gewählt')}};
-el('receiveBtn').onclick=event=>{if(!state.powered)return;if(state.game.active&&state.game.phase==='select'){startMemoryGame('pro');return}state.source='other';render();animateSource('other');if(isDoubleTap('wifi')){event.preventDefault();recordHistory();if(state.history.length)copySharePayload({type:'replay',items:state.history.slice(-40)},'Replay-Link');else flashShareStatus('Replay ist leer')}};
+el('receiveBtn').onclick=event=>{if(!state.powered)return;if(state.game.active&&state.game.phase==='select'){startMemoryGame('pro');return}state.source='other';render();animateSource('other');if(isDoubleTap('wifi')){event.preventDefault();recordHistory('sync-current');if(state.history.length)copySharePayload({type:'replay',items:state.history.slice(-40)},'Replay-Link');else flashShareStatus('Replay ist leer')}};
 
 // Tastatursteuerung: Ziffern entsprechen der sichtbaren 3×3-Tastenanordnung.
 const keyboardEmotionMap={
