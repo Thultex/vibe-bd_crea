@@ -76,6 +76,7 @@ Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufslogik sowie
 - Fix: Beim Ausschalten wird neben dem internen Intensitätswert auch die sichtbare Zeigerposition unmittelbar auf `0` gesetzt.
 - Fix: Der leere Bereit-Zustand wird nicht mehr irrtümlich als Kombinationsobjekt erkannt und bleibt nach Start, Neustart oder Ausschalten auf Intensität `0`; die erste Gefühlsauswahl beginnt wieder auf Stufe `1`.
 - Anzeige: Die grauen Zusatzsymbole rechts neben `R` und Power wurden von 18 auf 21 Pixel vergrößert, ohne die feste Tastenhöhe zu verändern.
+- Fix: Der Intensitätszeiger behält seine weiche Bewegung beim Verlassen von Bereit, bei Klicks auf Stufe `1–3`, bei Plus/Minus und beim Ausschalten; die alte Position wird vor dem Setzen des neuen Ziels festgehalten.
 - Anzeige: Die Score-Empfangsvorschau verwendet den tatsächlich verlinkten OpenMoji-Pokal `1F3C6` statt eines plattformabhängigen Emoji-Zeichens.
 - Design: OpenMoji ist künftig in Emotronic zu bevorzugen, wo Motiv und Darstellung sinnvoll passen; Text- und ASCII-Fallbacks bleiben erhalten.
-- Versionen: Emotronic v1.99.
+- Versionen: Emotronic v2.00.

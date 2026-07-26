@@ -1,10 +1,10 @@
 <!--
   ============================================================================
-  Emotronic v1.99
+  Emotronic v2.00
   Projektname: Emotronic
   Autor: Rasmus Klette
   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-  Aktuelle Revision: 99
+  Aktuelle Revision: 100
   ============================================================================
 -->
 <!doctype html>
@@ -52,7 +52,7 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 .segment.active{outline:4px solid #fff;box-shadow:0 0 0 3px var(--ink),0 5px 10px rgba(0,0,0,.14);z-index:4;font-size:30px;transform:translateY(-4px) scale(1.04)}
 /* Normaler Bereitschaftszustand: immer echte Intensität 0, unabhängig von Spiel-/Kombi-Resten. */
 .top-shell.ready-status .segment.active{outline:none;box-shadow:none;z-index:3;font-size:21px;transform:none}
-.top-shell.ready-status .needle{left:39px!important;background:#9aa09a!important;transition:none!important}
+.top-shell.ready-status .needle{left:39px!important;background:#9aa09a!important}
 .top-shell.ready-status .needle:after{background:#9aa09a!important}
 .top-shell.ready-status .segment{outline:none!important;box-shadow:none!important;z-index:3!important;font-size:21px!important;transform:none!important}.top-shell.ready-status .segment.active{outline:none!important;box-shadow:none!important;font-size:21px!important;transform:none!important}
 .meter.off .segment{filter:grayscale(1) brightness(.9);opacity:.72}.meter.combo-locked .segment{cursor:not-allowed}.meter.combo-locked .segment:not(.active){opacity:.58;filter:saturate(.55)}
@@ -171,16 +171,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v1.99 — CODEKOPF
+   Emotronic v2.00 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 99
+   Aktuelle Revision: 100
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'1.99',
-  revision:99,
+  version:'2.00',
+  revision:100,
   author:'Rasmus Klette'
 });
 
@@ -423,7 +423,7 @@ function handleCombo(k){
  recordHistory();playComboSound(c);render();animateCurrent()
 }
 function setIntensity(n){if(state.game.active)return;if(!state.powered)return;if(state.selected&&typeof state.selected==='object'){state.intensity=3;render();return}n=Math.max(0,Math.min(3,n));if(!state.selected){state.intensity=0;render();return}if(state.selected==='neutral'){state.intensity=0;render();return}n=Math.max(APP_CONFIG.normalMode.minEmotionLevel,n);state.intensity=n;recordHistory('replace-current');playEmotionSound(state.selected,n);animateNeedle(n);render();animateCurrent()}
-function animateNeedle(target=state.intensity){const n=el('needle');const dir=target>Number(n.dataset.prev||0)?1:-1;n.dataset.prev=target;n.style.setProperty('--overshoot',`${dir*7}px`);n.style.setProperty('--rebound',`${dir*3}px`);n.classList.remove('swing');void n.offsetWidth;n.classList.add('swing')}
+function animateNeedle(target=state.intensity){const n=el('needle'),positions={0:0,1:0.17,2:0.5,3:0.83};target=Math.max(0,Math.min(3,Number(target)||0));const dir=target>Number(n.dataset.prev||0)?1:-1;n.classList.remove('swing');void n.offsetWidth;n.dataset.prev=target;n.style.setProperty('--needle-pos',positions[target]);n.style.setProperty('--needle-color',target===0?'#9aa09a':'var(--ink)');n.style.setProperty('--overshoot',`${dir*7}px`);n.style.setProperty('--rebound',`${dir*3}px`);n.classList.add('swing')}
 function getFrames(){if(!state.powered)return [''];if(!state.selected)return [''];if(typeof state.selected==='object')return state.selected.ascii;const e=base[state.selected];if(state.selected==='neutral')return e.ascii[0];return e.ascii[Math.max(0,state.intensity-1)]}
 function setStagePosition(){const stage=el('asciiStage');stage.classList.remove('intense');if(state.intensity>=3)stage.classList.add('intense')}
 function openMojiMotionClass(){if(typeof state.selected==='object')return state.selected.name==='starr'?'om-starr':'om-combo';return state.selected?`om-${state.selected}`:'om-neutral'}
@@ -1130,7 +1130,7 @@ function powerToggle(){
  clearInterval(state.timer);clearTimeout(state.powerArmTimer);state.powerArmed=false;
  screen.classList.remove('power-confirm');screen.classList.add('special-status');el('off').classList.remove('pulse');
  if(state.powered){
-  playSpecialSound('powerOff');state.intensity=0;const shutdownNeedle=el('needle');shutdownNeedle.style.setProperty('--needle-pos','0');shutdownNeedle.style.setProperty('--needle-color','#9aa09a');shutdownNeedle.dataset.prev='0';document.querySelectorAll('.segment').forEach(segment=>segment.classList.remove('active'));
+  playSpecialSound('powerOff');state.intensity=0;animateNeedle(0);document.querySelectorAll('.segment').forEach(segment=>segment.classList.remove('active'));
   stage.className='ascii-stage shutting';
   name.textContent='';detail.textContent='';
   const outro=[':-|','(-_-)','(-.-)','(-.-) z','(-.-) zZ','(-.-) zZz'];
