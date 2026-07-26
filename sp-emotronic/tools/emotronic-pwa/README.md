@@ -1,4 +1,4 @@
-# Emotronic v1.79
+# Emotronic v1.80
 
 Emotronic ist eine installierbare, offlinefähige PWA zur Auswahl, Darstellung, Kombination und Wiedergabe von Gefühlen. Die Oberfläche ist an ein kompaktes Retro-Handgerät angelehnt und für Touch, Maus und Tastatur ausgelegt.
 
@@ -45,7 +45,7 @@ Ohne `mode`-Parameter startet Emotronic wie `mode=on`.
 | Datei | Zweck |
 |---|---|
 | `index.html` | Hauptanwendung mit Oberfläche, CSS und JavaScript |
-| `Emotronic-v1.79.html` | Versionierte Kopie der Hauptanwendung |
+| `Emotronic-v1.80.html` | Versionierte Kopie der Hauptanwendung |
 | `manifest.webmanifest` | PWA-Metadaten und Installationskonfiguration |
 | `sw.js` | Service Worker für Offline-Cache |
 | `icon-192.png`, `icon-512.png` | PWA-Symbole |
@@ -234,6 +234,7 @@ Beim Einstieg baut sich oben `SIMON FEELS` in derselben Schriftgröße wie die n
 - Im Profi-Modus wird die Endpunktzahl mit 25 % Bonus berechnet.
 - Beim Game Over wird ein Link mit Score, Modus und vollständiger gespielter Folge automatisch in die Zwischenablage kopiert, soweit der Browser dies zulässt.
 - Telefon kopiert denselben Score-Link auf dem Game-Over-Bildschirm erneut manuell.
+- Die Telefontaste bleibt dafür am Game Over sichtbar bedienbar.
 
 ### Steuerung im Spiel
 
@@ -277,7 +278,7 @@ Diese Reihenfolge soll bei weiteren Änderungen erhalten bleiben.
 ## Offline/PWA
 
 - Der Service Worker cached die Kernressourcen.
-- Die aktuelle Cache-Version lautet `emotronic-v79`.
+- Die aktuelle Cache-Version lautet `emotronic-v80`.
 - Beim Aktivieren werden nur ältere Emotronic-Caches entfernt; Caches anderer Anwendungen auf derselben Domain bleiben erhalten.
 - Nicht gecachte GET-Anfragen werden aus dem Netz geladen und anschließend gespeichert.
 - Bei einem Netzfehler wird als Fallback `index.html` verwendet.

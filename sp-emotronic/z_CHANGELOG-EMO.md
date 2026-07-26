@@ -44,6 +44,7 @@ Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufslogik sowie
 - Bedienung: Ein einfacher Tipp auf Telefon oder Wifi zeigt drei Sekunden lang direkt unter der kleinen Emotionsanzeige den passenden Hinweis für Gefühl- beziehungsweise Replay-Teilen per Doppeltipp.
 - Share: Eingehende Emotions-, Replay- und Score-Links warten ohne Zeitlimit mit ruhig weiterlaufendem Nachrichtensymbol im schlichten Hauptdisplay; Bildschirm oder Taste außer Aus startet die lautlose Wiedergabe.
 - Score: Beim Simon-Game-Over wird ein Link mit Endstand, Modus und vollständiger Folge automatisch kopiert; Telefon kopiert ihn manuell erneut und `R` spielt die gesamte Folge noch einmal.
+- Fix: Die zuvor durch den Spielmodus blockierte Telefontaste ist am Game Over wieder klickbar und kopiert den Score-Link manuell.
 - Bedienung: Neutral bleibt am Game Over eingeblendet und startet direkt ein neues Spiel im zuletzt verwendeten Modus; die Hinweise lauten `Neutral: Neustart`, `R: Replay` und `⏻: Schluss`.
 - Bedienung: Aus führt vom Game Over zunächst zur Simon-Titelauswahl zurück und schaltet die App von dort aus direkt aus.
 - Anzeige: Die Score-Empfangsanimation zeigt zusätzlich einen kleinen Pokal und die Punktzahl in einer dezenten wartenden Bewegung.
@@ -53,4 +54,4 @@ Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufslogik sowie
 - Datenschutz: Detaillierten lokalen Projektpfad aus dem Ruckpacken-Startskript entfernt und öffentliche Repository-/Share-Hinweise dokumentiert.
 - Test: JavaScript-Syntax, Manifest, Icons, Service-Worker-Dateien, doppelte HTML-IDs, Versionsgleichlauf, mobile Breite und Browser-Smoke-Test geprüft.
 - Doku: Übersicht, Anleitung, Design, Ideen, Plan, Installationshinweise und technische Übergabe ergänzt.
-- Versionen: Emotronic v1.79.
+- Versionen: Emotronic v1.80.

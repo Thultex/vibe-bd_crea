@@ -37,6 +37,7 @@ Der Laufzeitspiegel enthält ausschließlich `index.html`, Manifest, Service Wor
 - Ein einfacher Tipp auf Telefon oder Wifi ersetzt die kleine Kategoriezeile drei Sekunden lang durch einen passenden Hinweis auf die jeweilige Doppeltipp-Teilgeste.
 - Score-Links enthalten Endstand, Simon-Modus und die vollständige gespielte Folge; ihre Empfangsanimation ergänzt das Nachrichtensymbol um einen kleinen Pokal und die wartende Punktzahl.
 - Beim Game Over versucht die App den Score-Link automatisch zu kopieren; Telefon wiederholt dies manuell und `R` spielt die mitgeteilte Folge erneut ab.
+- Die Telefontaste wird am Game Over ausdrücklich für das manuelle Kopieren freigeschaltet.
 - Neutral bleibt am Game Over eingeblendet und startet direkt ein neues Spiel im zuletzt verwendeten Modus; die Hinweise benennen die Aktionen als `Neutral: Neustart`, `R: Replay` und `⏻: Schluss`.
 - Aus führt vom Game Over zurück zur Simon-Titelauswahl und schaltet die App erst bei erneutem Drücken in dieser Auswahl aus.
 - Der Geschafft-Jingle folgt mit rund 0,3 Sekunden Abstand auf den letzten korrekten Tastendruck.

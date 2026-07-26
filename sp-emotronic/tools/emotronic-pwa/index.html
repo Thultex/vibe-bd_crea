@@ -1,10 +1,10 @@
 <!--
   ============================================================================
-  Emotronic v1.79
+  Emotronic v1.80
   Projektname: Emotronic
   Autor: Rasmus Klette
   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-  Aktuelle Revision: 79
+  Aktuelle Revision: 80
   ============================================================================
 -->
 <!doctype html>
@@ -118,6 +118,8 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 /* Gedächtnisspiel im ausgeschalteten Zustand */
 .app.game-mode .corner{pointer-events:none;opacity:.62}
 .app.game-mode .corner.active{opacity:1}
+.app.game-mode.game-over .corner.left{pointer-events:auto;opacity:1;filter:none}
+.app.game-mode.game-over .emotion-key[data-key="neutral"]{filter:none;cursor:pointer}
 .app.game-mode .utility .combo{opacity:.55}
 .app.game-mode .utility .repeat,.app.game-mode .utility .off{opacity:1}
 .emotion-key.game-flash{outline:6px solid #fff;box-shadow:0 0 0 5px var(--ink),0 7px 0 #7e776d;transform:translateY(-5px) scale(1.055);filter:saturate(1.18) brightness(1.08)}
@@ -169,16 +171,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v1.79 — CODEKOPF
+   Emotronic v1.80 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 79
+   Aktuelle Revision: 80
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'1.79',
-  revision:79,
+  version:'1.80',
+  revision:80,
   author:'Rasmus Klette'
 });
 
@@ -771,7 +773,7 @@ function renderGameKeypad(activeKey=null,allowInput=false,allowNeutral=false){
 }
 function renderGameSelection(){
  const g=state.game,screen=el('screen'),stage=el('asciiStage');
- state.intensity=0;document.querySelector('.app').classList.add('game-mode','game-select');
+ state.intensity=0;document.querySelector('.app').classList.remove('game-over');document.querySelector('.app').classList.add('game-mode','game-select');
  el('sendBtn').classList.remove('active');el('receiveBtn').classList.remove('active');el('senderStream').classList.remove('active');
  screen.classList.remove('offline','power-confirm','special-status','ready-status');screen.style.setProperty('--emotion-bg','#f8f3e9');
  el('emotionInfo').classList.remove('empty');el('currentEmotion').textContent='Wie schwer?';
@@ -802,7 +804,7 @@ function renderGame(){
  const displayLevel=g.phase==='idle'?0:g.level;
  state.intensity=displayLevel;
  el('currentEmotion').classList.remove('game-over-score');el('combo').classList.remove('game-flash');
- document.querySelector('.app').classList.add('game-mode');
+ document.querySelector('.app').classList.add('game-mode');document.querySelector('.app').classList.toggle('game-over',g.awaitingShutdown);
  el('sendBtn').classList.toggle('active',g.mode==='easy');
  el('receiveBtn').classList.toggle('active',g.mode==='pro');
  el('senderStream').classList.toggle('active',g.mode==='easy'&&!g.awaitingShutdown);
@@ -1024,10 +1026,11 @@ function loseLife(){
 function gameOver(){
  const g=state.game;if(!g.active||g.awaitingShutdown)return;clearGameTimers();g.awaitingShutdown=true;g.phase='over';const finalScore=finalGameScore();
  const screen=el('screen'),stage=el('asciiStage');
+ document.querySelector('.app').classList.add('game-over');
  screen.style.transitionDuration='.22s';screen.style.setProperty('--emotion-bg','#f2b0aa');updateGhostEmoji(null);
- renderGameKeypad(null,false);
+ renderGameKeypad(null,false,true);
  el('currentEmotion').textContent=gamePraise(finalScore)||'GAME OVER';el('currentEmotion').classList.add('game-over-score');
- el('currentCategory').textContent='R: Neustart · Aus-Taste: Aus';
+ el('currentCategory').textContent='Neutral: Neustart · R: Replay · ⏻: Schluss';
  el('currentStrength').textContent='';
  const bonus=currentGameMode().bonus?'+25% BONUS':'';const frames=['X_X','FALSCH','...','GAME OVER',bonus||`${finalScore} PUNKTE`,`${finalScore} PUNKTE`];
  let i=0;stage.className='ascii-stage game-over-animation';stage.textContent=frames[0];
@@ -1046,7 +1049,7 @@ function replayGameOverSequence(){
  clearGameTimers();g.phase='score-review';el('currentEmotion').textContent='REPLAY';setGameMeta('Gespielte Folge');renderGameKeypad(null,false);runGamePlayback(220,true)
 }
 function shutdownGame(){
- clearGameTimers();state.game.active=false;state.game.awaitingShutdown=false;document.querySelector('.app').classList.remove('game-mode','game-select');el('currentStrength').classList.remove('game-score');el('currentEmotion').classList.remove('game-over-score');el('senderStream').classList.remove('active');document.querySelectorAll('.emotion-key').forEach(b=>b.classList.remove('game-flash','game-disabled','replay-dim'));state.powered=true;powerToggle();
+ clearGameTimers();state.game.active=false;state.game.awaitingShutdown=false;document.querySelector('.app').classList.remove('game-mode','game-select','game-over');el('currentStrength').classList.remove('game-score');el('currentEmotion').classList.remove('game-over-score');el('senderStream').classList.remove('active');document.querySelectorAll('.emotion-key').forEach(b=>b.classList.remove('game-flash','game-disabled','replay-dim'));state.powered=true;powerToggle();
 }
 document.addEventListener('click',event=>{if(!state.game.active||!state.game.awaitingShutdown)return;const button=event.target.closest('button');if(!button)return;event.preventDefault();event.stopImmediatePropagation();if(button.dataset.key==='neutral')startMemoryGame(state.game.mode||'normal');else if(button.id==='repeat')replayGameOverSequence();else if(button.id==='sendBtn')shareGameScore();else if(button.id==='off')requestGameShutdown()},true);
 
