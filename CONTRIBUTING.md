@@ -59,6 +59,8 @@ Regeln:
 - Kleine und normale Aenderungen werden in diesem Repository direkt auf `main` committed und gepusht.
 - Ein eigener Branch mit Pull Request wird nur fuer kritische oder sehr grosse Aenderungen angelegt.
 - Bereits gemergte Arbeitsbranches werden lokal und auf dem Remote geloescht.
+- Kleine Korrekturen erhalten nur die unmittelbar notwendige Syntax- und Konsistenzpruefung.
+- Weitergehende Browser-, Smoke-, PWA- oder umfangreiche Funktionstests werden nur durchgefuehrt, wenn sie vorher ausdruecklich abgesprochen wurden oder die Aenderung kritisch beziehungsweise sehr gross ist.
 
 ## Changelog-Format
 
