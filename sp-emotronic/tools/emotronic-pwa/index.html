@@ -1,6 +1,6 @@
 <!--
   ============================================================================
-  Emotronic v1.67
+  Emotronic v1.68
   Projektname: Emotronic
   Autor: Rasmus Klette
   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
@@ -167,16 +167,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v1.67 — CODEKOPF
+   Emotronic v1.68 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 67
+   Aktuelle Revision: 68
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'1.67',
-  revision:67,
+  version:'1.68',
+  revision:68,
   author:'Rasmus Klette'
 });
 
@@ -469,7 +469,7 @@ function render(){
  el('screen').classList.toggle('special-status',!!state.powerAnimating||!!state.powerArmed||readyStatus);
  const selectedKey=typeof state.selected==='object'?state.displayKey:state.selected;
  document.querySelectorAll('.emotion-key').forEach(b=>{const k=b.dataset.key;b.classList.toggle('selected',selectedKey===k);b.classList.toggle('partner',!!state.comboFirst&&allowedPartners(state.comboFirst).includes(k));b.classList.toggle('disabled',!state.powered);b.classList.remove('game-flash','game-disabled','replay-dim');const e=base[k],code=keyCode(k);const size=(selectedKey===k?(typeof state.selected==='object'?60:[54,59,65][Math.max(0,state.intensity-1)]):49);b.style.setProperty('--active-emoji-size',size+'px');b.innerHTML=imgMarkup(code,typeof state.selected==='object'&&state.displayKey===k?state.selected.name:e.category)+`<span>${typeof state.selected==='object'&&state.displayKey===k?state.selected.name:e.category}</span>`});
- let title='Bereit',detail='...';
+ let title='Bereit',detail=`${APP_META.name} v${APP_META.version}`;
  if(!state.powered){title='Aus';detail='Stärke 0'}
  else if(state.selected){if(typeof state.selected==='object'){title=state.selected.name;detail=`${base[state.selected.parts[0]].category} + ${base[state.selected.parts[1]].category} · ${strengthWords[state.intensity]}`}else if(state.selected==='neutral'){title='Neutral';detail='Grundzustand · Stärke 0'}else{title=base[state.selected].labels[state.intensity-1];detail=`${base[state.selected].category} · ${strengthWords[state.intensity]}`}}
  el('emotionName').textContent=title;el('emotionDetail').textContent=detail;
