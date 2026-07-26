@@ -1,10 +1,10 @@
 <!--
   ============================================================================
-  Emotronic v1.86
+  Emotronic v1.87
   Projektname: Emotronic
   Autor: Rasmus Klette
   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-  Aktuelle Revision: 86
+  Aktuelle Revision: 87
   ============================================================================
 -->
 <!doctype html>
@@ -171,16 +171,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v1.86 — CODEKOPF
+   Emotronic v1.87 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 86
+   Aktuelle Revision: 87
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'1.86',
-  revision:86,
+  version:'1.87',
+  revision:87,
   author:'Rasmus Klette'
 });
 
@@ -398,7 +398,7 @@ function pressEmotion(k){
    if(state.selected)state.last=snapshot();state.selected='neutral';state.displayKey='neutral';state.intensity=0;recordHistory();triggerSenderStream();playEmotionSound('neutral',1);render();animateCurrent();return
  }
  if(state.selected===k){recordHistory();playEmotionSound(k,state.intensity);animateCurrent(true);return}
- else{if(state.selected)state.last=snapshot();state.selected=k;state.displayKey=k;state.intensity=Math.max(APP_CONFIG.normalMode.minEmotionLevel,state.intensity||0);recordHistory();triggerSenderStream()}
+ else{if(state.selected)state.last=snapshot();state.selected=k;state.displayKey=k;state.intensity=state.source==='other'?APP_CONFIG.normalMode.minEmotionLevel:Math.max(APP_CONFIG.normalMode.minEmotionLevel,state.intensity||0);recordHistory();triggerSenderStream()}
  playEmotionSound(k,state.intensity);render();animateCurrent()
 }
 function exitCombo(){state.comboMode=false;state.comboFirst=null;render()}

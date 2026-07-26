@@ -1,4 +1,4 @@
-# Emotronic v1.86
+# Emotronic v1.87
 
 Emotronic ist eine installierbare, offlinefähige PWA zur Auswahl, Darstellung, Kombination und Wiedergabe von Gefühlen. Die Oberfläche ist an ein kompaktes Retro-Handgerät angelehnt und für Touch, Maus und Tastatur ausgelegt.
 
@@ -45,7 +45,7 @@ Ohne `mode`-Parameter startet Emotronic wie `mode=on`.
 | Datei | Zweck |
 |---|---|
 | `index.html` | Hauptanwendung mit Oberfläche, CSS und JavaScript |
-| `Emotronic-v1.86.html` | Versionierte Kopie der Hauptanwendung |
+| `Emotronic-v1.87.html` | Versionierte Kopie der Hauptanwendung |
 | `manifest.webmanifest` | PWA-Metadaten und Installationskonfiguration |
 | `sw.js` | Service Worker für Offline-Cache |
 | `icon-192.png`, `icon-512.png` | PWA-Symbole |
@@ -95,7 +95,7 @@ Die neun Tasten sind wie folgt angeordnet:
 | unten Mitte | Trauer |
 | unten rechts | Unsicherheit |
 
-Grundemotionen haben drei Intensitätsstufen. Beim Wechsel zwischen nicht-neutralen Gefühlen bleibt die aktuelle Intensität erhalten. Neutral setzt sie auf `0`; das nächste Gefühl beginnt danach auf der Mindeststufe `1`.
+Grundemotionen haben drei Intensitätsstufen. Im Telefon-/Selbstmodus bleibt die aktuelle Intensität beim Wechsel zwischen nicht-neutralen Gefühlen erhalten. Im Wifi-Sendemodus beginnt das neue Gefühl nach einem Wechsel wieder auf Mindeststufe `1`. Neutral setzt in beiden Modi auf `0`.
 
 ### Intensität
 
@@ -281,7 +281,7 @@ Diese Reihenfolge soll bei weiteren Änderungen erhalten bleiben.
 ## Offline/PWA
 
 - Der Service Worker cached die Kernressourcen.
-- Die aktuelle Cache-Version lautet `emotronic-v86`.
+- Die aktuelle Cache-Version lautet `emotronic-v87`.
 - Beim Aktivieren werden nur ältere Emotronic-Caches entfernt; Caches anderer Anwendungen auf derselben Domain bleiben erhalten.
 - Nicht gecachte GET-Anfragen werden aus dem Netz geladen und anschließend gespeichert.
 - Bei einem Netzfehler wird als Fallback `index.html` verwendet.
