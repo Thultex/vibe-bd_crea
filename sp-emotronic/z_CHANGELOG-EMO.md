@@ -39,10 +39,12 @@ Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufslogik sowie
 - Link: Direkte Startmodi über `?mode=simon`, `?mode=on` und `?mode=off` ergänzt; ohne Parameter startet die App eingeschaltet.
 - Simon: Die Schwierigkeitsauswahl erhält einen kurzen Startjingle und den animierten Aufbau von `Simon Feels!`; Eingaben bleiben sofort möglich und brechen den Titelaufbau ab.
 - Anzeige: Der Titel wird als `Simon Feels!` in derselben Schriftgröße wie die normale Introanzeige aufgebaut.
+- Anzeige: `Simon Feels!` sitzt gegenüber der normalen Mittelposition nur drei Pixel tiefer.
 - Audio: Der Geschafft-Jingle beginnt rund 0,2 Sekunden nach dem letzten korrekten Tastendruck und kollidiert dadurch weniger mit dessen Ton.
 - Link: `?mode=simon` wartet zunächst auf weißem Display mit kleinem Spielsymbol auf einen Tipp und startet erst danach Simon-Animation und -Ton.
 - Bedienung: Ein einfacher Tipp auf Telefon oder Wifi zeigt drei Sekunden lang direkt unter der kleinen Emotionsanzeige den passenden Hinweis für Gefühl- beziehungsweise Replay-Teilen per Doppeltipp.
 - Share: Eingehende Emotions-, Replay- und Score-Links warten ohne Zeitlimit mit ruhig weiterlaufendem Nachrichtensymbol im schlichten Hauptdisplay; Bildschirm oder Taste außer Aus startet die lautlose Wiedergabe.
+- Share: Nach dem Starttipp beginnt der empfangene Inhalt mit rund 0,1 Sekunden kurzem Abstand.
 - Score: Beim Simon-Game-Over wird ein Link mit Endstand, Modus und vollständiger Folge automatisch kopiert; Telefon kopiert ihn manuell erneut und `R` spielt die gesamte Folge noch einmal.
 - Fix: Die zuvor durch den Spielmodus blockierte Telefontaste ist am Game Over wieder klickbar und kopiert den Score-Link manuell.
 - Bedienung: Neutral bleibt am Game Over eingeblendet und startet direkt ein neues Spiel im zuletzt verwendeten Modus; die Hinweise lauten `Neutral: Neustart`, `R: Replay` und `⏻: Schluss`.
@@ -51,8 +53,8 @@ Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufslogik sowie
 - Audio: Den Empfangs-Jingle vollständig entfernt; der Starttipp beginnt Emotion oder Replay ohne zusätzlichen Empfangston.
 - Bedienung: Aus bricht die laufende Empfangsphase oder Replay-Wiedergabe unmittelbar ab.
 - Replay: Der Wechsel zu Bereit durch zweimaliges Drücken von Neutral leert den Replay-Verlauf vollständig.
-- Replay: Im Normalmodus werden Emotionsname, Detailzeile, Kategorie und Stärke während der Wiedergabe ausgeblendet.
+- Replay: Im Normalmodus werden Gefühl, Emotion und Intensität mit einem sehr leichten Fade während der Wiedergabe aus- und danach wieder eingeblendet.
 - Datenschutz: Detaillierten lokalen Projektpfad aus dem Ruckpacken-Startskript entfernt und öffentliche Repository-/Share-Hinweise dokumentiert.
 - Test: JavaScript-Syntax, Manifest, Icons, Service-Worker-Dateien, doppelte HTML-IDs, Versionsgleichlauf, mobile Breite und Browser-Smoke-Test geprüft.
 - Doku: Übersicht, Anleitung, Design, Ideen, Plan, Installationshinweise und technische Übergabe ergänzt.
-- Versionen: Emotronic v1.81.
+- Versionen: Emotronic v1.82.

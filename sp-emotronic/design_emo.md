@@ -30,10 +30,11 @@ Der Laufzeitspiegel enthält ausschließlich `index.html`, Manifest, Service Wor
 - Ein erneuter Klick auf dieselbe Gefühlstaste startet ihre Animation ohne die für Motivwechsel vorgesehene Überblendverzögerung.
 - Intensitätsänderungen ersetzen nur den zuletzt erzeugten Schritt derselben Gefühlsauswahl.
 - Replay-Start und Replay-Sharing synchronisieren den sichtbaren Endzustand, ohne ihn doppelt anzuhängen.
-- Das normale Replay blendet Emotionsname, Detailzeile, Kategorie und Stärke während der Wiedergabe aus.
+- Das normale Replay blendet Gefühl, Emotion und Intensität mit einem sehr leichten Fade während der Wiedergabe aus und danach wieder ein.
 - Zweimaliges Drücken von Neutral wechselt zu Bereit und leert dabei den gesamten Replay-Verlauf.
 - Eingehende Emotions- und Replay-Links zeigen bis zur nächsten Interaktion ein ruhig weiterlaufendes Nachrichtensymbol direkt im normalen Display.
 - Ein Tipp auf den Bildschirm oder eine beliebige Taste außer Aus startet die Wiedergabe ohne zusätzlichen Empfangston.
+- Nach dem Starttipp lässt die App rund 0,1 Sekunden Abstand, bevor der empfangene Inhalt beginnt.
 - Aus bricht die wartende Empfangsphase oder eine laufende Replay-Wiedergabe unmittelbar ab.
 - Ein einfacher Tipp auf Telefon oder Wifi ersetzt die kleine Kategoriezeile drei Sekunden lang durch einen passenden Hinweis auf die jeweilige Doppeltipp-Teilgeste.
 - Score-Links enthalten Endstand, Simon-Modus und die vollständige gespielte Folge; ihre Empfangsanimation ergänzt das Nachrichtensymbol um einen kleinen Pokal und die wartende Punktzahl.

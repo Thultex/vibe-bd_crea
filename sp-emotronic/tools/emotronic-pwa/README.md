@@ -1,4 +1,4 @@
-# Emotronic v1.81
+# Emotronic v1.82
 
 Emotronic ist eine installierbare, offlinefähige PWA zur Auswahl, Darstellung, Kombination und Wiedergabe von Gefühlen. Die Oberfläche ist an ein kompaktes Retro-Handgerät angelehnt und für Touch, Maus und Tastatur ausgelegt.
 
@@ -45,7 +45,7 @@ Ohne `mode`-Parameter startet Emotronic wie `mode=on`.
 | Datei | Zweck |
 |---|---|
 | `index.html` | Hauptanwendung mit Oberfläche, CSS und JavaScript |
-| `Emotronic-v1.81.html` | Versionierte Kopie der Hauptanwendung |
+| `Emotronic-v1.82.html` | Versionierte Kopie der Hauptanwendung |
 | `manifest.webmanifest` | PWA-Metadaten und Installationskonfiguration |
 | `sw.js` | Service Worker für Offline-Cache |
 | `icon-192.png`, `icon-512.png` | PWA-Symbole |
@@ -139,7 +139,7 @@ Die Animation von **starr** ist eine kurze Rückzugs- und Erstarrbewegung.
 - **Bereit** wird nie als Replay-Schritt gespeichert.
 - `R` startet den Replay-Verlauf.
 - Während des Replays zeigt eine kleine graue Zahl neben `R`, wie viele Zustände noch offen sind.
-- Im normalen Replay werden Emotionsname, Detailzeile, Kategorie und Stärke ausgeblendet, damit nur die Wiedergabe selbst im Mittelpunkt steht.
+- Im normalen Replay werden Gefühl, Emotion und Intensität mit einem sehr leichten Fade aus- und anschließend wieder eingeblendet, damit nur die Wiedergabe selbst im Mittelpunkt steht.
 - `R` während des Replays bricht nur die Wiedergabe ab und zeigt wieder den neuesten Zustand.
 - **Aus** während des Replays bricht ab, leert den Verlauf und geht direkt zu **Bereit**.
 - Ein normaler Neustart leert den Replay-Verlauf vollständig.
@@ -179,6 +179,7 @@ Beim Öffnen eines gültigen Share-Links:
 
 - erscheint zuerst die ruhig weiterlaufende Nachrichtenanimation,
 - ein Tipp auf Bildschirm oder eine Taste außer Aus öffnet Gefühl, Replay oder Score,
+- nach diesem Tipp wartet die App rund 0,1 Sekunden, bevor Gefühl, Replay oder Score tatsächlich starten,
 - Aus bricht den Empfang ab,
 - ein geteilter Score zeigt in der Warteanimation zusätzlich klein Pokal und Punktzahl.
 
@@ -279,7 +280,7 @@ Diese Reihenfolge soll bei weiteren Änderungen erhalten bleiben.
 ## Offline/PWA
 
 - Der Service Worker cached die Kernressourcen.
-- Die aktuelle Cache-Version lautet `emotronic-v81`.
+- Die aktuelle Cache-Version lautet `emotronic-v82`.
 - Beim Aktivieren werden nur ältere Emotronic-Caches entfernt; Caches anderer Anwendungen auf derselben Domain bleiben erhalten.
 - Nicht gecachte GET-Anfragen werden aus dem Netz geladen und anschließend gespeichert.
 - Bei einem Netzfehler wird als Fallback `index.html` verwendet.
