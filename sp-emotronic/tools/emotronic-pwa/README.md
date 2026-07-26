@@ -1,4 +1,4 @@
-# Emotronic v1.90
+# Emotronic v1.91
 
 Emotronic ist eine installierbare, offlinefähige PWA zur Auswahl, Darstellung, Kombination und Wiedergabe von Gefühlen. Die Oberfläche ist an ein kompaktes Retro-Handgerät angelehnt und für Touch, Maus und Tastatur ausgelegt.
 
@@ -34,18 +34,20 @@ Danach im Browser `http://localhost:8080` öffnen.
 
 ## Direktlinks
 
-- Simon-Says-Auswahl: `https://thultex.github.io/vibe-bd_crea/share/apps/emotronic/?mode=simon`
-- Normal eingeschaltet: `https://thultex.github.io/vibe-bd_crea/share/apps/emotronic/?mode=on`
-- Ausgeschaltet: `https://thultex.github.io/vibe-bd_crea/share/apps/emotronic/?mode=off`
+- Simon-Says-Auswahl: `https://thultex.github.io/vibe-bd_crea/share/apps/emotronic/index.html#simon`
+- Normal eingeschaltet: `https://thultex.github.io/vibe-bd_crea/share/apps/emotronic/index.html#on`
+- Ausgeschaltet: `https://thultex.github.io/vibe-bd_crea/share/apps/emotronic/index.html#off`
 
-Ohne `mode`-Parameter startet Emotronic wie `mode=on`.
+Ohne Modusfragment startet Emotronic wie `#on`.
+
+Ein Druck auf Telefon kopiert in **Bereit**, auf der `Simon Feels!`-Auswahl oder im ausgeschalteten Zustand still den jeweils passenden Direktlink. Dabei erscheint bewusst kein Hinweistext.
 
 ## Dateien
 
 | Datei | Zweck |
 |---|---|
 | `index.html` | Hauptanwendung mit Oberfläche, CSS und JavaScript |
-| `Emotronic-v1.90.html` | Versionierte Kopie der Hauptanwendung |
+| `Emotronic-v1.91.html` | Versionierte Kopie der Hauptanwendung |
 | `manifest.webmanifest` | PWA-Metadaten und Installationskonfiguration |
 | `sw.js` | Service Worker für Offline-Cache |
 | `icon-192.png`, `icon-512.png` | PWA-Symbole |
@@ -190,7 +192,7 @@ Die Zwischenablage verwendet zuerst die moderne Clipboard API und danach einen k
 
 Das Gedächtnisspiel wird bei ausgeschaltetem Gerät mit `R` geöffnet. Zuerst erscheint die Schwierigkeitsauswahl.
 
-Beim Einstieg baut sich oben `Simon Feels!` in derselben Schriftgröße wie die normale Introanzeige auf und ein kurzer Startjingle erklingt. Die Auswahl bleibt dabei sofort bedienbar; jede Spielaktion beendet den Titelaufbau. Der Direktlink `?mode=simon` wartet zunächst auf einem weißen Bildschirm mit kleinem Spielsymbol auf einen Tipp, damit Animation und Ton erst nach dieser Interaktion starten.
+Beim Einstieg baut sich oben `Simon Feels!` in derselben Schriftgröße wie die normale Introanzeige auf und ein kurzer Startjingle erklingt. Die Auswahl bleibt dabei sofort bedienbar; jede Spielaktion beendet den Titelaufbau. Der Direktlink `#simon` wartet zunächst auf einem weißen Bildschirm mit kleinem Spielsymbol auf einen Tipp, damit Animation und Ton erst nach dieser Interaktion starten.
 
 ### Schwierigkeitsgrade
 
@@ -284,7 +286,7 @@ Diese Reihenfolge soll bei weiteren Änderungen erhalten bleiben.
 ## Offline/PWA
 
 - Der Service Worker cached die Kernressourcen.
-- Die aktuelle Cache-Version lautet `emotronic-v90`.
+- Die aktuelle Cache-Version lautet `emotronic-v91`.
 - Beim Aktivieren werden nur ältere Emotronic-Caches entfernt; Caches anderer Anwendungen auf derselben Domain bleiben erhalten.
 - Nicht gecachte GET-Anfragen werden aus dem Netz geladen und anschließend gespeichert.
 - Bei einem Netzfehler wird als Fallback `index.html` verwendet.

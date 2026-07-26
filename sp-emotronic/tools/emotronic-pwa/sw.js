@@ -1,5 +1,5 @@
 const CACHE_PREFIX='emotronic-v';
-const CACHE=`${CACHE_PREFIX}90`;
+const CACHE=`${CACHE_PREFIX}91`;
 const CORE=['./','./index.html','./manifest.webmanifest','./favicon.png','./apple-touch-icon.png','./icon-192.png','./icon-512.png','./icon-maskable-512.png'];
 self.addEventListener('install',event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(CORE)).then(()=>self.skipWaiting())));
 self.addEventListener('activate',event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith(CACHE_PREFIX)&&key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));
