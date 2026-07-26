@@ -1,4 +1,4 @@
-# Emotronic v1.97
+# Emotronic v1.98
 
 Emotronic ist eine installierbare, offlinefähige PWA zur Auswahl, Darstellung, Kombination und Wiedergabe von Gefühlen. Die Oberfläche ist an ein kompaktes Retro-Handgerät angelehnt und für Touch, Maus und Tastatur ausgelegt.
 
@@ -47,7 +47,7 @@ Ein Druck auf Telefon kopiert in **Bereit**, auf der `Simon Feels!`-Auswahl oder
 | Datei | Zweck |
 |---|---|
 | `index.html` | Hauptanwendung mit Oberfläche, CSS und JavaScript |
-| `Emotronic-v1.97.html` | Versionierte Kopie der Hauptanwendung |
+| `Emotronic-v1.98.html` | Versionierte Kopie der Hauptanwendung |
 | `manifest.webmanifest` | PWA-Metadaten und Installationskonfiguration |
 | `sw.js` | Service Worker für Offline-Cache |
 | `icon-192.png`, `icon-512.png` | PWA-Symbole |
@@ -190,7 +190,7 @@ Die Zwischenablage verwendet zuerst die moderne Clipboard API und danach einen k
 
 ## Gedächtnisspiel
 
-Das Gedächtnisspiel wird bei ausgeschaltetem Gerät über die schwarz-weiße OpenMoji-Videokassette `1F4FC` auf der sonstigen `R`-Taste geöffnet. Zuerst erscheint die Schwierigkeitsauswahl. Nur im ausgeschalteten Zustand trägt auch der Aus-Knopf das schwarz-weiße OpenMoji-Symbol `1F50D`; eingeschaltet zeigt er das normale Power-Zeichen. Beide OpenMoji-Symbole sind mit 36 Pixeln möglichst groß in die unveränderten Tasten eingepasst. Beim Ausschalten springt die Intensität sofort auf `0`.
+Das Gedächtnisspiel wird bei ausgeschaltetem Gerät weiterhin mit `R` geöffnet. Rechts neben dem `R` erscheint dann zusätzlich klein und grau die schwarz-weiße OpenMoji-Videokassette `1F4FC`. Auch das normale Power-Zeichen bleibt erhalten und erhält nur im ausgeschalteten Zustand rechts daneben die kleine graue OpenMoji-Lupe `1F50D`. Beim Ausschalten springen Intensitätswert und Zeiger sofort sichtbar auf `0`.
 
 Beim Einstieg baut sich oben `Simon Feels!` in derselben Schriftgröße wie die normale Introanzeige auf und ein kurzer Startjingle erklingt. Die Auswahl bleibt dabei sofort bedienbar; jede Spielaktion beendet den Titelaufbau. Der Direktlink `#simon` wartet zunächst auf einem weißen Bildschirm mit dem farbigen OpenMoji-Controller `1F3AE` auf einen Tipp, damit Animation und Ton erst nach dieser Interaktion starten.
 
@@ -287,7 +287,7 @@ Diese Reihenfolge soll bei weiteren Änderungen erhalten bleiben.
 ## Offline/PWA
 
 - Der Service Worker cached die Kernressourcen.
-- Die aktuelle Cache-Version lautet `emotronic-v97`.
+- Die aktuelle Cache-Version lautet `emotronic-v98`.
 - Beim Aktivieren werden nur ältere Emotronic-Caches entfernt; Caches anderer Anwendungen auf derselben Domain bleiben erhalten.
 - Nicht gecachte GET-Anfragen werden aus dem Netz geladen und anschließend gespeichert.
 - Bei einem Netzfehler wird als Fallback `index.html` verwendet.

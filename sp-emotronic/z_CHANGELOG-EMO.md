@@ -72,6 +72,8 @@ Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufslogik sowie
 - Fix: Videokassette und Lupe erscheinen nur noch im ausgeschalteten Zustand; eingeschaltet werden wieder `R` und das normale Power-Zeichen dargestellt.
 - Bedienung: Beim Ausschalten wird die Intensität samt Zeiger sofort auf `0` gesetzt.
 - Fix: Die untere Funktionstastenreihe besitzt trotz der 36-Pixel-Symbole eine feste, inklusive Rahmen berechnete Höhe von 43 Pixeln und wächst beim Ausschalten nicht mehr.
+- Anzeige: `R` und das normale Power-Zeichen bleiben nun auch ausgeschaltet erhalten; Videokassette und Lupe erscheinen stattdessen als kleine graue Hinweise rechts daneben.
+- Fix: Beim Ausschalten wird neben dem internen Intensitätswert auch die sichtbare Zeigerposition unmittelbar auf `0` gesetzt.
 - Anzeige: Die Score-Empfangsvorschau verwendet den tatsächlich verlinkten OpenMoji-Pokal `1F3C6` statt eines plattformabhängigen Emoji-Zeichens.
 - Design: OpenMoji ist künftig in Emotronic zu bevorzugen, wo Motiv und Darstellung sinnvoll passen; Text- und ASCII-Fallbacks bleiben erhalten.
-- Versionen: Emotronic v1.97.
+- Versionen: Emotronic v1.98.
