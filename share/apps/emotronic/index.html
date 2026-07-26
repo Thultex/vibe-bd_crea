@@ -1,10 +1,10 @@
 <!--
   ============================================================================
-  Emotronic v1.76
+  Emotronic v1.77
   Projektname: Emotronic
   Autor: Rasmus Klette
   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-  Aktuelle Revision: 76
+  Aktuelle Revision: 77
   ============================================================================
 -->
 <!doctype html>
@@ -168,16 +168,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v1.76 — CODEKOPF
+   Emotronic v1.77 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 76
+   Aktuelle Revision: 77
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'1.76',
-  revision:76,
+  version:'1.77',
+  revision:77,
   author:'Rasmus Klette'
 });
 
@@ -390,7 +390,7 @@ function pressEmotion(k){
    if(state.selected==='neutral'){state.history=[];state.last=null;state.selected=null;state.displayKey=null;state.intensity=0;render();animateCurrent();return}
    if(state.selected)state.last=snapshot();state.selected='neutral';state.displayKey='neutral';state.intensity=0;recordHistory();triggerSenderStream();playEmotionSound('neutral',1);render();animateCurrent();return
  }
- if(state.selected===k){recordHistory();playEmotionSound(k,state.intensity);animateCurrent();return}
+ if(state.selected===k){recordHistory();playEmotionSound(k,state.intensity);animateCurrent(true);return}
  else{if(state.selected)state.last=snapshot();state.selected=k;state.displayKey=k;state.intensity=1;recordHistory();triggerSenderStream()}
  playEmotionSound(k,state.intensity);render();animateCurrent()
 }
@@ -445,7 +445,7 @@ function animateOpenMoji(replayMode=false,levelOverride=null,motionOverride=null
   accent.id='intensity-motion';
  });
 }
-function animateCurrent(){clearInterval(state.timer);clearTimeout(state.omDelayTimer);setStagePosition();const frames=getFrames();let i=0,stage=el('asciiStage');stage.classList.remove('pulse','shake');void stage.offsetWidth;stage.classList.add(state.intensity>=3?'shake':'pulse');stage.textContent=frames[0]||' ';state.omDelayTimer=setTimeout(()=>{state.omDelayTimer=null;requestAnimationFrame(()=>animateOpenMoji())},APP_CONFIG.normalMode.emojiTransitionDelayMs);const speed=APP_CONFIG.normalMode.asciiFrameMs[Math.max(0,Math.min(2,state.intensity-1))];state.timer=setInterval(()=>{i++;if(i>=frames.length){clearInterval(state.timer);state.timer=null;stage.textContent=frames.at(-1)||' ';return}stage.textContent=frames[i]},speed)}
+function animateCurrent(skipTransitionDelay=false){clearInterval(state.timer);clearTimeout(state.omDelayTimer);state.omDelayTimer=null;setStagePosition();const frames=getFrames();let i=0,stage=el('asciiStage');stage.classList.remove('pulse','shake');void stage.offsetWidth;stage.classList.add(state.intensity>=3?'shake':'pulse');stage.textContent=frames[0]||' ';const startEmojiMotion=()=>requestAnimationFrame(()=>animateOpenMoji());if(skipTransitionDelay)startEmojiMotion();else state.omDelayTimer=setTimeout(()=>{state.omDelayTimer=null;startEmojiMotion()},APP_CONFIG.normalMode.emojiTransitionDelayMs);const speed=APP_CONFIG.normalMode.asciiFrameMs[Math.max(0,Math.min(2,state.intensity-1))];state.timer=setInterval(()=>{i++;if(i>=frames.length){clearInterval(state.timer);state.timer=null;stage.textContent=frames.at(-1)||' ';return}stage.textContent=frames[i]},speed)}
 function keyCode(k){if(typeof state.selected==='object'&&state.displayKey===k)return state.selected.code;if(state.selected===k&&k!=='neutral')return base[k].codes[Math.max(0,state.intensity-1)];return base[k].codes[0]}
 function currentGhostCode(){if(!state.powered||!state.selected)return null;if(typeof state.selected==='object')return state.selected.code;if(state.selected==='neutral')return base.neutral.codes[0];return base[state.selected].codes[Math.max(0,state.intensity-1)]}
 function updateGhostEmoji(code,levelOverride=null,comboOverride=null){const box=el('bgEmoji'),a=el('bgEmojiA'),b=el('bgEmojiB');const active=state.bgFlip?b:a;const next=state.bgFlip?a:b;if(!code){box.style.setProperty('--ghost-opacity','0');a.classList.remove('show');b.classList.remove('show');state.bgCode=null;return}const src=`${OM_BLACK}${code}.svg`;const combo=comboOverride===null?typeof state.selected==='object':comboOverride;const level=levelOverride===null?(combo?3:state.intensity):levelOverride;const opacity=!state.powered?0:APP_CONFIG.normalMode.backgroundEmojiOpacity[Math.max(0,Math.min(2,level-1))];const scale=APP_CONFIG.normalMode.backgroundEmojiScale[Math.max(0,Math.min(2,level-1))];const ghostFilter=level<=1?'brightness(0) opacity(.92)':'brightness(0) invert(1) opacity(.98)';box.style.setProperty('--ghost-opacity',String(opacity));box.style.setProperty('--ghost-scale',String(scale));box.style.setProperty('--ghost-filter',ghostFilter);if(state.bgCode===code){active.src=src;active.style.filter=`${ghostFilter} drop-shadow(0 1px 0 rgba(0,0,0,.08))`;active.classList.add('show');return}const swapLayers=()=>{active.classList.add('fading-out');void active.offsetWidth;next.classList.add('show');active.classList.remove('show');setTimeout(()=>active.classList.remove('fading-out'),560)};next.onload=swapLayers;next.onerror=()=>{next.src=`${OM}${code}.svg`;next.style.filter=`${ghostFilter} grayscale(1) drop-shadow(0 1px 0 rgba(0,0,0,.08))`;swapLayers()};next.style.filter=`${ghostFilter} drop-shadow(0 1px 0 rgba(0,0,0,.08))`;next.src=src;state.bgFlip=!state.bgFlip;state.bgCode=code}
@@ -1105,7 +1105,7 @@ function powerToggle(){
   name.textContent='';
   detail.className='emotion-detail boot-credit';
   detail.innerHTML='<span>von Rasmus Klette</span><span>(c) OpenMoji</span>';
-  const titleFrames=['[._.]','[o_o]','[>_>]','[:-)]','E_','Em_','Emo_','Emot_','Emotr_','Emotro_','Emotron_','Emotroni_','Emotronic'];
+  const titleFrames=['(._.)','(o.o)','(>.<)','(^.^)','E_','Em_','Emo_','Emot_','Emotr_','Emotro_','Emotron_','Emotroni_','Emotronic'];
   const intro=[...titleFrames,...Array(Math.max(0,APP_CONFIG.startup.titleHoldFrames||0)).fill('Emotronic')];
   let i=0;
   stage.classList.add('title-build');
