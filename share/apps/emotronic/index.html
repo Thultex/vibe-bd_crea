@@ -1,10 +1,10 @@
 <!--
   ============================================================================
-  Emotronic v1.74
+  Emotronic v1.75
   Projektname: Emotronic
   Autor: Rasmus Klette
   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-  Aktuelle Revision: 74
+  Aktuelle Revision: 75
   ============================================================================
 -->
 <!doctype html>
@@ -71,7 +71,7 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 .ascii-stage.booting.title-build{animation-name:bootTitleDynamic}
 .ascii-stage.shutting{animation:shutdownDynamic .55s ease-in-out infinite alternate}
 @keyframes bootDynamic{0%{transform:translateY(5px) scale(.94);opacity:.5}100%{transform:translateY(-3px) scale(1.05);opacity:1}}
-@keyframes bootTitleDynamic{0%{transform:translateY(1px) scale(.95) rotate(-1deg);opacity:.62;letter-spacing:.035em}55%{transform:translateY(5px) scale(1.035) rotate(1deg);opacity:1;letter-spacing:.075em}100%{transform:translateY(3px) scale(1.01) rotate(0);opacity:.92;letter-spacing:.055em}}
+@keyframes bootTitleDynamic{0%{transform:translateY(8px) scale(.88) rotate(-3deg);opacity:.42;letter-spacing:.015em}42%{transform:translateY(-3px) scale(1.08) rotate(2deg);opacity:1;letter-spacing:.09em}72%{transform:translateY(4px) scale(.98) rotate(-1deg);opacity:.88;letter-spacing:.05em}100%{transform:translateY(1px) scale(1.025) rotate(0);opacity:1;letter-spacing:.065em}}
 @keyframes shutdownDynamic{0%{transform:translateY(0) scale(1);opacity:1}100%{transform:translateY(5px) scale(.96);opacity:.72}}
 
 /* OpenMoji motion: runs parallel to the ASCII sequence. */
@@ -168,16 +168,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v1.74 — CODEKOPF
+   Emotronic v1.75 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 74
+   Aktuelle Revision: 75
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'1.74',
-  revision:74,
+  version:'1.75',
+  revision:75,
   author:'Rasmus Klette'
 });
 
@@ -189,10 +189,10 @@ const APP_META=Object.freeze({
    ========================================================================== */
 const APP_CONFIG={
   startup:{
-    // 'normal' = normaler Gefühlsmodus, 'off' = ausgeschaltet, 'simon' = Schwierigkeitsauswahl
-    mode:'normal',
+    // 'on' = normaler Gefühlsmodus, 'off' = ausgeschaltet, 'simon' = Schwierigkeitsauswahl
+    mode:'on',
     bootFrameMs:165,           // Tempo der Einschaltsequenz
-    titleHoldFrames:2          // kurze Haltezeit für den fertigen Emotronic-Schriftzug
+    titleHoldFrames:5          // der fertige Emotronic-Schriftzug bleibt beim Neustart länger stehen
   },
   audio:{
     enabled:true,              // false = App bleibt vollständig lautlos
@@ -361,7 +361,8 @@ function playSpecialSound(name){
 let state={selected:null,displayKey:null,intensity:0,last:null,comboMode:false,comboFirst:null,source:APP_CONFIG.normalMode.defaultSource,timer:null,powered:true,history:[],powerArmed:false,powerArmTimer:null,longPressTimer:null,longPressTriggered:false,bgCode:null,bgFlip:false,replaying:false,repeatClickTimer:null,powerAnimating:false,replayRun:0,bootTimer:null,omDelayTimer:null,senderStreamTimer:null,shareStatus:'',shareStatusTimer:null,incomingShare:false,incomingShareReady:null,lastPhoneTap:0,lastWifiTap:0,game:{active:false,phase:'idle',sequence:[],inputIndex:0,score:0,level:1,flashKey:null,awaitingShutdown:false,timers:[],inputTimer:null,actions:[],comboInput:[]}};
 const el=id=>document.getElementById(id);
 function imgMarkup(code,alt){return `<img src="${OM}${code}.svg" alt="${alt}" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><b style="display:none;font-size:38px">${alt}</b>`}
-function build(){state.game.active=false;state.game.phase='idle';state.game.awaitingShutdown=false;const pad=el('keypad');order.forEach(k=>{const e=base[k],b=document.createElement('button');b.className='emotion-key';b.style.setProperty('--c',e.color);b.dataset.key=k;b.innerHTML=imgMarkup(e.codes[0],e.category)+`<span>${e.category}</span>`;b.onclick=()=>pressEmotion(k);pad.appendChild(b)});document.querySelectorAll('.segment').forEach(s=>{s.classList.remove('active');s.onclick=()=>setIntensity(Number(s.dataset.level))});state.selected=null;state.displayKey=null;state.intensity=0;const startNeedle=el('needle');startNeedle.style.transition='none';startNeedle.style.setProperty('--needle-pos','0');startNeedle.style.setProperty('--needle-color','#9aa09a');if(APP_CONFIG.startup.mode==='off'){state.powered=false}else{state.powered=true}render();requestAnimationFrame(()=>{startNeedle.style.transition='';if(APP_CONFIG.startup.mode==='simon')enterMemoryGameSelection()})}
+function requestedStartupMode(){try{const mode=new URLSearchParams(location.search).get('mode');return ['on','off','simon'].includes(mode)?mode:APP_CONFIG.startup.mode}catch{return APP_CONFIG.startup.mode}}
+function build(){const startupMode=requestedStartupMode();state.game.active=false;state.game.phase='idle';state.game.awaitingShutdown=false;const pad=el('keypad');order.forEach(k=>{const e=base[k],b=document.createElement('button');b.className='emotion-key';b.style.setProperty('--c',e.color);b.dataset.key=k;b.innerHTML=imgMarkup(e.codes[0],e.category)+`<span>${e.category}</span>`;b.onclick=()=>pressEmotion(k);pad.appendChild(b)});document.querySelectorAll('.segment').forEach(s=>{s.classList.remove('active');s.onclick=()=>setIntensity(Number(s.dataset.level))});state.selected=null;state.displayKey=null;state.intensity=0;const startNeedle=el('needle');startNeedle.style.transition='none';startNeedle.style.setProperty('--needle-pos','0');startNeedle.style.setProperty('--needle-color','#9aa09a');if(startupMode==='off'){state.powered=false}else{state.powered=true}render();requestAnimationFrame(()=>{startNeedle.style.transition='';if(startupMode==='simon')enterMemoryGameSelection()})}
 function pairKey(a,b){return combos[`${a}|${b}`]?`${a}|${b}`:combos[`${b}|${a}`]?`${b}|${a}`:null}
 function allowedPartners(k){return Object.values(combos).filter(c=>c.partners.includes(k)).flatMap(c=>c.partners.filter(x=>x!==k))}
 function snapshot(){return {selected:state.selected,displayKey:state.displayKey}}

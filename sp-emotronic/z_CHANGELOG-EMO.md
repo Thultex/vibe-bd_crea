@@ -34,6 +34,8 @@ Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufslogik sowie
 - Fix: Intensitätsänderungen aktualisieren nur den zuletzt gewählten Replay-Schritt; erneute Klicks auf dieselbe Gefühlstaste bleiben dagegen als eigenständige Schritte erhalten.
 - Anzeige: Im Bereitschaftszustand zeigt die zweite Displayzeile dynamisch den Projektnamen und die aktuelle Version.
 - Anzeige: Die zweizeilige Start-/Copyrightanzeige nutzt weiterhin die normale Detailzeilenhöhe; Überstand ist erlaubt, ohne App-Größe oder Seitenverhältnis beim Neustart zu verändern.
+- Anzeige: Beim Neustart über Aus erscheint der Emotronic-Schriftzug dynamischer und bleibt als vollständiger Name länger stehen.
+- Link: Direkte Startmodi über `?mode=simon`, `?mode=on` und `?mode=off` ergänzt; ohne Parameter startet die App eingeschaltet.
 - Share: Eingehende Emotions- und Replay-Links warten ohne Zeitlimit mit ruhig weiterlaufendem Nachrichtensymbol im schlichten Hauptdisplay; Bildschirm oder Taste außer Aus startet Jingle und Wiedergabe.
 - Audio: Den Empfangs-Jingle vollständig entfernt; der Starttipp beginnt Emotion oder Replay ohne zusätzlichen Empfangston.
 - Bedienung: Aus bricht die laufende Empfangsphase oder Replay-Wiedergabe unmittelbar ab.
@@ -41,4 +43,4 @@ Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufslogik sowie
 - Datenschutz: Detaillierten lokalen Projektpfad aus dem Ruckpacken-Startskript entfernt und öffentliche Repository-/Share-Hinweise dokumentiert.
 - Test: JavaScript-Syntax, Manifest, Icons, Service-Worker-Dateien, doppelte HTML-IDs, Versionsgleichlauf, mobile Breite und Browser-Smoke-Test geprüft.
 - Doku: Übersicht, Anleitung, Design, Ideen, Plan, Installationshinweise und technische Übergabe ergänzt.
-- Versionen: Emotronic v1.74.
+- Versionen: Emotronic v1.75.

@@ -20,6 +20,8 @@ Der Laufzeitspiegel enthält ausschließlich `index.html`, Manifest, Service Wor
 - Cache-Namen beginnen mit `emotronic-v`; beim Aktivieren werden nur ältere Emotronic-Caches gelöscht.
 - Jede abgeschlossene Revision synchronisiert Codekopf, `APP_META`, Snapshot, README, Handoff und Cache-Version.
 - Die zweizeilige Start-/Copyrightanzeige behält die normale einzeilige Detailhöhe; möglicher Überstand verändert weder App-Höhe noch Seitenverhältnis auf Handybildschirmen.
+- Der Query-Parameter `mode` unterstützt ausschließlich `on`, `off` und `simon`; ohne Parameter entspricht der Start `on`.
+- Beim Neustart über die Aus-Taste baut sich der Emotronic-Schriftzug dynamischer auf und bleibt vollständig rund 0,8 Sekunden stehen.
 
 ## Verlauf
 
