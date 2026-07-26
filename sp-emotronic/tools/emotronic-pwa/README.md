@@ -1,4 +1,4 @@
-# Emotronic v1.84
+# Emotronic v1.85
 
 Emotronic ist eine installierbare, offlinefähige PWA zur Auswahl, Darstellung, Kombination und Wiedergabe von Gefühlen. Die Oberfläche ist an ein kompaktes Retro-Handgerät angelehnt und für Touch, Maus und Tastatur ausgelegt.
 
@@ -45,7 +45,7 @@ Ohne `mode`-Parameter startet Emotronic wie `mode=on`.
 | Datei | Zweck |
 |---|---|
 | `index.html` | Hauptanwendung mit Oberfläche, CSS und JavaScript |
-| `Emotronic-v1.84.html` | Versionierte Kopie der Hauptanwendung |
+| `Emotronic-v1.85.html` | Versionierte Kopie der Hauptanwendung |
 | `manifest.webmanifest` | PWA-Metadaten und Installationskonfiguration |
 | `sw.js` | Service Worker für Offline-Cache |
 | `icon-192.png`, `icon-512.png` | PWA-Symbole |
@@ -245,8 +245,8 @@ Beim Einstieg baut sich oben `Simon Feels!` in derselben Schriftgröße wie die 
 - Nach Game Over spielt `R` die vollständige gespielte Folge erneut ab und kehrt anschließend zum Score zurück.
 - **Aus** fordert `AUS?` an; ein zweiter Druck bestätigt.
 - Nach Game Over reagieren `R`, Telefon und **Aus**.
-- Nach Game Over bleibt Neutral sichtbar und startet direkt ein neues Spiel im zuletzt verwendeten Schwierigkeitsgrad.
-- Die Hinweise lauten dort `Neutral: Neustart`, `R: Replay` und `⏻: Schluss`.
+- Nach Game Over bleiben Neugier, Neutral und Unsicherheit als direkte Auswahl für Leicht, Normal und Profi sichtbar.
+- Die Hinweise nennen dort die drei Modi sowie `R: Replay` und `⏻: Schluss`.
 - **Aus** führt vom Game Over zunächst zurück zur Simon-Titelauswahl; dort schaltet **Aus** die App direkt aus.
 
 ## Ton
@@ -281,7 +281,7 @@ Diese Reihenfolge soll bei weiteren Änderungen erhalten bleiben.
 ## Offline/PWA
 
 - Der Service Worker cached die Kernressourcen.
-- Die aktuelle Cache-Version lautet `emotronic-v84`.
+- Die aktuelle Cache-Version lautet `emotronic-v85`.
 - Beim Aktivieren werden nur ältere Emotronic-Caches entfernt; Caches anderer Anwendungen auf derselben Domain bleiben erhalten.
 - Nicht gecachte GET-Anfragen werden aus dem Netz geladen und anschließend gespeichert.
 - Bei einem Netzfehler wird als Fallback `index.html` verwendet.

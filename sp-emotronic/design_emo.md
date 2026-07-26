@@ -22,6 +22,7 @@ Der Laufzeitspiegel enthält ausschließlich `index.html`, Manifest, Service Wor
 - Die zweizeilige Start-/Copyrightanzeige behält die normale einzeilige Detailhöhe; möglicher Überstand verändert weder App-Höhe noch Seitenverhältnis auf Handybildschirmen.
 - Der Query-Parameter `mode` unterstützt ausschließlich `on`, `off` und `simon`; ohne Parameter entspricht der Start `on`.
 - Der direkte Simon-Link wartet auf weißem Display mit kleinem Spielsymbol auf eine Interaktion; danach starten Startjingle und der Aufbau von `Simon Feels!` in normaler Intro-Schriftgröße. Die Schwierigkeitsauswahl bleibt sofort bedienbar und beendet den Titelaufbau bei Eingabe.
+- `Simon Feels!` steht gegenüber seiner bisherigen Position zusätzlich um drei Viertel der eigenen Schrifthöhe tiefer; andere Simon-Anzeigen bleiben unverändert.
 - Die Simon-Auswahl verwendet drei Emotionstasten: Neugier für Leicht, Neutral für Normal und Unsicherheit für Profi; Telefon und Wifi sind dort keine Auswahl mehr.
 - Beim Neustart über die Aus-Taste beginnt der Aufbau mit Kirby-artigen ASCII-Gesichtern, schreibt Emotronic ruhig von links nach rechts und hält den vollständigen Schriftzug rund 0,8 Sekunden.
 
@@ -42,7 +43,7 @@ Der Laufzeitspiegel enthält ausschließlich `index.html`, Manifest, Service Wor
 - Score-Links enthalten Endstand, Simon-Modus und die vollständige gespielte Folge; ihre Empfangsanimation ergänzt das Nachrichtensymbol um einen kleinen Pokal und die wartende Punktzahl.
 - Beim Game Over versucht die App den Score-Link automatisch zu kopieren; Telefon wiederholt dies manuell und `R` spielt die mitgeteilte Folge erneut ab.
 - Die Telefontaste wird am Game Over ausdrücklich für das manuelle Kopieren freigeschaltet.
-- Neutral bleibt am Game Over eingeblendet und startet direkt ein neues Spiel im zuletzt verwendeten Modus; die Hinweise benennen die Aktionen als `Neutral: Neustart`, `R: Replay` und `⏻: Schluss`.
+- Am Game Over bleiben Neugier, Neutral und Unsicherheit eingeblendet und starten direkt ein neues Spiel in Leicht, Normal beziehungsweise Profi; `R` bleibt Replay und `⏻` Schluss.
 - Aus führt vom Game Over zurück zur Simon-Titelauswahl und schaltet die App erst bei erneutem Drücken in dieser Auswahl aus.
 - Der Geschafft-Jingle folgt mit rund 0,2 Sekunden Abstand auf den letzten korrekten Tastendruck.
 

@@ -1,10 +1,10 @@
 <!--
   ============================================================================
-  Emotronic v1.84
+  Emotronic v1.85
   Projektname: Emotronic
   Autor: Rasmus Klette
   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-  Aktuelle Revision: 84
+  Aktuelle Revision: 85
   ============================================================================
 -->
 <!doctype html>
@@ -119,7 +119,7 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 .app.game-mode .corner{pointer-events:none;opacity:.62}
 .app.game-mode .corner.active{opacity:1}
 .app.game-mode.game-over .corner.left{pointer-events:auto;opacity:1;filter:none}
-.app.game-mode.game-over .emotion-key[data-key="neutral"]{filter:none;cursor:pointer}
+.app.game-mode.game-over .emotion-key[data-key="curiosity"],.app.game-mode.game-over .emotion-key[data-key="neutral"],.app.game-mode.game-over .emotion-key[data-key="surprise"]{filter:none;cursor:pointer;opacity:1}
 .app.game-mode .utility .combo{opacity:.55}
 .app.game-mode .utility .repeat,.app.game-mode .utility .off{opacity:1}
 .emotion-key.game-flash{outline:6px solid #fff;box-shadow:0 0 0 5px var(--ink),0 7px 0 #7e776d;transform:translateY(-5px) scale(1.055);filter:saturate(1.18) brightness(1.08)}
@@ -136,7 +136,7 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 .meter-wrap,.meter,.keypad-shell,.keypad,.utility{min-width:0;max-width:100%}.keypad,.utility{width:100%}.emotion-key{min-width:0;overflow:hidden}.emotion-key span{max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .app.game-select .emotion-key{filter:grayscale(.82) brightness(.72);opacity:.58}.app.game-select .emotion-key[data-key="curiosity"],.app.game-select .emotion-key[data-key="neutral"],.app.game-select .emotion-key[data-key="surprise"]{filter:none;opacity:1;outline:4px solid #fff;box-shadow:0 0 0 3px var(--ink),0 4px 0 #7e776d}.app.game-select .corner{opacity:.62;filter:none;pointer-events:none;cursor:default}.app.game-select .corner.active{background:#eee8dc;box-shadow:none}
 .sender-stream{display:none;position:absolute;right:10px;top:76px;width:64px;height:38px;overflow:hidden;z-index:4;font:950 27px/38px ui-monospace,SFMono-Regular,Consolas,monospace;text-align:right;white-space:pre;color:rgba(36,39,44,.82);pointer-events:none}.sender-stream.active{display:block}.sender-stream span{position:absolute;inset:0;opacity:0;animation:senderStream 1.56s steps(1,end) 1}.sender-stream span:nth-child(2){animation-delay:.36s}.sender-stream span:nth-child(3){animation-delay:.72s}.sender-stream span:nth-child(4){animation-delay:1.08s}@keyframes senderStream{0%,22%{opacity:1;transform:translateX(-2px)}23%,100%{opacity:0;transform:translateX(4px)}}
-.top-shell.simon-link-waiting{--emotion-bg:#fff!important;background:#fff!important;filter:none;cursor:pointer}.simon-link-symbol{display:inline-grid;place-items:center;font-size:32px;animation:simonLinkWaiting 1.2s ease-in-out infinite}@keyframes simonLinkWaiting{0%,100%{opacity:.48;transform:scale(.94) rotate(-2deg)}50%{opacity:.9;transform:scale(1.06) rotate(2deg)}}.ascii-stage.simon-title-build{letter-spacing:.08em;animation:simonTitleBuild .38s ease both}@keyframes simonTitleBuild{0%{opacity:.2;transform:translate(-8px,3px);letter-spacing:.02em}70%{opacity:1;transform:translate(2px,3px);letter-spacing:.11em}100%{opacity:1;transform:translate(0,3px);letter-spacing:.08em}}
+.top-shell.simon-link-waiting{--emotion-bg:#fff!important;background:#fff!important;filter:none;cursor:pointer}.simon-link-symbol{display:inline-grid;place-items:center;font-size:32px;animation:simonLinkWaiting 1.2s ease-in-out infinite}@keyframes simonLinkWaiting{0%,100%{opacity:.48;transform:scale(.94) rotate(-2deg)}50%{opacity:.9;transform:scale(1.06) rotate(2deg)}}.ascii-stage.simon-title-build{top:calc(.75em + 3px);letter-spacing:.08em;animation:simonTitleBuild .38s ease both}@keyframes simonTitleBuild{0%{opacity:.2;transform:translateX(-8px);letter-spacing:.02em}70%{opacity:1;transform:translateX(2px);letter-spacing:.11em}100%{opacity:1;transform:translateX(0);letter-spacing:.08em}}
 .app.incoming-share-active button:not(#off){filter:grayscale(.86) brightness(.82);opacity:.46}.top-shell.incoming-share-status{--emotion-bg:#edf5e7!important;background:#edf5e7!important;filter:none;cursor:pointer}.incoming-message-stage{overflow:visible}.incoming-message-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0}.incoming-message-icon{position:relative;width:82px;height:60px;display:grid;place-items:center;font:950 50px/1 ui-rounded,system-ui,sans-serif;animation:incomingMessage .75s cubic-bezier(.2,.8,.2,1) both,incomingWaiting 1.1s ease-in-out .75s infinite}.incoming-message-icon i{position:absolute;right:-7px;top:-4px;font:950 25px/1 ui-rounded,system-ui,sans-serif;animation:incomingArrow .38s ease-in-out infinite alternate}.incoming-score-preview{display:inline-flex;align-items:center;gap:4px;margin-top:-3px;font:900 14px/1 ui-rounded,system-ui,sans-serif;opacity:.68;animation:incomingScoreWaiting 1.1s ease-in-out .75s infinite}.incoming-score-preview b{font-size:15px}@keyframes incomingMessage{0%{opacity:0;transform:translateY(-22px) scale(.72)}38%{opacity:1;transform:translateY(4px) scale(1.08)}100%{opacity:1;transform:translateY(0) scale(1)}}@keyframes incomingWaiting{0%,100%{filter:none}50%{filter:drop-shadow(0 0 7px rgba(36,39,44,.38))}}@keyframes incomingScoreWaiting{0%,100%{opacity:.52;transform:translateY(1px)}50%{opacity:.9;transform:translateY(-2px)}}@keyframes incomingArrow{from{transform:translateY(-3px)}to{transform:translateY(5px)}}
 </style>
 </head>
@@ -171,16 +171,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v1.84 — CODEKOPF
+   Emotronic v1.85 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 84
+   Aktuelle Revision: 85
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'1.84',
-  revision:84,
+  version:'1.85',
+  revision:85,
   author:'Rasmus Klette'
 });
 
@@ -783,6 +783,9 @@ function renderGameKeypad(activeKey=null,allowInput=false,allowNeutral=false){
   b.innerHTML=imgMarkup(code,e.category)+`<span>${e.category}</span>`;
  });
 }
+function renderGameOverChoices(){
+ const choices={curiosity:'Leicht',neutral:'Normal',surprise:'Profi'};document.querySelectorAll('.emotion-key').forEach(b=>{const k=b.dataset.key,e=base[k],choice=choices[k];b.classList.remove('selected','partner','disabled','game-flash','replay-dim');b.classList.toggle('game-disabled',!choice);b.style.setProperty('--active-emoji-size',choice?'54px':'49px');b.innerHTML=imgMarkup(e.codes[0],e.category)+`<span>${choice||e.category}</span>`})
+}
 function renderGameSelection(){
  const g=state.game,screen=el('screen'),stage=el('asciiStage');
  state.intensity=0;document.querySelector('.app').classList.remove('game-over');document.querySelector('.app').classList.add('game-mode','game-select');
@@ -823,7 +826,7 @@ function renderGame(){
  screen.classList.remove('offline','power-confirm','special-status','ready-status');
  el('emotionInfo').classList.remove('empty');
  el('currentEmotion').textContent=g.phase==='shutdown-confirm'?'AUS?':g.awaitingShutdown?(gamePraise(finalGameScore())||'GAME OVER'):g.phase==='restart-confirm'?'NEUSTART?':g.phase==='show'?'MERKEN':g.phase==='input'?'NACHTIPPEN':g.phase==='ready'?'Geschafft!':'GEDÄCHTNIS';
- if(g.phase==='shutdown-confirm')setGameMeta('Aus-Taste nochmal drücken');else if(g.awaitingShutdown)setGameMeta('Neutral: Neustart · R: Replay · ⏻: Schluss');else if(g.phase==='restart-confirm')setGameMeta('R nochmal drücken');else if(g.phase==='ready')setGameMeta('');else setGameMeta(`${currentGameMode().name} · Folge ${g.sequence.length||1}`);
+ if(g.phase==='shutdown-confirm')setGameMeta('Aus-Taste nochmal drücken');else if(g.awaitingShutdown)setGameMeta('Leicht · Normal · Profi · R: Replay · ⏻: Schluss');else if(g.phase==='restart-confirm')setGameMeta('R nochmal drücken');else if(g.phase==='ready')setGameMeta('');else setGameMeta(`${currentGameMode().name} · Folge ${g.sequence.length||1}`);
  setGameScore(g.score);el('currentStrength').classList.add('game-score');
  el('emotionName').textContent='';el('emotionDetail').textContent='';
  const positions={0:0,1:0.17,2:0.5,3:0.83},gameNeedle=el('needle');
@@ -833,7 +836,7 @@ function renderGame(){
  if(displayLevel===0){void gameNeedle.offsetWidth;requestAnimationFrame(()=>{gameNeedle.style.transition=''})}
  el('meter').classList.remove('off','combo-locked');document.querySelectorAll('.segment').forEach(s=>{s.classList.remove('active');if(displayLevel>0&&Number(s.dataset.level)===displayLevel)s.classList.add('active')});
  el('less').disabled=true;el('more').disabled=true;el('combo').classList.remove('active');
- if(g.awaitingShutdown){stage.className='ascii-stage game-over-score-final';stage.textContent=`${finalGameScore()} PUNKTE`;renderGameKeypad(null,false,true)}
+ if(g.awaitingShutdown){stage.className='ascii-stage game-over-score-final';stage.textContent=`${finalGameScore()} PUNKTE`;renderGameOverChoices()}
  else if(g.phase==='idle'){stage.className='ascii-stage';stage.textContent='BEREIT';renderGameKeypad(null,false)}
  else if(g.phase==='ready'){stage.className='ascii-stage';stage.textContent='GESCHAFFT!';renderGameKeypad(null,false)}
  else if(g.phase==='restart-confirm'){stage.className='ascii-stage pulse';stage.textContent='NEUSTART?';renderGameKeypad(null,false)}
@@ -1040,9 +1043,9 @@ function gameOver(){
  const screen=el('screen'),stage=el('asciiStage');
  document.querySelector('.app').classList.add('game-over');
  screen.style.transitionDuration='.22s';screen.style.setProperty('--emotion-bg','#f2b0aa');updateGhostEmoji(null);
- renderGameKeypad(null,false,true);
+ renderGameOverChoices();
  el('currentEmotion').textContent=gamePraise(finalScore)||'GAME OVER';el('currentEmotion').classList.add('game-over-score');
- el('currentCategory').textContent='Neutral: Neustart · R: Replay · ⏻: Schluss';
+ el('currentCategory').textContent='Leicht · Normal · Profi · R: Replay · ⏻: Schluss';
  el('currentStrength').textContent='';
  const bonus=currentGameMode().bonus?'+25% BONUS':'';const frames=['X_X','FALSCH','...','GAME OVER',bonus||`${finalScore} PUNKTE`,`${finalScore} PUNKTE`];
  let i=0;stage.className='ascii-stage game-over-animation';stage.textContent=frames[0];
@@ -1057,13 +1060,13 @@ function showSharedGameScore(payload){
 }
 function replayGameOverSequence(){
  const g=state.game;if(!g.active||!g.awaitingShutdown)return;
- g.actions=gameActions(validSharedGameSequence(g.sequence));if(!g.actions.length){setGameMeta('Keine Folge gespeichert · Neutral: Neustart · ⏻: Schluss');return}
+ g.actions=gameActions(validSharedGameSequence(g.sequence));if(!g.actions.length){setGameMeta('Keine Folge gespeichert · Leicht · Normal · Profi · ⏻: Schluss');return}
  clearGameTimers();g.phase='score-review';el('currentEmotion').textContent='REPLAY';setGameMeta('Gespielte Folge');renderGameKeypad(null,false);runGamePlayback(220,true)
 }
 function shutdownGame(){
  clearGameTimers();state.game.active=false;state.game.awaitingShutdown=false;document.querySelector('.app').classList.remove('game-mode','game-select','game-over');el('currentStrength').classList.remove('game-score');el('currentEmotion').classList.remove('game-over-score');el('senderStream').classList.remove('active');document.querySelectorAll('.emotion-key').forEach(b=>b.classList.remove('game-flash','game-disabled','replay-dim'));state.powered=true;powerToggle();
 }
-document.addEventListener('click',event=>{if(!state.game.active||!state.game.awaitingShutdown)return;const button=event.target.closest('button');if(!button)return;event.preventDefault();event.stopImmediatePropagation();if(button.dataset.key==='neutral')startMemoryGame(state.game.mode||'normal');else if(button.id==='repeat')replayGameOverSequence();else if(button.id==='sendBtn')shareGameScore();else if(button.id==='off')requestGameShutdown()},true);
+document.addEventListener('click',event=>{if(!state.game.active||!state.game.awaitingShutdown)return;const button=event.target.closest('button');if(!button)return;event.preventDefault();event.stopImmediatePropagation();const selection={curiosity:'easy',neutral:'normal',surprise:'pro'};if(selection[button.dataset.key])startMemoryGame(selection[button.dataset.key]);else if(button.id==='repeat')replayGameOverSequence();else if(button.id==='sendBtn')shareGameScore();else if(button.id==='off')requestGameShutdown()},true);
 
 function replayHistory(){
  if(!state.powered||state.replaying)return;
