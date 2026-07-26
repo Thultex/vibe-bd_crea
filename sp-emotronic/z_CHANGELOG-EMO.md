@@ -38,6 +38,7 @@ Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufslogik sowie
 - Anzeige: Beim Neustart über Aus leiten Kirby-artige ASCII-Gesichter den ruhigen Aufbau von Emotronic von links nach rechts ein; der vollständige Name bleibt anschließend länger stehen.
 - Link: Direkte Startmodi über `?mode=simon`, `?mode=on` und `?mode=off` ergänzt; ohne Parameter startet die App eingeschaltet.
 - Simon: Die Schwierigkeitsauswahl erhält einen kurzen Startjingle und den animierten Aufbau von `Simon Feels!`; Eingaben bleiben sofort möglich und brechen den Titelaufbau ab.
+- Simon: Die Auswahl erfolgt nun über Neugier für Leicht, Neutral für Normal und Unsicherheit für Profi statt über Telefon, Neutral und Wifi.
 - Anzeige: Der Titel wird als `Simon Feels!` in derselben Schriftgröße wie die normale Introanzeige aufgebaut.
 - Anzeige: `Simon Feels!` sitzt gegenüber der normalen Mittelposition nur drei Pixel tiefer.
 - Audio: Der Geschafft-Jingle beginnt rund 0,2 Sekunden nach dem letzten korrekten Tastendruck und kollidiert dadurch weniger mit dessen Ton.
@@ -57,4 +58,4 @@ Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufslogik sowie
 - Datenschutz: Detaillierten lokalen Projektpfad aus dem Ruckpacken-Startskript entfernt und öffentliche Repository-/Share-Hinweise dokumentiert.
 - Test: JavaScript-Syntax, Manifest, Icons, Service-Worker-Dateien, doppelte HTML-IDs, Versionsgleichlauf, mobile Breite und Browser-Smoke-Test geprüft.
 - Doku: Übersicht, Anleitung, Design, Ideen, Plan, Installationshinweise und technische Übergabe ergänzt.
-- Versionen: Emotronic v1.82.
+- Versionen: Emotronic v1.83.

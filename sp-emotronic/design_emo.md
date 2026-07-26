@@ -22,6 +22,7 @@ Der Laufzeitspiegel enthält ausschließlich `index.html`, Manifest, Service Wor
 - Die zweizeilige Start-/Copyrightanzeige behält die normale einzeilige Detailhöhe; möglicher Überstand verändert weder App-Höhe noch Seitenverhältnis auf Handybildschirmen.
 - Der Query-Parameter `mode` unterstützt ausschließlich `on`, `off` und `simon`; ohne Parameter entspricht der Start `on`.
 - Der direkte Simon-Link wartet auf weißem Display mit kleinem Spielsymbol auf eine Interaktion; danach starten Startjingle und der Aufbau von `Simon Feels!` in normaler Intro-Schriftgröße. Die Schwierigkeitsauswahl bleibt sofort bedienbar und beendet den Titelaufbau bei Eingabe.
+- Die Simon-Auswahl verwendet drei Emotionstasten: Neugier für Leicht, Neutral für Normal und Unsicherheit für Profi; Telefon und Wifi sind dort keine Auswahl mehr.
 - Beim Neustart über die Aus-Taste beginnt der Aufbau mit Kirby-artigen ASCII-Gesichtern, schreibt Emotronic ruhig von links nach rechts und hält den vollständigen Schriftzug rund 0,8 Sekunden.
 
 ## Verlauf
