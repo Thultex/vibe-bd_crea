@@ -1,10 +1,10 @@
 <!--
   ============================================================================
-  Emotronic v1.88
+  Emotronic v1.89
   Projektname: Emotronic
   Autor: Rasmus Klette
   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-  Aktuelle Revision: 88
+  Aktuelle Revision: 89
   ============================================================================
 -->
 <!doctype html>
@@ -171,16 +171,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v1.88 — CODEKOPF
+   Emotronic v1.89 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 88
+   Aktuelle Revision: 89
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'1.88',
-  revision:88,
+  version:'1.89',
+  revision:89,
   author:'Rasmus Klette'
 });
 
@@ -365,7 +365,7 @@ function playSpecialSound(name){
  const notes=specialSoundPatterns[name];if(!notes)return;
  playTonePattern(notes,name==='gameLose'||name==='lifeLose'||name==='powerOff'?2:3);
 }
-let state={selected:null,displayKey:null,intensity:0,last:null,comboMode:false,comboFirst:null,source:APP_CONFIG.normalMode.defaultSource,timer:null,powered:true,history:[],powerArmed:false,powerArmTimer:null,longPressTimer:null,longPressTriggered:false,bgCode:null,bgFlip:false,replaying:false,repeatClickTimer:null,powerAnimating:false,replayRun:0,bootTimer:null,omDelayTimer:null,senderStreamTimer:null,shareStatus:'',shareStatusTimer:null,incomingShare:false,incomingShareReady:null,incomingShareStartTimer:null,simonLinkWaiting:false,lastPhoneTap:0,lastWifiTap:0,game:{active:false,phase:'idle',sequence:[],inputIndex:0,score:0,level:1,flashKey:null,awaitingShutdown:false,timers:[],inputTimer:null,actions:[],comboInput:[]}};
+let state={selected:null,displayKey:null,intensity:0,last:null,comboMode:false,comboFirst:null,source:APP_CONFIG.normalMode.defaultSource,timer:null,powered:true,history:[],powerArmed:false,powerArmTimer:null,longPressTimer:null,longPressTriggered:false,bgCode:null,bgFlip:false,replaying:false,repeatClickTimer:null,powerAnimating:false,replayRun:0,bootTimer:null,omDelayTimer:null,senderStreamTimer:null,shareStatus:'',shareStatusTimer:null,incomingShare:false,incomingShareReady:null,incomingShareStartTimer:null,simonLinkWaiting:false,lastGameOver:null,lastPhoneTap:0,lastWifiTap:0,game:{active:false,phase:'idle',sequence:[],inputIndex:0,score:0,level:1,flashKey:null,awaitingShutdown:false,timers:[],inputTimer:null,actions:[],comboInput:[]}};
 const el=id=>document.getElementById(id);
 function imgMarkup(code,alt){return `<img src="${OM}${code}.svg" alt="${alt}" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><b style="display:none;font-size:38px">${alt}</b>`}
 function requestedStartupMode(){try{const mode=new URLSearchParams(location.search).get('mode');return ['on','off','simon'].includes(mode)?mode:APP_CONFIG.startup.mode}catch{return APP_CONFIG.startup.mode}}
@@ -1048,6 +1048,7 @@ function gameOver(){
  el('currentCategory').textContent='Leicht · Normal · Profi · R: Replay · ⏻: Schluss';
  el('currentStrength').textContent='';
  const bonus=currentGameMode().bonus?'+25% BONUS':'';const frames=['X_X','FALSCH','...','GAME OVER',bonus||`${finalScore} PUNKTE`,`${finalScore} PUNKTE`];
+ state.lastGameOver=gameScoreSharePayload();
  let i=0;stage.className='ascii-stage game-over-animation';stage.textContent=frames[0];
  const next=()=>{i++;if(i>=frames.length){stage.className='ascii-stage game-over-score-final';stage.textContent=`${finalScore} PUNKTE`;return}stage.textContent=frames[i];gameLater(next,i===1?260:i===2?320:430)};
  gameLater(next,260);
@@ -1056,7 +1057,7 @@ function gameOver(){
 function showSharedGameScore(payload){
  const mode=['normal','easy','pro'].includes(payload.mode)?payload.mode:'normal',sequence=validSharedGameSequence(payload.sequence),cfg=gameModes[mode]||gameModes.normal;
  state.game={active:true,mode,phase:'over',sequence,inputIndex:0,score:Math.max(0,Math.min(9999,Number(payload.score)||0)),level:gameLevel(Number(payload.score)||0),lives:0,maxLives:cfg.lives,flashKey:null,awaitingShutdown:true,timers:[],inputTimer:null,actions:gameActions(sequence),comboInput:[],repeatUsed:false,restartClicks:0,restartTimer:null};
- state.powered=true;state.selected=null;state.displayKey=null;state.intensity=state.game.level;document.querySelector('.app').classList.add('game-mode');renderGame()
+ state.lastGameOver={type:'score',score:state.game.score,mode,sequence:validSharedGameSequence(sequence)};state.powered=true;state.selected=null;state.displayKey=null;state.intensity=state.game.level;document.querySelector('.app').classList.add('game-mode');renderGame()
 }
 function replayGameOverSequence(){
  const g=state.game;if(!g.active||!g.awaitingShutdown)return;
@@ -1226,7 +1227,7 @@ function cancelReplayToReady(){
 }
 function repeatAllHistory(){
  if(!state.powered){enterMemoryGameSelection();return}
- if(state.game.active){if(state.game.awaitingShutdown){startMemoryGame(state.game.mode||'normal');return}requestGameRestart();return}
+ if(state.game.active){if(state.game.phase==='select'){if(state.lastGameOver)showSharedGameScore(state.lastGameOver);return}if(state.game.awaitingShutdown){startMemoryGame(state.game.mode||'normal');return}requestGameRestart();return}
  if(state.replaying){cancelReplayToLatest();return}
  clearTimeout(state.repeatClickTimer);
  replayHistory();
