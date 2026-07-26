@@ -1,4 +1,4 @@
-# Emotronic v1.71
+# Emotronic v1.72
 
 Emotronic ist eine installierbare, offlinefähige PWA zur Auswahl, Darstellung, Kombination und Wiedergabe von Gefühlen. Die Oberfläche ist an ein kompaktes Retro-Handgerät angelehnt und für Touch, Maus und Tastatur ausgelegt.
 
@@ -37,7 +37,7 @@ Danach im Browser `http://localhost:8080` öffnen.
 | Datei | Zweck |
 |---|---|
 | `index.html` | Hauptanwendung mit Oberfläche, CSS und JavaScript |
-| `Emotronic-v1.71.html` | Versionierte Kopie der Hauptanwendung |
+| `Emotronic-v1.72.html` | Versionierte Kopie der Hauptanwendung |
 | `manifest.webmanifest` | PWA-Metadaten und Installationskonfiguration |
 | `sw.js` | Service Worker für Offline-Cache |
 | `icon-192.png`, `icon-512.png` | PWA-Symbole |
@@ -258,7 +258,7 @@ Diese Reihenfolge soll bei weiteren Änderungen erhalten bleiben.
 ## Offline/PWA
 
 - Der Service Worker cached die Kernressourcen.
-- Die aktuelle Cache-Version lautet `emotronic-v71`.
+- Die aktuelle Cache-Version lautet `emotronic-v72`.
 - Beim Aktivieren werden nur ältere Emotronic-Caches entfernt; Caches anderer Anwendungen auf derselben Domain bleiben erhalten.
 - Nicht gecachte GET-Anfragen werden aus dem Netz geladen und anschließend gespeichert.
 - Bei einem Netzfehler wird als Fallback `index.html` verwendet.

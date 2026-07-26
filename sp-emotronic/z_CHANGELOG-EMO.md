@@ -33,10 +33,11 @@ Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufslogik sowie
 - Fix: Replay-Abbruch räumt die graue Restanzeige zuverlässig auf; der zuletzt gewählte Zustand bleibt sichtbar.
 - Fix: Intensitätsänderungen aktualisieren nur den zuletzt gewählten Replay-Schritt; erneute Klicks auf dieselbe Gefühlstaste bleiben dagegen als eigenständige Schritte erhalten.
 - Anzeige: Im Bereitschaftszustand zeigt die zweite Displayzeile dynamisch den Projektnamen und die aktuelle Version.
-- Share: Eingehende Emotions- und Replay-Links warten vor der Wiedergabe 750 ms mit animiertem Nachrichtensymbol direkt im schlichten Hauptdisplay; Emotions-, Kategorie- und Intensitätsbeschriftungen bleiben dabei leer.
+- Share: Eingehende Emotions- und Replay-Links warten ohne Zeitlimit mit ruhig weiterlaufendem Nachrichtensymbol im schlichten Hauptdisplay; Bildschirm oder Taste außer Aus startet Jingle und Wiedergabe.
 - Audio: Der Empfangs-Jingle folgt nun als zwei getrennte Tonpaare dem Muster hoch–tief, einen Halbton tiefer hoch–tief (`G5–C5, F♯5–B4`).
 - Bedienung: Aus bricht die laufende Empfangsphase oder Replay-Wiedergabe unmittelbar ab.
+- Replay: Der Wechsel zu Bereit durch zweimaliges Drücken von Neutral leert den Replay-Verlauf vollständig.
 - Datenschutz: Detaillierten lokalen Projektpfad aus dem Ruckpacken-Startskript entfernt und öffentliche Repository-/Share-Hinweise dokumentiert.
 - Test: JavaScript-Syntax, Manifest, Icons, Service-Worker-Dateien, doppelte HTML-IDs, Versionsgleichlauf, mobile Breite und Browser-Smoke-Test geprüft.
 - Doku: Übersicht, Anleitung, Design, Ideen, Plan, Installationshinweise und technische Übergabe ergänzt.
-- Versionen: Emotronic v1.71.
+- Versionen: Emotronic v1.72.
