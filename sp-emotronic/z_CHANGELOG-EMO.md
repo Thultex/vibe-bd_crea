@@ -68,7 +68,9 @@ Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufslogik sowie
 - Doku: Übersicht, Anleitung, Design, Ideen, Plan, Installationshinweise und technische Übergabe ergänzt.
 - Anzeige: Der direkte Simon-Einstieg verwendet weiterhin den farbigen OpenMoji-Controller `1F3AE`; im ausgeschalteten Zustand ersetzt nun die farbige Videokassette `1F4FC` das `R`.
 - Anzeige: Der Aus-Knopf verwendet das farbige OpenMoji-Symbol `1F50D`.
-- Anzeige: Die beiden neuen OpenMoji-Symbole auf den unteren Funktionstasten wurden auf 34 Pixel vergrößert, ohne die Tastenhöhe zu verändern.
+- Anzeige: Die beiden nur im ausgeschalteten Zustand sichtbaren OpenMoji-Symbole verwenden die schwarz-weißen Varianten und wurden mit reduziertem Innenabstand auf 36 Pixel vergrößert, ohne die Tastenhöhe zu verändern.
+- Fix: Videokassette und Lupe erscheinen nur noch im ausgeschalteten Zustand; eingeschaltet werden wieder `R` und das normale Power-Zeichen dargestellt.
+- Bedienung: Beim Ausschalten wird die Intensität samt Zeiger sofort auf `0` gesetzt.
 - Anzeige: Die Score-Empfangsvorschau verwendet den tatsächlich verlinkten OpenMoji-Pokal `1F3C6` statt eines plattformabhängigen Emoji-Zeichens.
 - Design: OpenMoji ist künftig in Emotronic zu bevorzugen, wo Motiv und Darstellung sinnvoll passen; Text- und ASCII-Fallbacks bleiben erhalten.
-- Versionen: Emotronic v1.95.
+- Versionen: Emotronic v1.96.

@@ -1,4 +1,4 @@
-# Emotronic v1.95
+# Emotronic v1.96
 
 Emotronic ist eine installierbare, offlinefähige PWA zur Auswahl, Darstellung, Kombination und Wiedergabe von Gefühlen. Die Oberfläche ist an ein kompaktes Retro-Handgerät angelehnt und für Touch, Maus und Tastatur ausgelegt.
 
@@ -47,7 +47,7 @@ Ein Druck auf Telefon kopiert in **Bereit**, auf der `Simon Feels!`-Auswahl oder
 | Datei | Zweck |
 |---|---|
 | `index.html` | Hauptanwendung mit Oberfläche, CSS und JavaScript |
-| `Emotronic-v1.95.html` | Versionierte Kopie der Hauptanwendung |
+| `Emotronic-v1.96.html` | Versionierte Kopie der Hauptanwendung |
 | `manifest.webmanifest` | PWA-Metadaten und Installationskonfiguration |
 | `sw.js` | Service Worker für Offline-Cache |
 | `icon-192.png`, `icon-512.png` | PWA-Symbole |
@@ -190,7 +190,7 @@ Die Zwischenablage verwendet zuerst die moderne Clipboard API und danach einen k
 
 ## Gedächtnisspiel
 
-Das Gedächtnisspiel wird bei ausgeschaltetem Gerät über die farbige OpenMoji-Videokassette `1F4FC` auf der sonstigen `R`-Taste geöffnet. Zuerst erscheint die Schwierigkeitsauswahl. Der Aus-Knopf trägt das farbige OpenMoji-Symbol `1F50D`.
+Das Gedächtnisspiel wird bei ausgeschaltetem Gerät über die schwarz-weiße OpenMoji-Videokassette `1F4FC` auf der sonstigen `R`-Taste geöffnet. Zuerst erscheint die Schwierigkeitsauswahl. Nur im ausgeschalteten Zustand trägt auch der Aus-Knopf das schwarz-weiße OpenMoji-Symbol `1F50D`; eingeschaltet zeigt er das normale Power-Zeichen. Beide OpenMoji-Symbole sind mit 36 Pixeln möglichst groß in die unveränderten Tasten eingepasst. Beim Ausschalten springt die Intensität sofort auf `0`.
 
 Beim Einstieg baut sich oben `Simon Feels!` in derselben Schriftgröße wie die normale Introanzeige auf und ein kurzer Startjingle erklingt. Die Auswahl bleibt dabei sofort bedienbar; jede Spielaktion beendet den Titelaufbau. Der Direktlink `#simon` wartet zunächst auf einem weißen Bildschirm mit dem farbigen OpenMoji-Controller `1F3AE` auf einen Tipp, damit Animation und Ton erst nach dieser Interaktion starten.
 
@@ -287,11 +287,11 @@ Diese Reihenfolge soll bei weiteren Änderungen erhalten bleiben.
 ## Offline/PWA
 
 - Der Service Worker cached die Kernressourcen.
-- Die aktuelle Cache-Version lautet `emotronic-v95`.
+- Die aktuelle Cache-Version lautet `emotronic-v96`.
 - Beim Aktivieren werden nur ältere Emotronic-Caches entfernt; Caches anderer Anwendungen auf derselben Domain bleiben erhalten.
 - Nicht gecachte GET-Anfragen werden aus dem Netz geladen und anschließend gespeichert.
 - Bei einem Netzfehler wird als Fallback `index.html` verwendet.
 
 ## Drittmaterial
 
-Wo es gestalterisch und semantisch passt, sind OpenMoji-Grafiken gegenüber plattformabhängigen Emoji-Zeichen zu bevorzugen. Dazu gehören derzeit insbesondere der Controller `1F3AE`, die Videokassette `1F4FC`, das Symbol `1F50D` auf dem Aus-Knopf und der Pokal `1F3C6`. Bedienbare Kernfunktionen behalten einen einfachen Text- oder ASCII-Fallback. Copyright und Lizenzbedingungen von OpenMoji sind zu beachten. Die App zeigt beim Start `(c) OpenMoji` an.
+Wo es gestalterisch und semantisch passt, sind OpenMoji-Grafiken gegenüber plattformabhängigen Emoji-Zeichen zu bevorzugen. Dazu gehören derzeit insbesondere der Controller `1F3AE`, die schwarz-weiße Videokassette `1F4FC`, das schwarz-weiße Symbol `1F50D` auf dem Aus-Knopf und der Pokal `1F3C6`. Bedienbare Kernfunktionen behalten einen einfachen Text- oder ASCII-Fallback. Copyright und Lizenzbedingungen von OpenMoji sind zu beachten. Die App zeigt beim Start `(c) OpenMoji` an.
