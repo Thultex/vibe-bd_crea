@@ -1,10 +1,10 @@
 <!--
   ============================================================================
-  Emotronic v1.69
+  Emotronic v1.70
   Projektname: Emotronic
   Autor: Rasmus Klette
   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-  Aktuelle Revision: 69
+  Aktuelle Revision: 70
   ============================================================================
 -->
 <!doctype html>
@@ -26,7 +26,7 @@
 :root{--ink:#24272c;--paper:#f8f3e9;--screen:#edf5e7;--case:#d6cec0;--shadow:rgba(28,30,34,.22);--green:#bfe7a3;--yellow:#f7df70;--red:#ef8f86}
 *{box-sizing:border-box}html{width:100%;max-width:100%;overflow-x:clip;overscroll-behavior-x:none}button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
 body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;padding:max(0px,env(safe-area-inset-top)) max(0px,env(safe-area-inset-right)) max(0px,env(safe-area-inset-bottom)) max(0px,env(safe-area-inset-left));display:grid;place-items:center;overflow:hidden;overscroll-behavior:none;touch-action:manipulation;position:relative;background:radial-gradient(circle at top,#fbf8f2,#ddd6ca);font-family:ui-rounded,"Arial Rounded MT Bold",system-ui,sans-serif;color:var(--ink)}
-.app{position:relative;width:100%;max-width:430px;min-width:0;margin-inline:auto;padding:12px;background:linear-gradient(145deg,#e7e0d4,#bbb2a4);border:2px solid #81796e;box-shadow:0 18px 40px var(--shadow);display:flex;flex-direction:column;gap:8px;overflow:hidden;transform:scale(var(--app-fit-scale,1));transform-origin:center center;will-change:transform}.app>*{min-width:0;max-width:100%}
+.app{width:100%;max-width:430px;min-width:0;margin-inline:auto;padding:12px;background:linear-gradient(145deg,#e7e0d4,#bbb2a4);border:2px solid #81796e;box-shadow:0 18px 40px var(--shadow);display:flex;flex-direction:column;gap:8px;overflow:hidden;transform:scale(var(--app-fit-scale,1));transform-origin:center center;will-change:transform}.app>*{min-width:0;max-width:100%}
 @media(max-width:760px){.app{background:transparent;border:0;box-shadow:none}}
 @media(min-width:520px){.app{border-radius:42px;margin:24px}}
 .top-shell{position:relative;background:var(--screen);--emotion-bg:#edf5e7;background:var(--emotion-bg);border:3px solid var(--ink);border-radius:30px 30px 18px 18px;min-height:286px;padding:52px 14px 12px;overflow:hidden;box-shadow:inset 0 0 0 4px rgba(255,255,255,.5);transition:filter .25s,background .65s cubic-bezier(.2,.8,.2,1)}
@@ -134,7 +134,7 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 .meter-wrap,.meter,.keypad-shell,.keypad,.utility{min-width:0;max-width:100%}.keypad,.utility{width:100%}.emotion-key{min-width:0;overflow:hidden}.emotion-key span{max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .app.game-select .emotion-key{filter:grayscale(.82) brightness(.72);opacity:.58}.app.game-select .emotion-key[data-key="neutral"]{filter:none;opacity:1;outline:4px solid #fff;box-shadow:0 0 0 3px var(--ink),0 4px 0 #7e776d}.app.game-select .corner{opacity:1;filter:none;pointer-events:auto;cursor:pointer}.app.game-select .corner.active{background:#eee8dc;box-shadow:none}
 .sender-stream{display:none;position:absolute;right:10px;top:76px;width:64px;height:38px;overflow:hidden;z-index:4;font:950 27px/38px ui-monospace,SFMono-Regular,Consolas,monospace;text-align:right;white-space:pre;color:rgba(36,39,44,.82);pointer-events:none}.sender-stream.active{display:block}.sender-stream span{position:absolute;inset:0;opacity:0;animation:senderStream 1.56s steps(1,end) 1}.sender-stream span:nth-child(2){animation-delay:.36s}.sender-stream span:nth-child(3){animation-delay:.72s}.sender-stream span:nth-child(4){animation-delay:1.08s}@keyframes senderStream{0%,22%{opacity:1;transform:translateX(-2px)}23%,100%{opacity:0;transform:translateX(4px)}}
-.app.incoming-share-active button:not(#off){pointer-events:none;filter:grayscale(.86) brightness(.82);opacity:.46}.incoming-share{position:absolute;inset:12px 12px auto;height:286px;z-index:40;border:3px solid var(--ink);border-radius:30px 30px 18px 18px;background:rgba(237,245,231,.96);display:grid;place-content:center;justify-items:center;gap:9px;text-align:center;pointer-events:auto}.incoming-share[hidden]{display:none}.incoming-message-icon{position:relative;width:82px;height:64px;display:grid;place-items:center;font-size:52px;line-height:1;animation:incomingMessage .75s cubic-bezier(.2,.8,.2,1) both}.incoming-message-icon i{position:absolute;right:-8px;top:-12px;font:950 27px/1 ui-rounded,system-ui,sans-serif;animation:incomingArrow .38s ease-in-out infinite alternate}.incoming-share-label{font-size:16px;font-weight:950;letter-spacing:.02em}.incoming-share-dots{font:950 20px/1 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.12em;animation:incomingDots .5s steps(2,end) infinite}@keyframes incomingMessage{0%{opacity:0;transform:translateY(-24px) scale(.72)}38%{opacity:1;transform:translateY(4px) scale(1.08)}100%{opacity:1;transform:translateY(0) scale(1)}}@keyframes incomingArrow{from{transform:translateY(-3px)}to{transform:translateY(5px)}}@keyframes incomingDots{0%,33%{opacity:.28}34%,100%{opacity:1}}
+.app.incoming-share-active button:not(#off){pointer-events:none;filter:grayscale(.86) brightness(.82);opacity:.46}.top-shell.incoming-share-status{--emotion-bg:#edf5e7!important;background:#edf5e7!important;filter:none}.incoming-message-stage{overflow:visible}.incoming-message-icon{position:relative;width:82px;height:60px;display:grid;place-items:center;font:950 50px/1 ui-rounded,system-ui,sans-serif;animation:incomingMessage .75s cubic-bezier(.2,.8,.2,1) both}.incoming-message-icon i{position:absolute;right:-7px;top:-4px;font:950 25px/1 ui-rounded,system-ui,sans-serif;animation:incomingArrow .38s ease-in-out infinite alternate}@keyframes incomingMessage{0%{opacity:0;transform:translateY(-22px) scale(.72)}38%{opacity:1;transform:translateY(4px) scale(1.08)}100%{opacity:1;transform:translateY(0) scale(1)}}@keyframes incomingArrow{from{transform:translateY(-3px)}to{transform:translateY(5px)}}
 </style>
 </head>
 <body>
@@ -165,20 +165,19 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 <div class="utility"><button class="repeat" id="repeat" aria-label="Wiederholen">R<span class="replay-count" id="replayCount" aria-live="polite"></span></button><button class="combo" id="combo" aria-label="Emotionen kombinieren"><span class="combo-symbol"><i></i></span></button><button class="off" id="off" aria-label="Ein oder Aus"><span class="power-symbol" aria-hidden="true"></span></button></div>
 
 </section>
-<div class="incoming-share" id="incomingShare" role="status" aria-live="assertive" aria-label="Eingehende Nachricht" hidden><div class="incoming-message-icon" aria-hidden="true"><span>✉</span><i>↓</i></div><div class="incoming-share-label">Eingehende Nachricht</div><div class="incoming-share-dots" aria-hidden="true">•••</div></div>
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v1.69 — CODEKOPF
+   Emotronic v1.70 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 69
+   Aktuelle Revision: 70
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'1.69',
-  revision:69,
+  version:'1.70',
+  revision:70,
   author:'Rasmus Klette'
 });
 
@@ -320,6 +319,7 @@ const specialSoundPatterns={
  gameLose:[392,330,262,196],
  lifeLose:[523,440,349,294],
  lifeGain:[523,659,784,1047,1319],
+ incomingMessage:[659,988,1319],
  powerOn:[262,392,523,784],
  powerOff:[659,523,392,262]
 };
@@ -594,11 +594,19 @@ function restoreHistoryItem(item){
 }
 function showIncomingShare(ready){
  clearTimeout(state.incomingShareTimer);state.incomingShare=true;
- const app=el('incomingShare').closest('.app'),notice=el('incomingShare');
- app.classList.add('incoming-share-active');notice.hidden=false;
+ const app=document.querySelector('.app'),screen=el('screen'),stage=el('asciiStage');
+ app.classList.add('incoming-share-active');screen.classList.add('incoming-share-status');
+ screen.classList.remove('ready-status');screen.style.setProperty('--emotion-bg','#edf5e7');updateGhostEmoji(null);
+ stage.className='ascii-stage incoming-message-stage';stage.innerHTML='<span class="incoming-message-icon" role="img" aria-label="Eingehende Nachricht"><span>✉</span><i aria-hidden="true">↓</i></span>';
+ playSpecialSound('incomingMessage');
+ el('emotionName').textContent='';el('emotionDetail').textContent='';
+ el('currentEmotion').textContent='';el('currentCategory').textContent='';el('currentStrength').textContent='';el('emotionInfo').classList.add('empty');
+ document.querySelectorAll('.segment').forEach(segment=>segment.classList.remove('active'));
+ const needle=el('needle');needle.style.setProperty('--needle-pos','0');needle.style.setProperty('--needle-color','#9aa09a');
  document.querySelectorAll('button:not(#off)').forEach(button=>{button.disabled=true});el('off').disabled=false;
  state.incomingShareTimer=setTimeout(()=>{
-  state.incomingShare=false;state.incomingShareTimer=null;app.classList.remove('incoming-share-active');notice.hidden=true;
+  state.incomingShare=false;state.incomingShareTimer=null;app.classList.remove('incoming-share-active');screen.classList.remove('incoming-share-status');
+  stage.className='ascii-stage';stage.textContent=' ';
   document.querySelectorAll('button').forEach(button=>{button.disabled=false});
   ready()
  },Math.max(0,Number(APP_CONFIG.sharing.incomingDelayMs)||750))
@@ -606,7 +614,8 @@ function showIncomingShare(ready){
 function cancelIncomingShare(){
  if(!state.incomingShare)return false;
  clearTimeout(state.incomingShareTimer);state.incomingShareTimer=null;state.incomingShare=false;
- el('incomingShare').hidden=true;document.querySelector('.app').classList.remove('incoming-share-active');
+ document.querySelector('.app').classList.remove('incoming-share-active');el('screen').classList.remove('incoming-share-status');
+ el('asciiStage').className='ascii-stage';el('asciiStage').textContent=' ';
  document.querySelectorAll('button').forEach(button=>{button.disabled=false});
  render();return true
 }

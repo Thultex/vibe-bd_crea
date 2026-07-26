@@ -25,7 +25,7 @@ Der Laufzeitspiegel enthält ausschließlich `index.html`, Manifest, Service Wor
 - Eine Gefühlstaste erzeugt bei jedem Klick einen Replay-Schritt.
 - Intensitätsänderungen ersetzen nur den zuletzt erzeugten Schritt derselben Gefühlsauswahl.
 - Replay-Start und Replay-Sharing synchronisieren den sichtbaren Endzustand, ohne ihn doppelt anzuhängen.
-- Eingehende Emotions- und Replay-Links zeigen vor der Wiedergabe 750 ms lang eine animierte Nachricht.
+- Eingehende Emotions- und Replay-Links zeigen vor der Wiedergabe 750 ms lang ein animiertes Nachrichtensymbol direkt im normalen Display und spielen einen kurzen Empfangs-Jingle.
 - Während der Empfangsphase sind alle Bedientasten außer Aus gesperrt; Aus bricht die aktuelle Aktion unmittelbar ab.
 
 ## Datenschutz
