@@ -4,23 +4,23 @@
 
 Ausgangsdatum: 2026-07-26
 
-*Diese Woche (ca. 1,6h, 1 Tag, Inhalte):*
-Emotronic-PWA übernommen, strukturiert, dokumentiert, Replay-Verlauf korrigiert sowie Versionsanzeige und interaktive Empfangssteuerung ergänzt.
+*Diese Woche (ca. 1,8h, 2 Tage, Inhalte):*
+Emotronic-PWA übernommen, strukturiert, dokumentiert, Replay-Verlauf sowie Intensitätszeiger korrigiert und interaktive Empfangssteuerung ergänzt.
 
 *Letzte Woche (0h, 0 Tage, Inhalte):*
 Keine Einträge.
 
-*Dieser Monat (ca. 1,6h, 1 Tag, Inhalte):*
-Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufslogik sowie Versionsanzeige und interaktiver Empfangssteuerung.
+*Dieser Monat (ca. 1,8h, 2 Tage, Inhalte):*
+Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufs- und Zeigerlogik sowie Versionsanzeige und interaktiver Empfangssteuerung.
 
 *Letzter Monat (0h, 0 Tage, Inhalte):*
 Keine Einträge.
 
-*Jahr (ca. 1,6h, 1 Tag, Inhalte):*
-Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufslogik sowie Versionsanzeige und interaktiver Empfangssteuerung.
+*Jahr (ca. 1,8h, 2 Tage, Inhalte):*
+Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufs- und Zeigerlogik sowie Versionsanzeige und interaktiver Empfangssteuerung.
 
-*Insgesamt (ca. 1,6h, 1 Tag, Inhalte):*
-Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufslogik sowie Versionsanzeige und interaktiver Empfangssteuerung.
+*Insgesamt (ca. 1,8h, 2 Tage, Inhalte):*
+Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufs- und Zeigerlogik sowie Versionsanzeige und interaktiver Empfangssteuerung.
 
 ## Log
 
@@ -76,7 +76,13 @@ Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufslogik sowie
 - Fix: Beim Ausschalten wird neben dem internen Intensitätswert auch die sichtbare Zeigerposition unmittelbar auf `0` gesetzt.
 - Fix: Der leere Bereit-Zustand wird nicht mehr irrtümlich als Kombinationsobjekt erkannt und bleibt nach Start, Neustart oder Ausschalten auf Intensität `0`; die erste Gefühlsauswahl beginnt wieder auf Stufe `1`.
 - Anzeige: Die grauen Zusatzsymbole rechts neben `R` und Power wurden von 18 auf 21 Pixel vergrößert, ohne die feste Tastenhöhe zu verändern.
-- Fix: Der Intensitätszeiger behält seine weiche Bewegung beim Verlassen von Bereit, bei Klicks auf Stufe `1–3`, bei Plus/Minus und beim Ausschalten; die alte Position wird vor dem Setzen des neuen Ziels festgehalten.
 - Anzeige: Die Score-Empfangsvorschau verwendet den tatsächlich verlinkten OpenMoji-Pokal `1F3C6` statt eines plattformabhängigen Emoji-Zeichens.
 - Design: OpenMoji ist künftig in Emotronic zu bevorzugen, wo Motiv und Darstellung sinnvoll passen; Text- und ASCII-Fallbacks bleiben erhalten.
-- Versionen: Emotronic v2.00.
+- Versionen: Emotronic v2.01.
+
+### 2026-07-27 - emo, tools, pwa, test (ca. 0,2h)
+
+- Fix: Die Zeigerposition wird als animierbare CSS-Zahl interpoliert, sodass die Nadel zwischen den Intensitäten wieder sichtbar gleitet und nachschwingt. Das gilt auch beim Wechsel zu Neutral und von Neutral zu einem Gefühl; die unabhängige `null`-Absicherung bleibt erhalten.
+- Fix: Bereit setzt die Intensität sofort auf `0`, aktiviert die Transition danach aber wieder, damit die erste Auswahl nach Aus- und Einschalten nicht springt.
+- Fix: Am linken Anschlag wird die sichtbare Position begrenzt und das zusätzliche Nachschwingen unterdrückt, damit die Nadel bei Neutral nicht über den Rand läuft.
+- Test: Den veröffentlichten Spiegel lokal im Browser mit Aus-/Einschaltzyklus sowie den Übergängen 0→1, 1→3, 3→Neutral und Neutral→1 geprüft.

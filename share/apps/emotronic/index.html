@@ -1,10 +1,10 @@
 <!--
   ============================================================================
-  Emotronic v2.00
+  Emotronic v2.01
   Projektname: Emotronic
   Autor: Rasmus Klette
   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-  Aktuelle Revision: 100
+  Aktuelle Revision: 101
   ============================================================================
 -->
 <!doctype html>
@@ -23,6 +23,7 @@
 <link rel="icon" type="image/png" href="favicon.png" />
 <link rel="apple-touch-icon" href="apple-touch-icon.png" />
 <style>
+@property --needle-pos{syntax:"<number>";inherits:false;initial-value:0}
 :root{--ink:#24272c;--paper:#f8f3e9;--screen:#edf5e7;--case:#d6cec0;--shadow:rgba(28,30,34,.22);--green:#bfe7a3;--yellow:#f7df70;--red:#ef8f86}
 *{box-sizing:border-box}html{width:100%;max-width:100%;overflow-x:clip;overscroll-behavior-x:none}button{font:inherit;color:inherit;-webkit-tap-highlight-color:transparent}
 body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;padding:max(0px,env(safe-area-inset-top)) max(0px,env(safe-area-inset-right)) max(0px,env(safe-area-inset-bottom)) max(0px,env(safe-area-inset-left));display:grid;place-items:center;overflow:hidden;overscroll-behavior:none;touch-action:manipulation;position:relative;background:radial-gradient(circle at top,#fbf8f2,#ddd6ca);font-family:ui-rounded,"Arial Rounded MT Bold",system-ui,sans-serif;color:var(--ink)}
@@ -56,7 +57,7 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 .top-shell.ready-status .needle:after{background:#9aa09a!important}
 .top-shell.ready-status .segment{outline:none!important;box-shadow:none!important;z-index:3!important;font-size:21px!important;transform:none!important}.top-shell.ready-status .segment.active{outline:none!important;box-shadow:none!important;font-size:21px!important;transform:none!important}
 .meter.off .segment{filter:grayscale(1) brightness(.9);opacity:.72}.meter.combo-locked .segment{cursor:not-allowed}.meter.combo-locked .segment:not(.active){opacity:.58;filter:saturate(.55)}
-.needle{position:absolute;top:4px;left:calc(39px + (100% - 78px) * var(--needle-pos,0));width:5px;height:28px;background:var(--needle-color,var(--ink));border-radius:6px;transform:translateX(-50%);transition:left .62s cubic-bezier(.18,.92,.22,1.12),background-color .28s ease;z-index:6;box-shadow:0 0 0 2px rgba(255,255,255,.75)}
+.needle{position:absolute;top:4px;left:max(39px,calc(39px + (100% - 78px) * var(--needle-pos,0)));width:5px;height:28px;background:var(--needle-color,var(--ink));border-radius:6px;transform:translateX(-50%);transition:--needle-pos .62s cubic-bezier(.18,.92,.22,1.12),background-color .28s ease;z-index:6;box-shadow:0 0 0 2px rgba(255,255,255,.75)}
 .needle:after{content:"";position:absolute;left:50%;bottom:-5px;width:13px;height:13px;border-radius:50%;background:var(--needle-color,var(--ink));transform:translateX(-50%);transition:background-color .28s ease}
 .needle.swing{animation:needleSwing .72s ease-out}
 @keyframes needleSwing{0%{transform:translateX(-50%)}45%{transform:translateX(calc(-50% + var(--overshoot,6px)))}72%{transform:translateX(calc(-50% - var(--rebound,3px)))}100%{transform:translateX(-50%)}}
@@ -171,16 +172,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v2.00 — CODEKOPF
+   Emotronic v2.01 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 100
+   Aktuelle Revision: 101
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'2.00',
-  revision:100,
+  version:'2.01',
+  revision:101,
   author:'Rasmus Klette'
 });
 
@@ -394,12 +395,12 @@ function pressEmotion(k){
  }
  if(state.comboMode){if(k==='neutral')return;handleCombo(k);return}
  if(k==='neutral'){
-   if(state.selected==='neutral'){state.history=[];state.last=null;state.selected=null;state.displayKey=null;state.intensity=0;render();animateCurrent();return}
-   if(state.selected)state.last=snapshot();state.selected='neutral';state.displayKey='neutral';state.intensity=0;recordHistory();triggerSenderStream();playEmotionSound('neutral',1);render();animateCurrent();return
+   if(state.selected==='neutral'){state.history=[];state.last=null;state.selected=null;state.displayKey=null;state.intensity=0;animateNeedle(0);render();animateCurrent();return}
+   if(state.selected)state.last=snapshot();state.selected='neutral';state.displayKey='neutral';state.intensity=0;recordHistory();triggerSenderStream();playEmotionSound('neutral',1);animateNeedle(0);render();animateCurrent();return
  }
  if(state.selected===k){recordHistory();playEmotionSound(k,state.intensity);animateCurrent(true);return}
  else{if(state.selected)state.last=snapshot();state.selected=k;state.displayKey=k;state.intensity=state.source==='other'?APP_CONFIG.normalMode.minEmotionLevel:Math.max(APP_CONFIG.normalMode.minEmotionLevel,state.intensity||0);recordHistory();triggerSenderStream()}
- playEmotionSound(k,state.intensity);render();animateCurrent()
+ playEmotionSound(k,state.intensity);animateNeedle(state.intensity);render();animateCurrent()
 }
 function exitCombo(){state.comboMode=false;state.comboFirst=null;render()}
 function handleCombo(k){
@@ -409,7 +410,7 @@ function handleCombo(k){
  if(k===state.comboFirst){
   state.comboMode=false;state.comboFirst=null;state.selected=k;state.displayKey=k;
   state.intensity=Math.max(1,Math.min(3,state.intensity||1));
-  playEmotionSound(k,state.intensity);render();animateCurrent();return
+  playEmotionSound(k,state.intensity);animateNeedle(state.intensity);render();animateCurrent();return
  }
  const ck=pairKey(state.comboFirst,k);
  // Nach der ersten Auswahl werden nicht benachbarte Emotionen ignoriert.
@@ -420,10 +421,10 @@ function handleCombo(k){
  state.displayKey=first;
  state.intensity=3;
  state.comboMode=false;state.comboFirst=null;
- recordHistory();playComboSound(c);render();animateCurrent()
+ recordHistory();playComboSound(c);animateNeedle(3);render();animateCurrent()
 }
 function setIntensity(n){if(state.game.active)return;if(!state.powered)return;if(state.selected&&typeof state.selected==='object'){state.intensity=3;render();return}n=Math.max(0,Math.min(3,n));if(!state.selected){state.intensity=0;render();return}if(state.selected==='neutral'){state.intensity=0;render();return}n=Math.max(APP_CONFIG.normalMode.minEmotionLevel,n);state.intensity=n;recordHistory('replace-current');playEmotionSound(state.selected,n);animateNeedle(n);render();animateCurrent()}
-function animateNeedle(target=state.intensity){const n=el('needle'),positions={0:0,1:0.17,2:0.5,3:0.83};target=Math.max(0,Math.min(3,Number(target)||0));const dir=target>Number(n.dataset.prev||0)?1:-1;n.classList.remove('swing');void n.offsetWidth;n.dataset.prev=target;n.style.setProperty('--needle-pos',positions[target]);n.style.setProperty('--needle-color',target===0?'#9aa09a':'var(--ink)');n.style.setProperty('--overshoot',`${dir*7}px`);n.style.setProperty('--rebound',`${dir*3}px`);n.classList.add('swing')}
+function animateNeedle(target=state.intensity){const n=el('needle');const dir=target>Number(n.dataset.prev||0)?1:-1,atLeftEdge=Number(target)===0;n.dataset.prev=target;n.style.setProperty('--overshoot',atLeftEdge?'0px':`${dir*7}px`);n.style.setProperty('--rebound',atLeftEdge?'0px':`${dir*3}px`);n.classList.remove('swing');void n.offsetWidth;n.classList.add('swing')}
 function getFrames(){if(!state.powered)return [''];if(!state.selected)return [''];if(typeof state.selected==='object')return state.selected.ascii;const e=base[state.selected];if(state.selected==='neutral')return e.ascii[0];return e.ascii[Math.max(0,state.intensity-1)]}
 function setStagePosition(){const stage=el('asciiStage');stage.classList.remove('intense');if(state.intensity>=3)stage.classList.add('intense')}
 function openMojiMotionClass(){if(typeof state.selected==='object')return state.selected.name==='starr'?'om-starr':'om-combo';return state.selected?`om-${state.selected}`:'om-neutral'}
@@ -473,6 +474,8 @@ function render(){
   readyNeedle.style.transition='none';
   readyNeedle.style.setProperty('--needle-pos','0');
   readyNeedle.style.setProperty('--needle-color','#9aa09a');
+  void readyNeedle.offsetWidth;
+  readyNeedle.style.transition='';
  }
  el('screen').classList.toggle('ready-status',readyStatus);
  el('screen').classList.toggle('special-status',!!state.powerAnimating||!!state.powerArmed||readyStatus);
@@ -1130,7 +1133,7 @@ function powerToggle(){
  clearInterval(state.timer);clearTimeout(state.powerArmTimer);state.powerArmed=false;
  screen.classList.remove('power-confirm');screen.classList.add('special-status');el('off').classList.remove('pulse');
  if(state.powered){
-  playSpecialSound('powerOff');state.intensity=0;animateNeedle(0);document.querySelectorAll('.segment').forEach(segment=>segment.classList.remove('active'));
+  playSpecialSound('powerOff');state.intensity=0;animateNeedle(0);const shutdownNeedle=el('needle');shutdownNeedle.style.setProperty('--needle-pos','0');shutdownNeedle.style.setProperty('--needle-color','#9aa09a');document.querySelectorAll('.segment').forEach(segment=>segment.classList.remove('active'));
   stage.className='ascii-stage shutting';
   name.textContent='';detail.textContent='';
   const outro=[':-|','(-_-)','(-.-)','(-.-) z','(-.-) zZ','(-.-) zZz'];
