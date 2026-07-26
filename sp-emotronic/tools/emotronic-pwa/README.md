@@ -1,4 +1,4 @@
-# Emotronic v1.80
+# Emotronic v1.81
 
 Emotronic ist eine installierbare, offlinefähige PWA zur Auswahl, Darstellung, Kombination und Wiedergabe von Gefühlen. Die Oberfläche ist an ein kompaktes Retro-Handgerät angelehnt und für Touch, Maus und Tastatur ausgelegt.
 
@@ -45,7 +45,7 @@ Ohne `mode`-Parameter startet Emotronic wie `mode=on`.
 | Datei | Zweck |
 |---|---|
 | `index.html` | Hauptanwendung mit Oberfläche, CSS und JavaScript |
-| `Emotronic-v1.80.html` | Versionierte Kopie der Hauptanwendung |
+| `Emotronic-v1.81.html` | Versionierte Kopie der Hauptanwendung |
 | `manifest.webmanifest` | PWA-Metadaten und Installationskonfiguration |
 | `sw.js` | Service Worker für Offline-Cache |
 | `icon-192.png`, `icon-512.png` | PWA-Symbole |
@@ -139,6 +139,7 @@ Die Animation von **starr** ist eine kurze Rückzugs- und Erstarrbewegung.
 - **Bereit** wird nie als Replay-Schritt gespeichert.
 - `R` startet den Replay-Verlauf.
 - Während des Replays zeigt eine kleine graue Zahl neben `R`, wie viele Zustände noch offen sind.
+- Im normalen Replay werden Emotionsname, Detailzeile, Kategorie und Stärke ausgeblendet, damit nur die Wiedergabe selbst im Mittelpunkt steht.
 - `R` während des Replays bricht nur die Wiedergabe ab und zeigt wieder den neuesten Zustand.
 - **Aus** während des Replays bricht ab, leert den Verlauf und geht direkt zu **Bereit**.
 - Ein normaler Neustart leert den Replay-Verlauf vollständig.
@@ -187,7 +188,7 @@ Die Zwischenablage verwendet zuerst die moderne Clipboard API und danach einen k
 
 Das Gedächtnisspiel wird bei ausgeschaltetem Gerät mit `R` geöffnet. Zuerst erscheint die Schwierigkeitsauswahl.
 
-Beim Einstieg baut sich oben `SIMON FEELS` in derselben Schriftgröße wie die normale Introanzeige auf und ein kurzer Startjingle erklingt. Die Auswahl bleibt dabei sofort bedienbar; jede Spielaktion beendet den Titelaufbau. Der Direktlink `?mode=simon` wartet zunächst auf einem weißen Bildschirm mit kleinem Spielsymbol auf einen Tipp, damit Animation und Ton erst nach dieser Interaktion starten.
+Beim Einstieg baut sich oben `Simon Feels!` in derselben Schriftgröße wie die normale Introanzeige auf und ein kurzer Startjingle erklingt. Die Auswahl bleibt dabei sofort bedienbar; jede Spielaktion beendet den Titelaufbau. Der Direktlink `?mode=simon` wartet zunächst auf einem weißen Bildschirm mit kleinem Spielsymbol auf einen Tipp, damit Animation und Ton erst nach dieser Interaktion starten.
 
 ### Schwierigkeitsgrade
 
@@ -227,7 +228,7 @@ Beim Einstieg baut sich oben `SIMON FEELS` in derselben Schriftgröße wie die n
 - Ein sichtbares Herz entspricht einem erlaubten Fehler.
 - Nach dem Verlust des letzten sichtbaren Herzens darf mit 0 Herzen weitergespielt werden; der nächste Fehler beendet das Spiel.
 - Beim Lebensverlust erscheinen eine große Herzanimation und ein eigener Ton.
-- Der Geschafft-Jingle beginnt rund 0,3 Sekunden nach dem letzten korrekten Tastendruck, damit beide Töne klarer getrennt bleiben.
+- Der Geschafft-Jingle beginnt rund 0,2 Sekunden nach dem letzten korrekten Tastendruck, damit beide Töne klarer getrennt bleiben.
 - Bei 10, 20, 30 usw. Punkten wird ein zusätzliches Leben vergeben.
 - Alle 5 Punkte läuft eine Kirby-artige Retro-Bonusanimation; ab 10 Punkten stehen zusätzliche Varianten bereit.
 - Bei Spielende werden Punktzahl und Leistungs-Kommentar angezeigt.
@@ -278,7 +279,7 @@ Diese Reihenfolge soll bei weiteren Änderungen erhalten bleiben.
 ## Offline/PWA
 
 - Der Service Worker cached die Kernressourcen.
-- Die aktuelle Cache-Version lautet `emotronic-v80`.
+- Die aktuelle Cache-Version lautet `emotronic-v81`.
 - Beim Aktivieren werden nur ältere Emotronic-Caches entfernt; Caches anderer Anwendungen auf derselben Domain bleiben erhalten.
 - Nicht gecachte GET-Anfragen werden aus dem Netz geladen und anschließend gespeichert.
 - Bei einem Netzfehler wird als Fallback `index.html` verwendet.

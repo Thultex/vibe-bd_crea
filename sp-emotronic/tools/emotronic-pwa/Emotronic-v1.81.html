@@ -1,10 +1,10 @@
 <!--
   ============================================================================
-  Emotronic v1.80
+  Emotronic v1.81
   Projektname: Emotronic
   Autor: Rasmus Klette
   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-  Aktuelle Revision: 80
+  Aktuelle Revision: 81
   ============================================================================
 -->
 <!doctype html>
@@ -171,16 +171,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v1.80 — CODEKOPF
+   Emotronic v1.81 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 80
+   Aktuelle Revision: 81
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'1.80',
-  revision:80,
+  version:'1.81',
+  revision:81,
   author:'Rasmus Klette'
 });
 
@@ -241,7 +241,7 @@ const APP_CONFIG={
     fastestGapMs:80,
     firstRoundDelayMs:700,
     nextRoundDelayMs:700,
-    roundJingleDelayMs:300,
+    roundJingleDelayMs:200,
     keyAnimationStrength:0.5,  // 0.5 = halb so stark wie im Normalmodus
     allowInputDuringLastFade:true,
     extraLifeEvery:10,         // bei 10, 20, 30 ... Punkten ein zusätzliches Leben
@@ -704,6 +704,9 @@ function renderReplayKeypad(item){
   b.innerHTML=imgMarkup(code,label)+`<span>${label}</span>`;
  });
 }
+function hideReplayLabels(){
+ el('emotionName').textContent='';el('emotionDetail').textContent='';el('currentEmotion').textContent='';el('currentCategory').textContent='';el('currentCategory').classList.remove('share-hint');el('currentStrength').textContent='';el('emotionInfo').classList.add('empty')
+}
 const gameKeys=order.filter(k=>k!=='neutral');
 const kirbyAnimations=[
  ['(>^.^)>',' <(^.^<)','^(^.^)^','(>^.^)>'],
@@ -792,9 +795,9 @@ function enterMemoryGameSelection(){
  renderGameSelection();playSpecialSound('simonStart');playSimonSelectionIntro();
 }
 function playSimonSelectionIntro(){
- const frames=['S','SI','SIM','SIMON','SIMON F','SIMON FE','SIMON FEEL','SIMON FEELS'],stage=el('asciiStage');let index=0;
+ const frames=['S','Si','Sim','Simon','Simon F','Simon Fe','Simon Feel','Simon Feels!'],stage=el('asciiStage');let index=0;
  stage.className='ascii-stage simon-title-build';stage.textContent=frames[0];
- const advance=()=>{if(!state.game.active||state.game.phase!=='select')return;index++;if(index>=frames.length){stage.className='ascii-stage simon-title-build';stage.textContent='SIMON FEELS';return}stage.className='ascii-stage simon-title-build';stage.textContent=frames[index];gameLater(advance,115)};
+ const advance=()=>{if(!state.game.active||state.game.phase!=='select')return;index++;if(index>=frames.length){stage.className='ascii-stage simon-title-build';stage.textContent='Simon Feels!';return}stage.className='ascii-stage simon-title-build';stage.textContent=frames[index];gameLater(advance,115)};
  gameLater(advance,115)
 }
 function renderGame(){
@@ -1085,7 +1088,7 @@ function replayHistory(){
   updateGhostEmoji(item.code||null,item.intensity||0,!!item.isCombo);
   if(item.isCombo&&item.colorParts){const ck=pairKey(item.colorParts[0],item.colorParts[1]);playComboSound(ck?combos[ck]:null)}
   else if(item.key)playEmotionSound(item.key,item.intensity||1);
-  renderReplayKeypad(item);
+  renderReplayKeypad(item);hideReplayLabels();
   const replayComboKey=item.isCombo&&item.colorParts?pairKey(item.colorParts[0],item.colorParts[1]):null;
   const replayMotion=item.isCombo&&(replayComboKey&&combos[replayComboKey].name==='starr')?'om-starr':item.isCombo?'om-combo':`om-${item.key||'neutral'}`;
   requestAnimationFrame(()=>animateOpenMoji(true,item.intensity||1,replayMotion));

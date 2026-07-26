@@ -16,8 +16,8 @@ Emotronic ist eine installierbare, offlinefähige PWA zur Auswahl, Darstellung, 
 
 ## Aktueller Stand
 
-- Anwendung: Emotronic v1.80
-- Service-Worker-Cache: `emotronic-v80`
+- Anwendung: Emotronic v1.81
+- Service-Worker-Cache: `emotronic-v81`
 - Öffentlicher Zielpfad: `/share/apps/emotronic/`
 - Erwarteter GitHub-Pages-Link:
   `https://thultex.github.io/vibe-bd_crea/share/apps/emotronic/`
