@@ -1,4 +1,4 @@
-# Emotronic v1.66
+# Emotronic v1.67
 
 Emotronic ist eine installierbare, offlinefähige PWA zur Auswahl, Darstellung, Kombination und Wiedergabe von Gefühlen. Die Oberfläche ist an ein kompaktes Retro-Handgerät angelehnt und für Touch, Maus und Tastatur ausgelegt.
 
@@ -37,7 +37,7 @@ Danach im Browser `http://localhost:8080` öffnen.
 | Datei | Zweck |
 |---|---|
 | `index.html` | Hauptanwendung mit Oberfläche, CSS und JavaScript |
-| `Emotronic-v1.66.html` | Versionierte Kopie der Hauptanwendung |
+| `Emotronic-v1.67.html` | Versionierte Kopie der Hauptanwendung |
 | `manifest.webmanifest` | PWA-Metadaten und Installationskonfiguration |
 | `sw.js` | Service Worker für Offline-Cache |
 | `icon-192.png`, `icon-512.png` | PWA-Symbole |
@@ -122,7 +122,9 @@ Die Animation von **starr** ist eine kurze Rückzugs- und Erstarrbewegung.
 ### Verlauf und Replay
 
 - Jede neue gültige Gefühlsauswahl wird in einem Verlauf gespeichert.
-- Doppelte, direkt aufeinanderfolgende identische Zustände werden nicht erneut eingetragen.
+- Eine anschließende Intensitätsänderung aktualisiert diesen letzten Schritt, statt zusätzliche Zwischenstufen zu speichern.
+- Ein erneuter Klick auf dieselbe Gefühlstaste speichert bewusst einen weiteren Schritt, auch wenn Gefühl und Intensität gleich bleiben.
+- Replay-Start und Replay-Sharing fügen den bereits aktuellen Zustand nicht nochmals hinzu.
 - Maximal 40 Zustände werden gehalten.
 - **Bereit** wird nie als Replay-Schritt gespeichert.
 - `R` startet den Replay-Verlauf.
@@ -146,6 +148,7 @@ Emotronic speichert geteilte Daten ausschließlich im URL-Fragment hinter `#shar
 
 - Wifi zweimal kurz tippen.
 - Der aktuelle Verlauf mit bis zu 40 Zuständen wird kopiert.
+- Bei Intensitätsänderungen enthält der Verlauf nur die zuletzt eingestellte Stufe; wiederholte Gefühlsklicks bleiben als einzelne Schritte erhalten.
 - Unter `http://` oder `https://` entsteht ein vollständiger Link.
 - Bei lokalen Dateiadressen entsteht ein portabler Share-Code.
 
@@ -255,7 +258,7 @@ Diese Reihenfolge soll bei weiteren Änderungen erhalten bleiben.
 ## Offline/PWA
 
 - Der Service Worker cached die Kernressourcen.
-- Die aktuelle Cache-Version lautet `emotronic-v66`.
+- Die aktuelle Cache-Version lautet `emotronic-v67`.
 - Beim Aktivieren werden nur ältere Emotronic-Caches entfernt; Caches anderer Anwendungen auf derselben Domain bleiben erhalten.
 - Nicht gecachte GET-Anfragen werden aus dem Netz geladen und anschließend gespeichert.
 - Bei einem Netzfehler wird als Fallback `index.html` verwendet.
