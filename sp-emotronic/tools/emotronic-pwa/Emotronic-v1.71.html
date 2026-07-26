@@ -1,10 +1,10 @@
 <!--
   ============================================================================
-  Emotronic v1.70
+  Emotronic v1.71
   Projektname: Emotronic
   Autor: Rasmus Klette
   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-  Aktuelle Revision: 70
+  Aktuelle Revision: 71
   ============================================================================
 -->
 <!doctype html>
@@ -168,16 +168,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v1.70 — CODEKOPF
+   Emotronic v1.71 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 70
+   Aktuelle Revision: 71
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'1.70',
-  revision:70,
+  version:'1.71',
+  revision:71,
   author:'Rasmus Klette'
 });
 
@@ -319,7 +319,7 @@ const specialSoundPatterns={
  gameLose:[392,330,262,196],
  lifeLose:[523,440,349,294],
  lifeGain:[523,659,784,1047,1319],
- incomingMessage:[659,988,1319],
+ incomingMessage:[784,523,0,740,494],
  powerOn:[262,392,523,784],
  powerOff:[659,523,392,262]
 };
@@ -339,6 +339,7 @@ function playTonePattern(notes,level=1){
   const ctx=ensureAudio();if(!ctx||!Array.isArray(notes)||!notes.length)return;
   const now=ctx.currentTime+.012,step=level>=3?.082:level===2?.095:.11;
   notes.forEach((freq,i)=>{
+   if(!Number.isFinite(freq)||freq<=0)return;
    const osc=ctx.createOscillator(),gain=ctx.createGain();
    osc.type=i%2?'square':'triangle';osc.frequency.setValueAtTime(freq,now+i*step);
    gain.gain.setValueAtTime(0.0001,now+i*step);
