@@ -1,10 +1,10 @@
 <!--
   ============================================================================
-  Emotronic v1.83
+  Emotronic v1.84
   Projektname: Emotronic
   Autor: Rasmus Klette
   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-  Aktuelle Revision: 83
+  Aktuelle Revision: 84
   ============================================================================
 -->
 <!doctype html>
@@ -171,16 +171,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v1.83 — CODEKOPF
+   Emotronic v1.84 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 83
+   Aktuelle Revision: 84
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'1.83',
-  revision:83,
+  version:'1.84',
+  revision:84,
   author:'Rasmus Klette'
 });
 
@@ -651,7 +651,7 @@ function applyDecodedSharedPayload(payload){
  }
  if(payload.type==='replay'&&Array.isArray(payload.items)){
   const valid=payload.items.filter(item=>item&&typeof item==='object').slice(-40);if(!valid.length)return;
-  state.history=valid;restoreHistoryItem(valid.at(-1));render();replayHistory()
+  state.history=valid;restoreHistoryItem(valid.at(-1));replayHistory()
   return
  }
  if(payload.type==='score')showSharedGameScore(payload)

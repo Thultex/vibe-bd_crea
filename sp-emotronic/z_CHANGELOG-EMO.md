@@ -55,7 +55,8 @@ Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufslogik sowie
 - Bedienung: Aus bricht die laufende Empfangsphase oder Replay-Wiedergabe unmittelbar ab.
 - Replay: Der Wechsel zu Bereit durch zweimaliges Drücken von Neutral leert den Replay-Verlauf vollständig.
 - Replay: Im Normalmodus werden Gefühl, Emotion und Intensität mit einem sehr leichten Fade während der Wiedergabe aus- und danach wieder eingeblendet.
+- Fix: Empfangene Replays beginnen direkt beim ersten Schritt, ohne den Endzustand zuvor kurz einzublenden und in das erste Bild zu überblenden.
 - Datenschutz: Detaillierten lokalen Projektpfad aus dem Ruckpacken-Startskript entfernt und öffentliche Repository-/Share-Hinweise dokumentiert.
 - Test: JavaScript-Syntax, Manifest, Icons, Service-Worker-Dateien, doppelte HTML-IDs, Versionsgleichlauf, mobile Breite und Browser-Smoke-Test geprüft.
 - Doku: Übersicht, Anleitung, Design, Ideen, Plan, Installationshinweise und technische Übergabe ergänzt.
-- Versionen: Emotronic v1.83.
+- Versionen: Emotronic v1.84.
