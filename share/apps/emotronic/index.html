@@ -1,10 +1,10 @@
 <!--
   ============================================================================
-  Emotronic v2.10
+  Emotronic v2.11
   Projektname: Emotronic
   Autor: Rasmus Klette
   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-  Aktuelle Revision: 110
+  Aktuelle Revision: 111
   ============================================================================
 -->
 <!doctype html>
@@ -173,16 +173,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v2.10 — CODEKOPF
+   Emotronic v2.11 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 110
+   Aktuelle Revision: 111
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'2.10',
-  revision:110,
+  version:'2.11',
+  revision:111,
   author:'Rasmus Klette'
 });
 
@@ -220,6 +220,7 @@ const APP_CONFIG={
     itemMs:750,
     emojiDurationMs:680,
     slowMultiplier:2,
+    slowEmojiMultiplier:1.15,
     dimInactiveKeys:true
   },
   share:{
@@ -397,6 +398,7 @@ function hideReplayCount(){
 function imgMarkup(code,alt){return `<img src="${OM}${code}.svg" alt="" aria-hidden="true" onerror="this.style.display='none'">`}
 function requestedStartupMode(){try{const mode=location.hash.slice(1);if(mode==='slow')return 'on';return ['on','off','simon'].includes(mode)?mode:APP_CONFIG.startup.mode}catch{return APP_CONFIG.startup.mode}}
 function replayTimingMultiplier(){try{return location.hash==='#slow'?Math.max(1,Number(APP_CONFIG.replay.slowMultiplier)||2):1}catch{return 1}}
+function replayEmojiTimingMultiplier(){try{return location.hash==='#slow'?Math.max(1,Number(APP_CONFIG.replay.slowEmojiMultiplier)||1.15):1}catch{return 1}}
 function build(){const startupMode=requestedStartupMode();state.game.active=false;state.game.phase='idle';state.game.awaitingShutdown=false;const pad=el('keypad');order.forEach(k=>{const e=base[k],b=document.createElement('button');b.className='emotion-key';b.style.setProperty('--c',e.color);b.dataset.key=k;b.innerHTML=imgMarkup(e.codes[0],e.category)+`<span>${e.category}</span>`;b.onclick=()=>pressEmotion(k);pad.appendChild(b)});document.querySelectorAll('.segment').forEach(s=>{s.classList.remove('active');s.onclick=()=>setIntensity(Number(s.dataset.level))});state.selected=null;state.displayKey=null;state.intensity=0;const startNeedle=el('needle');startNeedle.style.transition='none';startNeedle.style.setProperty('--needle-pos','0');startNeedle.style.setProperty('--needle-color','#9aa09a');if(startupMode==='off'){state.powered=false}else{state.powered=true}render();requestAnimationFrame(()=>{startNeedle.style.transition='';if(startupMode==='simon')showSimonLinkGate()})}
 function pairKey(a,b){return combos[`${a}|${b}`]?`${a}|${b}`:combos[`${b}|${a}`]?`${b}|${a}`:null}
 function allowedPartners(k){return Object.values(combos).filter(c=>c.partners.includes(k)).flatMap(c=>c.partners.filter(x=>x!==k))}
@@ -472,7 +474,7 @@ function openMojiMotionClass(){if(typeof state.selected==='object')return state.
 function animateOpenMoji(replayMode=false,levelOverride=null,motionOverride=null){
  const cls=motionOverride||(openMojiMotionClass());
  const level=Math.max(1,Math.min(3,levelOverride??state.intensity??1));
- const duration=replayMode?APP_CONFIG.replay.emojiDurationMs*replayTimingMultiplier():APP_CONFIG.normalMode.emojiDurationMs[level-1];
+ const duration=replayMode?APP_CONFIG.replay.emojiDurationMs*replayEmojiTimingMultiplier():APP_CONFIG.normalMode.emojiDurationMs[level-1];
  const extraMotion={
   1:[{translate:'0 0',scale:1},{translate:'0 -1px',scale:1.012},{translate:'0 0',scale:1}],
   2:[{translate:'0 0',scale:1},{translate:'-2px -3px',scale:1.028},{translate:'2px 1px',scale:1.012},{translate:'0 0',scale:1}],

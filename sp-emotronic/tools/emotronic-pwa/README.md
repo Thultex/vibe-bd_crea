@@ -1,4 +1,4 @@
-# Emotronic v2.10
+# Emotronic v2.11
 
 Emotronic ist eine installierbare, offlinefähige PWA zur Auswahl, Darstellung, Kombination und Wiedergabe von Gefühlen. Die Oberfläche ist an ein kompaktes Retro-Handgerät angelehnt und für Touch, Maus und Tastatur ausgelegt.
 
@@ -39,7 +39,7 @@ Danach im Browser `http://localhost:8080` öffnen.
 - Normal eingeschaltet mit doppelt langsamem Replay: `https://thultex.github.io/vibe-bd_crea/share/apps/emotronic/index.html#slow`
 - Ausgeschaltet: `https://thultex.github.io/vibe-bd_crea/share/apps/emotronic/index.html#off`
 
-Ohne Modusfragment startet Emotronic wie `#on`. `#slow` verändert ausschließlich das Replay: Schrittintervalle, Emoji-Bewegung, Displayübergang und Abschlusszeit laufen mit dem in `APP_CONFIG.replay.slowMultiplier` definierten Faktor, standardmäßig `2`.
+Ohne Modusfragment startet Emotronic wie `#on`. `#slow` verändert ausschließlich das Replay: Schrittintervalle, Displayübergang und Abschlusszeit laufen mit `APP_CONFIG.replay.slowMultiplier` standardmäßig doppelt so langsam. Die Emoji-Bewegung wird davon getrennt über `slowEmojiMultiplier` nur minimal auf Faktor `1.15` verlängert.
 
 Ein Druck auf Telefon kopiert in **Bereit**, auf der `Simon Feels!`-Auswahl oder im ausgeschalteten Zustand still den jeweils passenden Direktlink. Dabei erscheint bewusst kein Hinweistext.
 
@@ -48,7 +48,7 @@ Ein Druck auf Telefon kopiert in **Bereit**, auf der `Simon Feels!`-Auswahl oder
 | Datei | Zweck |
 |---|---|
 | `index.html` | Hauptanwendung mit Oberfläche, CSS und JavaScript |
-| `Emotronic-v2.10.html` | Versionierte Kopie der Hauptanwendung |
+| `Emotronic-v2.11.html` | Versionierte Kopie der Hauptanwendung |
 | `manifest.webmanifest` | PWA-Metadaten und Installationskonfiguration |
 | `sw.js` | Service Worker für Offline-Cache |
 | `icon-192.png`, `icon-512.png` | PWA-Symbole |
@@ -304,7 +304,7 @@ Diese Reihenfolge soll bei weiteren Änderungen erhalten bleiben.
 ## Offline/PWA
 
 - Der Service Worker cached die Kernressourcen.
-- Die aktuelle Cache-Version lautet `emotronic-v110`.
+- Die aktuelle Cache-Version lautet `emotronic-v111`.
 - Beim Aktivieren werden nur ältere Emotronic-Caches entfernt; Caches anderer Anwendungen auf derselben Domain bleiben erhalten.
 - Nicht gecachte GET-Anfragen werden aus dem Netz geladen und anschließend gespeichert.
 - Bei einem Netzfehler wird als Fallback `index.html` verwendet.

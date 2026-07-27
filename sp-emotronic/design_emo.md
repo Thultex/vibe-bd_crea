@@ -20,7 +20,7 @@ Der Laufzeitspiegel enthält ausschließlich `index.html`, Manifest, Service Wor
 - Cache-Namen beginnen mit `emotronic-v`; beim Aktivieren werden nur ältere Emotronic-Caches gelöscht.
 - Jede abgeschlossene Revision synchronisiert Codekopf, `APP_META`, Snapshot, README, Handoff und Cache-Version.
 - Die zweizeilige Start-/Copyrightanzeige behält die normale einzeilige Detailhöhe; möglicher Überstand verändert weder App-Höhe noch Seitenverhältnis auf Handybildschirmen.
-- Die Modusfragmente `#on`, `#off` und `#simon` starten direkt im jeweiligen Zustand; ohne Modusfragment entspricht der Start `#on`. `#slow` startet ebenfalls eingeschaltet, skaliert aber ausschließlich Schrittintervalle, Emoji-Bewegung, Displayübergang und Abschlusszeit des normalen Replays mit Faktor 2.
+- Die Modusfragmente `#on`, `#off` und `#simon` starten direkt im jeweiligen Zustand; ohne Modusfragment entspricht der Start `#on`. `#slow` startet ebenfalls eingeschaltet, verdoppelt Schrittintervalle, Displayübergang und Abschlusszeit des normalen Replays, verlängert die Emoji-Bewegung aber nur minimal um 15 Prozent.
 - Der direkte Simon-Link `#simon` wartet auf weißem Display mit kleinem Spielsymbol auf eine Interaktion; danach starten Startjingle und der Aufbau von `Simon Feels!` in normaler Intro-Schriftgröße. Die Schwierigkeitsauswahl bleibt sofort bedienbar und beendet den Titelaufbau bei Eingabe.
 - Telefon kopiert in Bereit, auf der Simon-Auswahl und im ausgeschalteten Zustand still den passenden Direktlink `#on`, `#simon` beziehungsweise `#off`.
 - `Simon Feels!` steht gegenüber seiner bisherigen Position zusätzlich um drei Viertel der eigenen Schrifthöhe tiefer; andere Simon-Anzeigen bleiben unverändert.
@@ -42,7 +42,7 @@ Der Laufzeitspiegel enthält ausschließlich `index.html`, Manifest, Service Wor
 - Replay-Start und Replay-Sharing synchronisieren den sichtbaren Endzustand, ohne ihn doppelt anzuhängen.
 - Nach einem vollständig abgespielten lokalen oder empfangenen Replay bleibt die Gesamtzahl seiner Schritte etwas größer und näher bei `R` als erneuter Abspielhinweis sichtbar. Erst der nächste Druck auf eine Gefühlstaste blendet die Zahl mit derselben weichen Skalierungs-/Deckkraftbewegung wie die ausgeschalteten Tastenhinweise aus.
 - Wird `R` während der erneuten Wiedergabe zum Abbruch gedrückt, bleibt die Gesamtzahl ebenfalls sichtbar.
-- `#slow` verwendet denselben Replay-Ablauf und dieselben Inhalte, verlängert dessen zeitliche Komponenten aber über `APP_CONFIG.replay.slowMultiplier` standardmäßig exakt auf das Doppelte.
+- `#slow` verwendet denselben Replay-Ablauf und dieselben Inhalte. `APP_CONFIG.replay.slowMultiplier` steht für Schrittfolge, Displayübergang und Abschlusszeit standardmäßig auf `2`; `slowEmojiMultiplier` steht unabhängig davon auf `1.15`.
 - Das normale Replay blendet Gefühl, Emotion und Intensität mit einem sehr leichten Fade während der Wiedergabe aus und danach wieder ein.
 - Ein empfangenes Replay rendert vor seinem ersten Schritt nicht mehr kurz den gespeicherten Endzustand.
 - Zweimaliges Drücken von Neutral wechselt zu Bereit und leert dabei den gesamten Replay-Verlauf.
