@@ -1,4 +1,4 @@
-# Emotronic v2.07
+# Emotronic v2.08
 
 Emotronic ist eine installierbare, offlinefähige PWA zur Auswahl, Darstellung, Kombination und Wiedergabe von Gefühlen. Die Oberfläche ist an ein kompaktes Retro-Handgerät angelehnt und für Touch, Maus und Tastatur ausgelegt.
 
@@ -47,7 +47,7 @@ Ein Druck auf Telefon kopiert in **Bereit**, auf der `Simon Feels!`-Auswahl oder
 | Datei | Zweck |
 |---|---|
 | `index.html` | Hauptanwendung mit Oberfläche, CSS und JavaScript |
-| `Emotronic-v2.07.html` | Versionierte Kopie der Hauptanwendung |
+| `Emotronic-v2.08.html` | Versionierte Kopie der Hauptanwendung |
 | `manifest.webmanifest` | PWA-Metadaten und Installationskonfiguration |
 | `sw.js` | Service Worker für Offline-Cache |
 | `icon-192.png`, `icon-512.png` | PWA-Symbole |
@@ -133,6 +133,7 @@ Die Animation von **starr** ist eine kurze Rückzugs- und Erstarrbewegung.
 
 - **Telefon** aktiviert den Telefon-/Eigenmodus und zeigt eine zentrierte Klingelanimation.
 - **Wifi** aktiviert die andere Seite. Bei neu ausgewählten Gefühlen kann dort die `>>>`-Sendeanimation erscheinen.
+- Im Wifi-/Sendermodus startet `>>>` außerdem beim erneuten Klick auf dasselbe Gefühl, bei einer tatsächlichen Intensitätsänderung und unmittelbar beim Aktivieren der Wifi-/Sendertaste.
 - Ein einfacher Telefon-Tipp zeigt unter der kleinen Emotionsanzeige `Replay teilen: Zweimal ☎ klicken.`.
 - Ein einfacher Wifi-Tipp zeigt dort `Gefühl teilen: Zweimal 📶 klicken.`.
 - Die normale Auswahlfunktion bleibt auch bei einem Doppeltipp erhalten.
@@ -147,6 +148,8 @@ Die Animation von **starr** ist eine kurze Rückzugs- und Erstarrbewegung.
 - **Bereit** wird nie als Replay-Schritt gespeichert.
 - `R` startet den Replay-Verlauf.
 - Während des Replays zeigt eine kleine graue Zahl neben `R`, wie viele Zustände noch offen sind.
+- Nach der vollständigen Wiedergabe bleibt dort die Gesamtzahl der Schritte als Hinweis stehen, dass `R` dasselbe Replay erneut abspielt. Das gilt automatisch auch nach einem empfangenen Replay, da beide denselben Wiedergabeweg nutzen.
+- Die Zahl ist etwas größer und näher an `R` positioniert. Erst eine neue Gefühlstaste blendet sie mit derselben weichen Deckkraft-/Skalierungsbewegung wie die Hinweise im Ausschaltzustand aus.
 - Im normalen Replay werden Gefühl, Emotion und Intensität mit einem sehr leichten Fade aus- und anschließend wieder eingeblendet, damit nur die Wiedergabe selbst im Mittelpunkt steht.
 - Ein empfangenes Replay beginnt direkt mit seinem ersten Schritt, ohne zuvor kurz den gespeicherten Endzustand einzublenden.
 - `R` während des Replays bricht nur die Wiedergabe ab und zeigt wieder den neuesten Zustand.
@@ -201,6 +204,8 @@ Das Gedächtnisspiel wird bei ausgeschaltetem Gerät weiterhin mit `R` geöffnet
 Beim Einstieg baut sich oben `Simon Feels!` in derselben Schriftgröße wie die normale Introanzeige auf und ein kurzer Startjingle erklingt. Die Auswahl bleibt dabei sofort bedienbar; jede Spielaktion beendet den Titelaufbau. Der Direktlink `#simon` wartet zunächst auf einem weißen Bildschirm mit dem farbigen OpenMoji-Controller `1F3AE` auf einen Tipp, damit Animation und Ton erst nach dieser Interaktion starten.
 
 Die Kombi-Taste ist in Simon deutlich abgedunkelt und nicht bedienbar. Erwartet Simon eine Kombination, leuchtet die Taste nach dem ersten richtig gedrückten Symbol kurz auf und wird danach wieder dunkel.
+
+Am Game Over zeigt die Zahl neben `R` sofort die Anzahl der gespeicherten Runden, obwohl das Score-Replay erst nach einem Druck auf `R` beginnt. Das gilt ebenso für empfangene Scores und nach der Rückkehr aus deren Replay.
 
 ### Schwierigkeitsgrade
 
@@ -295,7 +300,7 @@ Diese Reihenfolge soll bei weiteren Änderungen erhalten bleiben.
 ## Offline/PWA
 
 - Der Service Worker cached die Kernressourcen.
-- Die aktuelle Cache-Version lautet `emotronic-v107`.
+- Die aktuelle Cache-Version lautet `emotronic-v108`.
 - Beim Aktivieren werden nur ältere Emotronic-Caches entfernt; Caches anderer Anwendungen auf derselben Domain bleiben erhalten.
 - Nicht gecachte GET-Anfragen werden aus dem Netz geladen und anschließend gespeichert.
 - Bei einem Netzfehler wird als Fallback `index.html` verwendet.

@@ -12,7 +12,9 @@ Nach dem Start ist Emotronic eingeschaltet und zeigt **Bereit**. Eine der neun G
 - Wifi/Sender: andere Seite aktivieren; Doppeltipp teilt konsistent das aktuelle Gefühl.
 
 Beim Verstellen der Intensität auf der Telefon-/Empfängerseite zeigen alle nicht-neutralen Gefühlstasten gemeinsam die passende Emoji-Stufe. Der Hintergrund zeigt nur das angeklickte Gefühl. Auf der Wifi-Senderseite bleibt die Vorschau unverändert; in Simon erscheinen Motiv und Effekt erst beim Drücken.
+- Im Wifi-/Sendermodus läuft `>>>` bei jeder Gefühlsbetätigung einschließlich eines erneuten Klicks auf dasselbe Gefühl, bei Intensitätsänderung und beim Aktivieren der Sendertaste.
 - `R`: gespeicherte Zustände wiedergeben; erneuter Einzeldruck bricht ab.
+- Nach einer vollständigen Wiedergabe bleibt die etwas größere Schrittzahl nahe bei `R` stehen, bis eine neue Gefühlstaste gedrückt wird. Bei Simon zeigt sie am Game Over die Rundenzahl.
 - Kombinationstaste: gültige benachbarte Gefühle kombinieren.
 - Aus: Gerät aus- oder einschalten; während Replay Verlauf löschen und zu **Bereit** zurückkehren.
 - Ziffern `7 8 9 / 4 5 6 / 1 2 3`: sichtbare 3×3-Gefühlstasten bedienen.

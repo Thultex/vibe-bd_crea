@@ -1,4 +1,4 @@
-# Codex-Handoff: Emotronic v2.07
+# Codex-Handoff: Emotronic v2.08
 
 ## Auftrag
 
@@ -7,7 +7,7 @@ Diese Übergabe beschreibt den aktuellen Stand der installierbaren Emotronic-PWA
 ## Relevante Dateien
 
 - `sp-emotronic/tools/emotronic-pwa/index.html` – maßgebliche Quelle
-- `sp-emotronic/tools/emotronic-pwa/Emotronic-v2.07.html` – versionierter Snapshot, nach Änderungen neu erzeugen
+- `sp-emotronic/tools/emotronic-pwa/Emotronic-v2.08.html` – versionierter Snapshot, nach Änderungen neu erzeugen
 - `sp-emotronic/tools/emotronic-pwa/sw.js` – Service Worker und Cache-Version
 - `sp-emotronic/tools/emotronic-pwa/manifest.webmanifest` – PWA-Manifest
 - `sp-emotronic/tools/emotronic-pwa/README.md` – Nutzer- und Funktionsdokumentation
@@ -15,10 +15,10 @@ Diese Übergabe beschreibt den aktuellen Stand der installierbaren Emotronic-PWA
 
 ## Versionierung
 
-- Aktuell: **Emotronic v2.07**
-- `APP_META.version`: `2.07`
-- `APP_META.revision`: `107`
-- Service-Worker-Cache: `emotronic-v107`
+- Aktuell: **Emotronic v2.08**
+- `APP_META.version`: `2.08`
+- `APP_META.revision`: `108`
+- Service-Worker-Cache: `emotronic-v108`
 - Beim Aktivieren nur ältere Caches mit dem Präfix `emotronic-v` entfernen; andere Anwendungen können dieselbe Domain verwenden.
 - Jede abgeschlossene Revision erhöht die Version um `0.01` und die Revision um `1`.
 - Codekopf, `APP_META`, Service Worker, versionierte HTML-Datei, README und ZIP müssen synchron bleiben.
@@ -57,6 +57,7 @@ Globale Optionen nicht zwischen die Funktionslogik verteilen.
 - Die Startanimation darf kein Neutral-Emoji als Zwischenbild zeigen.
 - Telefonanimation bleibt zentriert und wirkt wie Klingeln, nicht wie ausgehende Pfeile.
 - `>>>` gehört nur zur Wifi-/Sendeanimation.
+- `triggerSenderStream()` läuft bei jeder Gefühlsbetätigung einschließlich erneutem Klick auf dasselbe Gefühl, bei tatsächlicher Intensitätsänderung und über `animateSource('other')` beim Aktivieren der Wifi-/Sendertaste.
 - Nur im Telefon-/Empfängermodus spiegeln alle nicht-neutralen Tasten die aktuelle Intensitätsstufe vorab. Der Display-Hintergrund zeigt weiterhin das tatsächlich gewählte Gefühl; Wifi/Sender und Simon erhalten keine gemeinsame Vorschau.
 - Die direkte Überblendung beim Intensitätswechsel läuft auf allen nicht-neutralen Empfängertasten und auf der aktuellen Wifi-Sendertaste. Ihre Gesamtdauer ist über `APP_CONFIG.normalMode.keypadCrossfadeMs` definierbar und beträgt standardmäßig 0,15 Sekunden. Das neue Motiv erreicht bei rund 0,12 Sekunden volle Deckkraft; das alte beginnt bei etwa 0,08 Sekunden auszufaden und endet bei 0,15 Sekunden. Dadurch dürfen weder Transparenzknick noch harter Abschlusssprung entstehen. Deckkraft- und Bewegungsanimation laufen unabhängig. Andere Sendertasten und der Display-Hintergrund erhalten keine zusätzliche Animation.
 - Das alte aktive Tastenmotiv bleibt sichtbar, bis das neue SVG erfolgreich geladen ist. Tastenbilder verwenden leeren Alternativtext und keinen großen grafischen Text-Ersatz; bei einem Fehler bleibt die kleine Tastenbeschriftung als bedienbarer Fallback.
@@ -69,7 +70,8 @@ Globale Optionen nicht zwischen die Funktionslogik verteilen.
 - Erneute Klicks auf dieselbe Gefühlstaste erzeugen bewusst weitere Schritte, auch bei identischem Zustand.
 - Replay-Start und Replay-Sharing synchronisieren den aktuellen Zustand ohne zusätzlichen Duplikatschritt.
 - `R` startet Replay.
-- Kleine graue Restanzahl steht während Replay neben `R`.
+- Die graue Restanzahl steht während Replay neben `R`. Nach vollständiger Wiedergabe bleibt `items.length` über `showReplayCount()` als erneuter Abspielhinweis stehen; weil empfangene Replays ebenfalls `replayHistory()` verwenden, benötigen sie keinen Sonderpfad.
+- Die 13-Pixel-Zahl sitzt mit `right:13px` näher bei `R` und verwendet dieselbe 0,38-Sekunden-Deckkraft-/Skalierungsbewegung wie die ausgeschalteten Tastenhinweise. `pressEmotion()` blendet sie über `hideReplayCount()` aus.
 - `R` während Replay: nur abbrechen und neuesten gespeicherten Zustand wiederherstellen.
 - **Aus** während Replay: abbrechen, Verlauf leeren, direkt zu Bereit; nicht Neutral und nicht Gerät ausschalten.
 - Normaler Neustart leert den Replay-Verlauf.
@@ -130,6 +132,7 @@ In Simon ist die Kombi-Taste deutlich abgedunkelt und ignoriert direkte Eingaben
 - Extra-Leben alle 10 Punkte.
 - Bonusanimation alle 5 Punkte.
 - Nach Game Over nur `R` und Aus aktiv.
+- Am Game Over ruft die Anzeige `showReplayCount(validSharedGameSequence(g.sequence).length)` sofort auf, auch ohne gestartetes Score-Replay. `renderGame()` stellt denselben Rundenzähler für empfangene Scores und nach der Replay-Rückkehr wieder her.
 
 ## Mobile/PWA
 
@@ -159,9 +162,9 @@ rm emotronic_check.js
 Für ein auslieferbares ZIP vom Repository-Root aus:
 
 ```bash
-rm -f emotronic-pwa-v2.07.zip
-zip -rq emotronic-pwa-v2.07.zip sp-emotronic/tools/emotronic-pwa
-unzip -t emotronic-pwa-v2.07.zip
+rm -f emotronic-pwa-v2.08.zip
+zip -rq emotronic-pwa-v2.08.zip sp-emotronic/tools/emotronic-pwa
+unzip -t emotronic-pwa-v2.08.zip
 ```
 
 ## Vorsicht bei Änderungen
