@@ -1,10 +1,10 @@
 <!--
   ============================================================================
-  Emotronic v2.12
+  Emotronic v2.13
   Projektname: Emotronic
   Autor: Rasmus Klette
   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-  Aktuelle Revision: 112
+  Aktuelle Revision: 113
   ============================================================================
 -->
 <!doctype html>
@@ -173,16 +173,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v2.12 — CODEKOPF
+   Emotronic v2.13 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 112
+   Aktuelle Revision: 113
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'2.12',
-  revision:112,
+  version:'2.13',
+  revision:113,
   author:'Rasmus Klette'
 });
 
@@ -623,10 +623,10 @@ function decodeSharePayload(value){
  try{const padded=value.replace(/-/g,'+').replace(/_/g,'/')+'==='.slice((value.length+3)%4);return JSON.parse(decodeURIComponent(escape(atob(padded))))}
  catch{return null}
 }
-function shareReference(payload){
+function shareReference(payload,fragmentOverride=null){
  const encoded=encodeSharePayload(payload);
  if(!encoded)return null;
- const fragmentType=payload?.type==='score'?'score':payload?.type==='replay'?'replay':'share';
+ const fragmentType=fragmentOverride==='slow'?'slow':payload?.type==='score'?'score':payload?.type==='replay'?'replay':'share';
  const fragment=`#${fragmentType}=${encoded}`;
  // content:// und file:// sind geräteinterne Adressen und in normalen Browsern
  // nicht als teilbare Links nutzbar. Nur HTTP(S) ergibt einen echten Link.
@@ -667,8 +667,8 @@ async function copyTextRobust(text){
 async function copyModeLink(mode){
  let text=`#${mode}`;if(location.protocol==='http:'||location.protocol==='https:'){const url=new URL(location.href);url.searchParams.delete('mode');url.hash=mode;text=url.toString()}return copyTextRobust(text)
 }
-async function copySharePayload(payload,label){
- const reference=shareReference(payload);
+async function copySharePayload(payload,label,fragmentOverride=null){
+ const reference=shareReference(payload,fragmentOverride);
  if(!reference){flashShareStatus('Teilen nicht möglich');return}
  const copied=await copyTextRobust(reference.text);
  if(!copied){flashShareStatus('Kopieren nicht möglich');return}
@@ -738,7 +738,7 @@ function cancelIncomingShare(){
  if(state.incomingShareStartTimer){clearTimeout(state.incomingShareStartTimer);state.incomingShareStartTimer=null;render();return true}
  return finishIncomingShare(false)
 }
-function applyDecodedSharedPayload(payload){
+function applyDecodedSharedPayload(payload,slowTag=false){
  state.powered=true;state.game.active=false;state.comboMode=false;state.comboFirst=null;state.source=APP_CONFIG.normalMode.defaultSource;state.slowReplay=false;
  document.querySelector('.app').classList.remove('game-mode','game-select');
  if(payload.type==='emotion'&&restoreHistoryItem(payload.item)){
@@ -746,17 +746,17 @@ function applyDecodedSharedPayload(payload){
  }
  if(payload.type==='replay'&&Array.isArray(payload.items)){
   const valid=payload.items.filter(item=>item&&typeof item==='object').slice(-40);if(!valid.length)return;
-  state.history=valid;state.slowReplay=payload.slow===true;restoreHistoryItem(valid.at(-1));replayHistory()
+  state.history=valid;state.slowReplay=slowTag||payload.slow===true;restoreHistoryItem(valid.at(-1));replayHistory()
   return
  }
  if(payload.type==='score'){showSharedGameScore(payload);replayGameOverSequence()}
 }
 function applySharedPayload(){
- const match=location.hash.match(/^#(share|replay|score)=(.+)$/);if(!match)return;
+ const match=location.hash.match(/^#(share|replay|slow|score)=(.+)$/);if(!match)return;
  const payload=decodeSharePayload(match[2]),fragmentType=match[1];
- const valid=payload&&(fragmentType==='score'?payload.type==='score':fragmentType==='replay'?payload.type==='replay':['emotion','replay'].includes(payload.type));
+ const valid=payload&&(fragmentType==='score'?payload.type==='score':['replay','slow'].includes(fragmentType)?payload.type==='replay':['emotion','replay'].includes(payload.type));
  if(!valid)return;
- showIncomingShare(()=>applyDecodedSharedPayload(payload),payload)
+ showIncomingShare(()=>applyDecodedSharedPayload(payload,fragmentType==='slow'),payload)
 }
 document.addEventListener('click',event=>{
  if(!state.incomingShare||!event.target.closest('.app'))return;
@@ -1359,7 +1359,7 @@ function shareReplayFromPhone(){
 }
 function shareSlowReplayFromWifi(){
  recordHistory('sync-current');
- if(state.history.length)copySharePayload({type:'replay',items:state.history.slice(-40),slow:true},'Slow-Replay-Link');
+ if(state.history.length)copySharePayload({type:'replay',items:state.history.slice(-40)},'Slow-Replay-Link','slow');
  else flashShareStatus('Replay ist leer')
 }
 el('sendBtn').onclick=event=>{

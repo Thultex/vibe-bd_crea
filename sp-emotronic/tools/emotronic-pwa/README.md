@@ -1,4 +1,4 @@
-# Emotronic v2.12
+# Emotronic v2.13
 
 Emotronic ist eine installierbare, offlinefähige PWA zur Auswahl, Darstellung, Kombination und Wiedergabe von Gefühlen. Die Oberfläche ist an ein kompaktes Retro-Handgerät angelehnt und für Touch, Maus und Tastatur ausgelegt.
 
@@ -14,7 +14,7 @@ https://thultex.github.io/vibe-bd_crea/share/apps/emotronic/
 
 Das Repository `Thultex/vibe-bd_crea` ist öffentlich. Quelltexte, Dokumentation und Commit-Historie sind daher allgemein einsehbar; private Kontaktangaben, lokale Benutzerpfade und Zugangsdaten gehören nicht in die versionierten Dateien. Bewusste Urheber- und Namensnennungen bleiben davon unberührt.
 
-Emotronic speichert keine Gefühls-, Replay- oder Score-Daten auf einem Server. Gefühle stehen im URL-Fragment `#share=…`, Replays in `#replay=…` und Game-over-Daten in `#score=…`. Das Fragment wird beim normalen HTTP-Aufruf nicht an den Webserver übertragen, kann aber von jeder Person gelesen und decodiert werden, die den vollständigen Link erhält. Vertrauliche Inhalte sollten deshalb nicht über öffentlich zugängliche Kanäle geteilt werden.
+Emotronic speichert keine Gefühls-, Replay- oder Score-Daten auf einem Server. Gefühle stehen im URL-Fragment `#share=…`, normale Replays in `#replay=…`, langsame Replays in `#slow=…` und Game-over-Daten in `#score=…`. Das Fragment wird beim normalen HTTP-Aufruf nicht an den Webserver übertragen, kann aber von jeder Person gelesen und decodiert werden, die den vollständigen Link erhält. Vertrauliche Inhalte sollten deshalb nicht über öffentlich zugängliche Kanäle geteilt werden.
 
 ## Schnellstart
 
@@ -38,7 +38,7 @@ Danach im Browser `http://localhost:8080` öffnen.
 - Normal eingeschaltet: `https://thultex.github.io/vibe-bd_crea/share/apps/emotronic/index.html#on`
 - Ausgeschaltet: `https://thultex.github.io/vibe-bd_crea/share/apps/emotronic/index.html#off`
 
-Ohne Modusfragment startet Emotronic wie `#on`. Langsame Wiedergabe ist kein eigener leerer Startmodus, sondern wird als `slow:true` im vollständigen Replay-Datensatz übertragen.
+Ohne Modusfragment startet Emotronic wie `#on`. `#slow=…` ist der langsame Tag eines vollständigen Replay-Links: Sein Datenteil ist identisch zu `#replay=…`, sodass man zwischen beiden Tempi durch Ersetzen des Tag-Namens umschalten kann.
 
 Ein Druck auf Telefon kopiert in **Bereit**, auf der `Simon Feels!`-Auswahl oder im ausgeschalteten Zustand still den jeweils passenden Direktlink. Dabei erscheint bewusst kein Hinweistext.
 
@@ -47,7 +47,7 @@ Ein Druck auf Telefon kopiert in **Bereit**, auf der `Simon Feels!`-Auswahl oder
 | Datei | Zweck |
 |---|---|
 | `index.html` | Hauptanwendung mit Oberfläche, CSS und JavaScript |
-| `Emotronic-v2.12.html` | Versionierte Kopie der Hauptanwendung |
+| `Emotronic-v2.13.html` | Versionierte Kopie der Hauptanwendung |
 | `manifest.webmanifest` | PWA-Metadaten und Installationskonfiguration |
 | `sw.js` | Service Worker für Offline-Cache |
 | `icon-192.png`, `icon-512.png` | PWA-Symbole |
@@ -147,7 +147,7 @@ Die Animation von **starr** ist eine kurze Rückzugs- und Erstarrbewegung.
 - Maximal 40 Zustände werden gehalten.
 - **Bereit** wird nie als Replay-Schritt gespeichert.
 - `R` startet den Replay-Verlauf.
-- Ein empfangener Replay-Datensatz mit `slow:true` läuft mit doppelter Dauer pro Schritt; seine Emoji-Bewegung ist nur 15 Prozent langsamer. Eine neue Gefühl-, Intensitäts- oder Kombi-Eingabe beendet die Slow-Markierung.
+- Ein über `#slow=…` empfangener Replay-Datensatz läuft mit doppelter Dauer pro Schritt; seine Emoji-Bewegung ist nur 15 Prozent langsamer. Eine neue Gefühl-, Intensitäts- oder Kombi-Eingabe beendet die Slow-Markierung.
 - Während des Replays zeigt eine kleine graue Zahl neben `R`, wie viele Zustände noch offen sind.
 - Nach der vollständigen Wiedergabe bleibt dort die Gesamtzahl der Schritte als Hinweis stehen, dass `R` dasselbe Replay erneut abspielt. Das gilt automatisch auch nach einem empfangenen Replay, da beide denselben Wiedergabeweg nutzen.
 - Die Zahl ist etwas größer und näher an `R` positioniert. Erst eine neue Gefühlstaste blendet sie mit derselben weichen Deckkraft-/Skalierungsbewegung wie die Hinweise im Ausschaltzustand aus.
@@ -164,8 +164,9 @@ Emotronic speichert geteilte Daten ausschließlich im URL-Fragment. Gefühle ver
 ### Slow-Replay-Link teilen
 
 - Wifi/Sender zweimal kurz tippen.
-- Der vollständige aktuelle Replay-Verlauf wird unverändert mit der zusätzlichen Eigenschaft `slow:true` kopiert.
-- Unter `http://` oder `https://` wird ein vollständiger anklickbarer `#replay=…`-Link erzeugt; bei einer lokalen Datei wird der portable `#replay=…`-Code kopiert.
+- Der vollständige aktuelle Replay-Verlauf wird unverändert unter dem Tag `#slow=…` kopiert.
+- Die codierten Daten sind dieselben wie bei `#replay=…`; der Tag kann im Link direkt zwischen `replay` und `slow` ausgetauscht werden.
+- Unter `http://` oder `https://` wird ein vollständiger anklickbarer `#slow=…`-Link erzeugt; bei einer lokalen Datei wird der portable `#slow=…`-Code kopiert.
 
 ### Replay teilen
 
@@ -252,7 +253,7 @@ Am Game Over zeigt die Zahl neben `R` sofort die Anzahl der gespeicherten Runden
 - Im Profi-Modus wird die Endpunktzahl mit 25 % Bonus berechnet.
 - Beim Game Over wird ein Link mit Score, Modus und vollständiger gespielter Folge automatisch in die Zwischenablage kopiert, soweit der Browser dies zulässt.
 - Telefon kopiert denselben Score-Link auf dem Game-Over-Bildschirm erneut manuell.
-- Game-over-Links verwenden ausschließlich `#score=…`; neue Replay-Links verwenden `#replay=…`, Gefühlslinks `#share=…`. Aus Kompatibilitätsgründen akzeptiert `#share=…` weiterhin ältere Replay-Datensätze.
+- Game-over-Links verwenden ausschließlich `#score=…`; normale Replay-Links verwenden `#replay=…`, langsame Replay-Links mit identischen Daten `#slow=…`, Gefühlslinks `#share=…`. Aus Kompatibilitätsgründen akzeptiert `#share=…` weiterhin ältere Replay-Datensätze.
 - Die Telefontaste bleibt dafür am Game Over sichtbar bedienbar.
 - Nach dem Öffnen eines Score-Links startet die gespeicherte Folge automatisch. Währenddessen steht links die Punktzahl und darunter `Replay · Abbruch bei Klick auf irgendeine Taste`; jeder Tastenklick kehrt sofort zum Game Over zurück.
 
@@ -304,7 +305,7 @@ Diese Reihenfolge soll bei weiteren Änderungen erhalten bleiben.
 ## Offline/PWA
 
 - Der Service Worker cached die Kernressourcen.
-- Die aktuelle Cache-Version lautet `emotronic-v112`.
+- Die aktuelle Cache-Version lautet `emotronic-v113`.
 - Beim Aktivieren werden nur ältere Emotronic-Caches entfernt; Caches anderer Anwendungen auf derselben Domain bleiben erhalten.
 - Nicht gecachte GET-Anfragen werden aus dem Netz geladen und anschließend gespeichert.
 - Bei einem Netzfehler wird als Fallback `index.html` verwendet.

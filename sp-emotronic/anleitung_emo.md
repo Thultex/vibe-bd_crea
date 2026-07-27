@@ -22,7 +22,7 @@ Beim Verstellen der Intensität auf der Telefon-/Empfängerseite zeigen alle nic
 
 ## Teilen
 
-Gefühle stehen im Fragment `#share=…`, Replays eindeutig in `#replay=…` und Game-over-Scores in `#score=…`. Unter HTTP/HTTPS kopiert Emotronic einen vollständigen Link. Bei lokalen Datei-Adressen wird nur der portable Fragment-Code kopiert.
+Gefühle stehen im Fragment `#share=…`, normale Replays in `#replay=…`, langsame Replays mit denselben Daten in `#slow=…` und Game-over-Scores in `#score=…`. `#replay=` kann im Link direkt durch `#slow=` ersetzt werden. Unter HTTP/HTTPS kopiert Emotronic einen vollständigen Link; bei lokalen Datei-Adressen nur den portablen Fragment-Code.
 
 Jede Person mit dem vollständigen Link kann den enthaltenen Gefühls- oder Replay-Datensatz decodieren. Vertrauliche Inhalte sollten deshalb nicht öffentlich geteilt werden.
 

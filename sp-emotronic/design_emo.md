@@ -42,7 +42,7 @@ Der Laufzeitspiegel enthält ausschließlich `index.html`, Manifest, Service Wor
 - Replay-Start und Replay-Sharing synchronisieren den sichtbaren Endzustand, ohne ihn doppelt anzuhängen.
 - Nach einem vollständig abgespielten lokalen oder empfangenen Replay bleibt die Gesamtzahl seiner Schritte etwas größer und näher bei `R` als erneuter Abspielhinweis sichtbar. Erst der nächste Druck auf eine Gefühlstaste blendet die Zahl mit derselben weichen Skalierungs-/Deckkraftbewegung wie die ausgeschalteten Tastenhinweise aus.
 - Wird `R` während der erneuten Wiedergabe zum Abbruch gedrückt, bleibt die Gesamtzahl ebenfalls sichtbar.
-- Ein Replay-Datensatz mit `slow:true` verwendet denselben unveränderten Verlauf wie ein normaler Replay-Link. `APP_CONFIG.replay.slowMultiplier` steht für Schrittfolge, Displayübergang und Abschlusszeit standardmäßig auf `2`; `slowEmojiMultiplier` steht unabhängig davon auf `1.15`.
+- `#replay=…` und `#slow=…` tragen exakt denselben unveränderten Replay-Datensatz; ausschließlich der Fragment-Tag wählt das Tempo. Dadurch lässt sich ein normaler Link durch Ersetzen von `#replay=` mit `#slow=` umschalten. `APP_CONFIG.replay.slowMultiplier` steht für Schrittfolge, Displayübergang und Abschlusszeit standardmäßig auf `2`; `slowEmojiMultiplier` steht unabhängig davon auf `1.15`.
 - Die Slow-Markierung bleibt für erneutes Abspielen desselben empfangenen Verlaufs erhalten und wird bei der nächsten Gefühl-, Intensitäts- oder Kombi-Eingabe entfernt.
 - Das normale Replay blendet Gefühl, Emotion und Intensität mit einem sehr leichten Fade während der Wiedergabe aus und danach wieder ein.
 - Ein empfangenes Replay rendert vor seinem ersten Schritt nicht mehr kurz den gespeicherten Endzustand.
@@ -52,10 +52,10 @@ Der Laufzeitspiegel enthält ausschließlich `index.html`, Manifest, Service Wor
 - Nach dem Starttipp lässt die App rund 0,1 Sekunden Abstand, bevor der empfangene Inhalt beginnt.
 - Aus bricht die wartende Empfangsphase oder eine laufende Replay-Wiedergabe unmittelbar ab.
 - Ein einfacher Tipp auf Telefon oder Wifi ersetzt die kleine Kategoriezeile drei Sekunden lang durch einen passenden Hinweis auf die jeweilige Doppeltipp-Teilgeste.
-- Ein Telefon-Doppeltipp teilt immer den vollständigen Replay-Verlauf in Normaltempo; ein Wifi-/Sender-Doppeltipp teilt denselben vollständigen Verlauf mit `slow:true`. Die Erkennung läuft vor den zustandsabhängigen Direktlink-Aktionen, damit die Zuordnung auch in Bereit, Aus und Simon konsistent bleibt.
+- Ein Telefon-Doppeltipp teilt immer den vollständigen Replay-Verlauf unter `#replay=…`; ein Wifi-/Sender-Doppeltipp teilt denselben vollständigen Datensatz unter `#slow=…`. Die Erkennung läuft vor den zustandsabhängigen Direktlink-Aktionen, damit die Zuordnung auch in Bereit, Aus und Simon konsistent bleibt.
 - Score-Links enthalten Endstand, Simon-Modus und die vollständige gespielte Folge; ihre Empfangsanimation ergänzt das Nachrichtensymbol um einen kleinen Pokal und die wartende Punktzahl.
 - Nach der Bestätigung eines Score-Links spielt die App die Folge automatisch. Währenddessen steht links die Punktzahl mit dem Abbruchhinweis darunter; jeder Tastenklick stellt sofort das Game Over wieder her.
-- Gefühle verwenden `#share=…`, Replays `#replay=…` und Game-over-Links `#score=…`. Ältere Replay-Links unter `#share=…` bleiben lesbar.
+- Gefühle verwenden `#share=…`, normale Replays `#replay=…`, langsame Replays `#slow=…` und Game-over-Links `#score=…`. Ältere Replay-Links unter `#share=…` bleiben lesbar.
 - Beim Game Over versucht die App den Score-Link automatisch zu kopieren; Telefon wiederholt dies manuell und `R` spielt die mitgeteilte Folge erneut ab.
 - Die Telefontaste wird am Game Over ausdrücklich für das manuelle Kopieren freigeschaltet.
 - Am Game Over bleiben Neugier, Neutral und Unsicherheit eingeblendet und starten direkt ein neues Spiel in Leicht, Normal beziehungsweise Profi; `R` bleibt Replay und `⏻` Schluss.
@@ -76,7 +76,7 @@ Der Laufzeitspiegel enthält ausschließlich `index.html`, Manifest, Service Wor
 
 Das Repository ist öffentlich. Lokale Benutzerpfade, private Kontaktangaben, Zugangsdaten und Geheimnisse werden nicht versioniert. Bewusste Urheberangaben dürfen bestehen bleiben.
 
-Geteilte Daten liegen ausschließlich in den URL-Fragmenten `#share=…`, `#replay=…` beziehungsweise `#score=…`. Sie werden beim normalen Seitenabruf nicht an den Webserver gesendet, bleiben jedoch für Empfänger des vollständigen Links lesbar.
+Geteilte Daten liegen ausschließlich in den URL-Fragmenten `#share=…`, `#replay=…`, `#slow=…` beziehungsweise `#score=…`. Sie werden beim normalen Seitenabruf nicht an den Webserver gesendet, bleiben jedoch für Empfänger des vollständigen Links lesbar.
 
 ## Drittmaterial
 
