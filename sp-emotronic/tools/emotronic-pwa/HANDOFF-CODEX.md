@@ -1,4 +1,4 @@
-# Codex-Handoff: Emotronic v2.02
+# Codex-Handoff: Emotronic v2.03
 
 ## Auftrag
 
@@ -7,7 +7,7 @@ Diese Übergabe beschreibt den aktuellen Stand der installierbaren Emotronic-PWA
 ## Relevante Dateien
 
 - `sp-emotronic/tools/emotronic-pwa/index.html` – maßgebliche Quelle
-- `sp-emotronic/tools/emotronic-pwa/Emotronic-v2.02.html` – versionierter Snapshot, nach Änderungen neu erzeugen
+- `sp-emotronic/tools/emotronic-pwa/Emotronic-v2.03.html` – versionierter Snapshot, nach Änderungen neu erzeugen
 - `sp-emotronic/tools/emotronic-pwa/sw.js` – Service Worker und Cache-Version
 - `sp-emotronic/tools/emotronic-pwa/manifest.webmanifest` – PWA-Manifest
 - `sp-emotronic/tools/emotronic-pwa/README.md` – Nutzer- und Funktionsdokumentation
@@ -15,10 +15,10 @@ Diese Übergabe beschreibt den aktuellen Stand der installierbaren Emotronic-PWA
 
 ## Versionierung
 
-- Aktuell: **Emotronic v2.02**
-- `APP_META.version`: `2.02`
-- `APP_META.revision`: `102`
-- Service-Worker-Cache: `emotronic-v102`
+- Aktuell: **Emotronic v2.03**
+- `APP_META.version`: `2.03`
+- `APP_META.revision`: `103`
+- Service-Worker-Cache: `emotronic-v103`
 - Beim Aktivieren nur ältere Caches mit dem Präfix `emotronic-v` entfernen; andere Anwendungen können dieselbe Domain verwenden.
 - Jede abgeschlossene Revision erhöht die Version um `0.01` und die Revision um `1`.
 - Codekopf, `APP_META`, Service Worker, versionierte HTML-Datei, README und ZIP müssen synchron bleiben.
@@ -57,6 +57,8 @@ Globale Optionen nicht zwischen die Funktionslogik verteilen.
 - Die Startanimation darf kein Neutral-Emoji als Zwischenbild zeigen.
 - Telefonanimation bleibt zentriert und wirkt wie Klingeln, nicht wie ausgehende Pfeile.
 - `>>>` gehört nur zur Wifi-/Sendeanimation.
+- Nur im Telefon-/Empfängermodus spiegeln alle nicht-neutralen Tasten die aktuelle Intensitätsstufe vorab. Der Display-Hintergrund zeigt weiterhin das tatsächlich gewählte Gefühl; Wifi/Sender und Simon erhalten keine gemeinsame Vorschau.
+- In Simon werden Intensitätsmotiv und dramaturgischer Effekt weiterhin erst mit dem jeweiligen Tastendruck ausgelöst.
 
 ## Replay – Kerninvarianten
 
@@ -150,9 +152,9 @@ rm emotronic_check.js
 Für ein auslieferbares ZIP vom Repository-Root aus:
 
 ```bash
-rm -f emotronic-pwa-v2.02.zip
-zip -rq emotronic-pwa-v2.02.zip sp-emotronic/tools/emotronic-pwa
-unzip -t emotronic-pwa-v2.02.zip
+rm -f emotronic-pwa-v2.03.zip
+zip -rq emotronic-pwa-v2.03.zip sp-emotronic/tools/emotronic-pwa
+unzip -t emotronic-pwa-v2.03.zip
 ```
 
 ## Vorsicht bei Änderungen

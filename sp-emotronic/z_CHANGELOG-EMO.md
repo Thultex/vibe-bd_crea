@@ -4,23 +4,23 @@
 
 Ausgangsdatum: 2026-07-26
 
-*Diese Woche (ca. 1,8h, 2 Tage, Inhalte):*
-Emotronic-PWA übernommen, strukturiert, dokumentiert, Replay-Verlauf sowie Intensitätszeiger korrigiert und interaktive Empfangssteuerung ergänzt.
+*Diese Woche (ca. 1,9h, 2 Tage, Inhalte):*
+Emotronic-PWA übernommen, strukturiert, dokumentiert, Replay-Verlauf sowie Intensitätszeiger korrigiert und die gemeinsame Emoji-Intensitätsvorschau im Empfängermodus ergänzt.
 
 *Letzte Woche (0h, 0 Tage, Inhalte):*
 Keine Einträge.
 
-*Dieser Monat (ca. 1,8h, 2 Tage, Inhalte):*
-Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufs- und Zeigerlogik sowie Versionsanzeige und interaktiver Empfangssteuerung.
+*Dieser Monat (ca. 1,9h, 2 Tage, Inhalte):*
+Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufs- und Zeigerlogik sowie gemeinsamer Emoji-Intensitätsvorschau im Empfängermodus.
 
 *Letzter Monat (0h, 0 Tage, Inhalte):*
 Keine Einträge.
 
-*Jahr (ca. 1,8h, 2 Tage, Inhalte):*
-Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufs- und Zeigerlogik sowie Versionsanzeige und interaktiver Empfangssteuerung.
+*Jahr (ca. 1,9h, 2 Tage, Inhalte):*
+Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufs- und Zeigerlogik sowie gemeinsamer Emoji-Intensitätsvorschau im Empfängermodus.
 
-*Insgesamt (ca. 1,8h, 2 Tage, Inhalte):*
-Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufs- und Zeigerlogik sowie Versionsanzeige und interaktiver Empfangssteuerung.
+*Insgesamt (ca. 1,9h, 2 Tage, Inhalte):*
+Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufs- und Zeigerlogik sowie gemeinsamer Emoji-Intensitätsvorschau im Empfängermodus.
 
 ## Log
 
@@ -80,11 +80,14 @@ Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufs- und Zeige
 - Design: OpenMoji ist künftig in Emotronic zu bevorzugen, wo Motiv und Darstellung sinnvoll passen; Text- und ASCII-Fallbacks bleiben erhalten.
 - Versionen: Emotronic v2.01.
 
-### 2026-07-27 - emo, tools, pwa, test (ca. 0,2h)
+### 2026-07-27 - emo, tools, pwa, anzeige, doku, test (ca. 0,3h)
 
 - Fix: Die Zeigerposition wird als animierbare CSS-Zahl interpoliert, sodass die Nadel zwischen den Intensitäten wieder sichtbar gleitet und nachschwingt. Das gilt auch beim Wechsel zu Neutral und von Neutral zu einem Gefühl; die unabhängige `null`-Absicherung bleibt erhalten.
 - Fix: Bereit setzt die Intensität sofort auf `0`, aktiviert die Transition danach aber wieder, damit die erste Auswahl nach Aus- und Einschalten nicht springt.
 - Fix: Am linken Anschlag wird die sichtbare Position begrenzt und das zusätzliche Nachschwingen unterdrückt, damit die Nadel bei Neutral nicht über den Rand läuft.
 - Fix: Das Nachschwingen startet nur noch bei einer tatsächlichen Positionsänderung und beginnt in der jeweiligen Bewegungsrichtung.
+- Anzeige: Beim Verstellen im Telefon-/Empfängermodus zeigen nun alle nicht-neutralen Gefühlstasten ihre OpenMoji-Variante der aktuellen Intensität. Der Display-Hintergrund bleibt an das angeklickte Gefühl gebunden; Wifi/Sender und die erst beim Druck ausgelöste Simon-Dramaturgie bleiben unverändert.
+- Anzeige: Die Beschriftungen der neun Gefühlstasten um zwei Pixel angehoben und ihre Zeilenhöhe leicht vergrößert, damit Unterlängen wie beim „g“ nicht mehr abgeschnitten erscheinen.
 - Test: Den veröffentlichten Spiegel lokal im Browser mit Aus-/Einschaltzyklus sowie den Übergängen 0→1, 1→3, 3→Neutral und Neutral→1 geprüft.
-- Versionen: Emotronic v2.02.
+- Test: JavaScript-Syntax, Versionsgleichlauf und bytegleichen Laufzeitspiegel für Emotronic v2.03 geprüft.
+- Versionen: Emotronic v2.03.

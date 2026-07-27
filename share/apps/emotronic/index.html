@@ -1,10 +1,10 @@
 <!--
   ============================================================================
-  Emotronic v2.02
+  Emotronic v2.03
   Projektname: Emotronic
   Autor: Rasmus Klette
   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-  Aktuelle Revision: 102
+  Aktuelle Revision: 103
   ============================================================================
 -->
 <!doctype html>
@@ -63,7 +63,7 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 @keyframes needleSwing{0%{transform:translateX(-50%)}45%{transform:translateX(calc(-50% + var(--overshoot,6px)))}72%{transform:translateX(calc(-50% - var(--rebound,3px)))}100%{transform:translateX(-50%)}}
 .meter-arrow{height:48px;border:0;background:transparent;font-size:30px;font-weight:950;cursor:pointer;display:grid;place-items:center;padding:0;line-height:1;transition:transform .15s ease,opacity .2s ease}.meter-arrow:active{transform:scale(.88)}.meter-arrow:disabled{opacity:.28;cursor:default}
 .keypad-shell{background:linear-gradient(#d7d0c4,#bdb5a8);border:3px solid var(--ink);border-radius:25px;padding:9px;box-shadow:inset 0 0 0 3px rgba(255,255,255,.35);margin-bottom:0}
-.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.emotion-key{position:relative;aspect-ratio:1.34;border:2px solid var(--ink);border-radius:24px 16px 24px 16px;background:var(--c,#eee);box-shadow:0 4px 0 #7e776d;cursor:pointer;display:grid;place-items:center;padding:4px 4px 20px;transition:.16s transform,.16s box-shadow,.16s outline,.16s filter}.emotion-key:active{transform:translateY(3px);box-shadow:0 1px 0 #7e776d}.emotion-key.selected{outline:5px solid #fff;box-shadow:0 0 0 4px var(--ink),0 4px 0 #7e776d;transform:translateY(-2px)}.emotion-key.partner{outline:4px dashed var(--ink);outline-offset:2px}.emotion-key img{grid-area:1/1;width:49px;height:49px;object-fit:contain;transition:width .25s ease,height .25s ease,transform .25s ease}.emotion-key b{grid-area:1/1}.emotion-key.selected img{width:var(--active-emoji-size,54px);height:var(--active-emoji-size,54px);transform:translateY(-1px)}.emotion-key span{position:absolute;left:4px;right:4px;bottom:5px;font-size:11px;font-weight:950;line-height:1.05;text-align:center}.emotion-key.disabled{filter:grayscale(.8) brightness(.72)}
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.emotion-key{position:relative;aspect-ratio:1.34;border:2px solid var(--ink);border-radius:24px 16px 24px 16px;background:var(--c,#eee);box-shadow:0 4px 0 #7e776d;cursor:pointer;display:grid;place-items:center;padding:4px 4px 20px;transition:.16s transform,.16s box-shadow,.16s outline,.16s filter}.emotion-key:active{transform:translateY(3px);box-shadow:0 1px 0 #7e776d}.emotion-key.selected{outline:5px solid #fff;box-shadow:0 0 0 4px var(--ink),0 4px 0 #7e776d;transform:translateY(-2px)}.emotion-key.partner{outline:4px dashed var(--ink);outline-offset:2px}.emotion-key img{grid-area:1/1;width:49px;height:49px;object-fit:contain;transition:width .25s ease,height .25s ease,transform .25s ease}.emotion-key b{grid-area:1/1}.emotion-key.selected img{width:var(--active-emoji-size,54px);height:var(--active-emoji-size,54px);transform:translateY(-1px)}.emotion-key span{position:absolute;left:4px;right:4px;bottom:7px;font-size:11px;font-weight:950;line-height:1.18;text-align:center}.emotion-key.disabled{filter:grayscale(.8) brightness(.72)}
 .utility{display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:9px;margin-top:8px}.utility button{box-sizing:border-box;height:43px;min-height:43px;padding:0;overflow:hidden;border:2px solid var(--ink);border-radius:18px;background:#ece7dd;font-weight:950;font-size:22px;cursor:pointer;display:grid;place-items:center}.utility .combo.active{background:#fff0a1;box-shadow:inset 0 0 0 4px white}.utility .off{background:#efaaa3;position:relative}.power-symbol{position:relative;display:inline-block;width:24px;height:24px;border:3px solid currentColor;border-radius:50%;vertical-align:middle}.power-symbol:before{content:"";position:absolute;left:50%;top:-6px;width:4px;height:13px;border-radius:4px;background:currentColor;transform:translateX(-50%);box-shadow:0 0 0 3px #efaaa3}.utility .repeat{background:#b8d8ed;position:relative}.offline-key-hint{position:absolute;right:5px;top:50%;display:block;width:21px;height:21px;object-fit:contain;transform:translateY(-50%);opacity:.48;filter:grayscale(1);pointer-events:none}.offline-key-hint[hidden]{display:none}.replay-count{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:11px;font-weight:850;color:#6f747b;opacity:0;transition:opacity .18s ease;pointer-events:none}.replay-count.visible{opacity:1}.combo-symbol{display:inline-block;position:relative;width:30px;height:24px}.combo-symbol:before,.combo-symbol:after{content:"";position:absolute;width:15px;height:15px;border:3px solid currentColor;border-radius:50%;top:2px}.combo-symbol:before{left:1px}.combo-symbol:after{right:1px}.combo-symbol i{position:absolute;width:10px;height:3px;background:currentColor;left:10px;top:10px;transform:rotate(-35deg)}
 .credit{display:none}.pulse{animation:pulse .34s ease}.shake{animation:shake .35s ease}.boot{animation:boot .55s steps(3,end)}.shutdown{animation:shutdown .55s ease forwards}@keyframes pulse{0%,100%{opacity:1;letter-spacing:0}50%{opacity:.72;letter-spacing:.04em}}}@keyframes shake{0%,100%{letter-spacing:0}25%{letter-spacing:.05em}50%{letter-spacing:-.025em}75%{letter-spacing:.025em}}50%{transform:translateX(6px)}75%{transform:translateX(-3px)}}@keyframes boot{0%{opacity:0;filter:blur(5px)}50%{opacity:1;filter:blur(0)}70%{opacity:.3}100%{opacity:1}}@keyframes shutdown{0%{transform:scaleY(1);opacity:1}65%{transform:scaleY(.04);opacity:.9}100%{transform:scaleY(0);opacity:0}}
 
@@ -172,16 +172,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v2.02 — CODEKOPF
+   Emotronic v2.03 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 102
+   Aktuelle Revision: 103
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'2.02',
-  revision:102,
+  version:'2.03',
+  revision:103,
   author:'Rasmus Klette'
 });
 
@@ -454,7 +454,14 @@ function animateOpenMoji(replayMode=false,levelOverride=null,motionOverride=null
  });
 }
 function animateCurrent(skipTransitionDelay=false){clearInterval(state.timer);clearTimeout(state.omDelayTimer);state.omDelayTimer=null;setStagePosition();const frames=getFrames();let i=0,stage=el('asciiStage');stage.classList.remove('pulse','shake');void stage.offsetWidth;stage.classList.add(state.intensity>=3?'shake':'pulse');stage.textContent=frames[0]||' ';const startEmojiMotion=()=>requestAnimationFrame(()=>animateOpenMoji());if(skipTransitionDelay)startEmojiMotion();else state.omDelayTimer=setTimeout(()=>{state.omDelayTimer=null;startEmojiMotion()},APP_CONFIG.normalMode.emojiTransitionDelayMs);const speed=APP_CONFIG.normalMode.asciiFrameMs[Math.max(0,Math.min(2,state.intensity-1))];state.timer=setInterval(()=>{i++;if(i>=frames.length){clearInterval(state.timer);state.timer=null;stage.textContent=frames.at(-1)||' ';return}stage.textContent=frames[i]},speed)}
-function keyCode(k){if(typeof state.selected==='object'&&state.displayKey===k)return state.selected.code;if(state.selected===k&&k!=='neutral')return base[k].codes[Math.max(0,state.intensity-1)];return base[k].codes[0]}
+function keyCode(k){
+ if(typeof state.selected==='object'&&state.displayKey===k)return state.selected.code;
+ // Nur die kleinen Tasten spiegeln im Normal-/Empfängermodus die Stufe vorab.
+ // Der Display-Hintergrund und Simon reagieren weiterhin erst auf das gewählte Gefühl.
+ const receiverLevel=!state.game.active&&state.source==='self'&&typeof state.selected==='string'&&state.selected!=='neutral'&&k!=='neutral';
+ if((receiverLevel||state.selected===k)&&k!=='neutral')return base[k].codes[Math.max(0,state.intensity-1)];
+ return base[k].codes[0]
+}
 function currentGhostCode(){if(!state.powered||!state.selected)return null;if(typeof state.selected==='object')return state.selected.code;if(state.selected==='neutral')return base.neutral.codes[0];return base[state.selected].codes[Math.max(0,state.intensity-1)]}
 function updateGhostEmoji(code,levelOverride=null,comboOverride=null){const box=el('bgEmoji'),a=el('bgEmojiA'),b=el('bgEmojiB');const active=state.bgFlip?b:a;const next=state.bgFlip?a:b;if(!code){box.style.setProperty('--ghost-opacity','0');a.classList.remove('show');b.classList.remove('show');state.bgCode=null;return}const src=`${OM_BLACK}${code}.svg`;const combo=comboOverride===null?typeof state.selected==='object':comboOverride;const level=levelOverride===null?(combo?3:state.intensity):levelOverride;const opacity=!state.powered?0:APP_CONFIG.normalMode.backgroundEmojiOpacity[Math.max(0,Math.min(2,level-1))];const scale=APP_CONFIG.normalMode.backgroundEmojiScale[Math.max(0,Math.min(2,level-1))];const ghostFilter=level<=1?'brightness(0) opacity(.92)':'brightness(0) invert(1) opacity(.98)';box.style.setProperty('--ghost-opacity',String(opacity));box.style.setProperty('--ghost-scale',String(scale));box.style.setProperty('--ghost-filter',ghostFilter);if(state.bgCode===code){active.src=src;active.style.filter=`${ghostFilter} drop-shadow(0 1px 0 rgba(0,0,0,.08))`;active.classList.add('show');return}const swapLayers=()=>{active.classList.add('fading-out');void active.offsetWidth;next.classList.add('show');active.classList.remove('show');setTimeout(()=>active.classList.remove('fading-out'),560)};next.onload=swapLayers;next.onerror=()=>{next.src=`${OM}${code}.svg`;next.style.filter=`${ghostFilter} grayscale(1) drop-shadow(0 1px 0 rgba(0,0,0,.08))`;swapLayers()};next.style.filter=`${ghostFilter} drop-shadow(0 1px 0 rgba(0,0,0,.08))`;next.src=src;state.bgFlip=!state.bgFlip;state.bgCode=code}
 function render(){

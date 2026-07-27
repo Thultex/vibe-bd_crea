@@ -10,6 +10,8 @@ Nach dem Start ist Emotronic eingeschaltet und zeigt **Bereit**. Eine der neun G
 
 - Telefon: Eigen-/Telefonseite aktivieren; Doppeltipp teilt das aktuelle Gefühl.
 - Wifi: andere Seite aktivieren; Doppeltipp teilt den Replay-Verlauf.
+
+Beim Verstellen der Intensität auf der Telefon-/Empfängerseite zeigen alle nicht-neutralen Gefühlstasten gemeinsam die passende Emoji-Stufe. Der Hintergrund zeigt nur das angeklickte Gefühl. Auf der Wifi-Senderseite bleibt die Vorschau unverändert; in Simon erscheinen Motiv und Effekt erst beim Drücken.
 - `R`: gespeicherte Zustände wiedergeben; erneuter Einzeldruck bricht ab.
 - Kombinationstaste: gültige benachbarte Gefühle kombinieren.
 - Aus: Gerät aus- oder einschalten; während Replay Verlauf löschen und zu **Bereit** zurückkehren.

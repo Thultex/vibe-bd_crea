@@ -33,6 +33,7 @@ Der Laufzeitspiegel enthält ausschließlich `index.html`, Manifest, Service Wor
 - Ein erneuter Klick auf dieselbe Gefühlstaste startet ihre Animation ohne die für Motivwechsel vorgesehene Überblendverzögerung.
 - Intensitätsänderungen ersetzen nur den zuletzt erzeugten Schritt derselben Gefühlsauswahl.
 - Im Telefon-/Selbstmodus bleibt die Intensität beim Wechsel zwischen nicht-neutralen Gefühlen erhalten. Im Wifi-Sendemodus startet das neue Gefühl wieder auf Stufe 1. Neutral setzt in beiden Modi auf 0.
+- Im Telefon-/Empfängermodus spiegeln alle nicht-neutralen Gefühlstasten die aktuelle Intensitätsstufe über ihre jeweilige OpenMoji-Variante. Der Display-Hintergrund bleibt die Rückmeldung auf das tatsächlich gewählte Gefühl. Im Wifi-Sendemodus bleibt die Tastenvorschau auf die Auswahl beschränkt; in Simon werden Motiv und dramaturgischer Effekt erst durch den Tastendruck ausgelöst.
 - Replay-Start und Replay-Sharing synchronisieren den sichtbaren Endzustand, ohne ihn doppelt anzuhängen.
 - Das normale Replay blendet Gefühl, Emotion und Intensität mit einem sehr leichten Fade während der Wiedergabe aus und danach wieder ein.
 - Ein empfangenes Replay rendert vor seinem ersten Schritt nicht mehr kurz den gespeicherten Endzustand.
