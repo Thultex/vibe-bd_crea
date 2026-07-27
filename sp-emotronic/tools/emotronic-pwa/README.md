@@ -1,4 +1,4 @@
-# Emotronic v2.09
+# Emotronic v2.10
 
 Emotronic ist eine installierbare, offlinefähige PWA zur Auswahl, Darstellung, Kombination und Wiedergabe von Gefühlen. Die Oberfläche ist an ein kompaktes Retro-Handgerät angelehnt und für Touch, Maus und Tastatur ausgelegt.
 
@@ -36,9 +36,10 @@ Danach im Browser `http://localhost:8080` öffnen.
 
 - Simon-Says-Auswahl: `https://thultex.github.io/vibe-bd_crea/share/apps/emotronic/index.html#simon`
 - Normal eingeschaltet: `https://thultex.github.io/vibe-bd_crea/share/apps/emotronic/index.html#on`
+- Normal eingeschaltet mit doppelt langsamem Replay: `https://thultex.github.io/vibe-bd_crea/share/apps/emotronic/index.html#slow`
 - Ausgeschaltet: `https://thultex.github.io/vibe-bd_crea/share/apps/emotronic/index.html#off`
 
-Ohne Modusfragment startet Emotronic wie `#on`.
+Ohne Modusfragment startet Emotronic wie `#on`. `#slow` verändert ausschließlich das Replay: Schrittintervalle, Emoji-Bewegung, Displayübergang und Abschlusszeit laufen mit dem in `APP_CONFIG.replay.slowMultiplier` definierten Faktor, standardmäßig `2`.
 
 Ein Druck auf Telefon kopiert in **Bereit**, auf der `Simon Feels!`-Auswahl oder im ausgeschalteten Zustand still den jeweils passenden Direktlink. Dabei erscheint bewusst kein Hinweistext.
 
@@ -47,7 +48,7 @@ Ein Druck auf Telefon kopiert in **Bereit**, auf der `Simon Feels!`-Auswahl oder
 | Datei | Zweck |
 |---|---|
 | `index.html` | Hauptanwendung mit Oberfläche, CSS und JavaScript |
-| `Emotronic-v2.09.html` | Versionierte Kopie der Hauptanwendung |
+| `Emotronic-v2.10.html` | Versionierte Kopie der Hauptanwendung |
 | `manifest.webmanifest` | PWA-Metadaten und Installationskonfiguration |
 | `sw.js` | Service Worker für Offline-Cache |
 | `icon-192.png`, `icon-512.png` | PWA-Symbole |
@@ -135,7 +136,7 @@ Die Animation von **starr** ist eine kurze Rückzugs- und Erstarrbewegung.
 - **Wifi** aktiviert die andere Seite. Bei neu ausgewählten Gefühlen kann dort die `>>>`-Sendeanimation erscheinen.
 - Im Wifi-/Sendermodus startet `>>>` außerdem beim erneuten Klick auf dasselbe Gefühl, bei einer tatsächlichen Intensitätsänderung und unmittelbar beim Aktivieren der Wifi-/Sendertaste.
 - Ein einfacher Telefon-Tipp zeigt unter der kleinen Emotionsanzeige `Replay teilen: Zweimal ☎ klicken.`.
-- Ein einfacher Wifi-Tipp zeigt dort `Gefühl teilen: Zweimal 📶 klicken.`.
+- Ein einfacher Wifi-Tipp zeigt dort `Slow-Replay teilen: Zweimal 📶 klicken.`.
 - Die normale Auswahlfunktion bleibt auch bei einem Doppeltipp erhalten.
 
 ### Verlauf und Replay
@@ -147,6 +148,7 @@ Die Animation von **starr** ist eine kurze Rückzugs- und Erstarrbewegung.
 - Maximal 40 Zustände werden gehalten.
 - **Bereit** wird nie als Replay-Schritt gespeichert.
 - `R` startet den Replay-Verlauf.
+- Beim Start über `#slow` läuft das Replay mit doppelter Dauer pro Schritt; die normale Bedienung außerhalb des Replays bleibt unverändert.
 - Während des Replays zeigt eine kleine graue Zahl neben `R`, wie viele Zustände noch offen sind.
 - Nach der vollständigen Wiedergabe bleibt dort die Gesamtzahl der Schritte als Hinweis stehen, dass `R` dasselbe Replay erneut abspielt. Das gilt automatisch auch nach einem empfangenen Replay, da beide denselben Wiedergabeweg nutzen.
 - Die Zahl ist etwas größer und näher an `R` positioniert. Erst eine neue Gefühlstaste blendet sie mit derselben weichen Deckkraft-/Skalierungsbewegung wie die Hinweise im Ausschaltzustand aus.
@@ -160,12 +162,11 @@ Die Animation von **starr** ist eine kurze Rückzugs- und Erstarrbewegung.
 
 Emotronic speichert geteilte Daten ausschließlich im URL-Fragment. Gefühle verwenden `#share=`, Replays das eindeutigere `#replay=` und Game-over-Scores `#score=`. Ältere Replay-Links unter `#share=` bleiben kompatibel. Dadurch werden die Daten nicht automatisch an einen Server übertragen.
 
-### Gefühl teilen
+### Slow-Replay-Link teilen
 
 - Wifi/Sender zweimal kurz tippen.
-- Das aktuelle Gefühl wird als Share-Datensatz kopiert.
-- Unter `http://` oder `https://` wird ein vollständiger anklickbarer Link erzeugt.
-- Unter `file://` oder Android-`content://` wird je nach Inhalt nur der portable `#share=…`-, `#replay=…`- oder `#score=…`-Code kopiert, weil diese lokalen Adressen in anderen Browsern oder Geräten nicht funktionieren.
+- Es wird konsistent der `#slow`-Direktlink kopiert, der Emotronic normal einschaltet und Replays doppelt so langsam abspielt.
+- Unter `http://` oder `https://` wird ein vollständiger anklickbarer Link erzeugt; bei einer lokalen Datei wird `#slow` kopiert.
 
 ### Replay teilen
 
@@ -179,9 +180,8 @@ Emotronic speichert geteilte Daten ausschließlich im URL-Fragment. Gefühle ver
 
 Die kleine Zeile unter dem Gefühlsnamen zeigt kurz eine der folgenden Meldungen:
 
-- `Gefühl-Link kopiert`
+- `Slow-Link kopiert`
 - `Replay-Link kopiert`
-- `Gefühl-Code kopiert`
 - `Replay-Code kopiert`
 - eine verständliche Fehlermeldung, falls die Zwischenablage blockiert ist
 
@@ -304,7 +304,7 @@ Diese Reihenfolge soll bei weiteren Änderungen erhalten bleiben.
 ## Offline/PWA
 
 - Der Service Worker cached die Kernressourcen.
-- Die aktuelle Cache-Version lautet `emotronic-v109`.
+- Die aktuelle Cache-Version lautet `emotronic-v110`.
 - Beim Aktivieren werden nur ältere Emotronic-Caches entfernt; Caches anderer Anwendungen auf derselben Domain bleiben erhalten.
 - Nicht gecachte GET-Anfragen werden aus dem Netz geladen und anschließend gespeichert.
 - Bei einem Netzfehler wird als Fallback `index.html` verwendet.

@@ -1,4 +1,4 @@
-# Codex-Handoff: Emotronic v2.09
+# Codex-Handoff: Emotronic v2.10
 
 ## Auftrag
 
@@ -7,7 +7,7 @@ Diese Übergabe beschreibt den aktuellen Stand der installierbaren Emotronic-PWA
 ## Relevante Dateien
 
 - `sp-emotronic/tools/emotronic-pwa/index.html` – maßgebliche Quelle
-- `sp-emotronic/tools/emotronic-pwa/Emotronic-v2.09.html` – versionierter Snapshot, nach Änderungen neu erzeugen
+- `sp-emotronic/tools/emotronic-pwa/Emotronic-v2.10.html` – versionierter Snapshot, nach Änderungen neu erzeugen
 - `sp-emotronic/tools/emotronic-pwa/generate_audio_assets.py` – reproduzierbarer Generator beider Soundsets
 - `assets/audio/emotronic/` – Manifest sowie `8-bit` und `8-bit_soft`
 - `sp-emotronic/tools/emotronic-pwa/sw.js` – Service Worker und Cache-Version
@@ -17,10 +17,10 @@ Diese Übergabe beschreibt den aktuellen Stand der installierbaren Emotronic-PWA
 
 ## Versionierung
 
-- Aktuell: **Emotronic v2.09**
-- `APP_META.version`: `2.09`
-- `APP_META.revision`: `109`
-- Service-Worker-Cache: `emotronic-v109`
+- Aktuell: **Emotronic v2.10**
+- `APP_META.version`: `2.10`
+- `APP_META.revision`: `110`
+- Service-Worker-Cache: `emotronic-v110`
 - Beim Aktivieren nur ältere Caches mit dem Präfix `emotronic-v` entfernen; andere Anwendungen können dieselbe Domain verwenden.
 - Jede abgeschlossene Revision erhöht die Version um `0.01` und die Revision um `1`.
 - Codekopf, `APP_META`, Service Worker, versionierte HTML-Datei, README und ZIP müssen synchron bleiben.
@@ -79,6 +79,7 @@ Globale Optionen nicht zwischen die Funktionslogik verteilen.
 - Erneute Klicks auf dieselbe Gefühlstaste erzeugen bewusst weitere Schritte, auch bei identischem Zustand.
 - Replay-Start und Replay-Sharing synchronisieren den aktuellen Zustand ohne zusätzlichen Duplikatschritt.
 - `R` startet Replay.
+- `#slow` wird von `requestedStartupMode()` wie `#on` behandelt. Nur der normale Replay-Ablauf erhält über `replayTimingMultiplier()` und `APP_CONFIG.replay.slowMultiplier` standardmäßig Faktor 2; normale Bedienung und Simon-Timing bleiben unverändert.
 - Die graue Restanzahl steht während Replay neben `R`. Nach vollständiger Wiedergabe bleibt `items.length` über `showReplayCount()` als erneuter Abspielhinweis stehen; weil empfangene Replays ebenfalls `replayHistory()` verwenden, benötigen sie keinen Sonderpfad. Bricht `R` eine erneute Wiedergabe ab, ruft `cancelReplayToLatest()` `stopReplay(false,true)` auf und stellt anschließend ebenfalls die Gesamtzahl wieder her.
 - Die 13-Pixel-Zahl sitzt mit `right:13px` näher bei `R` und verwendet dieselbe 0,38-Sekunden-Deckkraft-/Skalierungsbewegung wie die ausgeschalteten Tastenhinweise. `pressEmotion()` blendet sie über `hideReplayCount()` aus.
 - `R` während Replay: nur abbrechen und neuesten gespeicherten Zustand wiederherstellen.
@@ -96,7 +97,7 @@ Globale Optionen nicht zwischen die Funktionslogik verteilen.
 - Bei `file:` oder Android `content:` nur den portablen `#share=...`-, `#replay=...`- beziehungsweise `#score=...`-Code kopieren.
 - UI-Text muss korrekt zwischen `Link kopiert` und `Code kopiert` unterscheiden.
 - Telefon-Doppeltipp teilt konsistent den Replay-Verlauf.
-- Wifi-/Sender-Doppeltipp teilt konsistent das aktuelle Gefühl.
+- Wifi-/Sender-Doppeltipp kopiert konsistent den `#slow`-Direktlink.
 - Die Doppeltipperkennung muss vor den Sonderfällen für Aus-, Simon- und Bereit-Direktlinks laufen; der erste Tipp darf den Direktlink auslösen, der zweite führt die feste Share-Aktion aus.
 - Der jeweils erste Tipp erklärt die Doppeltipp-Geste für drei Sekunden in der kleinen Kategoriezeile.
 - Eigene Touch-Doppeltipp-Erkennung beibehalten; nicht ausschließlich `dblclick` verwenden.
@@ -171,9 +172,9 @@ rm emotronic_check.js
 Für ein auslieferbares ZIP vom Repository-Root aus:
 
 ```bash
-rm -f emotronic-pwa-v2.09.zip
-zip -rq emotronic-pwa-v2.09.zip sp-emotronic/tools/emotronic-pwa
-unzip -t emotronic-pwa-v2.09.zip
+rm -f emotronic-pwa-v2.10.zip
+zip -rq emotronic-pwa-v2.10.zip sp-emotronic/tools/emotronic-pwa
+unzip -t emotronic-pwa-v2.10.zip
 ```
 
 ## Vorsicht bei Änderungen

@@ -1,6 +1,6 @@
 # Emotronic PWA
 
-Dieser Ordner ist der veröffentlichte Laufzeitspiegel von Emotronic v2.09.
+Dieser Ordner ist der veröffentlichte Laufzeitspiegel von Emotronic v2.10.
 
 - Öffentlicher Unterpfad: `/share/apps/emotronic/`
 - Erwarteter GitHub-Pages-Link:
