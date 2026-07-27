@@ -1,4 +1,4 @@
-# Codex-Handoff: Emotronic v2.06
+# Codex-Handoff: Emotronic v2.07
 
 ## Auftrag
 
@@ -7,7 +7,7 @@ Diese Übergabe beschreibt den aktuellen Stand der installierbaren Emotronic-PWA
 ## Relevante Dateien
 
 - `sp-emotronic/tools/emotronic-pwa/index.html` – maßgebliche Quelle
-- `sp-emotronic/tools/emotronic-pwa/Emotronic-v2.06.html` – versionierter Snapshot, nach Änderungen neu erzeugen
+- `sp-emotronic/tools/emotronic-pwa/Emotronic-v2.07.html` – versionierter Snapshot, nach Änderungen neu erzeugen
 - `sp-emotronic/tools/emotronic-pwa/sw.js` – Service Worker und Cache-Version
 - `sp-emotronic/tools/emotronic-pwa/manifest.webmanifest` – PWA-Manifest
 - `sp-emotronic/tools/emotronic-pwa/README.md` – Nutzer- und Funktionsdokumentation
@@ -15,10 +15,10 @@ Diese Übergabe beschreibt den aktuellen Stand der installierbaren Emotronic-PWA
 
 ## Versionierung
 
-- Aktuell: **Emotronic v2.06**
-- `APP_META.version`: `2.06`
-- `APP_META.revision`: `106`
-- Service-Worker-Cache: `emotronic-v106`
+- Aktuell: **Emotronic v2.07**
+- `APP_META.version`: `2.07`
+- `APP_META.revision`: `107`
+- Service-Worker-Cache: `emotronic-v107`
 - Beim Aktivieren nur ältere Caches mit dem Präfix `emotronic-v` entfernen; andere Anwendungen können dieselbe Domain verwenden.
 - Jede abgeschlossene Revision erhöht die Version um `0.01` und die Revision um `1`.
 - Codekopf, `APP_META`, Service Worker, versionierte HTML-Datei, README und ZIP müssen synchron bleiben.
@@ -77,15 +77,16 @@ Globale Optionen nicht zwischen die Funktionslogik verteilen.
 
 ## Sharing – Kerninvarianten
 
-- Formate: `#share=<base64url-json>` für Gefühle und Replays, `#score=<base64url-json>` für Game-over-Scores.
+- Formate: `#share=<base64url-json>` für Gefühle, `#replay=<base64url-json>` für Replays und `#score=<base64url-json>` für Game-over-Scores. Alte Replay-Datensätze unter `#share=` bleiben gültig.
 - Typ `emotion`: `{type:'emotion', item:...}`.
 - Typ `replay`: `{type:'replay', items:[...]}`.
 - Daten liegen nur im URL-Fragment und werden nicht als Query an einen Server gesendet.
 - Bei `http:` oder `https:` vollständigen Link kopieren.
-- Bei `file:` oder Android `content:` nur den portablen `#share=...`- beziehungsweise `#score=...`-Code kopieren.
+- Bei `file:` oder Android `content:` nur den portablen `#share=...`-, `#replay=...`- beziehungsweise `#score=...`-Code kopieren.
 - UI-Text muss korrekt zwischen `Link kopiert` und `Code kopiert` unterscheiden.
-- Telefon-Doppeltipp teilt aktuelles Gefühl.
-- Wifi-Doppeltipp teilt Replay.
+- Telefon-Doppeltipp teilt konsistent den Replay-Verlauf.
+- Wifi-/Sender-Doppeltipp teilt konsistent das aktuelle Gefühl.
+- Die Doppeltipperkennung muss vor den Sonderfällen für Aus-, Simon- und Bereit-Direktlinks laufen; der erste Tipp darf den Direktlink auslösen, der zweite führt die feste Share-Aktion aus.
 - Der jeweils erste Tipp erklärt die Doppeltipp-Geste für drei Sekunden in der kleinen Kategoriezeile.
 - Eigene Touch-Doppeltipp-Erkennung beibehalten; nicht ausschließlich `dblclick` verwenden.
 - Clipboard API plus `document.execCommand('copy')`-Fallback beibehalten.
@@ -158,9 +159,9 @@ rm emotronic_check.js
 Für ein auslieferbares ZIP vom Repository-Root aus:
 
 ```bash
-rm -f emotronic-pwa-v2.06.zip
-zip -rq emotronic-pwa-v2.06.zip sp-emotronic/tools/emotronic-pwa
-unzip -t emotronic-pwa-v2.06.zip
+rm -f emotronic-pwa-v2.07.zip
+zip -rq emotronic-pwa-v2.07.zip sp-emotronic/tools/emotronic-pwa
+unzip -t emotronic-pwa-v2.07.zip
 ```
 
 ## Vorsicht bei Änderungen

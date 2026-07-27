@@ -8,8 +8,8 @@ Nach dem Start ist Emotronic eingeschaltet und zeigt **Bereit**. Eine der neun G
 
 ## Bedienung
 
-- Telefon: Eigen-/Telefonseite aktivieren; Doppeltipp teilt das aktuelle Gefühl.
-- Wifi: andere Seite aktivieren; Doppeltipp teilt den Replay-Verlauf.
+- Telefon: Eigen-/Telefonseite aktivieren; Doppeltipp teilt konsistent den Replay-Verlauf.
+- Wifi/Sender: andere Seite aktivieren; Doppeltipp teilt konsistent das aktuelle Gefühl.
 
 Beim Verstellen der Intensität auf der Telefon-/Empfängerseite zeigen alle nicht-neutralen Gefühlstasten gemeinsam die passende Emoji-Stufe. Der Hintergrund zeigt nur das angeklickte Gefühl. Auf der Wifi-Senderseite bleibt die Vorschau unverändert; in Simon erscheinen Motiv und Effekt erst beim Drücken.
 - `R`: gespeicherte Zustände wiedergeben; erneuter Einzeldruck bricht ab.
@@ -19,7 +19,7 @@ Beim Verstellen der Intensität auf der Telefon-/Empfängerseite zeigen alle nic
 
 ## Teilen
 
-Gefühle und Replays stehen im Fragment `#share=…`, Game-over-Scores in `#score=…`. Unter HTTP/HTTPS kopiert Emotronic einen vollständigen Link. Bei lokalen Datei-Adressen wird nur der portable Fragment-Code kopiert.
+Gefühle stehen im Fragment `#share=…`, Replays eindeutig in `#replay=…` und Game-over-Scores in `#score=…`. Unter HTTP/HTTPS kopiert Emotronic einen vollständigen Link. Bei lokalen Datei-Adressen wird nur der portable Fragment-Code kopiert.
 
 Jede Person mit dem vollständigen Link kann den enthaltenen Gefühls- oder Replay-Datensatz decodieren. Vertrauliche Inhalte sollten deshalb nicht öffentlich geteilt werden.
 

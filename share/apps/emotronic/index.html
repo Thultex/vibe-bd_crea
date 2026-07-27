@@ -1,10 +1,10 @@
 <!--
   ============================================================================
-  Emotronic v2.06
+  Emotronic v2.07
   Projektname: Emotronic
   Autor: Rasmus Klette
   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-  Aktuelle Revision: 106
+  Aktuelle Revision: 107
   ============================================================================
 -->
 <!doctype html>
@@ -172,16 +172,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v2.06 — CODEKOPF
+   Emotronic v2.07 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 106
+   Aktuelle Revision: 107
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'2.06',
-  revision:106,
+  version:'2.07',
+  revision:107,
   author:'Rasmus Klette'
 });
 
@@ -609,7 +609,8 @@ function decodeSharePayload(value){
 function shareReference(payload){
  const encoded=encodeSharePayload(payload);
  if(!encoded)return null;
- const fragment=`#${payload?.type==='score'?'score':'share'}=${encoded}`;
+ const fragmentType=payload?.type==='score'?'score':payload?.type==='replay'?'replay':'share';
+ const fragment=`#${fragmentType}=${encoded}`;
  // content:// und file:// sind geräteinterne Adressen und in normalen Browsern
  // nicht als teilbare Links nutzbar. Nur HTTP(S) ergibt einen echten Link.
  if(location.protocol==='http:'||location.protocol==='https:'){
@@ -734,8 +735,10 @@ function applyDecodedSharedPayload(payload){
  if(payload.type==='score'){showSharedGameScore(payload);replayGameOverSequence()}
 }
 function applySharedPayload(){
- const match=location.hash.match(/^#(share|score)=(.+)$/);if(!match)return;
- const payload=decodeSharePayload(match[2]);if(!payload||match[1]==='score'&&payload.type!=='score'||match[1]==='share'&&!['emotion','replay'].includes(payload.type))return;
+ const match=location.hash.match(/^#(share|replay|score)=(.+)$/);if(!match)return;
+ const payload=decodeSharePayload(match[2]),fragmentType=match[1];
+ const valid=payload&&(fragmentType==='score'?payload.type==='score':fragmentType==='replay'?payload.type==='replay':['emotion','replay'].includes(payload.type));
+ if(!valid)return;
  showIncomingShare(()=>applyDecodedSharedPayload(payload),payload)
 }
 document.addEventListener('click',event=>{
@@ -1327,8 +1330,31 @@ function repeatAllHistory(){
 }
 repeatBtn.onclick=repeatAllHistory;
 repeatBtn.ondblclick=event=>{event.preventDefault();repeatAllHistory()};
-el('sendBtn').onclick=event=>{if(!state.powered){copyModeLink('off');return}if(state.game.active&&state.game.phase==='select'){copyModeLink('simon');return}if(!state.selected&&!state.powerAnimating&&!state.powerArmed){copyModeLink('on');return}state.source='self';render();animateSource('self');if(isDoubleTap('phone')){event.preventDefault();const item=historyItem();if(item)copySharePayload({type:'emotion',item},'Gefühl-Link');else flashShareStatus('Kein Gefühl gewählt')}else flashShareStatus('Gefühl teilen: Zweimal ☎ klicken.',3000)};
-el('receiveBtn').onclick=event=>{if(!state.powered)return;if(state.game.active&&state.game.phase==='select')return;state.source='other';render();animateSource('other');if(isDoubleTap('wifi')){event.preventDefault();recordHistory('sync-current');if(state.history.length)copySharePayload({type:'replay',items:state.history.slice(-40)},'Replay-Link');else flashShareStatus('Replay ist leer')}else flashShareStatus('Replay teilen: Zweimal 📶 klicken.',3000)};
+function shareReplayFromPhone(){
+ recordHistory('sync-current');
+ if(state.history.length)copySharePayload({type:'replay',items:state.history.slice(-40)},'Replay-Link');
+ else flashShareStatus('Replay ist leer')
+}
+function shareEmotionFromWifi(){
+ const item=historyItem();
+ if(item)copySharePayload({type:'emotion',item},'Gefühl-Link');
+ else flashShareStatus('Kein Gefühl gewählt')
+}
+el('sendBtn').onclick=event=>{
+ const doubled=isDoubleTap('phone');
+ if(doubled){event.preventDefault();shareReplayFromPhone();return}
+ if(!state.powered){copyModeLink('off');return}
+ if(state.game.active&&state.game.phase==='select'){copyModeLink('simon');return}
+ if(!state.selected&&!state.powerAnimating&&!state.powerArmed){copyModeLink('on');return}
+ state.source='self';render();animateSource('self');flashShareStatus('Replay teilen: Zweimal ☎ klicken.',3000)
+};
+el('receiveBtn').onclick=event=>{
+ const doubled=isDoubleTap('wifi');
+ if(doubled){event.preventDefault();shareEmotionFromWifi();return}
+ if(!state.powered)return;
+ if(state.game.active&&state.game.phase==='select')return;
+ state.source='other';render();animateSource('other');flashShareStatus('Gefühl teilen: Zweimal 📶 klicken.',3000)
+};
 
 // Tastatursteuerung: Ziffern entsprechen der sichtbaren 3×3-Tastenanordnung.
 const keyboardEmotionMap={

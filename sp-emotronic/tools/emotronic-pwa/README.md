@@ -1,4 +1,4 @@
-# Emotronic v2.06
+# Emotronic v2.07
 
 Emotronic ist eine installierbare, offlinefähige PWA zur Auswahl, Darstellung, Kombination und Wiedergabe von Gefühlen. Die Oberfläche ist an ein kompaktes Retro-Handgerät angelehnt und für Touch, Maus und Tastatur ausgelegt.
 
@@ -14,7 +14,7 @@ https://thultex.github.io/vibe-bd_crea/share/apps/emotronic/
 
 Das Repository `Thultex/vibe-bd_crea` ist öffentlich. Quelltexte, Dokumentation und Commit-Historie sind daher allgemein einsehbar; private Kontaktangaben, lokale Benutzerpfade und Zugangsdaten gehören nicht in die versionierten Dateien. Bewusste Urheber- und Namensnennungen bleiben davon unberührt.
 
-Emotronic speichert keine Gefühls-, Replay- oder Score-Daten auf einem Server. Gefühle und Replays stehen im URL-Fragment `#share=…`, Game-over-Daten in `#score=…`. Das Fragment wird beim normalen HTTP-Aufruf nicht an den Webserver übertragen, kann aber von jeder Person gelesen und decodiert werden, die den vollständigen Link erhält. Vertrauliche Inhalte sollten deshalb nicht über öffentlich zugängliche Kanäle geteilt werden.
+Emotronic speichert keine Gefühls-, Replay- oder Score-Daten auf einem Server. Gefühle stehen im URL-Fragment `#share=…`, Replays in `#replay=…` und Game-over-Daten in `#score=…`. Das Fragment wird beim normalen HTTP-Aufruf nicht an den Webserver übertragen, kann aber von jeder Person gelesen und decodiert werden, die den vollständigen Link erhält. Vertrauliche Inhalte sollten deshalb nicht über öffentlich zugängliche Kanäle geteilt werden.
 
 ## Schnellstart
 
@@ -47,7 +47,7 @@ Ein Druck auf Telefon kopiert in **Bereit**, auf der `Simon Feels!`-Auswahl oder
 | Datei | Zweck |
 |---|---|
 | `index.html` | Hauptanwendung mit Oberfläche, CSS und JavaScript |
-| `Emotronic-v2.06.html` | Versionierte Kopie der Hauptanwendung |
+| `Emotronic-v2.07.html` | Versionierte Kopie der Hauptanwendung |
 | `manifest.webmanifest` | PWA-Metadaten und Installationskonfiguration |
 | `sw.js` | Service Worker für Offline-Cache |
 | `icon-192.png`, `icon-512.png` | PWA-Symbole |
@@ -133,8 +133,8 @@ Die Animation von **starr** ist eine kurze Rückzugs- und Erstarrbewegung.
 
 - **Telefon** aktiviert den Telefon-/Eigenmodus und zeigt eine zentrierte Klingelanimation.
 - **Wifi** aktiviert die andere Seite. Bei neu ausgewählten Gefühlen kann dort die `>>>`-Sendeanimation erscheinen.
-- Ein einfacher Telefon-Tipp zeigt unter der kleinen Emotionsanzeige `Gefühl teilen: Zweimal ☎ klicken.`.
-- Ein einfacher Wifi-Tipp zeigt dort `Replay teilen: Zweimal 📶 klicken.`.
+- Ein einfacher Telefon-Tipp zeigt unter der kleinen Emotionsanzeige `Replay teilen: Zweimal ☎ klicken.`.
+- Ein einfacher Wifi-Tipp zeigt dort `Gefühl teilen: Zweimal 📶 klicken.`.
 - Die normale Auswahlfunktion bleibt auch bei einem Doppeltipp erhalten.
 
 ### Verlauf und Replay
@@ -155,18 +155,18 @@ Die Animation von **starr** ist eine kurze Rückzugs- und Erstarrbewegung.
 
 ## Sharing
 
-Emotronic speichert geteilte Daten ausschließlich im URL-Fragment. Gefühle und Replays verwenden `#share=`, Game-over-Scores verwenden `#score=`. Dadurch werden die Daten nicht automatisch an einen Server übertragen.
+Emotronic speichert geteilte Daten ausschließlich im URL-Fragment. Gefühle verwenden `#share=`, Replays das eindeutigere `#replay=` und Game-over-Scores `#score=`. Ältere Replay-Links unter `#share=` bleiben kompatibel. Dadurch werden die Daten nicht automatisch an einen Server übertragen.
 
 ### Gefühl teilen
 
-- Telefon zweimal kurz tippen.
+- Wifi/Sender zweimal kurz tippen.
 - Das aktuelle Gefühl wird als Share-Datensatz kopiert.
 - Unter `http://` oder `https://` wird ein vollständiger anklickbarer Link erzeugt.
-- Unter `file://` oder Android-`content://` wird nur der portable `#share=…`-Code kopiert, weil diese lokalen Adressen in anderen Browsern oder Geräten nicht funktionieren.
+- Unter `file://` oder Android-`content://` wird je nach Inhalt nur der portable `#share=…`-, `#replay=…`- oder `#score=…`-Code kopiert, weil diese lokalen Adressen in anderen Browsern oder Geräten nicht funktionieren.
 
 ### Replay teilen
 
-- Wifi zweimal kurz tippen.
+- Telefon zweimal kurz tippen.
 - Der aktuelle Verlauf mit bis zu 40 Zuständen wird kopiert.
 - Bei Intensitätsänderungen enthält der Verlauf nur die zuletzt eingestellte Stufe; wiederholte Gefühlsklicks bleiben als einzelne Schritte erhalten.
 - Unter `http://` oder `https://` entsteht ein vollständiger Link.
@@ -247,7 +247,7 @@ Die Kombi-Taste ist in Simon deutlich abgedunkelt und nicht bedienbar. Erwartet 
 - Im Profi-Modus wird die Endpunktzahl mit 25 % Bonus berechnet.
 - Beim Game Over wird ein Link mit Score, Modus und vollständiger gespielter Folge automatisch in die Zwischenablage kopiert, soweit der Browser dies zulässt.
 - Telefon kopiert denselben Score-Link auf dem Game-Over-Bildschirm erneut manuell.
-- Game-over-Links verwenden ausschließlich `#score=…`; `#share=…` akzeptiert nur Gefühle und Replays.
+- Game-over-Links verwenden ausschließlich `#score=…`; neue Replay-Links verwenden `#replay=…`, Gefühlslinks `#share=…`. Aus Kompatibilitätsgründen akzeptiert `#share=…` weiterhin ältere Replay-Datensätze.
 - Die Telefontaste bleibt dafür am Game Over sichtbar bedienbar.
 - Nach dem Öffnen eines Score-Links startet die gespeicherte Folge automatisch. Währenddessen steht links die Punktzahl und darunter `Replay · Abbruch bei Klick auf irgendeine Taste`; jeder Tastenklick kehrt sofort zum Game Over zurück.
 
@@ -295,7 +295,7 @@ Diese Reihenfolge soll bei weiteren Änderungen erhalten bleiben.
 ## Offline/PWA
 
 - Der Service Worker cached die Kernressourcen.
-- Die aktuelle Cache-Version lautet `emotronic-v106`.
+- Die aktuelle Cache-Version lautet `emotronic-v107`.
 - Beim Aktivieren werden nur ältere Emotronic-Caches entfernt; Caches anderer Anwendungen auf derselben Domain bleiben erhalten.
 - Nicht gecachte GET-Anfragen werden aus dem Netz geladen und anschließend gespeichert.
 - Bei einem Netzfehler wird als Fallback `index.html` verwendet.

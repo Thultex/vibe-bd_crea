@@ -47,9 +47,10 @@ Der Laufzeitspiegel enthält ausschließlich `index.html`, Manifest, Service Wor
 - Nach dem Starttipp lässt die App rund 0,1 Sekunden Abstand, bevor der empfangene Inhalt beginnt.
 - Aus bricht die wartende Empfangsphase oder eine laufende Replay-Wiedergabe unmittelbar ab.
 - Ein einfacher Tipp auf Telefon oder Wifi ersetzt die kleine Kategoriezeile drei Sekunden lang durch einen passenden Hinweis auf die jeweilige Doppeltipp-Teilgeste.
+- Ein Telefon-Doppeltipp teilt immer den Replay-Verlauf; ein Wifi-/Sender-Doppeltipp teilt immer das aktuelle Gefühl. Die Erkennung läuft vor den zustandsabhängigen Direktlink-Aktionen, damit die Zuordnung auch in Bereit, Aus und Simon konsistent bleibt.
 - Score-Links enthalten Endstand, Simon-Modus und die vollständige gespielte Folge; ihre Empfangsanimation ergänzt das Nachrichtensymbol um einen kleinen Pokal und die wartende Punktzahl.
 - Nach der Bestätigung eines Score-Links spielt die App die Folge automatisch. Währenddessen steht links die Punktzahl mit dem Abbruchhinweis darunter; jeder Tastenklick stellt sofort das Game Over wieder her.
-- Gefühle und Replays verwenden ausschließlich `#share=…`; Game-over-Links verwenden ausschließlich `#score=…`.
+- Gefühle verwenden `#share=…`, Replays `#replay=…` und Game-over-Links `#score=…`. Ältere Replay-Links unter `#share=…` bleiben lesbar.
 - Beim Game Over versucht die App den Score-Link automatisch zu kopieren; Telefon wiederholt dies manuell und `R` spielt die mitgeteilte Folge erneut ab.
 - Die Telefontaste wird am Game Over ausdrücklich für das manuelle Kopieren freigeschaltet.
 - Am Game Over bleiben Neugier, Neutral und Unsicherheit eingeblendet und starten direkt ein neues Spiel in Leicht, Normal beziehungsweise Profi; `R` bleibt Replay und `⏻` Schluss.
@@ -62,7 +63,7 @@ Der Laufzeitspiegel enthält ausschließlich `index.html`, Manifest, Service Wor
 
 Das Repository ist öffentlich. Lokale Benutzerpfade, private Kontaktangaben, Zugangsdaten und Geheimnisse werden nicht versioniert. Bewusste Urheberangaben dürfen bestehen bleiben.
 
-Geteilte Daten liegen ausschließlich in den URL-Fragmenten `#share=…` beziehungsweise `#score=…`. Sie werden beim normalen Seitenabruf nicht an den Webserver gesendet, bleiben jedoch für Empfänger des vollständigen Links lesbar.
+Geteilte Daten liegen ausschließlich in den URL-Fragmenten `#share=…`, `#replay=…` beziehungsweise `#score=…`. Sie werden beim normalen Seitenabruf nicht an den Webserver gesendet, bleiben jedoch für Empfänger des vollständigen Links lesbar.
 
 ## Drittmaterial
 

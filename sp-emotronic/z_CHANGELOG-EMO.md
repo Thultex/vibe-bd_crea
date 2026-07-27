@@ -4,22 +4,22 @@
 
 Ausgangsdatum: 2026-07-26
 
-*Diese Woche (ca. 2,3h, 2 Tage, Inhalte):*
+*Diese Woche (ca. 2,4h, 2 Tage, Inhalte):*
 Emotronic-PWA übernommen, strukturiert, dokumentiert, Replay-Verlauf sowie Intensitätszeiger korrigiert, Emoji-Intensitätsvorschau ergänzt und ausgeschaltete Bedientasten verfeinert.
 
 *Letzte Woche (0h, 0 Tage, Inhalte):*
 Keine Einträge.
 
-*Dieser Monat (ca. 2,3h, 2 Tage, Inhalte):*
+*Dieser Monat (ca. 2,4h, 2 Tage, Inhalte):*
 Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufs- und Zeigerlogik, Emoji-Intensitätsvorschau und verfeinerten Bedientasten.
 
 *Letzter Monat (0h, 0 Tage, Inhalte):*
 Keine Einträge.
 
-*Jahr (ca. 2,3h, 2 Tage, Inhalte):*
+*Jahr (ca. 2,4h, 2 Tage, Inhalte):*
 Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufs- und Zeigerlogik, Emoji-Intensitätsvorschau und verfeinerten Bedientasten.
 
-*Insgesamt (ca. 2,3h, 2 Tage, Inhalte):*
+*Insgesamt (ca. 2,4h, 2 Tage, Inhalte):*
 Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufs- und Zeigerlogik, Emoji-Intensitätsvorschau und verfeinerten Bedientasten.
 
 ## Log
@@ -80,7 +80,7 @@ Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufs- und Zeige
 - Design: OpenMoji ist künftig in Emotronic zu bevorzugen, wo Motiv und Darstellung sinnvoll passen; Text- und ASCII-Fallbacks bleiben erhalten.
 - Versionen: Emotronic v2.01.
 
-### 2026-07-27 - emo, tools, pwa, anzeige, animation, doku, test (ca. 0,7h)
+### 2026-07-27 - emo, tools, pwa, anzeige, animation, sharing, doku, test (ca. 0,8h)
 
 - Summary: Intensitätsvorschau und Beschriftungen verfeinert sowie leere Anzeigezustände und die ausgeschalteten Funktionstasten bereinigt.
 - Fix: Die Zeigerposition wird als animierbare CSS-Zahl interpoliert, sodass die Nadel zwischen den Intensitäten wieder sichtbar gleitet und nachschwingt. Das gilt auch beim Wechsel zu Neutral und von Neutral zu einem Gefühl; die unabhängige `null`-Absicherung bleibt erhalten.
@@ -99,6 +99,8 @@ Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufs- und Zeige
 - Anzeige/Bedienung: Bereit oder Neutral plus Kombi öffnet eine vollständige Übersicht aller acht Kombinationen auf dem äußeren Tastenring. Freude zeigt zuerst „lustig“, die übrigen Kombinationen folgen im Uhrzeigersinn und lassen sich direkt auswählen.
 - Replay: Beim Öffnen der Kombiübersicht aus Neutral wird nur der aktuelle Neutral-Schritt aus dem Replay entfernt und der Zustand intern zu Bereit; frühere Schritte bleiben erhalten.
 - Simon: Die Kombi-Taste ist deutlich abgedunkelt und nicht bedienbar. Bei Simons Vorführung leuchtet sie nach dem ersten Kombi-Symbol kurz auf; beim eigenen Nachtippen geschieht das für 0,15 Sekunden nur nach dem ersten richtigen Symbol.
+- Sharing: Die Doppeltipp-Zuordnung getauscht und vor den zustandsabhängigen Direktlink-Aktionen ausgewertet: Telefon teilt konsistent den Replay-Verlauf, Wifi/Sender das aktuelle Gefühl. Die Einzeltipp-Hinweise wurden entsprechend angepasst.
+- Sharing: Neue Replay-Links verwenden zur eindeutigen Erkennbarkeit `#replay=…`; Gefühle bleiben bei `#share=…`, Scores bei `#score=…`. Ältere Replay-Links unter `#share=…` werden weiterhin angenommen.
 - Test: Den veröffentlichten Spiegel lokal im Browser mit Aus-/Einschaltzyklus sowie den Übergängen 0→1, 1→3, 3→Neutral und Neutral→1 geprüft.
-- Test: JavaScript-Syntax, Versionsgleichlauf und bytegleichen Laufzeitspiegel für Emotronic v2.06 geprüft.
-- Versionen: Emotronic v2.06.
+- Test: JavaScript-Syntax, Versionsgleichlauf und bytegleichen Laufzeitspiegel für Emotronic v2.07 geprüft.
+- Versionen: Emotronic v2.07.
