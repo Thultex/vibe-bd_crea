@@ -1,4 +1,4 @@
-# Emotronic v2.08
+# Emotronic v2.09
 
 Emotronic ist eine installierbare, offlinefähige PWA zur Auswahl, Darstellung, Kombination und Wiedergabe von Gefühlen. Die Oberfläche ist an ein kompaktes Retro-Handgerät angelehnt und für Touch, Maus und Tastatur ausgelegt.
 
@@ -47,7 +47,7 @@ Ein Druck auf Telefon kopiert in **Bereit**, auf der `Simon Feels!`-Auswahl oder
 | Datei | Zweck |
 |---|---|
 | `index.html` | Hauptanwendung mit Oberfläche, CSS und JavaScript |
-| `Emotronic-v2.08.html` | Versionierte Kopie der Hauptanwendung |
+| `Emotronic-v2.09.html` | Versionierte Kopie der Hauptanwendung |
 | `manifest.webmanifest` | PWA-Metadaten und Installationskonfiguration |
 | `sw.js` | Service Worker für Offline-Cache |
 | `icon-192.png`, `icon-512.png` | PWA-Symbole |
@@ -152,7 +152,7 @@ Die Animation von **starr** ist eine kurze Rückzugs- und Erstarrbewegung.
 - Die Zahl ist etwas größer und näher an `R` positioniert. Erst eine neue Gefühlstaste blendet sie mit derselben weichen Deckkraft-/Skalierungsbewegung wie die Hinweise im Ausschaltzustand aus.
 - Im normalen Replay werden Gefühl, Emotion und Intensität mit einem sehr leichten Fade aus- und anschließend wieder eingeblendet, damit nur die Wiedergabe selbst im Mittelpunkt steht.
 - Ein empfangenes Replay beginnt direkt mit seinem ersten Schritt, ohne zuvor kurz den gespeicherten Endzustand einzublenden.
-- `R` während des Replays bricht nur die Wiedergabe ab und zeigt wieder den neuesten Zustand.
+- `R` während des Replays bricht nur die Wiedergabe ab, zeigt wieder den neuesten Zustand und behält die Gesamtzahl als erneuten Replay-Hinweis bei.
 - **Aus** während des Replays bricht ab, leert den Verlauf und geht direkt zu **Bereit**.
 - Ein normaler Neustart leert den Replay-Verlauf vollständig.
 
@@ -270,10 +270,14 @@ Am Game Over zeigt die Zahl neben `R` sofort die Anzahl der gespeicherten Runden
 
 ## Ton
 
-- Jede Grundemotion hat eigene 8-Bit-Klangfolgen je Intensität.
-- Kombinationen, Erfolg, Fehler, Lebensverlust, Lebensgewinn sowie Ein- und Ausschalten haben eigene Signale.
-- Der Ton ist optional und über `APP_CONFIG.audio` abschaltbar.
-- Fehlt Web Audio oder blockiert der Browser Audio, läuft die App ohne Funktionsverlust weiter.
+- Jede Grundemotion hat eigene Klangfolgen je Intensität. Kombinationen, Erfolg, Fehler, Lebensverlust, Lebensgewinn sowie Ein- und Ausschalten besitzen eigene Signale.
+- Alle 40 Klangereignisse liegen unter `assets/audio/emotronic/` in zwei vollständigen WAV-Sets:
+  - `8-bit/` erhält den härteren ursprünglichen Retro-Charakter.
+  - `8-bit_soft/` verwendet dieselben Tonhöhen und Rhythmen, aber weichere Ein-/Ausläufe sowie einen kurzen dezenten Nachhall.
+- `generate_audio_assets.py` erzeugt beide Ordner und `manifest.json` reproduzierbar. Neue Sounds werden zuerst in den Datentabellen des Generators ergänzt und anschließend für beide Sets generiert.
+- Die WAV-Sets sind nur vorbereitet und werden von der Live-PWA noch nicht geladen oder gecached. Ihre Audioausgabe bleibt bis zur gesonderten Aktivierung bei der bestehenden Web-Audio-Synthese.
+- Für die spätere Aktivierung ist `8-bit_soft` als Standard und `8-bit` als wählbare Alternative vorgesehen.
+- Der laufende Ton ist optional und über `APP_CONFIG.audio.enabled` abschaltbar. Fehlt Web Audio oder blockiert der Browser Audio, läuft die App ohne Funktionsverlust weiter.
 
 ## Tastatur
 
@@ -300,7 +304,7 @@ Diese Reihenfolge soll bei weiteren Änderungen erhalten bleiben.
 ## Offline/PWA
 
 - Der Service Worker cached die Kernressourcen.
-- Die aktuelle Cache-Version lautet `emotronic-v108`.
+- Die aktuelle Cache-Version lautet `emotronic-v109`.
 - Beim Aktivieren werden nur ältere Emotronic-Caches entfernt; Caches anderer Anwendungen auf derselben Domain bleiben erhalten.
 - Nicht gecachte GET-Anfragen werden aus dem Netz geladen und anschließend gespeichert.
 - Bei einem Netzfehler wird als Fallback `index.html` verwendet.

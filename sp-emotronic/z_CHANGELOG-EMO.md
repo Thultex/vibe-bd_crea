@@ -4,22 +4,22 @@
 
 Ausgangsdatum: 2026-07-26
 
-*Diese Woche (ca. 2,5h, 2 Tage, Inhalte):*
+*Diese Woche (ca. 3,0h, 2 Tage, Inhalte):*
 Emotronic-PWA übernommen, strukturiert, dokumentiert, Replay-Verlauf sowie Intensitätszeiger korrigiert, Emoji-Intensitätsvorschau ergänzt und ausgeschaltete Bedientasten verfeinert.
 
 *Letzte Woche (0h, 0 Tage, Inhalte):*
 Keine Einträge.
 
-*Dieser Monat (ca. 2,5h, 2 Tage, Inhalte):*
+*Dieser Monat (ca. 3,0h, 2 Tage, Inhalte):*
 Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufs- und Zeigerlogik, Emoji-Intensitätsvorschau und verfeinerten Bedientasten.
 
 *Letzter Monat (0h, 0 Tage, Inhalte):*
 Keine Einträge.
 
-*Jahr (ca. 2,5h, 2 Tage, Inhalte):*
+*Jahr (ca. 3,0h, 2 Tage, Inhalte):*
 Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufs- und Zeigerlogik, Emoji-Intensitätsvorschau und verfeinerten Bedientasten.
 
-*Insgesamt (ca. 2,5h, 2 Tage, Inhalte):*
+*Insgesamt (ca. 3,0h, 2 Tage, Inhalte):*
 Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufs- und Zeigerlogik, Emoji-Intensitätsvorschau und verfeinerten Bedientasten.
 
 ## Log
@@ -80,7 +80,7 @@ Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufs- und Zeige
 - Design: OpenMoji ist künftig in Emotronic zu bevorzugen, wo Motiv und Darstellung sinnvoll passen; Text- und ASCII-Fallbacks bleiben erhalten.
 - Versionen: Emotronic v2.01.
 
-### 2026-07-27 - emo, tools, pwa, anzeige, animation, replay, simon, sharing, doku, test (ca. 0,9h)
+### 2026-07-27 - emo, tools, pwa, anzeige, animation, replay, simon, sharing, audio, doku, test (ca. 1,4h)
 
 - Summary: Intensitätsvorschau und Beschriftungen verfeinert sowie leere Anzeigezustände und die ausgeschalteten Funktionstasten bereinigt.
 - Fix: Die Zeigerposition wird als animierbare CSS-Zahl interpoliert, sodass die Nadel zwischen den Intensitäten wieder sichtbar gleitet und nachschwingt. Das gilt auch beim Wechsel zu Neutral und von Neutral zu einem Gefühl; die unabhängige `null`-Absicherung bleibt erhalten.
@@ -89,6 +89,7 @@ Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufs- und Zeige
 - Fix: Das Nachschwingen startet nur noch bei einer tatsächlichen Positionsänderung und beginnt in der jeweiligen Bewegungsrichtung.
 - Anzeige: Beim Verstellen im Telefon-/Empfängermodus zeigen nun alle nicht-neutralen Gefühlstasten ihre OpenMoji-Variante der aktuellen Intensität. Der Display-Hintergrund bleibt an das angeklickte Gefühl gebunden; Wifi/Sender und die erst beim Druck ausgelöste Simon-Dramaturgie bleiben unverändert.
 - Anzeige: Die Beschriftungen der neun Gefühlstasten um zwei Pixel angehoben und ihre Zeilenhöhe leicht vergrößert, damit Unterlängen wie beim „g“ nicht mehr abgeschnitten erscheinen.
+- Anzeige: Die Beschriftungen anschließend insgesamt vier Pixel tiefer gesetzt und ihre Zeilenbox nochmals leicht vergrößert; die Tastengröße bleibt unverändert und Unterlängen werden nicht abgeschnitten.
 - Anzeige: Alle alleinstehenden `...`-Platzhalter aus den sichtbaren Initial- und Game-over-Anzeigen entfernt.
 - Anzeige: Im ausgeschalteten Zustand stehen fünf Pixel näher neben `R` und Power nun die schwarzen Silhouetten des OpenMoji-Joysticks `1F579` und wieder der OpenMoji-Lupe `1F50D`.
 - Animation: Joystick und Lupe blenden beim Ausschalten weich ein und beim Einschalten wieder aus, während `R` und Power sichtbar bleiben.
@@ -102,8 +103,12 @@ Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufs- und Zeige
 - Sharing: Die Doppeltipp-Zuordnung getauscht und vor den zustandsabhängigen Direktlink-Aktionen ausgewertet: Telefon teilt konsistent den Replay-Verlauf, Wifi/Sender das aktuelle Gefühl. Die Einzeltipp-Hinweise wurden entsprechend angepasst.
 - Sharing: Neue Replay-Links verwenden zur eindeutigen Erkennbarkeit `#replay=…`; Gefühle bleiben bei `#share=…`, Scores bei `#score=…`. Ältere Replay-Links unter `#share=…` werden weiterhin angenommen.
 - Replay/Anzeige: Nach vollständiger lokaler oder empfangener Wiedergabe bleibt die Gesamtzahl der Schritte als erneuter Abspielhinweis neben `R` stehen. Sie wurde auf 13 Pixel vergrößert, näher an `R` gerückt und blendet beim nächsten Gefühlstastendruck wie die Ausschalthinweise weich aus.
+- Replay/Anzeige: Wird `R` während einer erneuten Wiedergabe noch einmal gedrückt, bleibt die Gesamtzahl als Replay-Hinweis neben `R` erhalten.
 - Simon/Anzeige: Am Game Over erscheint dieselbe Zahl sofort als Anzahl der gespeicherten Runden, obwohl das Score-Replay erst durch `R` gestartet wird. Empfangene Scores und die Rückkehr aus ihrem Replay verwenden denselben Hinweis.
 - Sender/Animation: `>>>` startet nun bei jeder Gefühlsbetätigung einschließlich erneutem Klick auf dasselbe Gefühl, bei tatsächlicher Intensitätsänderung und beim Aktivieren der Wifi-/Sendertaste.
+- Audio: Die bisher synthetisierten Tonfolgen als 40 reproduzierbare WAV-Sounds in `/assets/audio/emotronic/8-bit/` abgelegt und ein gleich aufgebautes Set `8-bit_soft/` mit weicheren Hüllkurven sowie kurzem dezentem Nachhall erzeugt.
+- Audio: Beide Sets nur für den späteren Sound-Umbau vorbereitet. Die Live-PWA lädt sie noch nicht und verwendet unverändert ihre bestehende Web-Audio-Synthese; bei einer späteren Aktivierung ist `8-bit_soft` als Standard vorgesehen.
+- Tool: `generate_audio_assets.py` und `manifest.json` als gemeinsame Pflege- und Generationsgrundlage für beide Soundordner ergänzt.
 - Test: Den veröffentlichten Spiegel lokal im Browser mit Aus-/Einschaltzyklus sowie den Übergängen 0→1, 1→3, 3→Neutral und Neutral→1 geprüft.
-- Test: JavaScript-Syntax, Versionsgleichlauf und bytegleichen Laufzeitspiegel für Emotronic v2.08 geprüft.
-- Versionen: Emotronic v2.08.
+- Test: JavaScript-/Python-Syntax, WAV-Struktur, Soundset-Gleichlauf, Manifestabdeckung, Versionsgleichlauf und bytegleichen Laufzeitspiegel für Emotronic v2.09 geprüft.
+- Versionen: Emotronic v2.09.

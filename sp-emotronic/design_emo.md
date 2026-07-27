@@ -41,6 +41,7 @@ Der Laufzeitspiegel enthält ausschließlich `index.html`, Manifest, Service Wor
 - Im Simon-Modus ist die Kombi-Taste deutlich abgedunkelt und nicht bedienbar. Bei einer erwarteten Kombi-Aktion leuchtet sie nach dem ersten richtigen Symbol kurz auf.
 - Replay-Start und Replay-Sharing synchronisieren den sichtbaren Endzustand, ohne ihn doppelt anzuhängen.
 - Nach einem vollständig abgespielten lokalen oder empfangenen Replay bleibt die Gesamtzahl seiner Schritte etwas größer und näher bei `R` als erneuter Abspielhinweis sichtbar. Erst der nächste Druck auf eine Gefühlstaste blendet die Zahl mit derselben weichen Skalierungs-/Deckkraftbewegung wie die ausgeschalteten Tastenhinweise aus.
+- Wird `R` während der erneuten Wiedergabe zum Abbruch gedrückt, bleibt die Gesamtzahl ebenfalls sichtbar.
 - Das normale Replay blendet Gefühl, Emotion und Intensität mit einem sehr leichten Fade während der Wiedergabe aus und danach wieder ein.
 - Ein empfangenes Replay rendert vor seinem ersten Schritt nicht mehr kurz den gespeicherten Endzustand.
 - Zweimaliges Drücken von Neutral wechselt zu Bereit und leert dabei den gesamten Replay-Verlauf.
@@ -60,6 +61,13 @@ Der Laufzeitspiegel enthält ausschließlich `index.html`, Manifest, Service Wor
 - Aus führt vom Game Over zurück zur Simon-Titelauswahl und schaltet die App erst bei erneutem Drücken in dieser Auswahl aus.
 - `R` auf der Simon-Titelauswahl stellt den letzten Game-over-Zustand samt Modus und Folge wieder her.
 - In Simon zeigt dieselbe Zahl neben `R` am Game Over sofort die Anzahl der gespeicherten Runden, obwohl das Score-Replay erst durch `R` gestartet wird. Auch empfangene Scores und die Rückkehr nach deren Replay verwenden denselben Hinweis.
+
+## Audio
+
+- Alle 40 Klangereignisse liegen reproduzierbar in zwei WAV-Sets unter `/assets/audio/emotronic/`: `8-bit` bewahrt die harte Retro-Fassung, `8-bit_soft` verwendet dieselben Tonhöhen und Rhythmen mit weicheren Hüllkurven und kurzem Nachhall.
+- `generate_audio_assets.py` erzeugt beide Sets und `manifest.json` aus einer gemeinsamen Datengrundlage. Neue Sounds werden dort ergänzt und stets für beide Ordner generiert.
+- Die Sets sind für den späteren Sound-Umbau vorbereitet, aber noch nicht in die Live-PWA eingebunden. Diese verwendet unverändert die bestehende Web-Audio-Synthese.
+- Bei der späteren Aktivierung ist `8-bit_soft` als erste Standardauswahl vorgesehen; `8-bit` bleibt als alternative Fassung erhalten.
 - Der Geschafft-Jingle folgt mit rund 0,2 Sekunden Abstand auf den letzten korrekten Tastendruck.
 
 ## Datenschutz

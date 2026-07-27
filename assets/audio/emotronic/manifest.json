@@ -1,0 +1,424 @@
+{
+  "version": 1,
+  "recommendedSet": "8-bit_soft",
+  "sampleRate": 22050,
+  "sets": [
+    "8-bit",
+    "8-bit_soft"
+  ],
+  "sounds": [
+    {
+      "id": "emotion_curiosity_1",
+      "kind": "emotion",
+      "notes": [
+        523,
+        659
+      ],
+      "level": 1
+    },
+    {
+      "id": "emotion_curiosity_2",
+      "kind": "emotion",
+      "notes": [
+        523,
+        659,
+        784
+      ],
+      "level": 2
+    },
+    {
+      "id": "emotion_curiosity_3",
+      "kind": "emotion",
+      "notes": [
+        659,
+        784,
+        988
+      ],
+      "level": 3
+    },
+    {
+      "id": "emotion_joy_1",
+      "kind": "emotion",
+      "notes": [
+        659,
+        784
+      ],
+      "level": 1
+    },
+    {
+      "id": "emotion_joy_2",
+      "kind": "emotion",
+      "notes": [
+        659,
+        784,
+        988
+      ],
+      "level": 2
+    },
+    {
+      "id": "emotion_joy_3",
+      "kind": "emotion",
+      "notes": [
+        784,
+        988,
+        1175
+      ],
+      "level": 3
+    },
+    {
+      "id": "emotion_affection_1",
+      "kind": "emotion",
+      "notes": [
+        587,
+        740
+      ],
+      "level": 1
+    },
+    {
+      "id": "emotion_affection_2",
+      "kind": "emotion",
+      "notes": [
+        587,
+        740,
+        880
+      ],
+      "level": 2
+    },
+    {
+      "id": "emotion_affection_3",
+      "kind": "emotion",
+      "notes": [
+        740,
+        880,
+        1109
+      ],
+      "level": 3
+    },
+    {
+      "id": "emotion_anger_1",
+      "kind": "emotion",
+      "notes": [
+        220,
+        196
+      ],
+      "level": 1
+    },
+    {
+      "id": "emotion_anger_2",
+      "kind": "emotion",
+      "notes": [
+        247,
+        220,
+        196
+      ],
+      "level": 2
+    },
+    {
+      "id": "emotion_anger_3",
+      "kind": "emotion",
+      "notes": [
+        294,
+        247,
+        196,
+        165
+      ],
+      "level": 3
+    },
+    {
+      "id": "emotion_neutral_1",
+      "kind": "emotion",
+      "notes": [
+        330
+      ],
+      "level": 1
+    },
+    {
+      "id": "emotion_fear_1",
+      "kind": "emotion",
+      "notes": [
+        392,
+        330
+      ],
+      "level": 1
+    },
+    {
+      "id": "emotion_fear_2",
+      "kind": "emotion",
+      "notes": [
+        392,
+        330,
+        277
+      ],
+      "level": 2
+    },
+    {
+      "id": "emotion_fear_3",
+      "kind": "emotion",
+      "notes": [
+        440,
+        370,
+        294,
+        247
+      ],
+      "level": 3
+    },
+    {
+      "id": "emotion_disgust_1",
+      "kind": "emotion",
+      "notes": [
+        277,
+        247
+      ],
+      "level": 1
+    },
+    {
+      "id": "emotion_disgust_2",
+      "kind": "emotion",
+      "notes": [
+        294,
+        247,
+        220
+      ],
+      "level": 2
+    },
+    {
+      "id": "emotion_disgust_3",
+      "kind": "emotion",
+      "notes": [
+        330,
+        277,
+        233,
+        196
+      ],
+      "level": 3
+    },
+    {
+      "id": "emotion_sadness_1",
+      "kind": "emotion",
+      "notes": [
+        440,
+        392
+      ],
+      "level": 1
+    },
+    {
+      "id": "emotion_sadness_2",
+      "kind": "emotion",
+      "notes": [
+        440,
+        370,
+        330
+      ],
+      "level": 2
+    },
+    {
+      "id": "emotion_sadness_3",
+      "kind": "emotion",
+      "notes": [
+        440,
+        392,
+        330,
+        262
+      ],
+      "level": 3
+    },
+    {
+      "id": "emotion_surprise_1",
+      "kind": "emotion",
+      "notes": [
+        494,
+        659
+      ],
+      "level": 1
+    },
+    {
+      "id": "emotion_surprise_2",
+      "kind": "emotion",
+      "notes": [
+        494,
+        659,
+        831
+      ],
+      "level": 2
+    },
+    {
+      "id": "emotion_surprise_3",
+      "kind": "emotion",
+      "notes": [
+        587,
+        784,
+        988,
+        1175
+      ],
+      "level": 3
+    },
+    {
+      "id": "combo_verliebt",
+      "kind": "combo",
+      "notes": [
+        784,
+        740,
+        1175,
+        1109
+      ],
+      "level": 3
+    },
+    {
+      "id": "combo_lustig",
+      "kind": "combo",
+      "notes": [
+        784,
+        659,
+        1175,
+        988
+      ],
+      "level": 3
+    },
+    {
+      "id": "combo_streitlustig",
+      "kind": "combo",
+      "notes": [
+        659,
+        294,
+        988,
+        165
+      ],
+      "level": 3
+    },
+    {
+      "id": "combo_starr",
+      "kind": "combo",
+      "notes": [
+        740,
+        440,
+        1109,
+        247
+      ],
+      "level": 3
+    },
+    {
+      "id": "combo_abwertend",
+      "kind": "combo",
+      "notes": [
+        330,
+        294,
+        196,
+        165
+      ],
+      "level": 3
+    },
+    {
+      "id": "combo_bereuend",
+      "kind": "combo",
+      "notes": [
+        440,
+        330,
+        262,
+        196
+      ],
+      "level": 3
+    },
+    {
+      "id": "combo_genervt",
+      "kind": "combo",
+      "notes": [
+        440,
+        587,
+        247,
+        1175
+      ],
+      "level": 3
+    },
+    {
+      "id": "combo_verlegen",
+      "kind": "combo",
+      "notes": [
+        587,
+        440,
+        1175,
+        262
+      ],
+      "level": 3
+    },
+    {
+      "id": "special_game_win",
+      "kind": "special",
+      "notes": [
+        659,
+        784,
+        988,
+        1175,
+        1319
+      ],
+      "level": 3
+    },
+    {
+      "id": "special_simon_start",
+      "kind": "special",
+      "notes": [
+        392,
+        523,
+        659,
+        784,
+        988
+      ],
+      "level": 3
+    },
+    {
+      "id": "special_game_lose",
+      "kind": "special",
+      "notes": [
+        392,
+        330,
+        262,
+        196
+      ],
+      "level": 2
+    },
+    {
+      "id": "special_life_lose",
+      "kind": "special",
+      "notes": [
+        523,
+        440,
+        349,
+        294
+      ],
+      "level": 2
+    },
+    {
+      "id": "special_life_gain",
+      "kind": "special",
+      "notes": [
+        523,
+        659,
+        784,
+        1047,
+        1319
+      ],
+      "level": 3
+    },
+    {
+      "id": "special_power_on",
+      "kind": "special",
+      "notes": [
+        262,
+        392,
+        523,
+        784
+      ],
+      "level": 3
+    },
+    {
+      "id": "special_power_off",
+      "kind": "special",
+      "notes": [
+        659,
+        523,
+        392,
+        262
+      ],
+      "level": 2
+    }
+  ]
+}

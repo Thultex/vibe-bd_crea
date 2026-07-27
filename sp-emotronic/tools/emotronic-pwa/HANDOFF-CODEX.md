@@ -1,4 +1,4 @@
-# Codex-Handoff: Emotronic v2.08
+# Codex-Handoff: Emotronic v2.09
 
 ## Auftrag
 
@@ -7,7 +7,9 @@ Diese Übergabe beschreibt den aktuellen Stand der installierbaren Emotronic-PWA
 ## Relevante Dateien
 
 - `sp-emotronic/tools/emotronic-pwa/index.html` – maßgebliche Quelle
-- `sp-emotronic/tools/emotronic-pwa/Emotronic-v2.08.html` – versionierter Snapshot, nach Änderungen neu erzeugen
+- `sp-emotronic/tools/emotronic-pwa/Emotronic-v2.09.html` – versionierter Snapshot, nach Änderungen neu erzeugen
+- `sp-emotronic/tools/emotronic-pwa/generate_audio_assets.py` – reproduzierbarer Generator beider Soundsets
+- `assets/audio/emotronic/` – Manifest sowie `8-bit` und `8-bit_soft`
 - `sp-emotronic/tools/emotronic-pwa/sw.js` – Service Worker und Cache-Version
 - `sp-emotronic/tools/emotronic-pwa/manifest.webmanifest` – PWA-Manifest
 - `sp-emotronic/tools/emotronic-pwa/README.md` – Nutzer- und Funktionsdokumentation
@@ -15,10 +17,10 @@ Diese Übergabe beschreibt den aktuellen Stand der installierbaren Emotronic-PWA
 
 ## Versionierung
 
-- Aktuell: **Emotronic v2.08**
-- `APP_META.version`: `2.08`
-- `APP_META.revision`: `108`
-- Service-Worker-Cache: `emotronic-v108`
+- Aktuell: **Emotronic v2.09**
+- `APP_META.version`: `2.09`
+- `APP_META.revision`: `109`
+- Service-Worker-Cache: `emotronic-v109`
 - Beim Aktivieren nur ältere Caches mit dem Präfix `emotronic-v` entfernen; andere Anwendungen können dieselbe Domain verwenden.
 - Jede abgeschlossene Revision erhöht die Version um `0.01` und die Revision um `1`.
 - Codekopf, `APP_META`, Service Worker, versionierte HTML-Datei, README und ZIP müssen synchron bleiben.
@@ -38,6 +40,13 @@ Die Reihenfolge im JavaScript ist absichtlich:
 9. Funktionslogik
 
 Globale Optionen nicht zwischen die Funktionslogik verteilen.
+
+## Audio – Kerninvarianten
+
+- `/assets/audio/emotronic/8-bit/` und `/assets/audio/emotronic/8-bit_soft/` enthalten dieselben 40 Sound-IDs; `manifest.json` ist die maschinenlesbare Übersicht.
+- Neue oder geänderte Tonfolgen zuerst in `generate_audio_assets.py` pflegen und danach beide Ordner neu generieren.
+- Die WAV-Dateien sind vorbereitet, aber noch nicht in die Live-PWA oder den Service-Worker-Cache eingebunden. `playEmotionSound`, `playComboSound` und `playSpecialSound` verwenden weiterhin ausschließlich `playTonePattern`.
+- Bei der späteren Aktivierung soll `8-bit_soft` zunächst Standard sein und `8-bit` als Alternative erhalten bleiben.
 
 ## Öffentliches Repository und Datenschutz
 
@@ -70,7 +79,7 @@ Globale Optionen nicht zwischen die Funktionslogik verteilen.
 - Erneute Klicks auf dieselbe Gefühlstaste erzeugen bewusst weitere Schritte, auch bei identischem Zustand.
 - Replay-Start und Replay-Sharing synchronisieren den aktuellen Zustand ohne zusätzlichen Duplikatschritt.
 - `R` startet Replay.
-- Die graue Restanzahl steht während Replay neben `R`. Nach vollständiger Wiedergabe bleibt `items.length` über `showReplayCount()` als erneuter Abspielhinweis stehen; weil empfangene Replays ebenfalls `replayHistory()` verwenden, benötigen sie keinen Sonderpfad.
+- Die graue Restanzahl steht während Replay neben `R`. Nach vollständiger Wiedergabe bleibt `items.length` über `showReplayCount()` als erneuter Abspielhinweis stehen; weil empfangene Replays ebenfalls `replayHistory()` verwenden, benötigen sie keinen Sonderpfad. Bricht `R` eine erneute Wiedergabe ab, ruft `cancelReplayToLatest()` `stopReplay(false,true)` auf und stellt anschließend ebenfalls die Gesamtzahl wieder her.
 - Die 13-Pixel-Zahl sitzt mit `right:13px` näher bei `R` und verwendet dieselbe 0,38-Sekunden-Deckkraft-/Skalierungsbewegung wie die ausgeschalteten Tastenhinweise. `pressEmotion()` blendet sie über `hideReplayCount()` aus.
 - `R` während Replay: nur abbrechen und neuesten gespeicherten Zustand wiederherstellen.
 - **Aus** während Replay: abbrechen, Verlauf leeren, direkt zu Bereit; nicht Neutral und nicht Gerät ausschalten.
@@ -162,9 +171,9 @@ rm emotronic_check.js
 Für ein auslieferbares ZIP vom Repository-Root aus:
 
 ```bash
-rm -f emotronic-pwa-v2.08.zip
-zip -rq emotronic-pwa-v2.08.zip sp-emotronic/tools/emotronic-pwa
-unzip -t emotronic-pwa-v2.08.zip
+rm -f emotronic-pwa-v2.09.zip
+zip -rq emotronic-pwa-v2.09.zip sp-emotronic/tools/emotronic-pwa
+unzip -t emotronic-pwa-v2.09.zip
 ```
 
 ## Vorsicht bei Änderungen
