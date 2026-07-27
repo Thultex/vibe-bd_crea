@@ -1,4 +1,4 @@
-# Codex-Handoff: Emotronic v2.04
+# Codex-Handoff: Emotronic v2.05
 
 ## Auftrag
 
@@ -7,7 +7,7 @@ Diese Übergabe beschreibt den aktuellen Stand der installierbaren Emotronic-PWA
 ## Relevante Dateien
 
 - `sp-emotronic/tools/emotronic-pwa/index.html` – maßgebliche Quelle
-- `sp-emotronic/tools/emotronic-pwa/Emotronic-v2.04.html` – versionierter Snapshot, nach Änderungen neu erzeugen
+- `sp-emotronic/tools/emotronic-pwa/Emotronic-v2.05.html` – versionierter Snapshot, nach Änderungen neu erzeugen
 - `sp-emotronic/tools/emotronic-pwa/sw.js` – Service Worker und Cache-Version
 - `sp-emotronic/tools/emotronic-pwa/manifest.webmanifest` – PWA-Manifest
 - `sp-emotronic/tools/emotronic-pwa/README.md` – Nutzer- und Funktionsdokumentation
@@ -15,10 +15,10 @@ Diese Übergabe beschreibt den aktuellen Stand der installierbaren Emotronic-PWA
 
 ## Versionierung
 
-- Aktuell: **Emotronic v2.04**
-- `APP_META.version`: `2.04`
-- `APP_META.revision`: `104`
-- Service-Worker-Cache: `emotronic-v104`
+- Aktuell: **Emotronic v2.05**
+- `APP_META.version`: `2.05`
+- `APP_META.revision`: `105`
+- Service-Worker-Cache: `emotronic-v105`
 - Beim Aktivieren nur ältere Caches mit dem Präfix `emotronic-v` entfernen; andere Anwendungen können dieselbe Domain verwenden.
 - Jede abgeschlossene Revision erhöht die Version um `0.01` und die Revision um `1`.
 - Codekopf, `APP_META`, Service Worker, versionierte HTML-Datei, README und ZIP müssen synchron bleiben.
@@ -58,7 +58,8 @@ Globale Optionen nicht zwischen die Funktionslogik verteilen.
 - Telefonanimation bleibt zentriert und wirkt wie Klingeln, nicht wie ausgehende Pfeile.
 - `>>>` gehört nur zur Wifi-/Sendeanimation.
 - Nur im Telefon-/Empfängermodus spiegeln alle nicht-neutralen Tasten die aktuelle Intensitätsstufe vorab. Der Display-Hintergrund zeigt weiterhin das tatsächlich gewählte Gefühl; Wifi/Sender und Simon erhalten keine gemeinsame Vorschau.
-- Die leichte Überblendung beim Intensitätswechsel gilt ausschließlich für die wechselnden Tasten-Emojis, nicht für den Display-Hintergrund.
+- Die direkte Überblendung beim Intensitätswechsel läuft auf allen nicht-neutralen Empfängertasten und auf der aktuellen Wifi-Sendertaste. Ihre Gesamtdauer ist über `APP_CONFIG.normalMode.keypadCrossfadeMs` definierbar und beträgt standardmäßig 0,15 Sekunden. Das neue Motiv erreicht bei rund 0,12 Sekunden volle Deckkraft; das alte beginnt bei etwa 0,08 Sekunden auszufaden und endet bei 0,15 Sekunden. Dadurch dürfen weder Transparenzknick noch harter Abschlusssprung entstehen. Deckkraft- und Bewegungsanimation laufen unabhängig. Andere Sendertasten und der Display-Hintergrund erhalten keine zusätzliche Animation.
+- Das alte aktive Tastenmotiv bleibt sichtbar, bis das neue SVG erfolgreich geladen ist. Tastenbilder verwenden leeren Alternativtext und keinen großen grafischen Text-Ersatz; bei einem Fehler bleibt die kleine Tastenbeschriftung als bedienbarer Fallback.
 - In Simon werden Intensitätsmotiv und dramaturgischer Effekt weiterhin erst mit dem jeweiligen Tastendruck ausgelöst.
 
 ## Replay – Kerninvarianten
@@ -102,6 +103,8 @@ Nur diese acht Paare sind gültig:
 - Trauer + Ekel → bereuend
 - Angst + Unsicherheit → genervt
 - Unsicherheit + Trauer → verlegen
+
+Bei aktiver Kombi-Taste zeigen gültige Partner-/Nachbartasten das resultierende Kombi-Emoji als Vorschau. Beim Abbruch werden alle Grund-Emojis wiederhergestellt; nach einer gültigen Wahl behält nur die gewählte Taste das echte Kombi-Emoji.
 
 `starr` verwendet eine eigene Rückzugs-/Erstarrbewegung in Normalmodus, Replay und Simon.
 
@@ -153,9 +156,9 @@ rm emotronic_check.js
 Für ein auslieferbares ZIP vom Repository-Root aus:
 
 ```bash
-rm -f emotronic-pwa-v2.04.zip
-zip -rq emotronic-pwa-v2.04.zip sp-emotronic/tools/emotronic-pwa
-unzip -t emotronic-pwa-v2.04.zip
+rm -f emotronic-pwa-v2.05.zip
+zip -rq emotronic-pwa-v2.05.zip sp-emotronic/tools/emotronic-pwa
+unzip -t emotronic-pwa-v2.05.zip
 ```
 
 ## Vorsicht bei Änderungen
@@ -175,7 +178,7 @@ unzip -t emotronic-pwa-v2.04.zip
 - Kein Framework.
 - CSS und JavaScript sind in `index.html` eingebettet.
 - Externe OpenMoji-SVGs werden zur Laufzeit geladen; Text- und ASCII-Fallbacks bleiben vorhanden.
-- Der farbige Controller `1F3AE` kennzeichnet den direkten Simon-Einstieg. `R` und das normale Power-Zeichen bleiben immer erhalten; nur ausgeschaltet erscheinen direkt daneben 21 Pixel große farbige Hinweise mit dem Joystick `1F579` beziehungsweise dem offenen Buch `1F4D6`. Die Score-Empfangsvorschau verwendet den Pokal `1F3C6`.
+- Der farbige Controller `1F3AE` kennzeichnet den direkten Simon-Einstieg. `R` und das normale Power-Zeichen bleiben immer erhalten; beim Ausschalten blenden direkt daneben 21 Pixel große schwarze Silhouetten des Joysticks `1F579` beziehungsweise der Lupe `1F50D` ein und beim Einschalten wieder aus. Die Score-Empfangsvorschau verwendet den Pokal `1F3C6`.
 - Eine Kombinationsauswahl liegt nur bei einem tatsächlich vorhandenen Objekt vor; `null` darf weder den Kombi-Lock aktivieren noch die Intensität auf `3` setzen.
 - Zustände liegen im zentralen `state`-Objekt.
 - Simon-spezifischer Zustand liegt unter `state.game`.

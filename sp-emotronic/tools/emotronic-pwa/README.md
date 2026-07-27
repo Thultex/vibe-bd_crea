@@ -1,4 +1,4 @@
-# Emotronic v2.04
+# Emotronic v2.05
 
 Emotronic ist eine installierbare, offlinefähige PWA zur Auswahl, Darstellung, Kombination und Wiedergabe von Gefühlen. Die Oberfläche ist an ein kompaktes Retro-Handgerät angelehnt und für Touch, Maus und Tastatur ausgelegt.
 
@@ -47,7 +47,7 @@ Ein Druck auf Telefon kopiert in **Bereit**, auf der `Simon Feels!`-Auswahl oder
 | Datei | Zweck |
 |---|---|
 | `index.html` | Hauptanwendung mit Oberfläche, CSS und JavaScript |
-| `Emotronic-v2.04.html` | Versionierte Kopie der Hauptanwendung |
+| `Emotronic-v2.05.html` | Versionierte Kopie der Hauptanwendung |
 | `manifest.webmanifest` | PWA-Metadaten und Installationskonfiguration |
 | `sw.js` | Service Worker für Offline-Cache |
 | `icon-192.png`, `icon-512.png` | PWA-Symbole |
@@ -107,11 +107,12 @@ Im Telefon-/Empfängermodus zeigen alle nicht-neutralen Gefühlstasten die OpenM
 - `+` erhöht die Intensität.
 - Kombinationen sind fest auf Intensität `3` eingestellt.
 - Die Anzeige, Hintergrundfarbe, ASCII-Mimik, OpenMoji-Grafik, Bewegung und Ton reagieren auf die Intensität.
-- Beim Intensitätswechsel werden ausschließlich die wechselnden Emojis auf den Gefühlstasten leicht überblendet; der Display-Hintergrund behält seine bisherige Reaktion.
+- Beim Intensitätswechsel überblenden alle nicht-neutralen Empfängertasten und die aktuelle Wifi-Sendertaste das alte und neue Emoji direkt miteinander. Die Gesamtdauer ist über `APP_CONFIG.normalMode.keypadCrossfadeMs` definierbar und beträgt standardmäßig 0,15 Sekunden. Das neue Motiv wird innerhalb von rund 0,12 Sekunden vollständig sichtbar; das alte beginnt nach etwa 0,08 Sekunden weich auszufaden und verschwindet bis zum Ende. So entstehen weder ein Transparenzknick in der Mitte noch ein harter Sprung am Schluss. Bewegung und Überblendung laufen unabhängig voneinander. Andere Sendertasten und der Display-Hintergrund behalten ihre bisherige Reaktion.
+- Während SVGs wechseln, bleibt insbesondere auf der aktiven Taste das alte Motiv bis zum erfolgreichen Laden des neuen sichtbar. Alternativtext und große grafische Textplatzhalter werden dort nicht eingeblendet; die normale kleine Tastenbeschriftung bleibt als bedienbarer Fallback erhalten.
 
 ### Gefühls-Kombinationen
 
-Die Kombinationstaste verwendet die aktuell gewählte Grundemotion als ersten Partner. Danach wird eine gültige Nachbar-Emotion gewählt.
+Die Kombinationstaste verwendet die aktuell gewählte Grundemotion als ersten Partner. Danach wird eine gültige Nachbar-Emotion gewählt. Während die Kombi-Taste aktiv ist, zeigen die gültigen gestrichelt markierten Nachbartasten bereits das jeweils entstehende Kombi-Emoji; die kleine Beschriftung nennt weiterhin die wählbare Grundemotion. Beim Abbruch kehren alle Vorschauen zu ihren Grund-Emojis zurück. Nach einer gültigen Wahl behält nur die gewählte Taste das nun echte Kombi-Emoji.
 
 | Kombination | Ergebnis |
 |---|---|
@@ -193,7 +194,7 @@ Die Zwischenablage verwendet zuerst die moderne Clipboard API und danach einen k
 
 ## Gedächtnisspiel
 
-Das Gedächtnisspiel wird bei ausgeschaltetem Gerät weiterhin mit `R` geöffnet. Direkt neben dem `R` erscheint dann zusätzlich der kleine farbige OpenMoji-Joystick `1F579`. Auch das normale Power-Zeichen bleibt erhalten und erhält nur im ausgeschalteten Zustand direkt daneben das kleine farbige OpenMoji „offenes Buch“ `1F4D6`. Beide Hinweise sind 21 Pixel groß. Beim Ausschalten springen Intensitätswert und Zeiger sofort sichtbar auf `0`. Der leere Bereit-Zustand bleibt intern ebenfalls bei `0`, sodass die erste Gefühlsauswahl nach Start oder Neustart auf Mindeststufe `1` statt fälschlich auf `3` beginnt.
+Das Gedächtnisspiel wird bei ausgeschaltetem Gerät weiterhin mit `R` geöffnet. Direkt neben dem `R` blendet beim Ausschalten zusätzlich die kleine schwarze Silhouette des OpenMoji-Joysticks `1F579` ein. Auch das normale Power-Zeichen bleibt erhalten und erhält direkt daneben wieder die schwarze Silhouette der OpenMoji-Lupe `1F50D`. Beim Einschalten blenden beide Hinweise weich aus. Sie sind 21 Pixel groß. Beim Ausschalten springen Intensitätswert und Zeiger sofort sichtbar auf `0`. Der leere Bereit-Zustand bleibt intern ebenfalls bei `0`, sodass die erste Gefühlsauswahl nach Start oder Neustart auf Mindeststufe `1` statt fälschlich auf `3` beginnt.
 
 Beim Einstieg baut sich oben `Simon Feels!` in derselben Schriftgröße wie die normale Introanzeige auf und ein kurzer Startjingle erklingt. Die Auswahl bleibt dabei sofort bedienbar; jede Spielaktion beendet den Titelaufbau. Der Direktlink `#simon` wartet zunächst auf einem weißen Bildschirm mit dem farbigen OpenMoji-Controller `1F3AE` auf einen Tipp, damit Animation und Ton erst nach dieser Interaktion starten.
 
@@ -290,11 +291,11 @@ Diese Reihenfolge soll bei weiteren Änderungen erhalten bleiben.
 ## Offline/PWA
 
 - Der Service Worker cached die Kernressourcen.
-- Die aktuelle Cache-Version lautet `emotronic-v104`.
+- Die aktuelle Cache-Version lautet `emotronic-v105`.
 - Beim Aktivieren werden nur ältere Emotronic-Caches entfernt; Caches anderer Anwendungen auf derselben Domain bleiben erhalten.
 - Nicht gecachte GET-Anfragen werden aus dem Netz geladen und anschließend gespeichert.
 - Bei einem Netzfehler wird als Fallback `index.html` verwendet.
 
 ## Drittmaterial
 
-Wo es gestalterisch und semantisch passt, sind OpenMoji-Grafiken gegenüber plattformabhängigen Emoji-Zeichen zu bevorzugen. Dazu gehören derzeit insbesondere der Controller `1F3AE`, der farbige Joystick `1F579`, das farbige offene Buch `1F4D6` auf dem Aus-Knopf und der Pokal `1F3C6`. Bedienbare Kernfunktionen behalten einen einfachen Text- oder ASCII-Fallback. Copyright und Lizenzbedingungen von OpenMoji sind zu beachten. Die App zeigt beim Start `(c) OpenMoji` an.
+Wo es gestalterisch und semantisch passt, sind OpenMoji-Grafiken gegenüber plattformabhängigen Emoji-Zeichen zu bevorzugen. Dazu gehören derzeit insbesondere der Controller `1F3AE`, die schwarzen Silhouetten von Joystick `1F579` und Lupe `1F50D` im Ausschaltzustand sowie der Pokal `1F3C6`. Bedienbare Kernfunktionen behalten einen einfachen Text- oder ASCII-Fallback. Copyright und Lizenzbedingungen von OpenMoji sind zu beachten. Die App zeigt beim Start `(c) OpenMoji` an.

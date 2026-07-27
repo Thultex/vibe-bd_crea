@@ -1,10 +1,10 @@
 <!--
   ============================================================================
-  Emotronic v2.04
+  Emotronic v2.05
   Projektname: Emotronic
   Autor: Rasmus Klette
   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-  Aktuelle Revision: 104
+  Aktuelle Revision: 105
   ============================================================================
 -->
 <!doctype html>
@@ -63,8 +63,8 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 @keyframes needleSwing{0%{transform:translateX(-50%)}45%{transform:translateX(calc(-50% + var(--overshoot,6px)))}72%{transform:translateX(calc(-50% - var(--rebound,3px)))}100%{transform:translateX(-50%)}}
 .meter-arrow{height:48px;border:0;background:transparent;font-size:30px;font-weight:950;cursor:pointer;display:grid;place-items:center;padding:0;line-height:1;transition:transform .15s ease,opacity .2s ease}.meter-arrow:active{transform:scale(.88)}.meter-arrow:disabled{opacity:.28;cursor:default}
 .keypad-shell{background:linear-gradient(#d7d0c4,#bdb5a8);border:3px solid var(--ink);border-radius:25px;padding:9px;box-shadow:inset 0 0 0 3px rgba(255,255,255,.35);margin-bottom:0}
-.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.emotion-key{position:relative;aspect-ratio:1.34;border:2px solid var(--ink);border-radius:24px 16px 24px 16px;background:var(--c,#eee);box-shadow:0 4px 0 #7e776d;cursor:pointer;display:grid;place-items:center;padding:4px 4px 20px;transition:.16s transform,.16s box-shadow,.16s outline,.16s filter}.emotion-key:active{transform:translateY(3px);box-shadow:0 1px 0 #7e776d}.emotion-key.selected{outline:5px solid #fff;box-shadow:0 0 0 4px var(--ink),0 4px 0 #7e776d;transform:translateY(-2px)}.emotion-key.partner{outline:4px dashed var(--ink);outline-offset:2px}.emotion-key img{grid-area:1/1;width:49px;height:49px;object-fit:contain;transition:width .25s ease,height .25s ease,transform .25s ease}.emotion-key img.intensity-fade-ready{opacity:.38}.emotion-key img.intensity-fade-ready.intensity-fade{animation:intensityKeyFade .24s ease both}@keyframes intensityKeyFade{0%{opacity:.38}100%{opacity:1}}.emotion-key b{grid-area:1/1}.emotion-key.selected img{width:var(--active-emoji-size,54px);height:var(--active-emoji-size,54px);transform:translateY(-1px)}.emotion-key span{position:absolute;left:4px;right:4px;bottom:7px;font-size:11px;font-weight:950;line-height:1.18;text-align:center}.emotion-key.disabled{filter:grayscale(.8) brightness(.72)}
-.utility{display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:9px;margin-top:8px}.utility button{box-sizing:border-box;height:43px;min-height:43px;padding:0;overflow:hidden;border:2px solid var(--ink);border-radius:18px;background:#ece7dd;font-weight:950;font-size:22px;cursor:pointer;display:grid;place-items:center}.utility .combo.active{background:#fff0a1;box-shadow:inset 0 0 0 4px white}.utility .off{background:#efaaa3;position:relative}.power-symbol{position:relative;display:inline-block;width:24px;height:24px;border:3px solid currentColor;border-radius:50%;vertical-align:middle}.power-symbol:before{content:"";position:absolute;left:50%;top:-6px;width:4px;height:13px;border-radius:4px;background:currentColor;transform:translateX(-50%);box-shadow:0 0 0 3px #efaaa3}.utility .repeat{background:#b8d8ed;position:relative}.offline-key-hint{position:absolute;right:10px;top:50%;display:block;width:21px;height:21px;object-fit:contain;transform:translateY(-50%);opacity:.72;pointer-events:none}.offline-key-hint[hidden]{display:none}.replay-count{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:11px;font-weight:850;color:#6f747b;opacity:0;transition:opacity .18s ease;pointer-events:none}.replay-count.visible{opacity:1}.combo-symbol{display:inline-block;position:relative;width:30px;height:24px}.combo-symbol:before,.combo-symbol:after{content:"";position:absolute;width:15px;height:15px;border:3px solid currentColor;border-radius:50%;top:2px}.combo-symbol:before{left:1px}.combo-symbol:after{right:1px}.combo-symbol i{position:absolute;width:10px;height:3px;background:currentColor;left:10px;top:10px;transform:rotate(-35deg)}
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.emotion-key{position:relative;aspect-ratio:1.34;border:2px solid var(--ink);border-radius:24px 16px 24px 16px;background:var(--c,#eee);box-shadow:0 4px 0 #7e776d;cursor:pointer;display:grid;place-items:center;padding:4px 4px 20px;transition:.16s transform,.16s box-shadow,.16s outline,.16s filter}.emotion-key:active{transform:translateY(3px);box-shadow:0 1px 0 #7e776d}.emotion-key.selected{outline:5px solid #fff;box-shadow:0 0 0 4px var(--ink),0 4px 0 #7e776d;transform:translateY(-2px)}.emotion-key.partner{outline:4px dashed var(--ink);outline-offset:2px}.emotion-key img{grid-area:1/1;width:49px;height:49px;object-fit:contain;transition:width .25s ease,height .25s ease,transform .25s ease}.emotion-key img.intensity-crossfade-new{opacity:0}.emotion-key img.intensity-crossfade-old{opacity:1}.emotion-key b{grid-area:1/1}.emotion-key.selected img{width:var(--active-emoji-size,54px);height:var(--active-emoji-size,54px);transform:translateY(-1px)}.emotion-key span{position:absolute;z-index:2;left:4px;right:4px;bottom:7px;font-size:11px;font-weight:950;line-height:1.18;text-align:center}.emotion-key.disabled{filter:grayscale(.8) brightness(.72)}
+.utility{display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:9px;margin-top:8px}.utility button{box-sizing:border-box;height:43px;min-height:43px;padding:0;overflow:hidden;border:2px solid var(--ink);border-radius:18px;background:#ece7dd;font-weight:950;font-size:22px;cursor:pointer;display:grid;place-items:center}.utility .combo.active{background:#fff0a1;box-shadow:inset 0 0 0 4px white}.utility .off{background:#efaaa3;position:relative}.power-symbol{position:relative;display:inline-block;width:24px;height:24px;border:3px solid currentColor;border-radius:50%;vertical-align:middle}.power-symbol:before{content:"";position:absolute;left:50%;top:-6px;width:4px;height:13px;border-radius:4px;background:currentColor;transform:translateX(-50%);box-shadow:0 0 0 3px #efaaa3}.utility .repeat{background:#b8d8ed;position:relative}.offline-key-hint{position:absolute;right:10px;top:50%;display:block;width:21px;height:21px;object-fit:contain;transform:translateY(-50%) scale(.82);opacity:0;filter:brightness(0);transition:opacity .38s ease,transform .38s ease;pointer-events:none}.offline-key-hint.visible{opacity:.78;transform:translateY(-50%) scale(1)}.offline-key-hint[hidden]{display:none}.replay-count{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:11px;font-weight:850;color:#6f747b;opacity:0;transition:opacity .18s ease;pointer-events:none}.replay-count.visible{opacity:1}.combo-symbol{display:inline-block;position:relative;width:30px;height:24px}.combo-symbol:before,.combo-symbol:after{content:"";position:absolute;width:15px;height:15px;border:3px solid currentColor;border-radius:50%;top:2px}.combo-symbol:before{left:1px}.combo-symbol:after{right:1px}.combo-symbol i{position:absolute;width:10px;height:3px;background:currentColor;left:10px;top:10px;transform:rotate(-35deg)}
 .credit{display:none}.pulse{animation:pulse .34s ease}.shake{animation:shake .35s ease}.boot{animation:boot .55s steps(3,end)}.shutdown{animation:shutdown .55s ease forwards}@keyframes pulse{0%,100%{opacity:1;letter-spacing:0}50%{opacity:.72;letter-spacing:.04em}}}@keyframes shake{0%,100%{letter-spacing:0}25%{letter-spacing:.05em}50%{letter-spacing:-.025em}75%{letter-spacing:.025em}}50%{transform:translateX(6px)}75%{transform:translateX(-3px)}}@keyframes boot{0%{opacity:0;filter:blur(5px)}50%{opacity:1;filter:blur(0)}70%{opacity:.3}100%{opacity:1}}@keyframes shutdown{0%{transform:scaleY(1);opacity:1}65%{transform:scaleY(.04);opacity:.9}100%{transform:scaleY(0);opacity:0}}
 
 .ascii-stage.booting{animation:bootDynamic .52s cubic-bezier(.2,.9,.25,1) infinite alternate}
@@ -166,22 +166,22 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </section>
 <section class="keypad-shell">
 <div class="keypad" id="keypad"></div>
-<div class="utility"><button class="repeat" id="repeat" aria-label="Wiederholen"><span class="repeat-symbol" id="repeatSymbol">R</span><img class="offline-key-hint" id="repeatHint" src="https://openmoji.org/data/color/svg/1F579.svg" alt="" hidden><span class="replay-count" id="replayCount" aria-live="polite"></span></button><button class="combo" id="combo" aria-label="Emotionen kombinieren"><span class="combo-symbol"><i></i></span></button><button class="off" id="off" aria-label="Ein oder Aus"><span class="power-symbol" id="powerSymbol" aria-hidden="true"></span><img class="offline-key-hint" id="powerHint" src="https://openmoji.org/data/color/svg/1F4D6.svg" alt="" hidden></button></div>
+<div class="utility"><button class="repeat" id="repeat" aria-label="Wiederholen"><span class="repeat-symbol" id="repeatSymbol">R</span><img class="offline-key-hint" id="repeatHint" src="https://openmoji.org/data/black/svg/1F579.svg" alt="" hidden><span class="replay-count" id="replayCount" aria-live="polite"></span></button><button class="combo" id="combo" aria-label="Emotionen kombinieren"><span class="combo-symbol"><i></i></span></button><button class="off" id="off" aria-label="Ein oder Aus"><span class="power-symbol" id="powerSymbol" aria-hidden="true"></span><img class="offline-key-hint" id="powerHint" src="https://openmoji.org/data/black/svg/1F50D.svg" alt="" hidden></button></div>
 
 </section>
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v2.04 — CODEKOPF
+   Emotronic v2.05 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 104
+   Aktuelle Revision: 105
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'2.04',
-  revision:104,
+  version:'2.05',
+  revision:105,
   author:'Rasmus Klette'
 });
 
@@ -208,6 +208,7 @@ const APP_CONFIG={
     defaultSource:'self',        // 'self' = Senden/Telefon, 'other' = Empfangen/Wifi
     senderAnimation:true,
     senderAnimationMs:1720,
+    keypadCrossfadeMs:150,       // Gesamtdauer der Tasten-Überblendung; Verlauf bleibt proportional
     emojiTransitionDelayMs:240,
     emojiDurationMs:[1000,1280,1550],
     asciiFrameMs:[210,165,125],
@@ -368,11 +369,13 @@ function playSpecialSound(name){
 }
 let state={selected:null,displayKey:null,intensity:0,last:null,comboMode:false,comboFirst:null,source:APP_CONFIG.normalMode.defaultSource,timer:null,powered:true,history:[],powerArmed:false,powerArmTimer:null,longPressTimer:null,longPressTriggered:false,bgCode:null,bgFlip:false,replaying:false,repeatClickTimer:null,powerAnimating:false,replayRun:0,bootTimer:null,omDelayTimer:null,senderStreamTimer:null,shareStatus:'',shareStatusTimer:null,incomingShare:false,incomingShareReady:null,incomingShareStartTimer:null,simonLinkWaiting:false,lastGameOver:null,lastPhoneTap:0,lastWifiTap:0,game:{active:false,phase:'idle',sequence:[],inputIndex:0,score:0,level:1,flashKey:null,awaitingShutdown:false,timers:[],inputTimer:null,actions:[],comboInput:[]}};
 const el=id=>document.getElementById(id);
-function imgMarkup(code,alt){return `<img src="${OM}${code}.svg" alt="${alt}" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><b style="display:none;font-size:38px">${alt}</b>`}
+function setOfflineHintsVisible(visible){['repeatHint','powerHint'].forEach(id=>{const hint=el(id);hint.hidden=false;hint.classList.toggle('visible',visible)})}
+function imgMarkup(code,alt){return `<img src="${OM}${code}.svg" alt="" aria-hidden="true" onerror="this.style.display='none'">`}
 function requestedStartupMode(){try{const mode=location.hash.slice(1);return ['on','off','simon'].includes(mode)?mode:APP_CONFIG.startup.mode}catch{return APP_CONFIG.startup.mode}}
 function build(){const startupMode=requestedStartupMode();state.game.active=false;state.game.phase='idle';state.game.awaitingShutdown=false;const pad=el('keypad');order.forEach(k=>{const e=base[k],b=document.createElement('button');b.className='emotion-key';b.style.setProperty('--c',e.color);b.dataset.key=k;b.innerHTML=imgMarkup(e.codes[0],e.category)+`<span>${e.category}</span>`;b.onclick=()=>pressEmotion(k);pad.appendChild(b)});document.querySelectorAll('.segment').forEach(s=>{s.classList.remove('active');s.onclick=()=>setIntensity(Number(s.dataset.level))});state.selected=null;state.displayKey=null;state.intensity=0;const startNeedle=el('needle');startNeedle.style.transition='none';startNeedle.style.setProperty('--needle-pos','0');startNeedle.style.setProperty('--needle-color','#9aa09a');if(startupMode==='off'){state.powered=false}else{state.powered=true}render();requestAnimationFrame(()=>{startNeedle.style.transition='';if(startupMode==='simon')showSimonLinkGate()})}
 function pairKey(a,b){return combos[`${a}|${b}`]?`${a}|${b}`:combos[`${b}|${a}`]?`${b}|${a}`:null}
 function allowedPartners(k){return Object.values(combos).filter(c=>c.partners.includes(k)).flatMap(c=>c.partners.filter(x=>x!==k))}
+function comboPreviewFor(k){if(!state.comboMode||!state.comboFirst||k==='neutral'||k===state.comboFirst)return null;const ck=pairKey(state.comboFirst,k);return ck?combos[ck]:null}
 function snapshot(){return {selected:state.selected,displayKey:state.displayKey}}
 function triggerSenderStream(){
  // Die rechte >>>-Animation gehört nur zum Wifi/Sender-Zustand.
@@ -423,7 +426,7 @@ function handleCombo(k){
  state.comboMode=false;state.comboFirst=null;
  recordHistory();playComboSound(c);animateNeedle(3);render();animateCurrent()
 }
-function setIntensity(n){if(state.game.active)return;if(!state.powered)return;if(state.selected&&typeof state.selected==='object'){state.intensity=3;render();return}n=Math.max(0,Math.min(3,n));if(!state.selected){state.intensity=0;render();return}if(state.selected==='neutral'){state.intensity=0;render();return}n=Math.max(APP_CONFIG.normalMode.minEmotionLevel,n);const changed=n!==state.intensity;state.intensity=n;recordHistory('replace-current');playEmotionSound(state.selected,n);animateNeedle(n);render({keypadIntensityFade:changed});animateCurrent()}
+function setIntensity(n){if(state.game.active)return;if(!state.powered)return;if(state.selected&&typeof state.selected==='object'){state.intensity=3;render();return}n=Math.max(0,Math.min(3,n));if(!state.selected){state.intensity=0;render();return}if(state.selected==='neutral'){state.intensity=0;render();return}n=Math.max(APP_CONFIG.normalMode.minEmotionLevel,n);const changed=n!==state.intensity;state.intensity=n;recordHistory('replace-current');playEmotionSound(state.selected,n);animateNeedle(n);render({keypadIntensityCrossfade:changed});animateCurrent()}
 function animateNeedle(target=state.intensity){const n=el('needle'),previous=Number(n.dataset.prev||0),next=Number(target)||0,dir=next>previous?1:next<previous?-1:0,atLeftEdge=next===0;n.dataset.prev=next;n.classList.remove('swing');if(!dir)return;n.style.setProperty('--overshoot',atLeftEdge?'0px':`${dir*7}px`);n.style.setProperty('--rebound',atLeftEdge?'0px':`${dir*3}px`);void n.offsetWidth;n.classList.add('swing')}
 function getFrames(){if(!state.powered)return [''];if(!state.selected)return [''];if(typeof state.selected==='object')return state.selected.ascii;const e=base[state.selected];if(state.selected==='neutral')return e.ascii[0];return e.ascii[Math.max(0,state.intensity-1)]}
 function setStagePosition(){const stage=el('asciiStage');stage.classList.remove('intense');if(state.intensity>=3)stage.classList.add('intense')}
@@ -464,6 +467,29 @@ function keyCode(k){
 }
 function currentGhostCode(){if(!state.powered||!state.selected)return null;if(typeof state.selected==='object')return state.selected.code;if(state.selected==='neutral')return base.neutral.codes[0];return base[state.selected].codes[Math.max(0,state.intensity-1)]}
 function updateGhostEmoji(code,levelOverride=null,comboOverride=null){const box=el('bgEmoji'),a=el('bgEmojiA'),b=el('bgEmojiB');const active=state.bgFlip?b:a;const next=state.bgFlip?a:b;if(!code){box.style.setProperty('--ghost-opacity','0');a.classList.remove('show');b.classList.remove('show');state.bgCode=null;return}const src=`${OM_BLACK}${code}.svg`;const combo=comboOverride===null?typeof state.selected==='object':comboOverride;const level=levelOverride===null?(combo?3:state.intensity):levelOverride;const opacity=!state.powered?0:APP_CONFIG.normalMode.backgroundEmojiOpacity[Math.max(0,Math.min(2,level-1))];const scale=APP_CONFIG.normalMode.backgroundEmojiScale[Math.max(0,Math.min(2,level-1))];const ghostFilter=level<=1?'brightness(0) opacity(.92)':'brightness(0) invert(1) opacity(.98)';box.style.setProperty('--ghost-opacity',String(opacity));box.style.setProperty('--ghost-scale',String(scale));box.style.setProperty('--ghost-filter',ghostFilter);if(state.bgCode===code){active.src=src;active.style.filter=`${ghostFilter} drop-shadow(0 1px 0 rgba(0,0,0,.08))`;active.classList.add('show');return}const swapLayers=()=>{active.classList.add('fading-out');void active.offsetWidth;next.classList.add('show');active.classList.remove('show');setTimeout(()=>active.classList.remove('fading-out'),560)};next.onload=swapLayers;next.onerror=()=>{next.src=`${OM}${code}.svg`;next.style.filter=`${ghostFilter} grayscale(1) drop-shadow(0 1px 0 rgba(0,0,0,.08))`;swapLayers()};next.style.filter=`${ghostFilter} drop-shadow(0 1px 0 rgba(0,0,0,.08))`;next.src=src;state.bgFlip=!state.bgFlip;state.bgCode=code}
+function crossfadeKeyImage(button,previousImage,nextImage,duration=APP_CONFIG.normalMode.keypadCrossfadeMs){
+ if(!previousImage||!nextImage)return;
+ const oldImage=previousImage.cloneNode(true);
+ oldImage.className='intensity-crossfade-old';
+ oldImage.alt='';
+ oldImage.setAttribute('aria-hidden','true');
+ oldImage.removeAttribute('onerror');
+ nextImage.classList.add('intensity-crossfade-new');
+ button.appendChild(oldImage);
+ let started=false,animations=[];
+ const finish=()=>{animations.forEach(animation=>animation.cancel());oldImage.remove();nextImage.classList.remove('intensity-crossfade-new')};
+ const start=()=>{if(started)return;started=true;requestAnimationFrame(()=>{
+  const timing={duration:Math.max(1,Number(duration)||150),easing:'linear',fill:'forwards'};
+  animations=[
+   oldImage.animate([{opacity:1,offset:0},{opacity:1,offset:.55},{opacity:0,offset:1}],timing),
+   nextImage.animate([{opacity:0,offset:0},{opacity:1,offset:.83},{opacity:1,offset:1}],timing)
+  ];
+  animations.forEach(animation=>animation.id='intensity-crossfade');
+  Promise.all(animations.map(animation=>animation.finished.catch(()=>null))).then(finish)
+ })};
+ if(nextImage.complete){if(nextImage.naturalWidth)start();else finish()}
+ else{nextImage.addEventListener('load',start,{once:true});nextImage.addEventListener('error',finish,{once:true})}
+}
 function render(options={}){
  if(state.game.active){renderGame();return}
  // Normalmodus vollständig von allen Simon-Anzeigezuständen trennen.
@@ -487,7 +513,19 @@ function render(options={}){
  el('screen').classList.toggle('ready-status',readyStatus);
  el('screen').classList.toggle('special-status',!!state.powerAnimating||!!state.powerArmed||readyStatus);
  const selectedKey=typeof state.selected==='object'?state.displayKey:state.selected;
- document.querySelectorAll('.emotion-key').forEach(b=>{const k=b.dataset.key;b.classList.toggle('selected',selectedKey===k);b.classList.toggle('partner',!!state.comboFirst&&allowedPartners(state.comboFirst).includes(k));b.classList.toggle('disabled',!state.powered);b.classList.remove('game-flash','game-disabled','replay-dim');const e=base[k],code=keyCode(k);const size=(selectedKey===k?(typeof state.selected==='object'?60:[54,59,65][Math.max(0,state.intensity-1)]):49);b.style.setProperty('--active-emoji-size',size+'px');b.innerHTML=imgMarkup(code,typeof state.selected==='object'&&state.displayKey===k?state.selected.name:e.category)+`<span>${typeof state.selected==='object'&&state.displayKey===k?state.selected.name:e.category}</span>`;const fadeKey=options.keypadIntensityFade&&k!=='neutral'&&(state.source==='self'||selectedKey===k),image=b.querySelector('img');if(fadeKey&&image){image.classList.add('intensity-fade-ready');const startFade=()=>requestAnimationFrame(()=>image.classList.add('intensity-fade'));if(image.complete)startFade();else image.addEventListener('load',startFade,{once:true})}});
+ document.querySelectorAll('.emotion-key').forEach(b=>{
+  const k=b.dataset.key,previousImage=b.querySelector('img:not(.intensity-crossfade-old)')||b.querySelector('img'),currentKey=selectedKey===k,comboPreview=comboPreviewFor(k);
+  b.classList.toggle('selected',currentKey);
+  b.classList.toggle('partner',!!comboPreview);
+  b.classList.toggle('disabled',!state.powered);
+  b.classList.remove('game-flash','game-disabled','replay-dim');
+  const e=base[k],code=comboPreview?comboPreview.code:keyCode(k);
+  const size=(currentKey?(typeof state.selected==='object'?60:[54,59,65][Math.max(0,state.intensity-1)]):49);
+  b.style.setProperty('--active-emoji-size',size+'px');
+  b.innerHTML=imgMarkup(code,comboPreview?comboPreview.name:typeof state.selected==='object'&&state.displayKey===k?state.selected.name:e.category)+`<span>${typeof state.selected==='object'&&state.displayKey===k?state.selected.name:e.category}</span>`;
+  const crossfadeKey=options.keypadIntensityCrossfade&&k!=='neutral'&&(state.source==='self'||currentKey);
+  if(crossfadeKey)crossfadeKeyImage(b,previousImage,b.querySelector('img'))
+ });
  let title='Bereit',detail=`${APP_META.name} v${APP_META.version}`;
  if(!state.powered){title='Aus';detail='Stärke 0'}
  else if(state.selected){if(typeof state.selected==='object'){title=state.selected.name;detail=`${base[state.selected.parts[0]].category} + ${base[state.selected.parts[1]].category} · ${strengthWords[state.intensity]}`}else if(state.selected==='neutral'){title='Neutral';detail='Grundzustand · Stärke 0'}else{title=base[state.selected].labels[state.intensity-1];detail=`${base[state.selected].category} · ${strengthWords[state.intensity]}`}}
@@ -501,7 +539,7 @@ function render(options={}){
  if(state.shareStatus)currentCategory=state.shareStatus;el('currentEmotion').textContent=currentEmotion;el('currentCategory').textContent=currentCategory;el('currentCategory').classList.toggle('share-hint',!!state.shareStatus);el('currentStrength').textContent=currentStrength;info.classList.toggle('empty',(!state.selected||!state.powered)&&!state.shareStatus);
  const comboLocked=!!state.selected&&typeof state.selected==='object';if(comboLocked)state.intensity=3;const positions={0:0,1:0.17,2:0.5,3:0.83};const needle=el('needle');needle.style.setProperty('--needle-pos',positions[state.intensity]);needle.style.setProperty('--needle-color',state.intensity===0?'#9aa09a':'var(--ink)');el('meter').classList.toggle('off',!state.powered);el('meter').classList.toggle('combo-locked',comboLocked);document.querySelectorAll('.segment').forEach(s=>{s.classList.toggle('active',state.powered&&Number(s.dataset.level)===state.intensity);s.setAttribute('aria-disabled',comboLocked?'true':'false')});el('less').disabled=!state.powered||comboLocked||!state.selected||state.selected==='neutral'||state.intensity<=1;el('more').disabled=!state.powered||comboLocked||!state.selected||state.selected==='neutral'||state.intensity>=3;
  const screen=el('screen');let bg='#ffffff';if(!state.powered)bg='#aeb4aa';else if(state.selected&&state.selected!=='neutral'){if(comboLocked){const c1=base[state.selected.parts[0]].color,c2=base[state.selected.parts[1]].color;bg=`color-mix(in srgb, color-mix(in srgb, ${c1} 50%, ${c2}) 66%, #3f4348 34%)`}else{const c=base[state.selected].color;if(state.intensity<=1)bg=`color-mix(in srgb, ${c} 30%, white 70%)`;else if(state.intensity===2)bg=`color-mix(in srgb, color-mix(in srgb, ${c} 50%, white 50%) 78%, #62666b 22%)`;else bg=`color-mix(in srgb, ${c} 66%, #3f4348 34%)`}}screen.style.transitionDuration=state.intensity===0?'0.5s':'1s';screen.style.setProperty('--emotion-bg',bg);updateGhostEmoji(currentGhostCode());
- el('repeatSymbol').textContent='R';el('repeatHint').hidden=state.powered;el('powerHint').hidden=state.powered;el('repeat').setAttribute('aria-label',state.powered?'Wiederholen':'Simon-Spiel öffnen');el('combo').classList.toggle('active',state.comboMode);el('sendBtn').classList.toggle('active',state.powered&&state.source==='self');el('receiveBtn').classList.toggle('active',state.powered&&state.source==='other');el('screen').classList.toggle('offline',!state.powered);setStagePosition();if(!state.timer)el('asciiStage').textContent=getFrames().at(-1)||' ';
+ el('repeatSymbol').textContent='R';setOfflineHintsVisible(!state.powered);el('repeat').setAttribute('aria-label',state.powered?'Wiederholen':'Simon-Spiel öffnen');el('combo').classList.toggle('active',state.comboMode);el('sendBtn').classList.toggle('active',state.powered&&state.source==='self');el('receiveBtn').classList.toggle('active',state.powered&&state.source==='other');el('screen').classList.toggle('offline',!state.powered);setStagePosition();if(!state.timer)el('asciiStage').textContent=getFrames().at(-1)||' ';
 }
 function animateSource(mode){
  if(!state.powered)return;
@@ -1140,6 +1178,7 @@ function powerToggle(){
  clearInterval(state.timer);clearTimeout(state.powerArmTimer);state.powerArmed=false;
  screen.classList.remove('power-confirm');screen.classList.add('special-status');el('off').classList.remove('pulse');
  if(state.powered){
+  setOfflineHintsVisible(true);
   playSpecialSound('powerOff');state.intensity=0;animateNeedle(0);const shutdownNeedle=el('needle');shutdownNeedle.style.setProperty('--needle-pos','0');shutdownNeedle.style.setProperty('--needle-color','#9aa09a');document.querySelectorAll('.segment').forEach(segment=>segment.classList.remove('active'));
   stage.className='ascii-stage shutting';
   name.textContent='';detail.textContent='';
@@ -1160,6 +1199,7 @@ function powerToggle(){
  }else{
   playSpecialSound('powerOn');
   state.powered=true;state.selected=null;state.displayKey=null;state.intensity=0;state.history=[];state.comboMode=false;state.comboFirst=null;state.source=APP_CONFIG.normalMode.defaultSource;
+  setOfflineHintsVisible(false);
   screen.classList.remove('offline');screen.style.setProperty('--emotion-bg','#fff');
   updateGhostEmoji(null);
   stage.className='ascii-stage booting';
