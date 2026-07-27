@@ -1,6 +1,6 @@
 <!--
   ============================================================================
-  Emotronic v2.14
+  Emotronic v2.15
   Projektname: Emotronic
   Autor: Rasmus Klette
   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
@@ -174,7 +174,7 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v2.14 — CODEKOPF
+   Emotronic v2.15 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
@@ -183,7 +183,7 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 const APP_META=Object.freeze({
   name:'Emotronic',
   version:'2.14',
-  revision:114,
+  revision:115,
   author:'Rasmus Klette'
 });
 
@@ -1229,7 +1229,6 @@ function powerToggle(){
  clearInterval(state.timer);clearTimeout(state.powerArmTimer);state.powerArmed=false;
  screen.classList.remove('power-confirm');screen.classList.add('special-status');el('off').classList.remove('pulse');
  if(state.powered){
-  setOfflineHintsVisible(true);
   playSpecialSound('powerOff');state.intensity=0;animateNeedle(0);const shutdownNeedle=el('needle');shutdownNeedle.style.setProperty('--needle-pos','0');shutdownNeedle.style.setProperty('--needle-color','#9aa09a');document.querySelectorAll('.segment').forEach(segment=>segment.classList.remove('active'));
   stage.className='ascii-stage shutting';
   name.textContent='';detail.textContent='';

@@ -1,4 +1,4 @@
-# Emotronic v2.14
+# Emotronic v2.15
 
 Emotronic ist eine installierbare, offlinefähige PWA zur Auswahl, Darstellung, Kombination und Wiedergabe von Gefühlen. Die Oberfläche ist an ein kompaktes Retro-Handgerät angelehnt und für Touch, Maus und Tastatur ausgelegt.
 
@@ -47,7 +47,7 @@ Ein Druck auf Telefon kopiert in **Bereit**, auf der `Simon Feels!`-Auswahl oder
 | Datei | Zweck |
 |---|---|
 | `index.html` | Hauptanwendung mit Oberfläche, CSS und JavaScript |
-| `Emotronic-v2.14.html` | Versionierte Kopie der Hauptanwendung |
+| `Emotronic-v2.15.html` | Versionierte Kopie der Hauptanwendung |
 | `manifest.webmanifest` | PWA-Metadaten und Installationskonfiguration |
 | `sw.js` | Service Worker für Offline-Cache |
 | `icon-192.png`, `icon-512.png` | PWA-Symbole |
@@ -201,7 +201,7 @@ Die Zwischenablage verwendet zuerst die moderne Clipboard API und danach einen k
 
 ## Gedächtnisspiel
 
-Das Gedächtnisspiel wird bei ausgeschaltetem Gerät weiterhin mit `R` geöffnet. Direkt neben dem `R` blendet beim Ausschalten zusätzlich die kleine schwarze Silhouette des OpenMoji-Joysticks `1F579` ein. Auch das normale Power-Zeichen bleibt erhalten und erhält direkt daneben wieder die schwarze Silhouette der OpenMoji-Lupe `1F50D`. Beim Einschalten blenden beide Hinweise weich aus. Sie sind 21 Pixel groß. Beim Ausschalten springen Intensitätswert und Zeiger sofort sichtbar auf `0`. Der leere Bereit-Zustand bleibt intern ebenfalls bei `0`, sodass die erste Gefühlsauswahl nach Start oder Neustart auf Mindeststufe `1` statt fälschlich auf `3` beginnt.
+Das Gedächtnisspiel wird bei ausgeschaltetem Gerät weiterhin mit `R` geöffnet. Direkt neben dem `R` blendet erst nach dem vollständig abgeschlossenen Ausschaltprozess die kleine schwarze Silhouette des OpenMoji-Joysticks `1F579` ein. Auch das normale Power-Zeichen bleibt erhalten und erhält dann direkt daneben wieder die schwarze Silhouette der OpenMoji-Lupe `1F50D`. Beim Einschalten blenden beide Hinweise weich aus. Sie sind 21 Pixel groß. Beim Ausschalten springen Intensitätswert und Zeiger sofort sichtbar auf `0`. Der leere Bereit-Zustand bleibt intern ebenfalls bei `0`, sodass die erste Gefühlsauswahl nach Start oder Neustart auf Mindeststufe `1` statt fälschlich auf `3` beginnt.
 
 Beim Einstieg baut sich oben `Simon Feels!` in derselben Schriftgröße wie die normale Introanzeige auf und ein kurzer Startjingle erklingt. Die Auswahl bleibt dabei sofort bedienbar; jede Spielaktion beendet den Titelaufbau. Der Direktlink `#simon` wartet zunächst auf einem weißen Bildschirm mit dem farbigen OpenMoji-Controller `1F3AE` auf einen Tipp, damit Animation und Ton erst nach dieser Interaktion starten.
 
@@ -306,7 +306,7 @@ Diese Reihenfolge soll bei weiteren Änderungen erhalten bleiben.
 ## Offline/PWA
 
 - Der Service Worker cached die Kernressourcen.
-- Die aktuelle Cache-Version lautet `emotronic-v114`.
+- Die aktuelle Cache-Version lautet `emotronic-v115`.
 - Beim Aktivieren werden nur ältere Emotronic-Caches entfernt; Caches anderer Anwendungen auf derselben Domain bleiben erhalten.
 - Nicht gecachte GET-Anfragen werden aus dem Netz geladen und anschließend gespeichert.
 - Bei einem Netzfehler wird als Fallback `index.html` verwendet.

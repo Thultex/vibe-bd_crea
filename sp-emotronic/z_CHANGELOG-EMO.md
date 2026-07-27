@@ -116,4 +116,5 @@ Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufs- und Zeige
 - Tool: `generate_audio_assets.py` und `manifest.json` als gemeinsame Pflege- und Generationsgrundlage für beide Soundordner ergänzt.
 - Test: Den veröffentlichten Spiegel lokal im Browser mit Aus-/Einschaltzyklus sowie den Übergängen 0→1, 1→3, 3→Neutral und Neutral→1 geprüft.
 - Test: JavaScript-/Python-Syntax, WAV-Struktur, Soundset-Gleichlauf, identische Replay-/Slow-Datenteile, getrennte Replay-/Emoji-Zeitfaktoren, Aus-/Ein-Zustand der Kombi-Taste, Versionsgleichlauf und bytegleichen Laufzeitspiegel für Emotronic v2.14 geprüft.
-- Versionen: Emotronic v2.14.
+- Ausschalten/Anzeige: Die kleinen Joystick- und Lupenhinweise neben `R` und der Aus-Taste blenden erst nach dem vollständig abgeschlossenen Ausschaltprozess ein.
+- Versionen: Emotronic v2.15.

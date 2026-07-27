@@ -17,7 +17,7 @@ Beim Verstellen der Intensität auf der Telefon-/Empfängerseite zeigen alle nic
 - Nach einer vollständigen Wiedergabe bleibt die etwas größere Schrittzahl nahe bei `R` stehen, bis eine neue Gefühlstaste gedrückt wird. Bei Simon zeigt sie am Game Over die Rundenzahl.
 - Kombinationstaste: gültige benachbarte Gefühle kombinieren.
 - Aus: Gerät aus- oder einschalten; während Replay Verlauf löschen und zu **Bereit** zurückkehren.
-- Im ausgeschalteten Zustand ist auch die Kombi-Taste deaktiviert und ohne Symbol; nach dem Einschalten steht sie wieder zur Verfügung.
+- Im ausgeschalteten Zustand ist auch die Kombi-Taste deaktiviert und ohne Symbol; nach dem Einschalten steht sie wieder zur Verfügung. Joystick und Lupe neben `R` und der Aus-Taste erscheinen erst, wenn der Ausschaltprozess vollständig beendet ist.
 - Ein empfangener Slow-Replay-Link enthält denselben unveränderten Verlauf wie ein normaler Replay-Link. Nur dessen Wiedergabe läuft langsamer; eine neue Gefühlseingabe beendet den Slow-Zustand.
 - Ziffern `7 8 9 / 4 5 6 / 1 2 3`: sichtbare 3×3-Gefühlstasten bedienen.
 
