@@ -34,6 +34,7 @@ Der Laufzeitspiegel enthält ausschließlich `index.html`, Manifest, Service Wor
 - Intensitätsänderungen ersetzen nur den zuletzt erzeugten Schritt derselben Gefühlsauswahl.
 - Im Telefon-/Selbstmodus bleibt die Intensität beim Wechsel zwischen nicht-neutralen Gefühlen erhalten. Im Wifi-Sendemodus startet das neue Gefühl wieder auf Stufe 1. Neutral setzt in beiden Modi auf 0.
 - Im Telefon-/Empfängermodus spiegeln alle nicht-neutralen Gefühlstasten die aktuelle Intensitätsstufe über ihre jeweilige OpenMoji-Variante. Der Display-Hintergrund bleibt die Rückmeldung auf das tatsächlich gewählte Gefühl. Im Wifi-Sendemodus bleibt die Tastenvorschau auf die Auswahl beschränkt; in Simon werden Motiv und dramaturgischer Effekt erst durch den Tastendruck ausgelöst.
+- Ein Intensitätswechsel blendet nur die tatsächlich wechselnden Tasten-Emojis kurz und leicht über; der Display-Hintergrund erhält dadurch keine zusätzliche Animation.
 - Replay-Start und Replay-Sharing synchronisieren den sichtbaren Endzustand, ohne ihn doppelt anzuhängen.
 - Das normale Replay blendet Gefühl, Emotion und Intensität mit einem sehr leichten Fade während der Wiedergabe aus und danach wieder ein.
 - Ein empfangenes Replay rendert vor seinem ersten Schritt nicht mehr kurz den gespeicherten Endzustand.
@@ -62,4 +63,4 @@ Geteilte Daten liegen ausschließlich in den URL-Fragmenten `#share=…` beziehu
 
 ## Drittmaterial
 
-OpenMoji-Grafiken werden zur Laufzeit geladen und sind in Emotronic gegenüber plattformabhängigen Emoji-Zeichen zu bevorzugen, wo Motiv und Darstellung sinnvoll passen. Der Controller `1F3AE` erscheint farbig am direkten Simon-Einstieg. `R` und das normale Power-Zeichen bleiben auf den unteren Tasten erhalten; nur im ausgeschalteten Zustand erscheinen rechts daneben klein und grau die schwarz-weiße Videokassette `1F4FC` beziehungsweise Lupe `1F50D`. Die Score-Vorschau verwendet den Pokal `1F3C6`. Text- und ASCII-Fallbacks halten die Anwendung auch bei fehlgeschlagenen Grafik- oder Audiozugriffen bedienbar.
+OpenMoji-Grafiken werden zur Laufzeit geladen und sind in Emotronic gegenüber plattformabhängigen Emoji-Zeichen zu bevorzugen, wo Motiv und Darstellung sinnvoll passen. Der Controller `1F3AE` erscheint farbig am direkten Simon-Einstieg. `R` und das normale Power-Zeichen bleiben auf den unteren Tasten erhalten; nur im ausgeschalteten Zustand erscheinen direkt daneben klein und farbig der Joystick `1F579` beziehungsweise das offene Buch `1F4D6`. Die Score-Vorschau verwendet den Pokal `1F3C6`. Text- und ASCII-Fallbacks halten die Anwendung auch bei fehlgeschlagenen Grafik- oder Audiozugriffen bedienbar.
