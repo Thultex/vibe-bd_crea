@@ -92,6 +92,7 @@ Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufs- und Zeige
 - Anzeige: Die Beschriftungen anschließend insgesamt vier Pixel tiefer gesetzt und ihre Zeilenbox nochmals leicht vergrößert; die Tastengröße bleibt unverändert und Unterlängen werden nicht abgeschnitten.
 - Anzeige: Alle alleinstehenden `...`-Platzhalter aus den sichtbaren Initial- und Game-over-Anzeigen entfernt.
 - Anzeige: Im ausgeschalteten Zustand stehen fünf Pixel näher neben `R` und Power nun die schwarzen Silhouetten des OpenMoji-Joysticks `1F579` und wieder der OpenMoji-Lupe `1F50D`.
+- Anzeige/Bedienung: Im ausgeschalteten Zustand auch die mittlere Kombi-Taste deaktiviert und ihr Symbol vollständig ausgeblendet; nach der Einschaltsequenz wird sie weich wieder eingeblendet und freigegeben.
 - Animation: Joystick und Lupe blenden beim Ausschalten weich ein und beim Einschalten wieder aus, während `R` und Power sichtbar bleiben.
 - Fix/Animation: Die zuvor mögliche Resttransparenz, der Transparenzabfall in der Wechselmitte und ein harter Abschlusssprung beseitigt. Die über `APP_CONFIG.normalMode.keypadCrossfadeMs` definierbare Überblendung dauert standardmäßig 0,15 Sekunden: Das neue Motiv erreicht nach rund 0,12 Sekunden volle Deckkraft; das alte fadet ab etwa 0,08 Sekunden bis zum Ende weich aus.
 - Fix: Kurz aufblitzende Textplatzhalter – besonders auf dem aktiven Emoji – verhindert. Das alte Motiv bleibt bis zum erfolgreichen Laden des neuen SVGs sichtbar; Alternativtext und großer grafischer Text-Ersatz entfallen, während die kleine Tastenbeschriftung erhalten bleibt.
@@ -114,5 +115,5 @@ Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufs- und Zeige
 - Audio: Beide Sets nur für den späteren Sound-Umbau vorbereitet. Die Live-PWA lädt sie noch nicht und verwendet unverändert ihre bestehende Web-Audio-Synthese; bei einer späteren Aktivierung ist `8-bit_soft` als Standard vorgesehen.
 - Tool: `generate_audio_assets.py` und `manifest.json` als gemeinsame Pflege- und Generationsgrundlage für beide Soundordner ergänzt.
 - Test: Den veröffentlichten Spiegel lokal im Browser mit Aus-/Einschaltzyklus sowie den Übergängen 0→1, 1→3, 3→Neutral und Neutral→1 geprüft.
-- Test: JavaScript-/Python-Syntax, WAV-Struktur, Soundset-Gleichlauf, identische Replay-/Slow-Datenteile, getrennte Replay-/Emoji-Zeitfaktoren, Versionsgleichlauf und bytegleichen Laufzeitspiegel für Emotronic v2.13 geprüft.
-- Versionen: Emotronic v2.13.
+- Test: JavaScript-/Python-Syntax, WAV-Struktur, Soundset-Gleichlauf, identische Replay-/Slow-Datenteile, getrennte Replay-/Emoji-Zeitfaktoren, Aus-/Ein-Zustand der Kombi-Taste, Versionsgleichlauf und bytegleichen Laufzeitspiegel für Emotronic v2.14 geprüft.
+- Versionen: Emotronic v2.14.

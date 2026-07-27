@@ -1,4 +1,4 @@
-# Codex-Handoff: Emotronic v2.13
+# Codex-Handoff: Emotronic v2.14
 
 ## Auftrag
 
@@ -7,7 +7,7 @@ Diese Übergabe beschreibt den aktuellen Stand der installierbaren Emotronic-PWA
 ## Relevante Dateien
 
 - `sp-emotronic/tools/emotronic-pwa/index.html` – maßgebliche Quelle
-- `sp-emotronic/tools/emotronic-pwa/Emotronic-v2.13.html` – versionierter Snapshot, nach Änderungen neu erzeugen
+- `sp-emotronic/tools/emotronic-pwa/Emotronic-v2.14.html` – versionierter Snapshot, nach Änderungen neu erzeugen
 - `sp-emotronic/tools/emotronic-pwa/generate_audio_assets.py` – reproduzierbarer Generator beider Soundsets
 - `assets/audio/emotronic/` – Manifest sowie `8-bit` und `8-bit_soft`
 - `sp-emotronic/tools/emotronic-pwa/sw.js` – Service Worker und Cache-Version
@@ -17,10 +17,10 @@ Diese Übergabe beschreibt den aktuellen Stand der installierbaren Emotronic-PWA
 
 ## Versionierung
 
-- Aktuell: **Emotronic v2.13**
-- `APP_META.version`: `2.13`
-- `APP_META.revision`: `113`
-- Service-Worker-Cache: `emotronic-v113`
+- Aktuell: **Emotronic v2.14**
+- `APP_META.version`: `2.14`
+- `APP_META.revision`: `114`
+- Service-Worker-Cache: `emotronic-v114`
 - Beim Aktivieren nur ältere Caches mit dem Präfix `emotronic-v` entfernen; andere Anwendungen können dieselbe Domain verwenden.
 - Jede abgeschlossene Revision erhöht die Version um `0.01` und die Revision um `1`.
 - Codekopf, `APP_META`, Service Worker, versionierte HTML-Datei, README und ZIP müssen synchron bleiben.
@@ -85,6 +85,7 @@ Globale Optionen nicht zwischen die Funktionslogik verteilen.
 - Die 13-Pixel-Zahl sitzt mit `right:13px` näher bei `R` und verwendet dieselbe 0,38-Sekunden-Deckkraft-/Skalierungsbewegung wie die ausgeschalteten Tastenhinweise. `pressEmotion()` blendet sie über `hideReplayCount()` aus.
 - `R` während Replay: nur abbrechen und neuesten gespeicherten Zustand wiederherstellen.
 - **Aus** während Replay: abbrechen, Verlauf leeren, direkt zu Bereit; nicht Neutral und nicht Gerät ausschalten.
+- Im Aus-Zustand setzt `render()` die Kombi-Taste auf `disabled` und `.offline`; das Kombi-Symbol blendet dabei vollständig aus und erst nach der Einschaltsequenz wieder ein.
 - Normaler Neustart leert den Replay-Verlauf.
 - Ein geteilter Replay-Link startet im Normalmodus automatisch.
 
@@ -173,9 +174,9 @@ rm emotronic_check.js
 Für ein auslieferbares ZIP vom Repository-Root aus:
 
 ```bash
-rm -f emotronic-pwa-v2.13.zip
-zip -rq emotronic-pwa-v2.13.zip sp-emotronic/tools/emotronic-pwa
-unzip -t emotronic-pwa-v2.13.zip
+rm -f emotronic-pwa-v2.14.zip
+zip -rq emotronic-pwa-v2.14.zip sp-emotronic/tools/emotronic-pwa
+unzip -t emotronic-pwa-v2.14.zip
 ```
 
 ## Vorsicht bei Änderungen

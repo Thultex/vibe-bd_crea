@@ -1,4 +1,4 @@
-# Emotronic v2.13
+# Emotronic v2.14
 
 Emotronic ist eine installierbare, offlinefähige PWA zur Auswahl, Darstellung, Kombination und Wiedergabe von Gefühlen. Die Oberfläche ist an ein kompaktes Retro-Handgerät angelehnt und für Touch, Maus und Tastatur ausgelegt.
 
@@ -47,7 +47,7 @@ Ein Druck auf Telefon kopiert in **Bereit**, auf der `Simon Feels!`-Auswahl oder
 | Datei | Zweck |
 |---|---|
 | `index.html` | Hauptanwendung mit Oberfläche, CSS und JavaScript |
-| `Emotronic-v2.13.html` | Versionierte Kopie der Hauptanwendung |
+| `Emotronic-v2.14.html` | Versionierte Kopie der Hauptanwendung |
 | `manifest.webmanifest` | PWA-Metadaten und Installationskonfiguration |
 | `sw.js` | Service Worker für Offline-Cache |
 | `icon-192.png`, `icon-512.png` | PWA-Symbole |
@@ -156,6 +156,7 @@ Die Animation von **starr** ist eine kurze Rückzugs- und Erstarrbewegung.
 - `R` während des Replays bricht nur die Wiedergabe ab, zeigt wieder den neuesten Zustand und behält die Gesamtzahl als erneuten Replay-Hinweis bei.
 - **Aus** während des Replays bricht ab, leert den Verlauf und geht direkt zu **Bereit**.
 - Ein normaler Neustart leert den Replay-Verlauf vollständig.
+- Bei ausgeschaltetem Gerät ist auch die Kombi-Taste deaktiviert und ihr Symbol ausgeblendet; nach der Einschaltsequenz erscheint und funktioniert sie wieder.
 
 ## Sharing
 
@@ -305,7 +306,7 @@ Diese Reihenfolge soll bei weiteren Änderungen erhalten bleiben.
 ## Offline/PWA
 
 - Der Service Worker cached die Kernressourcen.
-- Die aktuelle Cache-Version lautet `emotronic-v113`.
+- Die aktuelle Cache-Version lautet `emotronic-v114`.
 - Beim Aktivieren werden nur ältere Emotronic-Caches entfernt; Caches anderer Anwendungen auf derselben Domain bleiben erhalten.
 - Nicht gecachte GET-Anfragen werden aus dem Netz geladen und anschließend gespeichert.
 - Bei einem Netzfehler wird als Fallback `index.html` verwendet.
