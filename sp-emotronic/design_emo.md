@@ -20,7 +20,7 @@ Der Laufzeitspiegel enthält ausschließlich `index.html`, Manifest, Service Wor
 - Cache-Namen beginnen mit `emotronic-v`; beim Aktivieren werden nur ältere Emotronic-Caches gelöscht.
 - Jede abgeschlossene Revision synchronisiert Codekopf, `APP_META`, Snapshot, README, Handoff und Cache-Version.
 - Die zweizeilige Start-/Copyrightanzeige behält die normale einzeilige Detailhöhe; möglicher Überstand verändert weder App-Höhe noch Seitenverhältnis auf Handybildschirmen.
-- Die Modusfragmente `#on`, `#off` und `#simon` starten direkt im jeweiligen Zustand; ohne Modusfragment entspricht der Start `#on`. `#slow` startet ebenfalls eingeschaltet, verdoppelt Schrittintervalle, Displayübergang und Abschlusszeit des normalen Replays, verlängert die Emoji-Bewegung aber nur minimal um 15 Prozent.
+- Die Modusfragmente `#on`, `#off` und `#simon` starten direkt im jeweiligen Zustand; ohne Modusfragment entspricht der Start `#on`.
 - Der direkte Simon-Link `#simon` wartet auf weißem Display mit kleinem Spielsymbol auf eine Interaktion; danach starten Startjingle und der Aufbau von `Simon Feels!` in normaler Intro-Schriftgröße. Die Schwierigkeitsauswahl bleibt sofort bedienbar und beendet den Titelaufbau bei Eingabe.
 - Telefon kopiert in Bereit, auf der Simon-Auswahl und im ausgeschalteten Zustand still den passenden Direktlink `#on`, `#simon` beziehungsweise `#off`.
 - `Simon Feels!` steht gegenüber seiner bisherigen Position zusätzlich um drei Viertel der eigenen Schrifthöhe tiefer; andere Simon-Anzeigen bleiben unverändert.
@@ -42,7 +42,8 @@ Der Laufzeitspiegel enthält ausschließlich `index.html`, Manifest, Service Wor
 - Replay-Start und Replay-Sharing synchronisieren den sichtbaren Endzustand, ohne ihn doppelt anzuhängen.
 - Nach einem vollständig abgespielten lokalen oder empfangenen Replay bleibt die Gesamtzahl seiner Schritte etwas größer und näher bei `R` als erneuter Abspielhinweis sichtbar. Erst der nächste Druck auf eine Gefühlstaste blendet die Zahl mit derselben weichen Skalierungs-/Deckkraftbewegung wie die ausgeschalteten Tastenhinweise aus.
 - Wird `R` während der erneuten Wiedergabe zum Abbruch gedrückt, bleibt die Gesamtzahl ebenfalls sichtbar.
-- `#slow` verwendet denselben Replay-Ablauf und dieselben Inhalte. `APP_CONFIG.replay.slowMultiplier` steht für Schrittfolge, Displayübergang und Abschlusszeit standardmäßig auf `2`; `slowEmojiMultiplier` steht unabhängig davon auf `1.15`.
+- Ein Replay-Datensatz mit `slow:true` verwendet denselben unveränderten Verlauf wie ein normaler Replay-Link. `APP_CONFIG.replay.slowMultiplier` steht für Schrittfolge, Displayübergang und Abschlusszeit standardmäßig auf `2`; `slowEmojiMultiplier` steht unabhängig davon auf `1.15`.
+- Die Slow-Markierung bleibt für erneutes Abspielen desselben empfangenen Verlaufs erhalten und wird bei der nächsten Gefühl-, Intensitäts- oder Kombi-Eingabe entfernt.
 - Das normale Replay blendet Gefühl, Emotion und Intensität mit einem sehr leichten Fade während der Wiedergabe aus und danach wieder ein.
 - Ein empfangenes Replay rendert vor seinem ersten Schritt nicht mehr kurz den gespeicherten Endzustand.
 - Zweimaliges Drücken von Neutral wechselt zu Bereit und leert dabei den gesamten Replay-Verlauf.
@@ -51,7 +52,7 @@ Der Laufzeitspiegel enthält ausschließlich `index.html`, Manifest, Service Wor
 - Nach dem Starttipp lässt die App rund 0,1 Sekunden Abstand, bevor der empfangene Inhalt beginnt.
 - Aus bricht die wartende Empfangsphase oder eine laufende Replay-Wiedergabe unmittelbar ab.
 - Ein einfacher Tipp auf Telefon oder Wifi ersetzt die kleine Kategoriezeile drei Sekunden lang durch einen passenden Hinweis auf die jeweilige Doppeltipp-Teilgeste.
-- Ein Telefon-Doppeltipp teilt immer den Replay-Verlauf; ein Wifi-/Sender-Doppeltipp kopiert immer den `#slow`-Direktlink. Die Erkennung läuft vor den zustandsabhängigen Direktlink-Aktionen, damit die Zuordnung auch in Bereit, Aus und Simon konsistent bleibt.
+- Ein Telefon-Doppeltipp teilt immer den vollständigen Replay-Verlauf in Normaltempo; ein Wifi-/Sender-Doppeltipp teilt denselben vollständigen Verlauf mit `slow:true`. Die Erkennung läuft vor den zustandsabhängigen Direktlink-Aktionen, damit die Zuordnung auch in Bereit, Aus und Simon konsistent bleibt.
 - Score-Links enthalten Endstand, Simon-Modus und die vollständige gespielte Folge; ihre Empfangsanimation ergänzt das Nachrichtensymbol um einen kleinen Pokal und die wartende Punktzahl.
 - Nach der Bestätigung eines Score-Links spielt die App die Folge automatisch. Währenddessen steht links die Punktzahl mit dem Abbruchhinweis darunter; jeder Tastenklick stellt sofort das Game Over wieder her.
 - Gefühle verwenden `#share=…`, Replays `#replay=…` und Game-over-Links `#score=…`. Ältere Replay-Links unter `#share=…` bleiben lesbar.

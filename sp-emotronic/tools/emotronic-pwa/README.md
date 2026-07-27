@@ -1,4 +1,4 @@
-# Emotronic v2.11
+# Emotronic v2.12
 
 Emotronic ist eine installierbare, offlinefähige PWA zur Auswahl, Darstellung, Kombination und Wiedergabe von Gefühlen. Die Oberfläche ist an ein kompaktes Retro-Handgerät angelehnt und für Touch, Maus und Tastatur ausgelegt.
 
@@ -36,10 +36,9 @@ Danach im Browser `http://localhost:8080` öffnen.
 
 - Simon-Says-Auswahl: `https://thultex.github.io/vibe-bd_crea/share/apps/emotronic/index.html#simon`
 - Normal eingeschaltet: `https://thultex.github.io/vibe-bd_crea/share/apps/emotronic/index.html#on`
-- Normal eingeschaltet mit doppelt langsamem Replay: `https://thultex.github.io/vibe-bd_crea/share/apps/emotronic/index.html#slow`
 - Ausgeschaltet: `https://thultex.github.io/vibe-bd_crea/share/apps/emotronic/index.html#off`
 
-Ohne Modusfragment startet Emotronic wie `#on`. `#slow` verändert ausschließlich das Replay: Schrittintervalle, Displayübergang und Abschlusszeit laufen mit `APP_CONFIG.replay.slowMultiplier` standardmäßig doppelt so langsam. Die Emoji-Bewegung wird davon getrennt über `slowEmojiMultiplier` nur minimal auf Faktor `1.15` verlängert.
+Ohne Modusfragment startet Emotronic wie `#on`. Langsame Wiedergabe ist kein eigener leerer Startmodus, sondern wird als `slow:true` im vollständigen Replay-Datensatz übertragen.
 
 Ein Druck auf Telefon kopiert in **Bereit**, auf der `Simon Feels!`-Auswahl oder im ausgeschalteten Zustand still den jeweils passenden Direktlink. Dabei erscheint bewusst kein Hinweistext.
 
@@ -48,7 +47,7 @@ Ein Druck auf Telefon kopiert in **Bereit**, auf der `Simon Feels!`-Auswahl oder
 | Datei | Zweck |
 |---|---|
 | `index.html` | Hauptanwendung mit Oberfläche, CSS und JavaScript |
-| `Emotronic-v2.11.html` | Versionierte Kopie der Hauptanwendung |
+| `Emotronic-v2.12.html` | Versionierte Kopie der Hauptanwendung |
 | `manifest.webmanifest` | PWA-Metadaten und Installationskonfiguration |
 | `sw.js` | Service Worker für Offline-Cache |
 | `icon-192.png`, `icon-512.png` | PWA-Symbole |
@@ -148,7 +147,7 @@ Die Animation von **starr** ist eine kurze Rückzugs- und Erstarrbewegung.
 - Maximal 40 Zustände werden gehalten.
 - **Bereit** wird nie als Replay-Schritt gespeichert.
 - `R` startet den Replay-Verlauf.
-- Beim Start über `#slow` läuft das Replay mit doppelter Dauer pro Schritt; die normale Bedienung außerhalb des Replays bleibt unverändert.
+- Ein empfangener Replay-Datensatz mit `slow:true` läuft mit doppelter Dauer pro Schritt; seine Emoji-Bewegung ist nur 15 Prozent langsamer. Eine neue Gefühl-, Intensitäts- oder Kombi-Eingabe beendet die Slow-Markierung.
 - Während des Replays zeigt eine kleine graue Zahl neben `R`, wie viele Zustände noch offen sind.
 - Nach der vollständigen Wiedergabe bleibt dort die Gesamtzahl der Schritte als Hinweis stehen, dass `R` dasselbe Replay erneut abspielt. Das gilt automatisch auch nach einem empfangenen Replay, da beide denselben Wiedergabeweg nutzen.
 - Die Zahl ist etwas größer und näher an `R` positioniert. Erst eine neue Gefühlstaste blendet sie mit derselben weichen Deckkraft-/Skalierungsbewegung wie die Hinweise im Ausschaltzustand aus.
@@ -165,8 +164,8 @@ Emotronic speichert geteilte Daten ausschließlich im URL-Fragment. Gefühle ver
 ### Slow-Replay-Link teilen
 
 - Wifi/Sender zweimal kurz tippen.
-- Es wird konsistent der `#slow`-Direktlink kopiert, der Emotronic normal einschaltet und Replays doppelt so langsam abspielt.
-- Unter `http://` oder `https://` wird ein vollständiger anklickbarer Link erzeugt; bei einer lokalen Datei wird `#slow` kopiert.
+- Der vollständige aktuelle Replay-Verlauf wird unverändert mit der zusätzlichen Eigenschaft `slow:true` kopiert.
+- Unter `http://` oder `https://` wird ein vollständiger anklickbarer `#replay=…`-Link erzeugt; bei einer lokalen Datei wird der portable `#replay=…`-Code kopiert.
 
 ### Replay teilen
 
@@ -180,7 +179,8 @@ Emotronic speichert geteilte Daten ausschließlich im URL-Fragment. Gefühle ver
 
 Die kleine Zeile unter dem Gefühlsnamen zeigt kurz eine der folgenden Meldungen:
 
-- `Slow-Link kopiert`
+- `Slow-Replay-Link kopiert`
+- `Slow-Replay-Code kopiert`
 - `Replay-Link kopiert`
 - `Replay-Code kopiert`
 - eine verständliche Fehlermeldung, falls die Zwischenablage blockiert ist
@@ -304,7 +304,7 @@ Diese Reihenfolge soll bei weiteren Änderungen erhalten bleiben.
 ## Offline/PWA
 
 - Der Service Worker cached die Kernressourcen.
-- Die aktuelle Cache-Version lautet `emotronic-v111`.
+- Die aktuelle Cache-Version lautet `emotronic-v112`.
 - Beim Aktivieren werden nur ältere Emotronic-Caches entfernt; Caches anderer Anwendungen auf derselben Domain bleiben erhalten.
 - Nicht gecachte GET-Anfragen werden aus dem Netz geladen und anschließend gespeichert.
 - Bei einem Netzfehler wird als Fallback `index.html` verwendet.

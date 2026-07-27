@@ -1,10 +1,10 @@
 <!--
   ============================================================================
-  Emotronic v2.11
+  Emotronic v2.12
   Projektname: Emotronic
   Autor: Rasmus Klette
   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-  Aktuelle Revision: 111
+  Aktuelle Revision: 112
   ============================================================================
 -->
 <!doctype html>
@@ -173,16 +173,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v2.11 — CODEKOPF
+   Emotronic v2.12 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 111
+   Aktuelle Revision: 112
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'2.11',
-  revision:111,
+  version:'2.12',
+  revision:112,
   author:'Rasmus Klette'
 });
 
@@ -383,7 +383,7 @@ function playSpecialSound(name){
  const notes=specialSoundPatterns[name];if(!notes)return;
  playTonePattern(notes,name==='gameLose'||name==='lifeLose'||name==='powerOff'?2:3);
 }
-let state={selected:null,displayKey:null,intensity:0,last:null,comboMode:false,comboFirst:null,source:APP_CONFIG.normalMode.defaultSource,timer:null,powered:true,history:[],powerArmed:false,powerArmTimer:null,longPressTimer:null,longPressTriggered:false,bgCode:null,bgFlip:false,replaying:false,repeatClickTimer:null,powerAnimating:false,replayRun:0,bootTimer:null,omDelayTimer:null,senderStreamTimer:null,shareStatus:'',shareStatusTimer:null,incomingShare:false,incomingShareReady:null,incomingShareStartTimer:null,simonLinkWaiting:false,lastGameOver:null,lastPhoneTap:0,lastWifiTap:0,game:{active:false,phase:'idle',sequence:[],inputIndex:0,score:0,level:1,flashKey:null,awaitingShutdown:false,timers:[],inputTimer:null,actions:[],comboInput:[]}};
+let state={selected:null,displayKey:null,intensity:0,last:null,comboMode:false,comboFirst:null,source:APP_CONFIG.normalMode.defaultSource,timer:null,powered:true,history:[],slowReplay:false,powerArmed:false,powerArmTimer:null,longPressTimer:null,longPressTriggered:false,bgCode:null,bgFlip:false,replaying:false,repeatClickTimer:null,powerAnimating:false,replayRun:0,bootTimer:null,omDelayTimer:null,senderStreamTimer:null,shareStatus:'',shareStatusTimer:null,incomingShare:false,incomingShareReady:null,incomingShareStartTimer:null,simonLinkWaiting:false,lastGameOver:null,lastPhoneTap:0,lastWifiTap:0,game:{active:false,phase:'idle',sequence:[],inputIndex:0,score:0,level:1,flashKey:null,awaitingShutdown:false,timers:[],inputTimer:null,actions:[],comboInput:[]}};
 const el=id=>document.getElementById(id);
 function setOfflineHintsVisible(visible){['repeatHint','powerHint'].forEach(id=>{const hint=el(id);hint.hidden=false;hint.classList.toggle('visible',visible)})}
 function showReplayCount(count){
@@ -396,9 +396,9 @@ function hideReplayCount(){
  setTimeout(()=>{if(!replayCount.classList.contains('visible'))replayCount.textContent=''},380)
 }
 function imgMarkup(code,alt){return `<img src="${OM}${code}.svg" alt="" aria-hidden="true" onerror="this.style.display='none'">`}
-function requestedStartupMode(){try{const mode=location.hash.slice(1);if(mode==='slow')return 'on';return ['on','off','simon'].includes(mode)?mode:APP_CONFIG.startup.mode}catch{return APP_CONFIG.startup.mode}}
-function replayTimingMultiplier(){try{return location.hash==='#slow'?Math.max(1,Number(APP_CONFIG.replay.slowMultiplier)||2):1}catch{return 1}}
-function replayEmojiTimingMultiplier(){try{return location.hash==='#slow'?Math.max(1,Number(APP_CONFIG.replay.slowEmojiMultiplier)||1.15):1}catch{return 1}}
+function requestedStartupMode(){try{const mode=location.hash.slice(1);return ['on','off','simon'].includes(mode)?mode:APP_CONFIG.startup.mode}catch{return APP_CONFIG.startup.mode}}
+function replayTimingMultiplier(){return state.slowReplay?Math.max(1,Number(APP_CONFIG.replay.slowMultiplier)||2):1}
+function replayEmojiTimingMultiplier(){return state.slowReplay?Math.max(1,Number(APP_CONFIG.replay.slowEmojiMultiplier)||1.15):1}
 function build(){const startupMode=requestedStartupMode();state.game.active=false;state.game.phase='idle';state.game.awaitingShutdown=false;const pad=el('keypad');order.forEach(k=>{const e=base[k],b=document.createElement('button');b.className='emotion-key';b.style.setProperty('--c',e.color);b.dataset.key=k;b.innerHTML=imgMarkup(e.codes[0],e.category)+`<span>${e.category}</span>`;b.onclick=()=>pressEmotion(k);pad.appendChild(b)});document.querySelectorAll('.segment').forEach(s=>{s.classList.remove('active');s.onclick=()=>setIntensity(Number(s.dataset.level))});state.selected=null;state.displayKey=null;state.intensity=0;const startNeedle=el('needle');startNeedle.style.transition='none';startNeedle.style.setProperty('--needle-pos','0');startNeedle.style.setProperty('--needle-color','#9aa09a');if(startupMode==='off'){state.powered=false}else{state.powered=true}render();requestAnimationFrame(()=>{startNeedle.style.transition='';if(startupMode==='simon')showSimonLinkGate()})}
 function pairKey(a,b){return combos[`${a}|${b}`]?`${a}|${b}`:combos[`${b}|${a}`]?`${b}|${a}`:null}
 function allowedPartners(k){return Object.values(combos).filter(c=>c.partners.includes(k)).flatMap(c=>c.partners.filter(x=>x!==k))}
@@ -419,6 +419,7 @@ function triggerSenderStream(){
 function pressEmotion(k){
  if(state.game.active){gamePress(k);return}
  if(!state.powered)return;
+ state.slowReplay=false;
  hideReplayCount();
  // Bei einer fertigen Kombination spielt die aktive Taste die Kombi erneut ab.
  if(typeof state.selected==='object'&&k===state.displayKey){playComboSound(combos[state.selected.combo]);render();animateCurrent();return}
@@ -466,7 +467,7 @@ function handleCombo(k){
  state.comboMode=false;state.comboFirst=null;
  recordHistory();playComboSound(c);animateNeedle(3);render();animateCurrent()
 }
-function setIntensity(n){if(state.game.active)return;if(!state.powered)return;if(state.selected&&typeof state.selected==='object'){state.intensity=3;render();return}n=Math.max(0,Math.min(3,n));if(!state.selected){state.intensity=0;render();return}if(state.selected==='neutral'){state.intensity=0;render();return}n=Math.max(APP_CONFIG.normalMode.minEmotionLevel,n);const changed=n!==state.intensity;state.intensity=n;recordHistory('replace-current');if(changed)triggerSenderStream();playEmotionSound(state.selected,n);animateNeedle(n);render({keypadIntensityCrossfade:changed});animateCurrent()}
+function setIntensity(n){if(state.game.active)return;if(!state.powered)return;state.slowReplay=false;if(state.selected&&typeof state.selected==='object'){state.intensity=3;render();return}n=Math.max(0,Math.min(3,n));if(!state.selected){state.intensity=0;render();return}if(state.selected==='neutral'){state.intensity=0;render();return}n=Math.max(APP_CONFIG.normalMode.minEmotionLevel,n);const changed=n!==state.intensity;state.intensity=n;recordHistory('replace-current');if(changed)triggerSenderStream();playEmotionSound(state.selected,n);animateNeedle(n);render({keypadIntensityCrossfade:changed});animateCurrent()}
 function animateNeedle(target=state.intensity){const n=el('needle'),previous=Number(n.dataset.prev||0),next=Number(target)||0,dir=next>previous?1:next<previous?-1:0,atLeftEdge=next===0;n.dataset.prev=next;n.classList.remove('swing');if(!dir)return;n.style.setProperty('--overshoot',atLeftEdge?'0px':`${dir*7}px`);n.style.setProperty('--rebound',atLeftEdge?'0px':`${dir*3}px`);void n.offsetWidth;n.classList.add('swing')}
 function getFrames(){if(!state.powered)return [''];if(!state.selected)return [''];if(typeof state.selected==='object')return state.selected.ascii;const e=base[state.selected];if(state.selected==='neutral')return e.ascii[0];return e.ascii[Math.max(0,state.intensity-1)]}
 function setStagePosition(){const stage=el('asciiStage');stage.classList.remove('intense');if(state.intensity>=3)stage.classList.add('intense')}
@@ -738,14 +739,14 @@ function cancelIncomingShare(){
  return finishIncomingShare(false)
 }
 function applyDecodedSharedPayload(payload){
- state.powered=true;state.game.active=false;state.comboMode=false;state.comboFirst=null;state.source=APP_CONFIG.normalMode.defaultSource;
+ state.powered=true;state.game.active=false;state.comboMode=false;state.comboFirst=null;state.source=APP_CONFIG.normalMode.defaultSource;state.slowReplay=false;
  document.querySelector('.app').classList.remove('game-mode','game-select');
  if(payload.type==='emotion'&&restoreHistoryItem(payload.item)){
   state.history=[historyItem()].filter(Boolean);render();animateCurrent();return
  }
  if(payload.type==='replay'&&Array.isArray(payload.items)){
   const valid=payload.items.filter(item=>item&&typeof item==='object').slice(-40);if(!valid.length)return;
-  state.history=valid;restoreHistoryItem(valid.at(-1));replayHistory()
+  state.history=valid;state.slowReplay=payload.slow===true;restoreHistoryItem(valid.at(-1));replayHistory()
   return
  }
  if(payload.type==='score'){showSharedGameScore(payload);replayGameOverSequence()}
@@ -1223,6 +1224,7 @@ function powerToggle(){
  const stage=el('asciiStage'),screen=el('screen'),name=el('emotionName'),detail=el('emotionDetail');
  if(state.powerAnimating)return;
  state.powerAnimating=true;
+ state.slowReplay=false;
  clearInterval(state.timer);clearTimeout(state.powerArmTimer);state.powerArmed=false;
  screen.classList.remove('power-confirm');screen.classList.add('special-status');el('off').classList.remove('pulse');
  if(state.powered){
@@ -1294,6 +1296,7 @@ el('less').onclick=()=>setIntensity(state.intensity-1);el('more').onclick=()=>se
 function toggleCombo(){
  if(state.game.active)return;
  if(!state.powered)return;
+ state.slowReplay=false;
  if(state.comboMode){exitCombo();return}
  if(!state.selected||state.selected==='neutral'){
   if(state.selected==='neutral'){
@@ -1327,6 +1330,7 @@ function cancelReplayToReady(){
  clearTimeout(state.omDelayTimer);
  state.omDelayTimer=null;
  state.history=[];
+ state.slowReplay=false;
  state.selected=null;
  state.displayKey=null;
  state.intensity=0;
@@ -1353,9 +1357,10 @@ function shareReplayFromPhone(){
  if(state.history.length)copySharePayload({type:'replay',items:state.history.slice(-40)},'Replay-Link');
  else flashShareStatus('Replay ist leer')
 }
-async function shareSlowLinkFromWifi(){
- const copied=await copyModeLink('slow');
- flashShareStatus(copied?'Slow-Link kopiert':'Kopieren nicht möglich')
+function shareSlowReplayFromWifi(){
+ recordHistory('sync-current');
+ if(state.history.length)copySharePayload({type:'replay',items:state.history.slice(-40),slow:true},'Slow-Replay-Link');
+ else flashShareStatus('Replay ist leer')
 }
 el('sendBtn').onclick=event=>{
  const doubled=isDoubleTap('phone');
@@ -1367,7 +1372,7 @@ el('sendBtn').onclick=event=>{
 };
 el('receiveBtn').onclick=event=>{
  const doubled=isDoubleTap('wifi');
- if(doubled){event.preventDefault();shareSlowLinkFromWifi();return}
+ if(doubled){event.preventDefault();shareSlowReplayFromWifi();return}
  if(!state.powered)return;
  if(state.game.active&&state.game.phase==='select')return;
  state.source='other';render();animateSource('other');flashShareStatus('Slow-Replay teilen: Zweimal 📶 klicken.',3000)
