@@ -1,10 +1,10 @@
 <!--
   ============================================================================
-  Emotronic v2.05
+  Emotronic v2.06
   Projektname: Emotronic
   Autor: Rasmus Klette
   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-  Aktuelle Revision: 105
+  Aktuelle Revision: 106
   ============================================================================
 -->
 <!doctype html>
@@ -121,12 +121,12 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 .app.game-mode .corner.active{opacity:1}
 .app.game-mode.game-over .corner.left{pointer-events:auto;opacity:1;filter:none}
 .app.game-mode.game-over .emotion-key[data-key="curiosity"],.app.game-mode.game-over .emotion-key[data-key="neutral"],.app.game-mode.game-over .emotion-key[data-key="surprise"]{filter:none;cursor:pointer;opacity:1}
-.app.game-mode .utility .combo{opacity:.55}
+.app.game-mode .utility .combo{opacity:.3;filter:grayscale(1) brightness(.62);cursor:default;pointer-events:none;transition:opacity .12s ease,filter .12s ease}
 .app.game-mode .utility .repeat,.app.game-mode .utility .off{opacity:1}
 .emotion-key.game-flash{outline:6px solid #fff;box-shadow:0 0 0 5px var(--ink),0 7px 0 #7e776d;transform:translateY(-5px) scale(1.055);filter:saturate(1.18) brightness(1.08)}
 .emotion-key.game-disabled{filter:grayscale(.45) brightness(.78);cursor:default}
 .emotion-key.replay-dim{filter:grayscale(.5) brightness(.70)}
-.current-strength.game-score{font-size:17px;opacity:.86;font-weight:950}.current-emotion.game-over-score{font-size:30px;font-weight:1000;line-height:1.05;letter-spacing:.02em}.utility .combo.game-flash{background:#fff0a1;box-shadow:0 0 0 4px #fff,0 0 0 7px var(--ink);transform:translateY(-3px) scale(1.05);opacity:1!important}
+.current-strength.game-score{font-size:17px;opacity:.86;font-weight:950}.current-emotion.game-over-score{font-size:30px;font-weight:1000;line-height:1.05;letter-spacing:.02em}.utility .combo.game-flash{background:#fff0a1;box-shadow:0 0 0 4px #fff,0 0 0 7px var(--ink);transform:translateY(-3px) scale(1.05);opacity:1!important;filter:none}
 .ascii-stage.game-bonus{font-size:clamp(20px,6.2vw,34px);padding-left:38px;padding-right:38px}
 .ascii-stage.game-over-animation{animation:gameOverJolt .24s steps(2,end) 3,gameOverFade .9s ease both;font-size:clamp(24px,7vw,40px)}
 .ascii-stage.game-over-score-final{font-size:clamp(30px,8.5vw,46px);font-weight:950;letter-spacing:.02em;transform:translateY(5px);transform-origin:center}
@@ -172,16 +172,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v2.05 — CODEKOPF
+   Emotronic v2.06 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 105
+   Aktuelle Revision: 106
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'2.05',
-  revision:105,
+  version:'2.06',
+  revision:106,
   author:'Rasmus Klette'
 });
 
@@ -304,6 +304,19 @@ const combos={
  'fear|surprise':{name:'genervt',code:'1F928',ascii:[':-?',':-/',':-?'],partners:['fear','surprise']},
  'surprise|sadness':{name:'verlegen',code:'1F605',ascii:[':-$',':-$',':-$'],partners:['surprise','sadness']}
 };
+// Vollständige Kombi-Übersicht aus „Bereit“: oben bei Freude mit „lustig“ beginnen,
+// anschließend den äußeren Tasten im Uhrzeigersinn folgen.
+const COMBO_OVERVIEW_KEY='__overview__';
+const comboOverview={
+ joy:'joy|curiosity',
+ affection:'joy|affection',
+ fear:'affection|fear',
+ surprise:'fear|surprise',
+ sadness:'surprise|sadness',
+ disgust:'sadness|disgust',
+ anger:'disgust|anger',
+ curiosity:'curiosity|anger'
+};
 
 // Kurze eigenständige Retro-Handheld-Signale. Audio ist rein optional:
 // Fehlt Web Audio oder blockiert der Browser den Ton, läuft die App unverändert weiter.
@@ -375,7 +388,11 @@ function requestedStartupMode(){try{const mode=location.hash.slice(1);return ['o
 function build(){const startupMode=requestedStartupMode();state.game.active=false;state.game.phase='idle';state.game.awaitingShutdown=false;const pad=el('keypad');order.forEach(k=>{const e=base[k],b=document.createElement('button');b.className='emotion-key';b.style.setProperty('--c',e.color);b.dataset.key=k;b.innerHTML=imgMarkup(e.codes[0],e.category)+`<span>${e.category}</span>`;b.onclick=()=>pressEmotion(k);pad.appendChild(b)});document.querySelectorAll('.segment').forEach(s=>{s.classList.remove('active');s.onclick=()=>setIntensity(Number(s.dataset.level))});state.selected=null;state.displayKey=null;state.intensity=0;const startNeedle=el('needle');startNeedle.style.transition='none';startNeedle.style.setProperty('--needle-pos','0');startNeedle.style.setProperty('--needle-color','#9aa09a');if(startupMode==='off'){state.powered=false}else{state.powered=true}render();requestAnimationFrame(()=>{startNeedle.style.transition='';if(startupMode==='simon')showSimonLinkGate()})}
 function pairKey(a,b){return combos[`${a}|${b}`]?`${a}|${b}`:combos[`${b}|${a}`]?`${b}|${a}`:null}
 function allowedPartners(k){return Object.values(combos).filter(c=>c.partners.includes(k)).flatMap(c=>c.partners.filter(x=>x!==k))}
-function comboPreviewFor(k){if(!state.comboMode||!state.comboFirst||k==='neutral'||k===state.comboFirst)return null;const ck=pairKey(state.comboFirst,k);return ck?combos[ck]:null}
+function comboPreviewFor(k){
+ if(!state.comboMode||!state.comboFirst||k==='neutral'||k===state.comboFirst)return null;
+ const ck=state.comboFirst===COMBO_OVERVIEW_KEY?comboOverview[k]:pairKey(state.comboFirst,k);
+ return ck?combos[ck]:null
+}
 function snapshot(){return {selected:state.selected,displayKey:state.displayKey}}
 function triggerSenderStream(){
  // Die rechte >>>-Animation gehört nur zum Wifi/Sender-Zustand.
@@ -409,6 +426,14 @@ function exitCombo(){state.comboMode=false;state.comboFirst=null;render()}
 function handleCombo(k){
  if(k==='neutral')return;
  if(!state.comboFirst){state.comboFirst=k;render();return}
+ if(state.comboFirst===COMBO_OVERVIEW_KEY){
+  const ck=comboOverview[k];if(!ck)return;
+  const c=combos[ck];
+  if(state.selected)state.last=snapshot();
+  state.selected={combo:ck,name:c.name,code:c.code,ascii:c.ascii,parts:c.partners};
+  state.displayKey=k;state.intensity=3;state.comboMode=false;state.comboFirst=null;
+  recordHistory();playComboSound(c);animateNeedle(3);render();animateCurrent();return
+ }
  // Erneutes Auswählen der Startemotion beendet die Auswahl und kehrt zur Grundemotion zurück.
  if(k===state.comboFirst){
   state.comboMode=false;state.comboFirst=null;state.selected=k;state.displayKey=k;
@@ -521,8 +546,9 @@ function render(options={}){
   b.classList.remove('game-flash','game-disabled','replay-dim');
   const e=base[k],code=comboPreview?comboPreview.code:keyCode(k);
   const size=(currentKey?(typeof state.selected==='object'?60:[54,59,65][Math.max(0,state.intensity-1)]):49);
+  const label=comboPreview?comboPreview.name:typeof state.selected==='object'&&state.displayKey===k?state.selected.name:e.category;
   b.style.setProperty('--active-emoji-size',size+'px');
-  b.innerHTML=imgMarkup(code,comboPreview?comboPreview.name:typeof state.selected==='object'&&state.displayKey===k?state.selected.name:e.category)+`<span>${typeof state.selected==='object'&&state.displayKey===k?state.selected.name:e.category}</span>`;
+  b.innerHTML=imgMarkup(code,label)+`<span>${label}</span>`;
   const crossfadeKey=options.keypadIntensityCrossfade&&k!=='neutral'&&(state.source==='self'||currentKey);
   if(crossfadeKey)crossfadeKeyImage(b,previousImage,b.querySelector('img'))
  });
@@ -954,8 +980,9 @@ function runGamePlayback(startDelay,scoreReview=false){
   if(typeof action==='object'&&action.combo){
    const level=gameLevel(g.score);
    gameShowAction({key:action.first,level});
+   el('combo').classList.add('game-flash');
    gameLater(()=>{
-    renderGameKeypad(null,false);el('bgEmoji').style.setProperty('--ghost-opacity','0');
+    el('combo').classList.remove('game-flash');renderGameKeypad(null,false);el('bgEmoji').style.setProperty('--ghost-opacity','0');
     gameLater(()=>{
      gameShowAction({key:action.second,level});
      gameLater(()=>{
@@ -1020,7 +1047,8 @@ function gamePress(k){
    gameShowAction({key:expected.first,level});
    if(k!==expected.first){gameLater(loseLife,260);return}
    g.comboInput=[k];
-   gameLater(()=>{renderGameKeypad(null,true);el('bgEmoji').style.setProperty('--ghost-opacity','0')},150);
+   el('combo').classList.add('game-flash');
+   gameLater(()=>{el('combo').classList.remove('game-flash');renderGameKeypad(null,true);el('bgEmoji').style.setProperty('--ghost-opacity','0')},150);
    return;
   }
   gameShowAction({key:expected.second,level});
@@ -1244,12 +1272,20 @@ function armPower(){
 }
 el('less').onclick=()=>setIntensity(state.intensity-1);el('more').onclick=()=>setIntensity(state.intensity+1);const offBtn=el('off');offBtn.onclick=()=>{if(cancelIncomingShare()){state.longPressTriggered=false;return}if(state.replaying){cancelReplayToReady();state.longPressTriggered=false;return}if(!state.longPressTriggered)armPower();state.longPressTriggered=false};offBtn.onpointerdown=()=>{state.longPressTriggered=false;if(state.incomingShare)return;state.longPressTimer=setTimeout(()=>replayHistory(),700)};offBtn.onpointerup=offBtn.onpointercancel=()=>clearTimeout(state.longPressTimer);
 function toggleCombo(){
- if(state.game.active){gamePress('__combo__');return}
+ if(state.game.active)return;
  if(!state.powered)return;
  if(state.comboMode){exitCombo();return}
+ if(!state.selected||state.selected==='neutral'){
+  if(state.selected==='neutral'){
+   const latest=state.history.at(-1);
+   if(latest&&!latest.isCombo&&latest.key==='neutral')state.history.pop();
+   state.selected=null;state.displayKey=null;state.intensity=0;state.last=null;
+  }
+  state.comboMode=true;state.comboFirst=COMBO_OVERVIEW_KEY;render();return
+ }
  // Die aktuell gewählte Grundemotion ist sofort der Startpunkt.
- // Ohne Auswahl, bei Neutral oder bei einer bestehenden Kombination bleibt die Taste ohne Funktion.
- if(!state.selected||state.selected==='neutral'||typeof state.selected==='object')return;
+ // Bei einer bereits bestehenden Kombination bleibt die Taste ohne Funktion.
+ if(typeof state.selected==='object')return;
  state.comboMode=true;state.comboFirst=state.selected;render()
 }
 el('combo').onclick=toggleCombo;

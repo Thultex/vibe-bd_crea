@@ -1,4 +1,4 @@
-# Emotronic v2.05
+# Emotronic v2.06
 
 Emotronic ist eine installierbare, offlinefähige PWA zur Auswahl, Darstellung, Kombination und Wiedergabe von Gefühlen. Die Oberfläche ist an ein kompaktes Retro-Handgerät angelehnt und für Touch, Maus und Tastatur ausgelegt.
 
@@ -47,7 +47,7 @@ Ein Druck auf Telefon kopiert in **Bereit**, auf der `Simon Feels!`-Auswahl oder
 | Datei | Zweck |
 |---|---|
 | `index.html` | Hauptanwendung mit Oberfläche, CSS und JavaScript |
-| `Emotronic-v2.05.html` | Versionierte Kopie der Hauptanwendung |
+| `Emotronic-v2.06.html` | Versionierte Kopie der Hauptanwendung |
 | `manifest.webmanifest` | PWA-Metadaten und Installationskonfiguration |
 | `sw.js` | Service Worker für Offline-Cache |
 | `icon-192.png`, `icon-512.png` | PWA-Symbole |
@@ -112,7 +112,9 @@ Im Telefon-/Empfängermodus zeigen alle nicht-neutralen Gefühlstasten die OpenM
 
 ### Gefühls-Kombinationen
 
-Die Kombinationstaste verwendet die aktuell gewählte Grundemotion als ersten Partner. Danach wird eine gültige Nachbar-Emotion gewählt. Während die Kombi-Taste aktiv ist, zeigen die gültigen gestrichelt markierten Nachbartasten bereits das jeweils entstehende Kombi-Emoji; die kleine Beschriftung nennt weiterhin die wählbare Grundemotion. Beim Abbruch kehren alle Vorschauen zu ihren Grund-Emojis zurück. Nach einer gültigen Wahl behält nur die gewählte Taste das nun echte Kombi-Emoji.
+Die Kombinationstaste verwendet die aktuell gewählte Grundemotion als ersten Partner. Danach wird eine gültige Nachbar-Emotion gewählt. Während die Kombi-Taste aktiv ist, zeigen die gültigen gestrichelt markierten Nachbartasten bereits das jeweils entstehende Kombi-Emoji und dessen Kombinationsnamen.
+
+Im Zustand **Bereit**, also ohne gewähltes Gefühl, sowie bei gewähltem Neutral zeigt die Kombi-Taste stattdessen alle acht Kombinationen auf den äußeren Gefühlstasten. Auf Freude beginnt die Übersicht mit „lustig“; danach folgen die übrigen Ergebnisse im Uhrzeigersinn. Beim Öffnen aus Neutral wird dieser aktuelle Neutral-Schritt aus dem Replay entfernt und der Grundzustand intern zu Bereit; frühere Replay-Schritte bleiben erhalten. Ein Tipp wählt die Kombination auf der jeweiligen Taste aus. Beim Abbruch kehren alle Vorschauen zu ihren Grund-Emojis und übergeordneten Emotionsnamen zurück. Nach einer gültigen Wahl behält nur die gewählte Taste das nun echte Kombi-Emoji samt Namen. Im normalen Modus bleiben die Beschriftungen unverändert bei den übergeordneten Emotionen, da deren Motive lediglich Intensitätsabstufungen darstellen.
 
 | Kombination | Ergebnis |
 |---|---|
@@ -197,6 +199,8 @@ Die Zwischenablage verwendet zuerst die moderne Clipboard API und danach einen k
 Das Gedächtnisspiel wird bei ausgeschaltetem Gerät weiterhin mit `R` geöffnet. Direkt neben dem `R` blendet beim Ausschalten zusätzlich die kleine schwarze Silhouette des OpenMoji-Joysticks `1F579` ein. Auch das normale Power-Zeichen bleibt erhalten und erhält direkt daneben wieder die schwarze Silhouette der OpenMoji-Lupe `1F50D`. Beim Einschalten blenden beide Hinweise weich aus. Sie sind 21 Pixel groß. Beim Ausschalten springen Intensitätswert und Zeiger sofort sichtbar auf `0`. Der leere Bereit-Zustand bleibt intern ebenfalls bei `0`, sodass die erste Gefühlsauswahl nach Start oder Neustart auf Mindeststufe `1` statt fälschlich auf `3` beginnt.
 
 Beim Einstieg baut sich oben `Simon Feels!` in derselben Schriftgröße wie die normale Introanzeige auf und ein kurzer Startjingle erklingt. Die Auswahl bleibt dabei sofort bedienbar; jede Spielaktion beendet den Titelaufbau. Der Direktlink `#simon` wartet zunächst auf einem weißen Bildschirm mit dem farbigen OpenMoji-Controller `1F3AE` auf einen Tipp, damit Animation und Ton erst nach dieser Interaktion starten.
+
+Die Kombi-Taste ist in Simon deutlich abgedunkelt und nicht bedienbar. Erwartet Simon eine Kombination, leuchtet die Taste nach dem ersten richtig gedrückten Symbol kurz auf und wird danach wieder dunkel.
 
 ### Schwierigkeitsgrade
 
@@ -291,7 +295,7 @@ Diese Reihenfolge soll bei weiteren Änderungen erhalten bleiben.
 ## Offline/PWA
 
 - Der Service Worker cached die Kernressourcen.
-- Die aktuelle Cache-Version lautet `emotronic-v105`.
+- Die aktuelle Cache-Version lautet `emotronic-v106`.
 - Beim Aktivieren werden nur ältere Emotronic-Caches entfernt; Caches anderer Anwendungen auf derselben Domain bleiben erhalten.
 - Nicht gecachte GET-Anfragen werden aus dem Netz geladen und anschließend gespeichert.
 - Bei einem Netzfehler wird als Fallback `index.html` verwendet.

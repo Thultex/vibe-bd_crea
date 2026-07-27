@@ -1,4 +1,4 @@
-# Codex-Handoff: Emotronic v2.05
+# Codex-Handoff: Emotronic v2.06
 
 ## Auftrag
 
@@ -7,7 +7,7 @@ Diese Übergabe beschreibt den aktuellen Stand der installierbaren Emotronic-PWA
 ## Relevante Dateien
 
 - `sp-emotronic/tools/emotronic-pwa/index.html` – maßgebliche Quelle
-- `sp-emotronic/tools/emotronic-pwa/Emotronic-v2.05.html` – versionierter Snapshot, nach Änderungen neu erzeugen
+- `sp-emotronic/tools/emotronic-pwa/Emotronic-v2.06.html` – versionierter Snapshot, nach Änderungen neu erzeugen
 - `sp-emotronic/tools/emotronic-pwa/sw.js` – Service Worker und Cache-Version
 - `sp-emotronic/tools/emotronic-pwa/manifest.webmanifest` – PWA-Manifest
 - `sp-emotronic/tools/emotronic-pwa/README.md` – Nutzer- und Funktionsdokumentation
@@ -15,10 +15,10 @@ Diese Übergabe beschreibt den aktuellen Stand der installierbaren Emotronic-PWA
 
 ## Versionierung
 
-- Aktuell: **Emotronic v2.05**
-- `APP_META.version`: `2.05`
-- `APP_META.revision`: `105`
-- Service-Worker-Cache: `emotronic-v105`
+- Aktuell: **Emotronic v2.06**
+- `APP_META.version`: `2.06`
+- `APP_META.revision`: `106`
+- Service-Worker-Cache: `emotronic-v106`
 - Beim Aktivieren nur ältere Caches mit dem Präfix `emotronic-v` entfernen; andere Anwendungen können dieselbe Domain verwenden.
 - Jede abgeschlossene Revision erhöht die Version um `0.01` und die Revision um `1`.
 - Codekopf, `APP_META`, Service Worker, versionierte HTML-Datei, README und ZIP müssen synchron bleiben.
@@ -104,9 +104,11 @@ Nur diese acht Paare sind gültig:
 - Angst + Unsicherheit → genervt
 - Unsicherheit + Trauer → verlegen
 
-Bei aktiver Kombi-Taste zeigen gültige Partner-/Nachbartasten das resultierende Kombi-Emoji als Vorschau. Beim Abbruch werden alle Grund-Emojis wiederhergestellt; nach einer gültigen Wahl behält nur die gewählte Taste das echte Kombi-Emoji.
+Bei aktiver Kombi-Taste zeigen gültige Partner-/Nachbartasten das resultierende Kombi-Emoji und dessen Kombinationsnamen als Vorschau. In „Bereit“ sowie bei Neutral zeigt `comboOverview` alle acht Ergebnisse auf dem äußeren Ring: Freude beginnt mit „lustig“, danach läuft die Zuordnung im Uhrzeigersinn. Beim Einstieg aus Neutral wird ausschließlich der letzte Neutral-Eintrag aus `state.history` entfernt und der sichtbare Zustand intern auf Bereit gesetzt, damit `replayHistory()` ihn nicht erneut synchronisiert. Ein Tipp übernimmt das Ergebnis auf der gedrückten Taste. Beim Abbruch werden die Grund-Emojis und übergeordneten Emotionsnamen wiederhergestellt; nach einer gültigen Wahl behält nur die gewählte Taste das echte Kombi-Emoji samt Namen. Außerhalb dieser Vorschau bleiben die normalen Tastenbeschriftungen unverändert.
 
 `starr` verwendet eine eigene Rückzugs-/Erstarrbewegung in Normalmodus, Replay und Simon.
+
+In Simon ist die Kombi-Taste deutlich abgedunkelt und ignoriert direkte Eingaben. Bei Simons Vorführung erhält sie nach dem ersten Symbol für dessen restliche Anzeigezeit `game-flash`. Beim eigenen Nachtippen leuchtet sie nach dem ersten richtigen Symbol für 0,15 Sekunden auf; eine falsche Eingabe löst kein Lichtsignal aus.
 
 ## Simon-Spiel – Kerninvarianten
 
@@ -156,9 +158,9 @@ rm emotronic_check.js
 Für ein auslieferbares ZIP vom Repository-Root aus:
 
 ```bash
-rm -f emotronic-pwa-v2.05.zip
-zip -rq emotronic-pwa-v2.05.zip sp-emotronic/tools/emotronic-pwa
-unzip -t emotronic-pwa-v2.05.zip
+rm -f emotronic-pwa-v2.06.zip
+zip -rq emotronic-pwa-v2.06.zip sp-emotronic/tools/emotronic-pwa
+unzip -t emotronic-pwa-v2.06.zip
 ```
 
 ## Vorsicht bei Änderungen
