@@ -39,10 +39,18 @@
         for (var groupIndex = 0; groupIndex < layer.groupItems.length; groupIndex += 1) {
             var group = layer.groupItems[groupIndex];
             lines.push("GROUP\t" + layerIndex + "\t" + groupIndex + "\t" + clean(group.name) + "\t" + bounds(group) + "\titems=" + group.pageItems.length + "\tgroups=" + group.groupItems.length + "\tpaths=" + group.pathItems.length + "\tcompound=" + group.compoundPathItems.length + "\ttexts=" + group.textFrames.length);
+            for (var groupTextIndex = 0; groupTextIndex < group.textFrames.length; groupTextIndex += 1) {
+                var groupText = group.textFrames[groupTextIndex];
+                lines.push("GTEXT\t" + layerIndex + "\t" + groupIndex + "\t" + groupTextIndex + "\t" + clean(groupText.contents) + "\t" + bounds(groupText));
+            }
         }
         for (var placedIndex = 0; placedIndex < layer.placedItems.length; placedIndex += 1) {
             var placed = layer.placedItems[placedIndex];
-            lines.push("PLACED\t" + layerIndex + "\t" + placedIndex + "\t" + clean(placed.name) + "\t" + bounds(placed) + "\t" + clean(placed.file));
+            var placedFile = "<missing>";
+            try {
+                placedFile = clean(placed.file);
+            } catch (_) {}
+            lines.push("PLACED\t" + layerIndex + "\t" + placedIndex + "\t" + clean(placed.name) + "\t" + bounds(placed) + "\t" + placedFile);
         }
     }
 
