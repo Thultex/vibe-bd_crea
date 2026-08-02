@@ -1,10 +1,10 @@
 <!--
   ============================================================================
-  Emotronic v2.15
+  Emotronic v2.16
   Projektname: Emotronic
   Autor: Rasmus Klette
   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-  Aktuelle Revision: 114
+  Aktuelle Revision: 116
   ============================================================================
 -->
 <!doctype html>
@@ -86,10 +86,10 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 .om-fear{animation-name:omFear!important}:is(.emotion-key.selected,.emotion-key.game-flash) img.om-fear{animation-name:omFearKey!important}
 .om-disgust{animation-name:omDisgust!important}:is(.emotion-key.selected,.emotion-key.game-flash) img.om-disgust{animation-name:omDisgustKey!important}
 .om-sadness{animation-name:omSadness!important}:is(.emotion-key.selected,.emotion-key.game-flash) img.om-sadness{animation-name:omSadnessKey!important}
+.om-shame{animation-name:omShame!important}:is(.emotion-key.selected,.emotion-key.game-flash) img.om-shame{animation-name:omShameKey!important}
 .om-surprise{animation-name:omSurprise!important}:is(.emotion-key.selected,.emotion-key.game-flash) img.om-surprise{animation-name:omSurpriseKey!important}
 .om-neutral{animation-name:omNeutral!important}:is(.emotion-key.selected,.emotion-key.game-flash) img.om-neutral{animation-name:omNeutralKey!important}
 .om-combo{animation-name:omCombo!important}:is(.emotion-key.selected,.emotion-key.game-flash) img.om-combo{animation-name:omComboKey!important}
-.om-starr{animation-name:omStarr!important}:is(.emotion-key.selected,.emotion-key.game-flash) img.om-starr{animation-name:omStarrKey!important}
 @keyframes omSoftPulse{0%,100%{transform:translate(-50%,-50%) scale(var(--ghost-scale,1))}45%{transform:translate(-50%,-50%) scale(calc(var(--ghost-scale,1) * 1.035))}}
 @keyframes omSoftPulseKey{0%,100%{transform:translateY(-1px) scale(1)}45%{transform:translateY(-3px) scale(1.07)}}
 @keyframes omJoy{0%,100%{transform:translate(-50%,-50%) scale(var(--ghost-scale,1)) rotate(0)}35%{transform:translate(-50%,calc(-50% - 7px)) scale(calc(var(--ghost-scale,1) * 1.04)) rotate(-2deg)}65%{transform:translate(-50%,calc(-50% + 2px)) scale(calc(var(--ghost-scale,1) * .99)) rotate(2deg)}}
@@ -106,21 +106,19 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 @keyframes omDisgustKey{0%,100%{transform:translateY(-1px) rotate(0)}40%{transform:translate(-4px,2px) scale(.96) rotate(-5deg)}70%{transform:translate(2px,-1px) rotate(2deg)}}
 @keyframes omSadness{0%,100%{transform:translate(-50%,-50%) scale(var(--ghost-scale,1))}40%{transform:translate(-50%,calc(-50% + 7px)) scale(calc(var(--ghost-scale,1) * .985))}75%{transform:translate(-50%,calc(-50% + 3px)) scale(calc(var(--ghost-scale,1) * .995))}}
 @keyframes omSadnessKey{0%,100%{transform:translateY(-1px)}40%{transform:translateY(5px) scale(.97)}75%{transform:translateY(2px)}}
+@keyframes omShame{0%,100%{transform:translate(-50%,-50%) scale(var(--ghost-scale,1)) rotate(0)}35%{transform:translate(calc(-50% - 3px),calc(-50% + 5px)) scale(calc(var(--ghost-scale,1) * .965)) rotate(-3deg)}72%{transform:translate(calc(-50% + 1px),calc(-50% + 2px)) scale(calc(var(--ghost-scale,1) * .985)) rotate(1deg)}}
+@keyframes omShameKey{0%,100%{transform:translateY(-1px) scale(1) rotate(0)}35%{transform:translate(-2px,4px) scale(.93) rotate(-4deg)}72%{transform:translate(1px,1px) scale(.97) rotate(1deg)}}
 @keyframes omSurprise{0%,100%{transform:translate(-50%,-50%) scale(var(--ghost-scale,1))}35%{transform:translate(-50%,calc(-50% - 5px)) scale(calc(var(--ghost-scale,1) * 1.08))}70%{transform:translate(-50%,-50%) scale(calc(var(--ghost-scale,1) * .99))}}
 @keyframes omSurpriseKey{0%,100%{transform:translateY(-1px) scale(1)}35%{transform:translateY(-5px) scale(1.14)}70%{transform:translateY(-1px) scale(.99)}}
 @keyframes omNeutral{0%,100%{transform:translate(-50%,-50%) scale(var(--ghost-scale,1))}48%{transform:translate(-50%,-50%) scale(calc(var(--ghost-scale,1) * .985))}58%{transform:translate(-50%,-50%) scale(var(--ghost-scale,1))}}
 @keyframes omNeutralKey{0%,100%{transform:translateY(-1px)}48%{transform:translateY(0) scale(.97)}58%{transform:translateY(-1px)}}
 @keyframes omCombo{0%,100%{transform:translate(-50%,-50%) scale(var(--ghost-scale,1)) rotate(0)}30%{transform:translate(calc(-50% - 4px),calc(-50% - 3px)) scale(calc(var(--ghost-scale,1) * 1.035)) rotate(-3deg)}65%{transform:translate(calc(-50% + 4px),calc(-50% - 2px)) scale(calc(var(--ghost-scale,1) * 1.05)) rotate(3deg)}}
 @keyframes omComboKey{0%,100%{transform:translateY(-1px) rotate(0)}30%{transform:translate(-3px,-4px) scale(1.07) rotate(-4deg)}65%{transform:translate(3px,-3px) scale(1.1) rotate(4deg)}}
-/* Starr: kurzer Rückzug, dann abruptes Einfrieren ohne Schwingen. */
-@keyframes omStarr{0%{transform:translate(-50%,-50%) scale(var(--ghost-scale,1));filter:var(--ghost-filter) brightness(1)}28%{transform:translate(-50%,calc(-50% + 4px)) scale(calc(var(--ghost-scale,1) * .94));filter:var(--ghost-filter) brightness(.92)}42%,88%{transform:translate(-50%,calc(-50% + 2px)) scale(calc(var(--ghost-scale,1) * .965));filter:var(--ghost-filter) brightness(.96)}100%{transform:translate(-50%,-50%) scale(var(--ghost-scale,1));filter:var(--ghost-filter) brightness(1)}}
-@keyframes omStarrKey{0%{transform:translateY(-1px) scale(1)}28%{transform:translateY(3px) scale(.91)}42%,88%{transform:translateY(1px) scale(.94)}100%{transform:translateY(-1px) scale(1)}}
-
 /* Gedächtnisspiel im ausgeschalteten Zustand */
 .app.game-mode .corner{pointer-events:none;opacity:.62}
 .app.game-mode .corner.active{opacity:1}
 .app.game-mode.game-over .corner.left{pointer-events:auto;opacity:1;filter:none}
-.app.game-mode.game-over .emotion-key[data-key="curiosity"],.app.game-mode.game-over .emotion-key[data-key="neutral"],.app.game-mode.game-over .emotion-key[data-key="surprise"]{filter:none;cursor:pointer;opacity:1}
+.app.game-mode.game-over .emotion-key[data-key="curiosity"],.app.game-mode.game-over .emotion-key[data-key="neutral"],.app.game-mode.game-over .emotion-key[data-key="disgust"]{filter:none;cursor:pointer;opacity:1}
 .app.game-mode .utility .combo{opacity:.3;filter:grayscale(1) brightness(.62);cursor:default;pointer-events:none;transition:opacity .12s ease,filter .12s ease}
 .app.game-mode .utility .repeat,.app.game-mode .utility .off{opacity:1}
 .emotion-key.game-flash{outline:6px solid #fff;box-shadow:0 0 0 5px var(--ink),0 7px 0 #7e776d;transform:translateY(-5px) scale(1.055);filter:saturate(1.18) brightness(1.08)}
@@ -135,7 +133,7 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 .game-life-line{display:flex;align-items:center;gap:7px;min-width:0}.game-lives{display:inline-flex;align-items:center;gap:2px;white-space:nowrap}.game-heart{display:inline-block;color:#d84f55;font-size:15px;line-height:1;filter:drop-shadow(0 1px 0 rgba(255,255,255,.75));transform-origin:center}.game-heart.losing{animation:gameHeartLose .42s cubic-bezier(.2,.85,.35,1) forwards}@keyframes gameHeartLose{0%{opacity:1;transform:scale(1) rotate(0)}38%{opacity:1;transform:scale(1.35) rotate(-10deg)}100%{opacity:0;transform:translateY(7px) scale(.15) rotate(18deg)}}.game-meta{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.life-loss-center{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:ui-rounded,system-ui,sans-serif}.life-loss-center .game-heart{font-size:42px;filter:drop-shadow(0 2px 0 rgba(255,255,255,.8))}.life-loss-center .game-heart.losing{animation:gameHeartLoseCenter .58s cubic-bezier(.2,.85,.35,1) forwards}@keyframes gameHeartLoseCenter{0%{opacity:1;transform:scale(1) rotate(0)}35%{opacity:1;transform:scale(1.5) rotate(-12deg)}70%{opacity:.8;transform:translateY(-8px) scale(1.2) rotate(10deg)}100%{opacity:0;transform:translateY(18px) scale(.12) rotate(24deg)}}
 
 .meter-wrap,.meter,.keypad-shell,.keypad,.utility{min-width:0;max-width:100%}.keypad,.utility{width:100%}.emotion-key{min-width:0;overflow:hidden}.emotion-key span{max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.app.game-select .emotion-key{filter:grayscale(.82) brightness(.72);opacity:.58}.app.game-select .emotion-key[data-key="curiosity"],.app.game-select .emotion-key[data-key="neutral"],.app.game-select .emotion-key[data-key="surprise"]{filter:none;opacity:1;outline:4px solid #fff;box-shadow:0 0 0 3px var(--ink),0 4px 0 #7e776d}.app.game-select .corner{opacity:.62;filter:none;pointer-events:none;cursor:default}.app.game-select .corner.left{opacity:1;pointer-events:auto;cursor:pointer}.app.game-select .corner.active{background:#eee8dc;box-shadow:none}
+.app.game-select .emotion-key{filter:grayscale(.82) brightness(.72);opacity:.58}.app.game-select .emotion-key[data-key="curiosity"],.app.game-select .emotion-key[data-key="neutral"],.app.game-select .emotion-key[data-key="disgust"]{filter:none;opacity:1;outline:4px solid #fff;box-shadow:0 0 0 3px var(--ink),0 4px 0 #7e776d}.app.game-select .corner{opacity:.62;filter:none;pointer-events:none;cursor:default}.app.game-select .corner.left{opacity:1;pointer-events:auto;cursor:pointer}.app.game-select .corner.active{background:#eee8dc;box-shadow:none}
 .sender-stream{display:none;position:absolute;right:10px;top:76px;width:64px;height:38px;overflow:hidden;z-index:4;font:950 27px/38px ui-monospace,SFMono-Regular,Consolas,monospace;text-align:right;white-space:pre;color:rgba(36,39,44,.82);pointer-events:none}.sender-stream.active{display:block}.sender-stream span{position:absolute;inset:0;opacity:0;animation:senderStream 1.56s steps(1,end) 1}.sender-stream span:nth-child(2){animation-delay:.36s}.sender-stream span:nth-child(3){animation-delay:.72s}.sender-stream span:nth-child(4){animation-delay:1.08s}@keyframes senderStream{0%,22%{opacity:1;transform:translateX(-2px)}23%,100%{opacity:0;transform:translateX(4px)}}
 .top-shell.simon-link-waiting{--emotion-bg:#fff!important;background:#fff!important;filter:none;cursor:pointer}.simon-link-symbol{display:inline-grid;place-items:center;font-size:32px;animation:simonLinkWaiting 1.2s ease-in-out infinite}.simon-link-symbol img{display:block;width:44px;height:44px;object-fit:contain}@keyframes simonLinkWaiting{0%,100%{opacity:.48;transform:scale(.94) rotate(-2deg)}50%{opacity:.9;transform:scale(1.06) rotate(2deg)}}.ascii-stage.simon-title-build{top:calc(.75em + 3px);letter-spacing:.08em;animation:simonTitleBuild .38s ease both}@keyframes simonTitleBuild{0%{opacity:.2;transform:translateX(-8px);letter-spacing:.02em}70%{opacity:1;transform:translateX(2px);letter-spacing:.11em}100%{opacity:1;transform:translateX(0);letter-spacing:.08em}}
 .app.incoming-share-active button:not(#off){filter:grayscale(.86) brightness(.82);opacity:.46}.top-shell.incoming-share-status{--emotion-bg:#edf5e7!important;background:#edf5e7!important;filter:none;cursor:pointer}.incoming-message-stage{overflow:visible}.incoming-message-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0}.incoming-message-icon{position:relative;width:82px;height:60px;display:grid;place-items:center;font:950 50px/1 ui-rounded,system-ui,sans-serif;animation:incomingMessage .75s cubic-bezier(.2,.8,.2,1) both,incomingWaiting 1.1s ease-in-out .75s infinite}.incoming-message-icon i{position:absolute;right:-7px;top:-4px;font:950 25px/1 ui-rounded,system-ui,sans-serif;animation:incomingArrow .38s ease-in-out infinite alternate}.incoming-score-preview{display:inline-flex;align-items:center;gap:4px;margin-top:-3px;font:900 14px/1 ui-rounded,system-ui,sans-serif;opacity:.68;animation:incomingScoreWaiting 1.1s ease-in-out .75s infinite}.incoming-score-preview img{width:19px;height:19px;object-fit:contain}@keyframes incomingMessage{0%{opacity:0;transform:translateY(-22px) scale(.72)}38%{opacity:1;transform:translateY(4px) scale(1.08)}100%{opacity:1;transform:translateY(0) scale(1)}}@keyframes incomingWaiting{0%,100%{filter:none}50%{filter:drop-shadow(0 0 7px rgba(36,39,44,.38))}}@keyframes incomingScoreWaiting{0%,100%{opacity:.52;transform:translateY(1px)}50%{opacity:.9;transform:translateY(-2px)}}@keyframes incomingArrow{from{transform:translateY(-3px)}to{transform:translateY(5px)}}.repeat-symbol{display:inline-grid;place-items:center}
@@ -174,16 +172,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v2.15 — CODEKOPF
+   Emotronic v2.16 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 114
+   Aktuelle Revision: 116
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'2.14',
-  revision:115,
+  version:'2.16',
+  revision:116,
   author:'Rasmus Klette'
 });
 
@@ -284,42 +282,44 @@ const APP_CONFIG={
 const OM='https://openmoji.org/data/color/svg/';
 const OM_BLACK='https://openmoji.org/data/black/svg/';
 const strengthWords=['aus','schwach','mittel','stark'];
-// Grundemotionen: Texte, OpenMoji-Codes, ASCII-Folgen und Basisfarben.
+// Funktionales 8+1-Modell: Texte, OpenMoji-Codes, ASCII-Folgen und eine
+// Basisfarbe je Zweig. Die Intensitätsfarben werden wie bisher daraus
+// berechnet. Neugier behält ihren bisherigen Platz.
 const base={
- curiosity:{category:'Neugier',labels:['interessiert','neugierig','begeistert'],codes:['1F60F','1FAE2','1F929'],ascii:[[':-?',':-?'],[':-?',':-o?',':-?'],[':-?','8-?',':-D?']],color:'#f4b56d',pos:'left top'},
- joy:{category:'Freude',labels:['zufrieden','fröhlich','glücklich'],codes:['1F60C','1F60A','1F602'],ascii:[[':-)',':-)'],[':-)',':-D',':-)'],[':-D','X-D',':-D']],color:'#f5df6f',pos:'top'},
- affection:{category:'Zuneigung',labels:['freundlich','zugewandt','liebevoll'],codes:['1F609','1F917','1F60D'],ascii:[[';-)',';-)'],[';-)',';-D',';-)'],[':-*',';-*',':-*']],color:'#bfe36f',pos:'right top'},
- anger:{category:'Wut',labels:['gereizt','wütend','rasend'],codes:['1F620','1F621','1F92C'],ascii:[['>:-/',':-#','>:-/'],['>:-(',':-#','>:-('],['>:-O','>:-O!','>:-O!!!']],color:'#ef938b',pos:'left'},
- neutral:{category:'Neutral',labels:['neutral'],codes:['1F610'],ascii:[[':-|',':-|']],color:'#ddd9d0',pos:'center'},
- fear:{category:'Angst',labels:['besorgt','ängstlich','panisch'],codes:['1F61F','1F630','1F631'],ascii:[[':-s',':-S',':-s'],[':-S',':-O',':-S'],['D-:','D:','D-:!!!']],color:'#6f9f68',pos:'right'},
- disgust:{category:'Ekel',labels:['unwohl','angeekelt','angewidert'],codes:['1F62C','1F616','1F922'],ascii:[[':-X',':-E',':-X'],['X-(',':-&','X-('],['x-X',':-&','x-X!']],color:'#c2a8dc',pos:'left bottom'},
- sadness:{category:'Trauer',labels:['niedergeschlagen','traurig','verzweifelt'],codes:['1F641','1F622','1F62D'],ascii:[[':-(',':-<',':-('],[';-[',':-(', ';-['],['T-T',';---;','T-T']],color:'#6381d7',pos:'bottom'},
- surprise:{category:'Unsicherheit',labels:['unsicher','überrascht','schockiert'],codes:['1F615','1F62E','1F635-200D-1F4AB'],ascii:[[':-/',':-\\',':-/'],[':-o',':-O',':-o'],['@-@','@_@','@-@']],color:'#83d4cf',pos:'right bottom'}
+ curiosity:{category:'Neugier',labels:['interessiert','neugierig','fasziniert'],codes:['1F928','1F914','1F9D0'],ascii:[[':-?',':-?'],[':-?',':-o?',':-?'],[':-?','8-?',':-?']],color:'#83d4cf'},
+ affection:{category:'Zuneigung',labels:['freundlich','zugewandt','verbunden'],codes:['1F609','1F917','1F970'],ascii:[[':-)',':-*'],[':-)',';-*',':-*'],[':-*',';-*',':-*']],color:'#f4b56d'},
+ joy:{category:'Freude',labels:['zufrieden','fröhlich','begeistert'],codes:['1F60C','1F60A','1F604'],ascii:[[':-)',':-D'],[':-)',':-D',':-D'],[':-D','X-D',':-D']],color:'#f5df6f'},
+ fear:{category:'Angst',labels:['besorgt','ängstlich','panisch'],codes:['1F61F','1F628','1F631'],ascii:[[':-s',':-S'],[':-S',':-O',':-S'],['D-:','D:',':-S']],color:'#c2a8dc'},
+ neutral:{category:'Neutral',labels:['ausgeglichen'],codes:['1F610'],ascii:[[':-|',':-|']],color:'#ddd9d0'},
+ anger:{category:'Wut',labels:['gereizt','verärgert','wütend'],codes:['1F612','1F620','1F92C'],ascii:[['>:-/',':-#','>:-('],['>:-(',':-#','>:-('],['>:-O','>:-O!','>:-(']],color:'#ef938b'},
+ sadness:{category:'Trauer',labels:['bedrückt','traurig','trauernd'],codes:['1F641','1F622','1F62D'],ascii:[[':-(',':-<',':-('],[';-[',':-(',':-('],['T-T',';---;',':-(']],color:'#6381d7'},
+ shame:{category:'Scham',labels:['verlegen','befangen','beschämt'],codes:['1F605','1F633','1FAE3'],ascii:[[':-$',':-$'],[':-$','._.',':-$'],['>_<','._.',':-$']],color:'#bfe36f'},
+ disgust:{category:'Ekel',labels:['abgeneigt','angeekelt','übel'],codes:['1F62C','1F616','1F922'],ascii:[[':-X',':-E',':-X'],['X-(',':-&',':-X'],['x-X',':-&',':-X']],color:'#6f9f68'}
 };
-const order=['curiosity','joy','affection','anger','neutral','fear','disgust','sadness','surprise'];
+const order=['curiosity','affection','joy','fear','neutral','anger','sadness','shame','disgust'];
 // Gültige Nachbarschafts-Kombinationen.
 const combos={
- 'joy|affection':{name:'verliebt',code:'1F618',ascii:[':-*',';-*',':-*'],partners:['joy','affection']},
- 'joy|curiosity':{name:'lustig',code:'1F61C',ascii:[';-P',':-P',';-P'],partners:['joy','curiosity']},
- 'curiosity|anger':{name:'streitlustig',code:'1F608',ascii:['}:-)', '}:-D', '}:-)'],partners:['curiosity','anger']},
- 'affection|fear':{name:'starr',code:'1F636',ascii:[':-',':-',':-'],partners:['affection','fear']},
- 'disgust|anger':{name:'abwertend',code:'1F644',ascii:['>:-/','>:-|','>:-/'],partners:['disgust','anger']},
- 'sadness|disgust':{name:'bereuend',code:'1F614',ascii:[':-<',':-(',':-<'],partners:['sadness','disgust']},
- 'fear|surprise':{name:'genervt',code:'1F928',ascii:[':-?',':-/',':-?'],partners:['fear','surprise']},
- 'surprise|sadness':{name:'verlegen',code:'1F605',ascii:[':-$',':-$',':-$'],partners:['surprise','sadness']}
+ 'curiosity|affection':{name:'Bewunderung',audioName:'bewunderung',motion:'om-curiosity',code:'1F929',ascii:['o_o','*o*','*_*'],partners:['curiosity','affection']},
+ 'affection|joy':{name:'Dankbarkeit',audioName:'dankbarkeit',motion:'om-affection',code:'1F979',ascii:['^.-','^o^','^_^'],partners:['affection','joy']},
+ 'joy|anger':{name:'Triumph',audioName:'triumph',motion:'om-joy',code:'1F624',ascii:['>:)','>:D','>:D'],partners:['joy','anger']},
+ 'anger|disgust':{name:'Abwertung',audioName:'abwertung',motion:'om-disgust',code:'1F644',ascii:['>:-/','¬_o','¬_¬'],partners:['anger','disgust']},
+ 'disgust|shame':{name:'Selbstekel',audioName:'selbstekel',motion:'om-shame',code:'1F92E',ascii:['>.-','>.<','>_<'],partners:['disgust','shame']},
+ 'shame|sadness':{name:'Reue',audioName:'reue',motion:'om-sadness',code:'1F61E',ascii:['._o','._.','._.'],partners:['shame','sadness']},
+ 'sadness|fear':{name:'Hilflosigkeit',audioName:'hilflosigkeit',motion:'om-fear',code:'1F630',ascii:['D-','D-:','D:'],partners:['sadness','fear']},
+ 'fear|curiosity':{name:'Überraschung',audioName:'ueberraschung',motion:'om-surprise',code:'1F632',ascii:[':-o',':-0',':-O'],partners:['fear','curiosity']}
 };
-// Vollständige Kombi-Übersicht aus „Bereit“: oben bei Freude mit „lustig“ beginnen,
-// anschließend den äußeren Tasten im Uhrzeigersinn folgen.
+// Vollständige Kombi-Übersicht aus „Bereit“: Jede äußere Taste zeigt den
+// Übergang von ihrem gegen den Uhrzeigersinn benachbarten Zweig.
 const COMBO_OVERVIEW_KEY='__overview__';
 const comboOverview={
- joy:'joy|curiosity',
- affection:'joy|affection',
- fear:'affection|fear',
- surprise:'fear|surprise',
- sadness:'surprise|sadness',
- disgust:'sadness|disgust',
- anger:'disgust|anger',
- curiosity:'curiosity|anger'
+ affection:'curiosity|affection',
+ joy:'affection|joy',
+ anger:'joy|anger',
+ disgust:'anger|disgust',
+ shame:'disgust|shame',
+ sadness:'shame|sadness',
+ fear:'sadness|fear',
+ curiosity:'fear|curiosity'
 };
 
 // Kurze eigenständige Retro-Handheld-Signale. Audio ist rein optional:
@@ -334,7 +334,7 @@ const soundPatterns={
  fear:[[392,330],[392,330,277],[440,370,294,247]],
  disgust:[[277,247],[294,247,220],[330,277,233,196]],
  sadness:[[440,392],[440,370,330],[440,392,330,262]],
- surprise:[[494,659],[494,659,831],[587,784,988,1175]]
+ shame:[[494,440],[494,440,392],[523,466,392,330]]
 };
 const specialSoundPatterns={
  gameWin:[659,784,988,1175,1319],
@@ -472,7 +472,7 @@ function setIntensity(n){if(state.game.active)return;if(!state.powered)return;st
 function animateNeedle(target=state.intensity){const n=el('needle'),previous=Number(n.dataset.prev||0),next=Number(target)||0,dir=next>previous?1:next<previous?-1:0,atLeftEdge=next===0;n.dataset.prev=next;n.classList.remove('swing');if(!dir)return;n.style.setProperty('--overshoot',atLeftEdge?'0px':`${dir*7}px`);n.style.setProperty('--rebound',atLeftEdge?'0px':`${dir*3}px`);void n.offsetWidth;n.classList.add('swing')}
 function getFrames(){if(!state.powered)return [''];if(!state.selected)return [''];if(typeof state.selected==='object')return state.selected.ascii;const e=base[state.selected];if(state.selected==='neutral')return e.ascii[0];return e.ascii[Math.max(0,state.intensity-1)]}
 function setStagePosition(){const stage=el('asciiStage');stage.classList.remove('intense');if(state.intensity>=3)stage.classList.add('intense')}
-function openMojiMotionClass(){if(typeof state.selected==='object')return state.selected.name==='starr'?'om-starr':'om-combo';return state.selected?`om-${state.selected}`:'om-neutral'}
+function openMojiMotionClass(){if(typeof state.selected==='object')return combos[state.selected.combo]?.motion||'om-combo';return state.selected?`om-${state.selected}`:'om-neutral'}
 function animateOpenMoji(replayMode=false,levelOverride=null,motionOverride=null){
  const cls=motionOverride||(openMojiMotionClass());
  const level=Math.max(1,Math.min(3,levelOverride??state.intensity??1));
@@ -485,7 +485,7 @@ function animateOpenMoji(replayMode=false,levelOverride=null,motionOverride=null
  const targets=[...document.querySelectorAll('.screen-emoji-bg .bg-layer.show,.emotion-key.selected img,.emotion-key.game-flash img')];
  targets.forEach(node=>{
   node.getAnimations().forEach(animation=>{if(animation.id==='intensity-motion')animation.cancel()});
-  node.classList.remove('om-motion','om-joy','om-affection','om-curiosity','om-anger','om-fear','om-disgust','om-sadness','om-surprise','om-neutral','om-combo','om-starr');
+  node.classList.remove('om-motion','om-joy','om-affection','om-curiosity','om-anger','om-fear','om-disgust','om-sadness','om-shame','om-surprise','om-neutral','om-combo');
   node.style.setProperty('--om-duration',duration+'ms');
   void node.offsetWidth;
   node.classList.add('om-motion',cls);
@@ -880,7 +880,7 @@ function renderGameKeypad(activeKey=null,allowInput=false,allowNeutral=false){
  });
 }
 function renderGameOverChoices(){
- const choices={curiosity:'Leicht',neutral:'Normal',surprise:'Profi'};document.querySelectorAll('.emotion-key').forEach(b=>{const k=b.dataset.key,e=base[k],choice=choices[k];b.classList.remove('selected','partner','disabled','game-flash','replay-dim');b.classList.toggle('game-disabled',!choice);b.style.setProperty('--active-emoji-size',choice?'54px':'49px');b.innerHTML=imgMarkup(e.codes[0],e.category)+`<span>${choice||e.category}</span>`})
+ const choices={curiosity:'Leicht',neutral:'Normal',disgust:'Profi'};document.querySelectorAll('.emotion-key').forEach(b=>{const k=b.dataset.key,e=base[k],choice=choices[k];b.classList.remove('selected','partner','disabled','game-flash','replay-dim');b.classList.toggle('game-disabled',!choice);b.style.setProperty('--active-emoji-size',choice?'54px':'49px');b.innerHTML=imgMarkup(e.codes[0],e.category)+`<span>${choice||e.category}</span>`})
 }
 function renderGameSelection(){
  const g=state.game,screen=el('screen'),stage=el('asciiStage');
@@ -889,13 +889,13 @@ function renderGameSelection(){
  el('sendBtn').classList.remove('active');el('receiveBtn').classList.remove('active');el('senderStream').classList.remove('active');
  screen.classList.remove('offline','power-confirm','special-status','ready-status');screen.style.setProperty('--emotion-bg','#f8f3e9');
  el('emotionInfo').classList.remove('empty');el('currentEmotion').textContent='Wie schwer?';
- el('currentCategory').textContent='Neugier: Leicht · Neutral: Normal · Unsicherheit: Profi';
+ el('currentCategory').textContent='Neugier: Leicht · Neutral: Normal · Ekel: Profi';
  el('currentStrength').textContent='';el('currentStrength').classList.remove('game-score');
  el('emotionName').textContent='';el('emotionDetail').textContent='';stage.className='ascii-stage';stage.textContent='WIE SCHWER?';
  updateGhostEmoji(null);el('combo').classList.remove('active','game-flash','offline');el('combo').disabled=false;
  const n=el('needle');n.style.transition='none';n.style.setProperty('--needle-pos',0);n.style.setProperty('--needle-color','#9aa09a');void n.offsetWidth;requestAnimationFrame(()=>{n.style.transition=''});
  document.querySelectorAll('.segment').forEach(s=>s.classList.remove('active'));el('less').disabled=true;el('more').disabled=true;
- const choices={curiosity:'Leicht',neutral:'Normal',surprise:'Profi'};document.querySelectorAll('.emotion-key').forEach(b=>{const k=b.dataset.key,e=base[k],choice=choices[k];b.classList.remove('selected','partner','disabled','game-flash','replay-dim');b.classList.toggle('game-disabled',!choice);b.style.setProperty('--active-emoji-size',choice?'54px':'49px');b.innerHTML=imgMarkup(e.codes[0],e.category)+`<span>${choice||e.category}</span>`});
+ const choices={curiosity:'Leicht',neutral:'Normal',disgust:'Profi'};document.querySelectorAll('.emotion-key').forEach(b=>{const k=b.dataset.key,e=base[k],choice=choices[k];b.classList.remove('selected','partner','disabled','game-flash','replay-dim');b.classList.toggle('game-disabled',!choice);b.style.setProperty('--active-emoji-size',choice?'54px':'49px');b.innerHTML=imgMarkup(e.codes[0],e.category)+`<span>${choice||e.category}</span>`});
 }
 function enterMemoryGameSelection(){
  ensureAudio();clearGameTimers();stopReplay(false);clearInterval(state.bootTimer);state.bootTimer=null;state.history=[];
@@ -959,7 +959,7 @@ function gameShowAction(action){
   const c1=base[action.first].color,c2=base[action.second].color;
   screen.style.setProperty('--emotion-bg',`color-mix(in srgb, color-mix(in srgb, ${c1} 50%, ${c2}) 66%, #3f4348 34%)`);
   updateGhostEmoji(combo?combo.code:null,3,true);playComboSound(combo);el('asciiStage').textContent=combo?combo.ascii.at(-1):'KOMBI';
-  requestAnimationFrame(()=>animateOpenMoji(false,3,combo&&combo.name==='starr'?'om-starr':'om-combo'));return;
+  requestAnimationFrame(()=>animateOpenMoji(false,3,combo?.motion||'om-combo'));return;
  }
  const key=gameActionKey(action),level=gameActionLevel(action),e=base[key],code=e.codes[level-1];
  const previousLevel=state.game.level;state.game.level=level;renderGameKeypad(key,false);state.game.level=previousLevel;screen.style.transitionDuration='.28s';
@@ -1058,7 +1058,7 @@ function repeatCurrentGameSequence(){
 function armGameInputTimer(){clearTimeout(state.game.inputTimer);state.game.inputTimer=null}
 function gamePress(k){
  const g=state.game;if(!g.active||g.awaitingShutdown)return;
- if(g.phase==='select'){const selection={curiosity:'easy',neutral:'normal',surprise:'pro'};if(selection[k])startMemoryGame(selection[k]);return}
+ if(g.phase==='select'){const selection={curiosity:'easy',neutral:'normal',disgust:'pro'};if(selection[k])startMemoryGame(selection[k]);return}
  if(g.phase!=='input'||k==='neutral')return;
  const expected=g.actions[g.inputIndex];
  if(typeof expected==='object'&&expected.combo){
@@ -1171,7 +1171,7 @@ function restoreGameOverScreen(){
 function shutdownGame(){
  clearGameTimers();state.game.active=false;state.game.awaitingShutdown=false;document.querySelector('.app').classList.remove('game-mode','game-select','game-over');el('currentStrength').classList.remove('game-score');el('currentEmotion').classList.remove('game-over-score');el('senderStream').classList.remove('active');document.querySelectorAll('.emotion-key').forEach(b=>b.classList.remove('game-flash','game-disabled','replay-dim'));state.powered=true;powerToggle();
 }
-document.addEventListener('click',event=>{if(!state.game.active||!state.game.awaitingShutdown)return;const button=event.target.closest('button');if(!button)return;event.preventDefault();event.stopImmediatePropagation();if(state.game.phase==='score-review'){restoreGameOverScreen();return}const selection={curiosity:'easy',neutral:'normal',surprise:'pro'};if(selection[button.dataset.key])startMemoryGame(selection[button.dataset.key]);else if(button.id==='repeat')replayGameOverSequence();else if(button.id==='sendBtn')shareGameScore();else if(button.id==='off')requestGameShutdown()},true);
+document.addEventListener('click',event=>{if(!state.game.active||!state.game.awaitingShutdown)return;const button=event.target.closest('button');if(!button)return;event.preventDefault();event.stopImmediatePropagation();if(state.game.phase==='score-review'){restoreGameOverScreen();return}const selection={curiosity:'easy',neutral:'normal',disgust:'pro'};if(selection[button.dataset.key])startMemoryGame(selection[button.dataset.key]);else if(button.id==='repeat')replayGameOverSequence();else if(button.id==='sendBtn')shareGameScore();else if(button.id==='off')requestGameShutdown()},true);
 
 function replayHistory(){
  if(!state.powered||state.replaying)return;
@@ -1208,7 +1208,7 @@ function replayHistory(){
   else if(item.key)playEmotionSound(item.key,item.intensity||1);
   renderReplayKeypad(item);hideReplayLabels();
   const replayComboKey=item.isCombo&&item.colorParts?pairKey(item.colorParts[0],item.colorParts[1]):null;
-  const replayMotion=item.isCombo&&(replayComboKey&&combos[replayComboKey].name==='starr')?'om-starr':item.isCombo?'om-combo':`om-${item.key||'neutral'}`;
+  const replayMotion=item.isCombo?(replayComboKey&&combos[replayComboKey]?.motion)||'om-combo':`om-${item.key||'neutral'}`;
   requestAnimationFrame(()=>animateOpenMoji(true,item.intensity||1,replayMotion));
   i++;
   if(i>=items.length){
@@ -1381,19 +1381,19 @@ el('receiveBtn').onclick=event=>{
 // Tastatursteuerung: Ziffern entsprechen der sichtbaren 3×3-Tastenanordnung.
 const keyboardEmotionMap={
  'Digit7':'curiosity','Numpad7':'curiosity',
- 'Digit8':'joy','Numpad8':'joy',
- 'Digit9':'affection','Numpad9':'affection',
- 'Digit4':'anger','Numpad4':'anger',
+ 'Digit8':'affection','Numpad8':'affection',
+ 'Digit9':'joy','Numpad9':'joy',
+ 'Digit4':'fear','Numpad4':'fear',
  'Digit5':'neutral','Numpad5':'neutral',
- 'Digit6':'fear','Numpad6':'fear',
- 'Digit1':'disgust','Numpad1':'disgust',
- 'Digit2':'sadness','Numpad2':'sadness',
- 'Digit3':'surprise','Numpad3':'surprise'
+ 'Digit6':'anger','Numpad6':'anger',
+ 'Digit1':'sadness','Numpad1':'sadness',
+ 'Digit2':'shame','Numpad2':'shame',
+ 'Digit3':'disgust','Numpad3':'disgust'
 };
 const keyGrid=[
- ['curiosity','joy','affection'],
- ['anger','neutral','fear'],
- ['disgust','sadness','surprise']
+ ['curiosity','affection','joy'],
+ ['fear','neutral','anger'],
+ ['sadness','shame','disgust']
 ];
 function currentGridKey(){
  if(state.comboMode&&state.comboFirst)return state.comboFirst;
