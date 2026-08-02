@@ -1,0 +1,537 @@
+{
+  "source": "OpenMoji",
+  "sourceUrl": "https://openmoji.org/",
+  "license": "CC BY-SA 4.0",
+  "order": "1 Neugier, 2 Zuneigung, 3 Freude, 4 Wut, 5 Ekel, 6 Scham, 7 Trauer, 8 Angst; Zwischenemotionen verwenden x-y",
+  "filesPerVariant": 33,
+  "assets": [
+    {
+      "variant": "color",
+      "file": "color/0_neutral.svg",
+      "code": "1F610",
+      "emotion": "Neutral",
+      "name": "ausgeglichen",
+      "kind": "neutral"
+    },
+    {
+      "variant": "color",
+      "file": "color/1_neugier_1_interessiert.svg",
+      "code": "1F60F",
+      "emotion": "Neugier",
+      "name": "interessiert",
+      "kind": "base"
+    },
+    {
+      "variant": "color",
+      "file": "color/1_neugier_2_neugierig.svg",
+      "code": "1FAE2",
+      "emotion": "Neugier",
+      "name": "neugierig",
+      "kind": "base"
+    },
+    {
+      "variant": "color",
+      "file": "color/1_neugier_3_fasziniert.svg",
+      "code": "1F929",
+      "emotion": "Neugier",
+      "name": "fasziniert",
+      "kind": "base"
+    },
+    {
+      "variant": "color",
+      "file": "color/1-2_bewunderung.svg",
+      "code": "1F60D",
+      "emotion": "Neugier + Zuneigung",
+      "name": "Bewunderung",
+      "kind": "combo"
+    },
+    {
+      "variant": "color",
+      "file": "color/2_zuneigung_1_freundlich.svg",
+      "code": "1F609",
+      "emotion": "Zuneigung",
+      "name": "freundlich",
+      "kind": "base"
+    },
+    {
+      "variant": "color",
+      "file": "color/2_zuneigung_2_zugewandt.svg",
+      "code": "1F917",
+      "emotion": "Zuneigung",
+      "name": "zugewandt",
+      "kind": "base"
+    },
+    {
+      "variant": "color",
+      "file": "color/2_zuneigung_3_verbunden.svg",
+      "code": "1F970",
+      "emotion": "Zuneigung",
+      "name": "verbunden",
+      "kind": "base"
+    },
+    {
+      "variant": "color",
+      "file": "color/2-3_dankbarkeit.svg",
+      "code": "1F979",
+      "emotion": "Zuneigung + Freude",
+      "name": "Dankbarkeit",
+      "kind": "combo"
+    },
+    {
+      "variant": "color",
+      "file": "color/3_freude_1_zufrieden.svg",
+      "code": "1F60C",
+      "emotion": "Freude",
+      "name": "zufrieden",
+      "kind": "base"
+    },
+    {
+      "variant": "color",
+      "file": "color/3_freude_2_froehlich.svg",
+      "code": "1F60A",
+      "emotion": "Freude",
+      "name": "fröhlich",
+      "kind": "base"
+    },
+    {
+      "variant": "color",
+      "file": "color/3_freude_3_begeistert.svg",
+      "code": "1F602",
+      "emotion": "Freude",
+      "name": "begeistert",
+      "kind": "base"
+    },
+    {
+      "variant": "color",
+      "file": "color/3-4_streitlust.svg",
+      "code": "1F608",
+      "emotion": "Freude + Wut",
+      "name": "Streitlust",
+      "kind": "combo"
+    },
+    {
+      "variant": "color",
+      "file": "color/4_wut_1_gereizt.svg",
+      "code": "1F612",
+      "emotion": "Wut",
+      "name": "gereizt",
+      "kind": "base"
+    },
+    {
+      "variant": "color",
+      "file": "color/4_wut_2_veraergert.svg",
+      "code": "1F620",
+      "emotion": "Wut",
+      "name": "verärgert",
+      "kind": "base"
+    },
+    {
+      "variant": "color",
+      "file": "color/4_wut_3_wuetend.svg",
+      "code": "1F92C",
+      "emotion": "Wut",
+      "name": "wütend",
+      "kind": "base"
+    },
+    {
+      "variant": "color",
+      "file": "color/4-5_abwertung.svg",
+      "code": "1F644",
+      "emotion": "Wut + Ekel",
+      "name": "Abwertung",
+      "kind": "combo"
+    },
+    {
+      "variant": "color",
+      "file": "color/5_ekel_1_abgeneigt.svg",
+      "code": "1F615",
+      "emotion": "Ekel",
+      "name": "abgeneigt",
+      "kind": "base"
+    },
+    {
+      "variant": "color",
+      "file": "color/5_ekel_2_angeekelt.svg",
+      "code": "1F616",
+      "emotion": "Ekel",
+      "name": "angeekelt",
+      "kind": "base"
+    },
+    {
+      "variant": "color",
+      "file": "color/5_ekel_3_uebel.svg",
+      "code": "1F922",
+      "emotion": "Ekel",
+      "name": "übel",
+      "kind": "base"
+    },
+    {
+      "variant": "color",
+      "file": "color/5-6_unbehagen.svg",
+      "code": "1F62C",
+      "emotion": "Ekel + Scham",
+      "name": "Unbehagen",
+      "kind": "combo"
+    },
+    {
+      "variant": "color",
+      "file": "color/6_scham_1_verlegen.svg",
+      "code": "1F605",
+      "emotion": "Scham",
+      "name": "verlegen",
+      "kind": "base"
+    },
+    {
+      "variant": "color",
+      "file": "color/6_scham_2_befangen.svg",
+      "code": "1F633",
+      "emotion": "Scham",
+      "name": "befangen",
+      "kind": "base"
+    },
+    {
+      "variant": "color",
+      "file": "color/6_scham_3_beschaemt.svg",
+      "code": "1FAE3",
+      "emotion": "Scham",
+      "name": "beschämt",
+      "kind": "base"
+    },
+    {
+      "variant": "color",
+      "file": "color/6-7_reue.svg",
+      "code": "1F61E",
+      "emotion": "Scham + Trauer",
+      "name": "Reue",
+      "kind": "combo"
+    },
+    {
+      "variant": "color",
+      "file": "color/7_trauer_1_bedrueckt.svg",
+      "code": "1F641",
+      "emotion": "Trauer",
+      "name": "bedrückt",
+      "kind": "base"
+    },
+    {
+      "variant": "color",
+      "file": "color/7_trauer_2_traurig.svg",
+      "code": "1F622",
+      "emotion": "Trauer",
+      "name": "traurig",
+      "kind": "base"
+    },
+    {
+      "variant": "color",
+      "file": "color/7_trauer_3_trauernd.svg",
+      "code": "1F62D",
+      "emotion": "Trauer",
+      "name": "trauernd",
+      "kind": "base"
+    },
+    {
+      "variant": "color",
+      "file": "color/7-8_aufgeben.svg",
+      "code": "1F629",
+      "emotion": "Trauer + Angst",
+      "name": "Aufgeben",
+      "kind": "combo"
+    },
+    {
+      "variant": "color",
+      "file": "color/8_angst_1_besorgt.svg",
+      "code": "1F61F",
+      "emotion": "Angst",
+      "name": "besorgt",
+      "kind": "base"
+    },
+    {
+      "variant": "color",
+      "file": "color/8_angst_2_aengstlich.svg",
+      "code": "1F628",
+      "emotion": "Angst",
+      "name": "ängstlich",
+      "kind": "base"
+    },
+    {
+      "variant": "color",
+      "file": "color/8_angst_3_panisch.svg",
+      "code": "1F631",
+      "emotion": "Angst",
+      "name": "panisch",
+      "kind": "base"
+    },
+    {
+      "variant": "color",
+      "file": "color/8-1_ueberraschung.svg",
+      "code": "1F632",
+      "emotion": "Angst + Neugier",
+      "name": "Überraschung",
+      "kind": "combo"
+    },
+    {
+      "variant": "sw",
+      "file": "sw/0_neutral.svg",
+      "code": "1F610",
+      "emotion": "Neutral",
+      "name": "ausgeglichen",
+      "kind": "neutral"
+    },
+    {
+      "variant": "sw",
+      "file": "sw/1_neugier_1_interessiert.svg",
+      "code": "1F60F",
+      "emotion": "Neugier",
+      "name": "interessiert",
+      "kind": "base"
+    },
+    {
+      "variant": "sw",
+      "file": "sw/1_neugier_2_neugierig.svg",
+      "code": "1FAE2",
+      "emotion": "Neugier",
+      "name": "neugierig",
+      "kind": "base"
+    },
+    {
+      "variant": "sw",
+      "file": "sw/1_neugier_3_fasziniert.svg",
+      "code": "1F929",
+      "emotion": "Neugier",
+      "name": "fasziniert",
+      "kind": "base"
+    },
+    {
+      "variant": "sw",
+      "file": "sw/1-2_bewunderung.svg",
+      "code": "1F60D",
+      "emotion": "Neugier + Zuneigung",
+      "name": "Bewunderung",
+      "kind": "combo"
+    },
+    {
+      "variant": "sw",
+      "file": "sw/2_zuneigung_1_freundlich.svg",
+      "code": "1F609",
+      "emotion": "Zuneigung",
+      "name": "freundlich",
+      "kind": "base"
+    },
+    {
+      "variant": "sw",
+      "file": "sw/2_zuneigung_2_zugewandt.svg",
+      "code": "1F917",
+      "emotion": "Zuneigung",
+      "name": "zugewandt",
+      "kind": "base"
+    },
+    {
+      "variant": "sw",
+      "file": "sw/2_zuneigung_3_verbunden.svg",
+      "code": "1F970",
+      "emotion": "Zuneigung",
+      "name": "verbunden",
+      "kind": "base"
+    },
+    {
+      "variant": "sw",
+      "file": "sw/2-3_dankbarkeit.svg",
+      "code": "1F979",
+      "emotion": "Zuneigung + Freude",
+      "name": "Dankbarkeit",
+      "kind": "combo"
+    },
+    {
+      "variant": "sw",
+      "file": "sw/3_freude_1_zufrieden.svg",
+      "code": "1F60C",
+      "emotion": "Freude",
+      "name": "zufrieden",
+      "kind": "base"
+    },
+    {
+      "variant": "sw",
+      "file": "sw/3_freude_2_froehlich.svg",
+      "code": "1F60A",
+      "emotion": "Freude",
+      "name": "fröhlich",
+      "kind": "base"
+    },
+    {
+      "variant": "sw",
+      "file": "sw/3_freude_3_begeistert.svg",
+      "code": "1F602",
+      "emotion": "Freude",
+      "name": "begeistert",
+      "kind": "base"
+    },
+    {
+      "variant": "sw",
+      "file": "sw/3-4_streitlust.svg",
+      "code": "1F608",
+      "emotion": "Freude + Wut",
+      "name": "Streitlust",
+      "kind": "combo"
+    },
+    {
+      "variant": "sw",
+      "file": "sw/4_wut_1_gereizt.svg",
+      "code": "1F612",
+      "emotion": "Wut",
+      "name": "gereizt",
+      "kind": "base"
+    },
+    {
+      "variant": "sw",
+      "file": "sw/4_wut_2_veraergert.svg",
+      "code": "1F620",
+      "emotion": "Wut",
+      "name": "verärgert",
+      "kind": "base"
+    },
+    {
+      "variant": "sw",
+      "file": "sw/4_wut_3_wuetend.svg",
+      "code": "1F92C",
+      "emotion": "Wut",
+      "name": "wütend",
+      "kind": "base"
+    },
+    {
+      "variant": "sw",
+      "file": "sw/4-5_abwertung.svg",
+      "code": "1F644",
+      "emotion": "Wut + Ekel",
+      "name": "Abwertung",
+      "kind": "combo"
+    },
+    {
+      "variant": "sw",
+      "file": "sw/5_ekel_1_abgeneigt.svg",
+      "code": "1F615",
+      "emotion": "Ekel",
+      "name": "abgeneigt",
+      "kind": "base"
+    },
+    {
+      "variant": "sw",
+      "file": "sw/5_ekel_2_angeekelt.svg",
+      "code": "1F616",
+      "emotion": "Ekel",
+      "name": "angeekelt",
+      "kind": "base"
+    },
+    {
+      "variant": "sw",
+      "file": "sw/5_ekel_3_uebel.svg",
+      "code": "1F922",
+      "emotion": "Ekel",
+      "name": "übel",
+      "kind": "base"
+    },
+    {
+      "variant": "sw",
+      "file": "sw/5-6_unbehagen.svg",
+      "code": "1F62C",
+      "emotion": "Ekel + Scham",
+      "name": "Unbehagen",
+      "kind": "combo"
+    },
+    {
+      "variant": "sw",
+      "file": "sw/6_scham_1_verlegen.svg",
+      "code": "1F605",
+      "emotion": "Scham",
+      "name": "verlegen",
+      "kind": "base"
+    },
+    {
+      "variant": "sw",
+      "file": "sw/6_scham_2_befangen.svg",
+      "code": "1F633",
+      "emotion": "Scham",
+      "name": "befangen",
+      "kind": "base"
+    },
+    {
+      "variant": "sw",
+      "file": "sw/6_scham_3_beschaemt.svg",
+      "code": "1FAE3",
+      "emotion": "Scham",
+      "name": "beschämt",
+      "kind": "base"
+    },
+    {
+      "variant": "sw",
+      "file": "sw/6-7_reue.svg",
+      "code": "1F61E",
+      "emotion": "Scham + Trauer",
+      "name": "Reue",
+      "kind": "combo"
+    },
+    {
+      "variant": "sw",
+      "file": "sw/7_trauer_1_bedrueckt.svg",
+      "code": "1F641",
+      "emotion": "Trauer",
+      "name": "bedrückt",
+      "kind": "base"
+    },
+    {
+      "variant": "sw",
+      "file": "sw/7_trauer_2_traurig.svg",
+      "code": "1F622",
+      "emotion": "Trauer",
+      "name": "traurig",
+      "kind": "base"
+    },
+    {
+      "variant": "sw",
+      "file": "sw/7_trauer_3_trauernd.svg",
+      "code": "1F62D",
+      "emotion": "Trauer",
+      "name": "trauernd",
+      "kind": "base"
+    },
+    {
+      "variant": "sw",
+      "file": "sw/7-8_aufgeben.svg",
+      "code": "1F629",
+      "emotion": "Trauer + Angst",
+      "name": "Aufgeben",
+      "kind": "combo"
+    },
+    {
+      "variant": "sw",
+      "file": "sw/8_angst_1_besorgt.svg",
+      "code": "1F61F",
+      "emotion": "Angst",
+      "name": "besorgt",
+      "kind": "base"
+    },
+    {
+      "variant": "sw",
+      "file": "sw/8_angst_2_aengstlich.svg",
+      "code": "1F628",
+      "emotion": "Angst",
+      "name": "ängstlich",
+      "kind": "base"
+    },
+    {
+      "variant": "sw",
+      "file": "sw/8_angst_3_panisch.svg",
+      "code": "1F631",
+      "emotion": "Angst",
+      "name": "panisch",
+      "kind": "base"
+    },
+    {
+      "variant": "sw",
+      "file": "sw/8-1_ueberraschung.svg",
+      "code": "1F632",
+      "emotion": "Angst + Neugier",
+      "name": "Überraschung",
+      "kind": "combo"
+    }
+  ]
+}
