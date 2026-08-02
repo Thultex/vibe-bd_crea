@@ -172,16 +172,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v2.23 — CODEKOPF
+   Emotronic v2.24 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 123
+   Aktuelle Revision: 124
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'2.23',
-  revision:123,
+  version:'2.24',
+  revision:124,
   author:'Rasmus Klette'
 });
 
@@ -417,13 +417,10 @@ function triggerSenderStream(){
  stream.classList.remove('active');void stream.offsetWidth;stream.classList.add('active');
  state.senderStreamTimer=setTimeout(()=>{stream.classList.remove('active');state.senderStreamTimer=null},APP_CONFIG.normalMode.senderAnimationMs);
 }
-function powerOffAndClearHistoryFromNeutral(){
- state.history=[];state.last=null;state.selected=null;state.displayKey=null;state.intensity=0;state.comboMode=false;state.comboFirst=null;
- hideReplayCount();powerToggle()
-}
 function pressEmotion(k){
  if(state.game.active){gamePress(k);return}
  if(!state.powered)return;
+ if(state.powerArmed){clearTimeout(state.powerArmTimer);state.powerArmTimer=null;state.powerArmed=false;el('off').classList.remove('pulse');el('screen').classList.remove('power-confirm')}
  state.slowReplay=false;
  hideReplayCount();
  // Bei einer fertigen Kombination spielt die aktive Taste die Kombi erneut ab.
@@ -435,7 +432,9 @@ function pressEmotion(k){
   stage.className='ascii-stage';screen.classList.remove('special-status');
  }
  if(k==='neutral'){
-  powerOffAndClearHistoryFromNeutral();return
+  if(state.selected)state.last=snapshot();
+  state.selected='neutral';state.displayKey='neutral';state.intensity=0;state.comboMode=false;state.comboFirst=null;
+  recordHistory();triggerSenderStream();playEmotionSound('neutral',0);animateNeedle(0);render();animateCurrent();return
  }
  if(state.comboMode){handleCombo(k);return}
  if(state.selected===k){recordHistory();triggerSenderStream();playEmotionSound(k,state.intensity);animateCurrent(true);return}
@@ -1281,21 +1280,21 @@ function powerToggle(){
 function armPower(){
  if(state.game.active){requestGameShutdown();return}
  if(state.powerAnimating)return;
- stopReplay(false);
  if(!state.powered){powerToggle();return}
  if(state.powerArmed){powerToggle();return}
+ cancelReplayToReady();
  state.powerArmed=true;
  const screen=el('screen'),stage=el('asciiStage');
- screen.classList.add('power-confirm','special-status');screen.style.setProperty('--emotion-bg','#fff');
+ screen.classList.remove('power-confirm');screen.classList.add('special-status');screen.style.setProperty('--emotion-bg','#fff');
  el('bgEmoji').style.setProperty('--ghost-opacity','0');
- el('emotionName').textContent='';el('emotionDetail').textContent='';
- stage.textContent='AUS?';stage.classList.remove('pulse','shake');void stage.offsetWidth;stage.classList.add('pulse');
+ el('emotionName').textContent='Bereit';el('emotionDetail').textContent='Zum Ausschalten nochmals drücken';
+ stage.textContent=' ';stage.classList.remove('pulse','shake');
  el('off').classList.add('pulse');
  state.powerArmTimer=setTimeout(()=>{
-  state.powerArmed=false;screen.classList.remove('power-confirm','special-status');el('off').classList.remove('pulse');stage.classList.remove('pulse');render();
+  state.powerArmed=false;state.powerArmTimer=null;screen.classList.remove('power-confirm','special-status');el('off').classList.remove('pulse');render();
  },APP_CONFIG.confirmations.powerOffMs)
 }
-el('less').onclick=()=>setIntensity(state.intensity-1);el('more').onclick=()=>setIntensity(state.intensity+1);const offBtn=el('off');offBtn.onclick=()=>{if(cancelIncomingShare()){state.longPressTriggered=false;return}if(state.replaying){cancelReplayToReady();state.longPressTriggered=false;return}if(!state.longPressTriggered)armPower();state.longPressTriggered=false};offBtn.onpointerdown=()=>{state.longPressTriggered=false;if(state.incomingShare)return;state.longPressTimer=setTimeout(()=>replayHistory(),700)};offBtn.onpointerup=offBtn.onpointercancel=()=>clearTimeout(state.longPressTimer);
+el('less').onclick=()=>setIntensity(state.intensity-1);el('more').onclick=()=>setIntensity(state.intensity+1);const offBtn=el('off');offBtn.onclick=()=>{if(cancelIncomingShare()){state.longPressTriggered=false;return}if(!state.longPressTriggered)armPower();state.longPressTriggered=false};offBtn.onpointerdown=()=>{state.longPressTriggered=false;if(state.incomingShare)return;state.longPressTimer=setTimeout(()=>replayHistory(),700)};offBtn.onpointerup=offBtn.onpointercancel=()=>clearTimeout(state.longPressTimer);
 function toggleCombo(){
  if(state.game.active)return;
  if(!state.powered)return;
@@ -1342,6 +1341,7 @@ function cancelReplayToReady(){
  state.comboFirst=null;
  state.bgCode=null;
  state.source=APP_CONFIG.normalMode.defaultSource;
+ hideReplayCount();
  updateGhostEmoji(null);
  document.querySelectorAll('.emotion-key').forEach(button=>button.classList.remove('selected','partner','replay-dim'));
  render();fadeReplayLabelsIn();
