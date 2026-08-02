@@ -1,4 +1,4 @@
-# Codex-Handoff: Emotronic v2.28
+# Codex-Handoff: Emotronic v2.29
 
 ## Auftrag
 
@@ -7,7 +7,7 @@ Diese Übergabe beschreibt den aktuellen Stand der installierbaren Emotronic-PWA
 ## Relevante Dateien
 
 - `sp-emotron/tools/emotronic-pwa/index.html` – maßgebliche Quelle
-- `sp-emotron/tools/emotronic-pwa/Emotronic-v2.28.html` – versionierter Snapshot, nach Änderungen neu erzeugen
+- `sp-emotron/tools/emotronic-pwa/Emotronic-v2.29.html` – versionierter Snapshot, nach Änderungen neu erzeugen
 - `sp-emotron/tools/emotronic-pwa/generate_audio_assets.py` – reproduzierbarer Generator beider Soundsets
 - `assets/audio/emotronic/` – Manifest sowie `8-bit` und `8-bit_soft`
 - `sp-emotron/tools/emotronic-pwa/sw.js` – Service Worker und Cache-Version
@@ -16,12 +16,14 @@ Diese Übergabe beschreibt den aktuellen Stand der installierbaren Emotronic-PWA
 - `sp-emotron/tools/emotronic-pwa/validate_emotronic.js` – verbindliche Gesamtprüfung
 - `share/apps/emotronic/` – veröffentlichter Spiegel der PWA-Laufzeitdateien
 
+`sp-emotron/files/emotron.ai` und die Illustrator-Anwendung nur nach einer ausdrücklich darauf bezogenen Anweisung anfassen. Allgemeine Änderungsaufträge schließen sie nicht ein.
+
 ## Versionierung
 
-- Aktuell: **Emotronic v2.28**
-- `APP_META.version`: `2.28`
-- `APP_META.revision`: `128`
-- Service-Worker-Cache: `emotronic-v128`
+- Aktuell: **Emotronic v2.29**
+- `APP_META.version`: `2.29`
+- `APP_META.revision`: `129`
+- Service-Worker-Cache: `emotronic-v129`
 - Beim Aktivieren nur ältere Caches mit dem Präfix `emotronic-v` entfernen; andere Anwendungen können dieselbe Domain verwenden.
 - Jede abgeschlossene Revision erhöht die Version um `0.01` und die Revision um `1`.
 - Codekopf, `APP_META`, Service Worker, versionierte HTML-Datei, README und ZIP müssen synchron bleiben.
@@ -168,9 +170,9 @@ Der Validator prüft Syntax, 8+1-Datentabellen, eindeutige Begriffe und Emojis, 
 Für ein auslieferbares ZIP vom Repository-Root aus:
 
 ```bash
-rm -f emotronic-pwa-v2.28.zip
-zip -rq emotronic-pwa-v2.28.zip sp-emotron/tools/emotronic-pwa
-unzip -t emotronic-pwa-v2.28.zip
+rm -f emotronic-pwa-v2.29.zip
+zip -rq emotronic-pwa-v2.29.zip sp-emotron/tools/emotronic-pwa
+unzip -t emotronic-pwa-v2.29.zip
 ```
 
 ## Vorsicht bei Änderungen

@@ -48,7 +48,7 @@ python sp-emotron\tools\illustrator\update_emotron_svg.py --check
 | Mitte links | Wut | gereizt | `1F612` 😒 | verärgert | `1F620` 😠 | wütend | `1F92C` 🤬 | `#ef938b` | `#fadfdc` |
 | Mitte | Neutral | ausgeglichen | `1F610` 😐 | – | – | – | – | `#ddd9d0` | `#f5f4f1` |
 | Mitte rechts | Angst | besorgt | `1F61F` 😟 | ängstlich | `1F628` 😨 | panisch | `1F631` 😱 | `#c2a8dc` | `#ede5f5` |
-| unten links | Ekel | abgeneigt | `1F615` 😕 | angeekelt | `1F616` 😖 | übel | `1F922` 🤢 | `#6f9f68` | `#d4e2d2` |
+| unten links | Ekel | abgeneigt | `1F615` 😕 | angeekelt | `1F62C` 😬 | übel | `1F922` 🤢 | `#6f9f68` | `#d4e2d2` |
 | unten Mitte | Scham | verlegen | `1F605` 😅 | befangen | `1F633` 😳 | beschämt | `1FAE3` 🫣 | `#bfe36f` | `#ecf7d4` |
 | unten rechts | Trauer | bedrückt | `1F641` 🙁 | traurig | `1F622` 😢 | trauernd | `1F62D` 😭 | `#6381d7` | `#d0d9f3` |
 
@@ -62,7 +62,7 @@ Die Namen sind kurze, eindeutige Einwort-Nomen. Auch hier werden in `emoji_svg c
 | Zuneigung + Freude | Dankbarkeit | `1F979` 🥹 | Freude |
 | Freude + Wut | Streitlust | `1F608` 😈 | Wut |
 | Wut + Ekel | Abwertung | `1F644` 🙄 | Ekel |
-| Ekel + Scham | Unbehagen | `1F62C` 😬 | Scham |
+| Ekel + Scham | Unbehagen | `1F623` 😣 | Scham |
 | Scham + Trauer | Reue | `1F61E` 😞 | Trauer |
 | Trauer + Angst | Aufgeben | `1F629` 😩 | Angst |
 | Angst + Neugier | Überraschung | `1F632` 😲 | Neugier |

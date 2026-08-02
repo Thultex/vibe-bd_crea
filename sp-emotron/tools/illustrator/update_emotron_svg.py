@@ -70,7 +70,7 @@ BRANCHES = (
             ("6_scham_2_befangen.svg", "1F633", "befangen"),
             ("6_scham_3_beschaemt.svg", "1FAE3", "beschämt"))),
     (135.0, (("5_ekel_1_abgeneigt.svg", "1F615", "abgeneigt"),
-             ("5_ekel_2_angeekelt.svg", "1F616", "angeekelt"),
+             ("5_ekel_2_angeekelt.svg", "1F62C", "angeekelt"),
              ("5_ekel_3_uebel.svg", "1F922", "übel"))),
     (180.0, (("4_wut_1_gereizt.svg", "1F612", "gereizt"),
              ("4_wut_2_veraergert.svg", "1F620", "verärgert"),
@@ -83,7 +83,7 @@ COMBINATIONS = (
     (-22.5, "8-1_ueberraschung.svg", "1F632", "Überraschung"),
     (22.5, "7-8_aufgeben.svg", "1F629", "Aufgeben"),
     (67.5, "6-7_reue.svg", "1F61E", "Reue"),
-    (112.5, "5-6_unbehagen.svg", "1F62C", "Unbehagen"),
+    (112.5, "5-6_unbehagen.svg", "1F623", "Unbehagen"),
     (157.5, "4-5_abwertung.svg", "1F644", "Abwertung"),
     (-157.5, "3-4_streitlust.svg", "1F608", "Streitlust"),
 )

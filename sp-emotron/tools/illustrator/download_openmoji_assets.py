@@ -31,9 +31,9 @@ ASSETS = [
     ("4_wut_3_wuetend.svg", "1F92C", "Wut", "wütend", "base"),
     ("4-5_abwertung.svg", "1F644", "Wut + Ekel", "Abwertung", "combo"),
     ("5_ekel_1_abgeneigt.svg", "1F615", "Ekel", "abgeneigt", "base"),
-    ("5_ekel_2_angeekelt.svg", "1F616", "Ekel", "angeekelt", "base"),
+    ("5_ekel_2_angeekelt.svg", "1F62C", "Ekel", "angeekelt", "base"),
     ("5_ekel_3_uebel.svg", "1F922", "Ekel", "übel", "base"),
-    ("5-6_unbehagen.svg", "1F62C", "Ekel + Scham", "Unbehagen", "combo"),
+    ("5-6_unbehagen.svg", "1F623", "Ekel + Scham", "Unbehagen", "combo"),
     ("6_scham_1_verlegen.svg", "1F605", "Scham", "verlegen", "base"),
     ("6_scham_2_befangen.svg", "1F633", "Scham", "befangen", "base"),
     ("6_scham_3_beschaemt.svg", "1FAE3", "Scham", "beschämt", "base"),
@@ -110,6 +110,7 @@ def check_assets() -> None:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--check", action="store_true", help="Validate the prepared files without downloading")
+    parser.add_argument("--codes", nargs="+", help="Download only these OpenMoji codes and refresh the manifest")
     args = parser.parse_args()
     if args.check:
         check_assets()
@@ -122,7 +123,10 @@ def main() -> None:
         for existing in target.glob("*.svg"):
             if existing.name not in expected:
                 existing.unlink()
-        for filename, code, emotion, name, kind in ASSETS:
+        selected_assets = [asset for asset in ASSETS if not args.codes or asset[1] in args.codes]
+        if args.codes and len(selected_assets) != len(set(args.codes)):
+            raise RuntimeError("Unknown or duplicate OpenMoji code in --codes")
+        for filename, code, emotion, name, kind in selected_assets:
             destination = target / filename
             download(f"https://openmoji.org/data/{endpoint}/svg/{code}.svg", destination)
     (OUTPUT_ROOT / "manifest.json").write_text(

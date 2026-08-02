@@ -659,12 +659,16 @@
             <path d="M48,31c0,1.6568-1.3447,3-3,3s-3-1.3433-3-3c0-1.6552,1.3447-3,3-3S48,29.3448,48,31" />
           </g>
         </g>
-        <g id="emo_sw_20_emotron_sw_20_angeekelt" data-asset="5_ekel_2_angeekelt.svg" data-code="1F616" data-name="angeekelt" data-kind="base" transform="translate(211.898 436.102) scale(1.00000000)">
+        <g id="emo_sw_20_emotron_sw_20_angeekelt" data-asset="5_ekel_2_angeekelt.svg" data-code="1F62C" data-name="angeekelt" data-kind="base" transform="translate(211.898 436.102) scale(1.00000000)">
           <g id="emo_sw_20_line">
-            <circle cx="36" cy="36" r="23" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2" />
-            <path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="m23.64 27.87 7.928 2.431-7.862 3.248" />
-            <path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="m48.36 27.87-7.928 2.431 7.862 3.248" />
-            <path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m23.93 44.39 3.533-2.896 3.931 5.55 4.608-4.044 4.608 4.044 3.944-5.55 3.532 2.905v-0.0107" />
+            <line x1="28" x2="28" y1="41.7708" y2="48.7708" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+            <line x1="33" x2="33" y1="41.7708" y2="48.7708" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+            <line x1="38" x2="38" y1="41.7708" y2="48.7708" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+            <line x1="43" x2="43" y1="41.7708" y2="48.7708" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+            <circle cx="36" cy="36" r="23" fill="none" stroke="#000000" stroke-miterlimit="10" stroke-width="2" />
+            <path fill="none" stroke="#000000" stroke-miterlimit="2" stroke-width="2" d="M44.5,49.2708h-17c-2.2064-0.0065-3.9935-1.7936-4-4 l0,0c0.0065-2.2064,1.7936-3.9935,4-4h17c2.2064,0.0065,3.9935,1.7936,4,4l0,0C48.4935,47.4772,46.7064,49.2643,44.5,49.2708z" />
+            <path d="M30,31c0,1.6568-1.3448,3-3,3c-1.6553,0-3-1.3433-3-3c0-1.6552,1.3447-3,3-3C28.6552,28,30,29.3448,30,31" />
+            <path d="M48,31c0,1.6568-1.3447,3-3,3s-3-1.3433-3-3c0-1.6552,1.3447-3,3-3S48,29.3448,48,31" />
           </g>
         </g>
         <g id="emo_sw_21_emotron_sw_21__bel" data-asset="5_ekel_3_uebel.svg" data-code="1F922" data-name="übel" data-kind="base" transform="translate(165.937 482.063) scale(1.00000000)">
@@ -768,16 +772,14 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="m21.185 39.487a8.44 8.44 0 0 0 9.413-3.7176" />
           </g>
         </g>
-        <g id="emo_sw_30_emotron_sw_30_unbehagen" data-asset="5-6_unbehagen.svg" data-code="1F62C" data-name="Unbehagen" data-kind="combo" transform="translate(223.349 594.186) scale(0.75000000)">
+        <g id="emo_sw_30_emotron_sw_30_unbehagen" data-asset="5-6_unbehagen.svg" data-code="1F623" data-name="Unbehagen" data-kind="combo" transform="translate(223.349 594.186) scale(0.75000000)">
           <g id="emo_sw_30_line">
-            <line x1="28" x2="28" y1="41.7708" y2="48.7708" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
-            <line x1="33" x2="33" y1="41.7708" y2="48.7708" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
-            <line x1="38" x2="38" y1="41.7708" y2="48.7708" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
-            <line x1="43" x2="43" y1="41.7708" y2="48.7708" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
             <circle cx="36" cy="36" r="23" fill="none" stroke="#000000" stroke-miterlimit="10" stroke-width="2" />
-            <path fill="none" stroke="#000000" stroke-miterlimit="2" stroke-width="2" d="M44.5,49.2708h-17c-2.2064-0.0065-3.9935-1.7936-4-4 l0,0c0.0065-2.2064,1.7936-3.9935,4-4h17c2.2064,0.0065,3.9935,1.7936,4,4l0,0C48.4935,47.4772,46.7064,49.2643,44.5,49.2708z" />
-            <path d="M30,31c0,1.6568-1.3448,3-3,3c-1.6553,0-3-1.3433-3-3c0-1.6552,1.3447-3,3-3C28.6552,28,30,29.3448,30,31" />
-            <path d="M48,31c0,1.6568-1.3447,3-3,3s-3-1.3433-3-3c0-1.6552,1.3447-3,3-3S48,29.3448,48,31" />
+            <line x1="44.5361" x2="50.9214" y1="21.4389" y2="24.7158" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" />
+            <line x1="26.9214" x2="20.5361" y1="21.4389" y2="24.7158" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" />
+            <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M24,28c2.3334,1.3333,4.6666,2.6667,7,4c-2.3334,1.3333-4.6666,2.6667-7,4" />
+            <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M48,28c-2.3334,1.3333-4.6666,2.6667-7,4c2.3334,1.3333,4.6666,2.6667,7,4" />
+            <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M28,51c0.2704-0.3562,1-8,8.4211-8.0038C43,42.9929,43.6499,50.5372,44,51C38.6667,51,33.3333,51,28,51z" />
           </g>
         </g>
         <g id="emo_sw_31_emotron_sw_31_abwertung" data-asset="4-5_abwertung.svg" data-code="1F644" data-name="Abwertung" data-kind="combo" transform="translate(71.814 442.651) scale(0.75000000)">
@@ -1177,18 +1179,20 @@
             <path d="M48,31c0,1.6568-1.3447,3-3,3s-3-1.3433-3-3c0-1.6552,1.3447-3,3-3S48,29.3448,48,31" />
           </g>
         </g>
-        <g id="emo_color_faded_20_emotron_color_faded_20_angeekelt" data-asset="5_ekel_2_angeekelt.svg" data-code="1F616" data-name="angeekelt" data-kind="base" transform="translate(211.898 436.102) scale(1.00000000)">
+        <g id="emo_color_faded_20_emotron_color_faded_20_angeekelt" data-asset="5_ekel_2_angeekelt.svg" data-code="1F62C" data-name="angeekelt" data-kind="base" transform="translate(211.898 436.102) scale(1.00000000)">
           <g id="emo_color_faded_20_color">
-            <path fill="#FCEA2B" d="M36,13.1161c-12.6823,0-23,10.3177-23,23c0,12.6822,10.3177,23,23,23c12.6822,0,23-10.3178,23-23 C59,23.4338,48.6822,13.1161,36,13.1161z" />
+            <path fill="#FCEA2B" d="M36,13c-12.7025,0-23,10.2975-23,23s10.2975,23,23,23s23-10.2975,23-23 C58.9857,23.3034,48.6966,13.0143,36,13z" />
+            <path fill="#FFFFFF" d="M44.5,49.2708h-17c-2.2064-0.0065-3.9935-1.7936-4-4l0,0c0.0065-2.2064,1.7936-3.9935,4-4h17 c2.2064,0.0065,3.9935,1.7936,4,4l0,0C48.4935,47.4772,46.7064,49.2643,44.5,49.2708z" />
           </g>
-          <g id="emo_color_faded_20_hair" />
-          <g id="emo_color_faded_20_skin" />
-          <g id="emo_color_faded_20_skin-shadow" />
           <g id="emo_color_faded_20_line">
-            <circle cx="36" cy="36" r="23" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2" />
-            <path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="m23.64 27.87 7.928 2.431-7.862 3.248" />
-            <path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="m48.36 27.87-7.928 2.431 7.862 3.248" />
-            <path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m23.93 44.39 3.533-2.896 3.931 5.55 4.608-4.044 4.608 4.044 3.944-5.55 3.532 2.905v-0.0107" />
+            <line x1="28" x2="28" y1="41.7708" y2="48.7708" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+            <line x1="33" x2="33" y1="41.7708" y2="48.7708" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+            <line x1="38" x2="38" y1="41.7708" y2="48.7708" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+            <line x1="43" x2="43" y1="41.7708" y2="48.7708" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+            <circle cx="36" cy="36" r="23" fill="none" stroke="#000000" stroke-miterlimit="10" stroke-width="2" />
+            <path fill="none" stroke="#000000" stroke-miterlimit="2" stroke-width="2" d="M44.5,49.2708h-17c-2.2064-0.0065-3.9935-1.7936-4-4 l0,0c0.0065-2.2064,1.7936-3.9935,4-4h17c2.2064,0.0065,3.9935,1.7936,4,4l0,0C48.4935,47.4772,46.7064,49.2643,44.5,49.2708z" />
+            <path d="M30,31c0,1.6568-1.3448,3-3,3c-1.6553,0-3-1.3433-3-3c0-1.6552,1.3447-3,3-3C28.6552,28,30,29.3448,30,31" />
+            <path d="M48,31c0,1.6568-1.3447,3-3,3s-3-1.3433-3-3c0-1.6552,1.3447-3,3-3S48,29.3448,48,31" />
           </g>
         </g>
         <g id="emo_color_faded_21_emotron_color_faded_21__bel" data-asset="5_ekel_3_uebel.svg" data-code="1F922" data-name="übel" data-kind="base" transform="translate(165.937 482.063) scale(1.00000000)">
@@ -1357,20 +1361,21 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="m21.185 39.487a8.44 8.44 0 0 0 9.413-3.7176" />
           </g>
         </g>
-        <g id="emo_color_faded_30_emotron_color_faded_30_unbehagen" data-asset="5-6_unbehagen.svg" data-code="1F62C" data-name="Unbehagen" data-kind="combo" transform="translate(223.349 594.186) scale(0.75000000)">
+        <g id="emo_color_faded_30_emotron_color_faded_30_unbehagen" data-asset="5-6_unbehagen.svg" data-code="1F623" data-name="Unbehagen" data-kind="combo" transform="translate(223.349 594.186) scale(0.75000000)">
           <g id="emo_color_faded_30_color">
-            <path fill="#FCEA2B" d="M36,13c-12.7025,0-23,10.2975-23,23s10.2975,23,23,23s23-10.2975,23-23 C58.9857,23.3034,48.6966,13.0143,36,13z" />
-            <path fill="#FFFFFF" d="M44.5,49.2708h-17c-2.2064-0.0065-3.9935-1.7936-4-4l0,0c0.0065-2.2064,1.7936-3.9935,4-4h17 c2.2064,0.0065,3.9935,1.7936,4,4l0,0C48.4935,47.4772,46.7064,49.2643,44.5,49.2708z" />
+            <path fill="#fcea2b" stroke="none" d="M36.2002,13.3163c-12.5719,0-22.7998,10.2279-22.7998,22.7998c0,12.5718,10.2279,22.7998,22.7998,22.7998 C48.772,58.9159,59,48.6879,59,36.1161C59,23.5442,48.772,13.3163,36.2002,13.3163z" />
+            <path fill="#FFFFFF" stroke="none" d="M28,51c0.2704-0.3562,3.3099-8.2177,8.4211-8.0038C41.0265,43.1889,43.6499,50.5372,44,51 C38.6667,51,33.3333,51,28,51z" />
           </g>
+          <g id="emo_color_faded_30_hair" />
+          <g id="emo_color_faded_30_skin" />
+          <g id="emo_color_faded_30_skin-shadow" />
           <g id="emo_color_faded_30_line">
-            <line x1="28" x2="28" y1="41.7708" y2="48.7708" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
-            <line x1="33" x2="33" y1="41.7708" y2="48.7708" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
-            <line x1="38" x2="38" y1="41.7708" y2="48.7708" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
-            <line x1="43" x2="43" y1="41.7708" y2="48.7708" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
             <circle cx="36" cy="36" r="23" fill="none" stroke="#000000" stroke-miterlimit="10" stroke-width="2" />
-            <path fill="none" stroke="#000000" stroke-miterlimit="2" stroke-width="2" d="M44.5,49.2708h-17c-2.2064-0.0065-3.9935-1.7936-4-4 l0,0c0.0065-2.2064,1.7936-3.9935,4-4h17c2.2064,0.0065,3.9935,1.7936,4,4l0,0C48.4935,47.4772,46.7064,49.2643,44.5,49.2708z" />
-            <path d="M30,31c0,1.6568-1.3448,3-3,3c-1.6553,0-3-1.3433-3-3c0-1.6552,1.3447-3,3-3C28.6552,28,30,29.3448,30,31" />
-            <path d="M48,31c0,1.6568-1.3447,3-3,3s-3-1.3433-3-3c0-1.6552,1.3447-3,3-3S48,29.3448,48,31" />
+            <line x1="44.5361" x2="50.9214" y1="21.4389" y2="24.7158" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" />
+            <line x1="26.9214" x2="20.5361" y1="21.4389" y2="24.7158" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" />
+            <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M24,28c2.3334,1.3333,4.6666,2.6667,7,4c-2.3334,1.3333-4.6666,2.6667-7,4" />
+            <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M48,28c-2.3334,1.3333-4.6666,2.6667-7,4c2.3334,1.3333,4.6666,2.6667,7,4" />
+            <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M28,51c0.2704-0.3562,1-8,8.4211-8.0038C43,42.9929,43.6499,50.5372,44,51C38.6667,51,33.3333,51,28,51z" />
           </g>
         </g>
         <g id="emo_color_faded_31_emotron_color_faded_31_abwertung" data-asset="4-5_abwertung.svg" data-code="1F644" data-name="Abwertung" data-kind="combo" transform="translate(71.814 442.651) scale(0.75000000)">
@@ -1786,18 +1791,20 @@
             <path d="M48,31c0,1.6568-1.3447,3-3,3s-3-1.3433-3-3c0-1.6552,1.3447-3,3-3S48,29.3448,48,31" />
           </g>
         </g>
-        <g id="emo_color_20_emotron_color_20_angeekelt" data-asset="5_ekel_2_angeekelt.svg" data-code="1F616" data-name="angeekelt" data-kind="base" transform="translate(211.898 436.102) scale(1.00000000)">
+        <g id="emo_color_20_emotron_color_20_angeekelt" data-asset="5_ekel_2_angeekelt.svg" data-code="1F62C" data-name="angeekelt" data-kind="base" transform="translate(211.898 436.102) scale(1.00000000)">
           <g id="emo_color_20_color">
-            <path fill="#FCEA2B" d="M36,13.1161c-12.6823,0-23,10.3177-23,23c0,12.6822,10.3177,23,23,23c12.6822,0,23-10.3178,23-23 C59,23.4338,48.6822,13.1161,36,13.1161z" />
+            <path fill="#FCEA2B" d="M36,13c-12.7025,0-23,10.2975-23,23s10.2975,23,23,23s23-10.2975,23-23 C58.9857,23.3034,48.6966,13.0143,36,13z" />
+            <path fill="#FFFFFF" d="M44.5,49.2708h-17c-2.2064-0.0065-3.9935-1.7936-4-4l0,0c0.0065-2.2064,1.7936-3.9935,4-4h17 c2.2064,0.0065,3.9935,1.7936,4,4l0,0C48.4935,47.4772,46.7064,49.2643,44.5,49.2708z" />
           </g>
-          <g id="emo_color_20_hair" />
-          <g id="emo_color_20_skin" />
-          <g id="emo_color_20_skin-shadow" />
           <g id="emo_color_20_line">
-            <circle cx="36" cy="36" r="23" fill="none" stroke="#000" stroke-miterlimit="10" stroke-width="2" />
-            <path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="m23.64 27.87 7.928 2.431-7.862 3.248" />
-            <path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="m48.36 27.87-7.928 2.431 7.862 3.248" />
-            <path fill="none" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m23.93 44.39 3.533-2.896 3.931 5.55 4.608-4.044 4.608 4.044 3.944-5.55 3.532 2.905v-0.0107" />
+            <line x1="28" x2="28" y1="41.7708" y2="48.7708" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+            <line x1="33" x2="33" y1="41.7708" y2="48.7708" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+            <line x1="38" x2="38" y1="41.7708" y2="48.7708" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+            <line x1="43" x2="43" y1="41.7708" y2="48.7708" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
+            <circle cx="36" cy="36" r="23" fill="none" stroke="#000000" stroke-miterlimit="10" stroke-width="2" />
+            <path fill="none" stroke="#000000" stroke-miterlimit="2" stroke-width="2" d="M44.5,49.2708h-17c-2.2064-0.0065-3.9935-1.7936-4-4 l0,0c0.0065-2.2064,1.7936-3.9935,4-4h17c2.2064,0.0065,3.9935,1.7936,4,4l0,0C48.4935,47.4772,46.7064,49.2643,44.5,49.2708z" />
+            <path d="M30,31c0,1.6568-1.3448,3-3,3c-1.6553,0-3-1.3433-3-3c0-1.6552,1.3447-3,3-3C28.6552,28,30,29.3448,30,31" />
+            <path d="M48,31c0,1.6568-1.3447,3-3,3s-3-1.3433-3-3c0-1.6552,1.3447-3,3-3S48,29.3448,48,31" />
           </g>
         </g>
         <g id="emo_color_21_emotron_color_21__bel" data-asset="5_ekel_3_uebel.svg" data-code="1F922" data-name="übel" data-kind="base" transform="translate(165.937 482.063) scale(1.00000000)">
@@ -1966,20 +1973,21 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="m21.185 39.487a8.44 8.44 0 0 0 9.413-3.7176" />
           </g>
         </g>
-        <g id="emo_color_30_emotron_color_30_unbehagen" data-asset="5-6_unbehagen.svg" data-code="1F62C" data-name="Unbehagen" data-kind="combo" transform="translate(223.349 594.186) scale(0.75000000)">
+        <g id="emo_color_30_emotron_color_30_unbehagen" data-asset="5-6_unbehagen.svg" data-code="1F623" data-name="Unbehagen" data-kind="combo" transform="translate(223.349 594.186) scale(0.75000000)">
           <g id="emo_color_30_color">
-            <path fill="#FCEA2B" d="M36,13c-12.7025,0-23,10.2975-23,23s10.2975,23,23,23s23-10.2975,23-23 C58.9857,23.3034,48.6966,13.0143,36,13z" />
-            <path fill="#FFFFFF" d="M44.5,49.2708h-17c-2.2064-0.0065-3.9935-1.7936-4-4l0,0c0.0065-2.2064,1.7936-3.9935,4-4h17 c2.2064,0.0065,3.9935,1.7936,4,4l0,0C48.4935,47.4772,46.7064,49.2643,44.5,49.2708z" />
+            <path fill="#fcea2b" stroke="none" d="M36.2002,13.3163c-12.5719,0-22.7998,10.2279-22.7998,22.7998c0,12.5718,10.2279,22.7998,22.7998,22.7998 C48.772,58.9159,59,48.6879,59,36.1161C59,23.5442,48.772,13.3163,36.2002,13.3163z" />
+            <path fill="#FFFFFF" stroke="none" d="M28,51c0.2704-0.3562,3.3099-8.2177,8.4211-8.0038C41.0265,43.1889,43.6499,50.5372,44,51 C38.6667,51,33.3333,51,28,51z" />
           </g>
+          <g id="emo_color_30_hair" />
+          <g id="emo_color_30_skin" />
+          <g id="emo_color_30_skin-shadow" />
           <g id="emo_color_30_line">
-            <line x1="28" x2="28" y1="41.7708" y2="48.7708" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
-            <line x1="33" x2="33" y1="41.7708" y2="48.7708" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
-            <line x1="38" x2="38" y1="41.7708" y2="48.7708" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
-            <line x1="43" x2="43" y1="41.7708" y2="48.7708" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
             <circle cx="36" cy="36" r="23" fill="none" stroke="#000000" stroke-miterlimit="10" stroke-width="2" />
-            <path fill="none" stroke="#000000" stroke-miterlimit="2" stroke-width="2" d="M44.5,49.2708h-17c-2.2064-0.0065-3.9935-1.7936-4-4 l0,0c0.0065-2.2064,1.7936-3.9935,4-4h17c2.2064,0.0065,3.9935,1.7936,4,4l0,0C48.4935,47.4772,46.7064,49.2643,44.5,49.2708z" />
-            <path d="M30,31c0,1.6568-1.3448,3-3,3c-1.6553,0-3-1.3433-3-3c0-1.6552,1.3447-3,3-3C28.6552,28,30,29.3448,30,31" />
-            <path d="M48,31c0,1.6568-1.3447,3-3,3s-3-1.3433-3-3c0-1.6552,1.3447-3,3-3S48,29.3448,48,31" />
+            <line x1="44.5361" x2="50.9214" y1="21.4389" y2="24.7158" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" />
+            <line x1="26.9214" x2="20.5361" y1="21.4389" y2="24.7158" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" />
+            <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M24,28c2.3334,1.3333,4.6666,2.6667,7,4c-2.3334,1.3333-4.6666,2.6667-7,4" />
+            <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M48,28c-2.3334,1.3333-4.6666,2.6667-7,4c2.3334,1.3333,4.6666,2.6667,7,4" />
+            <path fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" d="M28,51c0.2704-0.3562,1-8,8.4211-8.0038C43,42.9929,43.6499,50.5372,44,51C38.6667,51,33.3333,51,28,51z" />
           </g>
         </g>
         <g id="emo_color_31_emotron_color_31_abwertung" data-asset="4-5_abwertung.svg" data-code="1F644" data-name="Abwertung" data-kind="combo" transform="translate(71.814 442.651) scale(0.75000000)">
@@ -2042,7 +2050,7 @@
         <text id="names_17" x="357.500" y="517.500" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b" data-code="1F633">befangen</text>
         <text id="names_18" x="357.500" y="582.500" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b" data-code="1FAE3">beschämt</text>
         <text id="names_19" x="295.275" y="424.725" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b" data-code="1F615">abgeneigt</text>
-        <text id="names_20" x="247.898" y="472.102" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b" data-code="1F616">angeekelt</text>
+        <text id="names_20" x="247.898" y="472.102" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b" data-code="1F62C">angeekelt</text>
         <text id="names_21" x="201.937" y="518.063" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b" data-code="1F922">übel</text>
         <text id="names_22" x="269.500" y="362.500" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b" data-code="1F612">gereizt</text>
         <text id="names_23" x="202.500" y="362.500" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b" data-code="1F620">verärgert</text>
@@ -2052,7 +2060,7 @@
         <text id="names_27" x="616.186" y="255.349" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b" data-code="1F632">Überraschung</text>
         <text id="names_28" x="616.186" y="469.651" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b" data-code="1F629">Aufgeben</text>
         <text id="names_29" x="464.651" y="621.186" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b" data-code="1F61E">Reue</text>
-        <text id="names_30" x="250.349" y="621.186" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b" data-code="1F62C">Unbehagen</text>
+        <text id="names_30" x="250.349" y="621.186" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b" data-code="1F623">Unbehagen</text>
         <text id="names_31" x="98.814" y="469.651" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b" data-code="1F644">Abwertung</text>
         <text id="names_32" x="98.814" y="255.349" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b" data-code="1F608">Streitlust</text>
       </g>
@@ -2077,7 +2085,7 @@
         <text id="names_for_emoji_17" x="357.500" y="560.500" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b;stroke:#fff;stroke-width:3px;stroke-linejoin:round;paint-order:stroke" data-code="1F633">befangen</text>
         <text id="names_for_emoji_18" x="357.500" y="625.500" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b;stroke:#fff;stroke-width:3px;stroke-linejoin:round;paint-order:stroke" data-code="1FAE3">beschämt</text>
         <text id="names_for_emoji_19" x="295.275" y="467.725" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b;stroke:#fff;stroke-width:3px;stroke-linejoin:round;paint-order:stroke" data-code="1F615">abgeneigt</text>
-        <text id="names_for_emoji_20" x="247.898" y="515.102" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b;stroke:#fff;stroke-width:3px;stroke-linejoin:round;paint-order:stroke" data-code="1F616">angeekelt</text>
+        <text id="names_for_emoji_20" x="247.898" y="515.102" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b;stroke:#fff;stroke-width:3px;stroke-linejoin:round;paint-order:stroke" data-code="1F62C">angeekelt</text>
         <text id="names_for_emoji_21" x="201.937" y="561.063" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b;stroke:#fff;stroke-width:3px;stroke-linejoin:round;paint-order:stroke" data-code="1F922">übel</text>
         <text id="names_for_emoji_22" x="269.500" y="405.500" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b;stroke:#fff;stroke-width:3px;stroke-linejoin:round;paint-order:stroke" data-code="1F612">gereizt</text>
         <text id="names_for_emoji_23" x="202.500" y="405.500" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b;stroke:#fff;stroke-width:3px;stroke-linejoin:round;paint-order:stroke" data-code="1F620">verärgert</text>
@@ -2087,7 +2095,7 @@
         <text id="names_for_emoji_27" x="616.186" y="289.349" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b;stroke:#fff;stroke-width:3px;stroke-linejoin:round;paint-order:stroke" data-code="1F632">Überraschung</text>
         <text id="names_for_emoji_28" x="616.186" y="503.651" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b;stroke:#fff;stroke-width:3px;stroke-linejoin:round;paint-order:stroke" data-code="1F629">Aufgeben</text>
         <text id="names_for_emoji_29" x="464.651" y="655.186" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b;stroke:#fff;stroke-width:3px;stroke-linejoin:round;paint-order:stroke" data-code="1F61E">Reue</text>
-        <text id="names_for_emoji_30" x="250.349" y="655.186" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b;stroke:#fff;stroke-width:3px;stroke-linejoin:round;paint-order:stroke" data-code="1F62C">Unbehagen</text>
+        <text id="names_for_emoji_30" x="250.349" y="655.186" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b;stroke:#fff;stroke-width:3px;stroke-linejoin:round;paint-order:stroke" data-code="1F623">Unbehagen</text>
         <text id="names_for_emoji_31" x="98.814" y="503.651" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b;stroke:#fff;stroke-width:3px;stroke-linejoin:round;paint-order:stroke" data-code="1F644">Abwertung</text>
         <text id="names_for_emoji_32" x="98.814" y="289.349" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b;stroke:#fff;stroke-width:3px;stroke-linejoin:round;paint-order:stroke" data-code="1F608">Streitlust</text>
       </g>
@@ -2112,7 +2120,7 @@
         <text id="names_for_emoji_-_front_17" x="357.500" y="560.500" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b" data-code="1F633">befangen</text>
         <text id="names_for_emoji_-_front_18" x="357.500" y="625.500" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b" data-code="1FAE3">beschämt</text>
         <text id="names_for_emoji_-_front_19" x="295.275" y="467.725" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b" data-code="1F615">abgeneigt</text>
-        <text id="names_for_emoji_-_front_20" x="247.898" y="515.102" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b" data-code="1F616">angeekelt</text>
+        <text id="names_for_emoji_-_front_20" x="247.898" y="515.102" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b" data-code="1F62C">angeekelt</text>
         <text id="names_for_emoji_-_front_21" x="201.937" y="561.063" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b" data-code="1F922">übel</text>
         <text id="names_for_emoji_-_front_22" x="269.500" y="405.500" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b" data-code="1F612">gereizt</text>
         <text id="names_for_emoji_-_front_23" x="202.500" y="405.500" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b" data-code="1F620">verärgert</text>
@@ -2122,7 +2130,7 @@
         <text id="names_for_emoji_-_front_27" x="616.186" y="289.349" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b" data-code="1F632">Überraschung</text>
         <text id="names_for_emoji_-_front_28" x="616.186" y="503.651" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b" data-code="1F629">Aufgeben</text>
         <text id="names_for_emoji_-_front_29" x="464.651" y="655.186" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b" data-code="1F61E">Reue</text>
-        <text id="names_for_emoji_-_front_30" x="250.349" y="655.186" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b" data-code="1F62C">Unbehagen</text>
+        <text id="names_for_emoji_-_front_30" x="250.349" y="655.186" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b" data-code="1F623">Unbehagen</text>
         <text id="names_for_emoji_-_front_31" x="98.814" y="503.651" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b" data-code="1F644">Abwertung</text>
         <text id="names_for_emoji_-_front_32" x="98.814" y="289.349" style="font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b" data-code="1F608">Streitlust</text>
       </g>
