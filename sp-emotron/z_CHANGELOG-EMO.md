@@ -39,10 +39,10 @@ Erstübernahme und anschließender vollständiger Neuaufbau von Emotronic mit fu
 - PWA: Anwendung auf Emotronic v2.25, Revision 125 und Cache `emotronic-v125` angehoben; Snapshot und öffentlicher Laufzeitspiegel bytegleich synchronisiert.
 - Grafik: `emotron.svg` als Illustrator-unabhängige Hauptquelle vollständig mit gespiegelten Farbflächen, 33 eingebetteten OpenMoji je Farb-, Schwarzweiß- und Faded-Gruppe sowie eindeutigen Beschriftungsgruppen neu aufgebaut; externe Bildverknüpfungen entfallen.
 - Anzeige/Animation: Alle Grund-, Intensitäts- und Zwischenemotionen verwenden im Emotronic-Display kurze, eindeutige ASCII-Endmotive mit drei Frames und eigener Bewegungscharakteristik; Schriftgröße und zentrierte Position bleiben im bisherigen Displayraster.
-- Sharing: Neue Links verwenden die Kurzfragmente `#e`, `#r`, `#s` und `#g`. Alle 33 Zustände werden mit je einem Base36-Zeichen codiert; Intensität und Kombination sind implizit, der Normalmodus im Score wird weggelassen und alte lange Links bleiben lesbar.
+- Sharing: Die ausgeschriebenen Fragmente `#share`, `#replay`, `#slow` und `#score` bleiben erhalten. Alle 33 Zustände werden im Datenteil mit je einem Base36-Zeichen codiert; Intensität und Kombination sind implizit, der Normalmodus im Score wird weggelassen und alte lange Links bleiben lesbar.
 - Replay: Der normale Verlauf ist auf 24 Schritte begrenzt und entfernt bei jeder weiteren Eingabe den ältesten Eintrag; Simons eigene Spielfolge bleibt unverändert.
 - Test: JavaScript-/Python-Syntax, eindeutige Emojis und Begriffe, Rad-/Tastaturspiegelung, Kombi-Anker, WAV-Struktur, Manifestgleichlauf, Versionsstand und bytegleiche Laufzeitspiegel geprüft.
-- Versionen: Emotronic v2.27.
+- Versionen: Emotronic v2.28.
 
 ### 2026-07-26 - emo, struktur, tools, pwa, replay, share, anzeige, audio, doku (ca. 1,6h)
 

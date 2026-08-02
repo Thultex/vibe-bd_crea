@@ -164,7 +164,15 @@ assert(normalScoreCode === '3f~2p', 'Normaler Score enthält redundante Angaben'
 assert(JSON.stringify(data.decodeCompactScore(normalScoreCode)) === JSON.stringify(normalScore), 'Normaler Score-Kurzcode ist nicht verlustfrei');
 const proScore = { ...normalScore, mode: 'pro' };
 assert(data.encodeCompactScore(proScore) === '3f.p~2p', 'Abweichender Modus wird nicht knapp codiert');
-assert(html.includes("/^#(e|r|s|g|share|replay|slow|score)="), 'Kurze und alte Fragmentformate werden nicht gemeinsam gelesen');
+assert(html.includes("/^#(share|replay|slow|score)="), 'Ausgeschriebene Fragmentnamen fehlen');
+assert(html.includes('if(!payload)payload=decodeSharePayload(value)'), 'Alte lange Links werden nicht als Rückfall gelesen');
+for (const fragment of ['#share=', '#score=']) {
+  assert(html.includes(fragment), `Ausgeschriebener Kurzlink fehlt: ${fragment}`);
+}
+assert(html.includes("fragmentOverride==='slow'?'slow':'replay'"), 'Replay und Slow werden nicht ausgeschrieben erzeugt');
+for (const fragment of ['#e=', '#r=', '#s=', '#g=']) {
+  assert(!html.includes(fragment), `Fragmentname wurde unerwünscht abgekürzt: ${fragment}`);
+}
 assert(data.APP_CONFIG?.replay?.maxItems === 24, 'Normaler Replay-Verlauf ist nicht auf 24 Schritte begrenzt');
 assert(html.includes('state.history.splice(0,state.history.length-APP_CONFIG.replay.maxItems)'), 'Älteste Replay-Schritte werden bei neuer Eingabe nicht entfernt');
 

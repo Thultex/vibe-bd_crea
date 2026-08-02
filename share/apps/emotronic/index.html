@@ -192,16 +192,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v2.27 — CODEKOPF
+   Emotronic v2.28 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 127
+   Aktuelle Revision: 128
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'2.27',
-  revision:127,
+  version:'2.28',
+  revision:128,
   author:'Rasmus Klette'
 });
 
@@ -711,9 +711,9 @@ function decodeSharePayload(value){
  catch{return null}
 }
 function compactShareFragment(payload,fragmentOverride=null){
- if(payload?.type==='score'){const value=encodeCompactScore(payload);return value?`#g=${value}`:null}
- if(payload?.type==='replay'){const value=encodeCompactHistory(payload.items);if(!value)return null;return `#${fragmentOverride==='slow'?'s':'r'}=${value}`}
- if(payload?.type==='emotion'){const value=encodeCompactHistory([payload.item],1);return value?`#e=${value}`:null}
+ if(payload?.type==='score'){const value=encodeCompactScore(payload);return value?`#score=${value}`:null}
+ if(payload?.type==='replay'){const value=encodeCompactHistory(payload.items);if(!value)return null;return `#${fragmentOverride==='slow'?'slow':'replay'}=${value}`}
+ if(payload?.type==='emotion'){const value=encodeCompactHistory([payload.item],1);return value?`#share=${value}`:null}
  return null
 }
 function shareTextForFragment(fragment){
@@ -852,16 +852,16 @@ function applyDecodedSharedPayload(payload,slowTag=false){
  if(payload.type==='score'){showSharedGameScore(payload);replayGameOverSequence()}
 }
 function applySharedPayload(){
- const match=location.hash.match(/^#(e|r|s|g|share|replay|slow|score)=(.+)$/);if(!match)return;
+ const match=location.hash.match(/^#(share|replay|slow|score)=(.+)$/);if(!match)return;
  const fragmentType=match[1],value=match[2];
  let payload=null;
- if(fragmentType==='e'){const items=decodeCompactHistory(value,1);if(items)payload={type:'emotion',item:items[0]}}
- else if(fragmentType==='r'||fragmentType==='s'){const items=decodeCompactHistory(value);if(items)payload={type:'replay',items}}
- else if(fragmentType==='g')payload=decodeCompactScore(value);
- else payload=decodeSharePayload(value);
- const valid=payload&&(['score','g'].includes(fragmentType)?payload.type==='score':['replay','slow','r','s'].includes(fragmentType)?payload.type==='replay':['emotion','replay'].includes(payload.type));
+ if(fragmentType==='share'){const items=decodeCompactHistory(value,1);if(items)payload={type:'emotion',item:items[0]}}
+ else if(fragmentType==='replay'||fragmentType==='slow'){const items=decodeCompactHistory(value);if(items)payload={type:'replay',items}}
+ else if(fragmentType==='score')payload=decodeCompactScore(value);
+ if(!payload)payload=decodeSharePayload(value);
+ const valid=payload&&(fragmentType==='score'?payload.type==='score':['replay','slow'].includes(fragmentType)?payload.type==='replay':['emotion','replay'].includes(payload.type));
  if(!valid)return;
- showIncomingShare(()=>applyDecodedSharedPayload(payload,fragmentType==='slow'||fragmentType==='s'),payload)
+ showIncomingShare(()=>applyDecodedSharedPayload(payload,fragmentType==='slow'),payload)
 }
 document.addEventListener('click',event=>{
  if(!state.incomingShare||!event.target.closest('.app'))return;

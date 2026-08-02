@@ -25,7 +25,7 @@ Beim Verstellen der Intensität auf der Telefon-/Empfängerseite zeigen alle nic
 
 ## Teilen
 
-Neue Kurzlinks verwenden `#e=…` für Gefühle, `#r=…` für normale Replays, `#s=…` für langsame Replays und `#g=…` für Game-over-Scores. Ein Zeichen codiert jeweils einen Zustand samt Intensität oder Kombination; bei Slow muss nur `r` durch `s` ersetzt werden. Alte lange Links bleiben lesbar. Unter HTTP/HTTPS kopiert Emotronic einen vollständigen Link, bei lokalen Datei-Adressen nur den portablen Fragment-Code. Der normale Replay-Verlauf hält höchstens 24 Schritte und entfernt bei neuer Eingabe den ältesten; Simon ist davon nicht betroffen.
+Die ausgeschriebenen Fragmente bleiben `#share=…` für Gefühle, `#replay=…` für normale Replays, `#slow=…` für langsame Replays und `#score=…` für Game-over-Scores. Nur der Datenteil ist kurz: Ein Zeichen codiert jeweils einen Zustand samt Intensität oder Kombination; bei Slow muss nur `replay` durch `slow` ersetzt werden. Alte lange Links bleiben lesbar. Unter HTTP/HTTPS kopiert Emotronic einen vollständigen Link, bei lokalen Datei-Adressen nur den portablen Fragment-Code. Der normale Replay-Verlauf hält höchstens 24 Schritte und entfernt bei neuer Eingabe den ältesten; Simon ist davon nicht betroffen.
 
 Jede Person mit dem vollständigen Link kann den enthaltenen Gefühls- oder Replay-Datensatz decodieren. Vertrauliche Inhalte sollten deshalb nicht öffentlich geteilt werden.
 

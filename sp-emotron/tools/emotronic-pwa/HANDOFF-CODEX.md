@@ -1,4 +1,4 @@
-# Codex-Handoff: Emotronic v2.27
+# Codex-Handoff: Emotronic v2.28
 
 ## Auftrag
 
@@ -7,7 +7,7 @@ Diese Übergabe beschreibt den aktuellen Stand der installierbaren Emotronic-PWA
 ## Relevante Dateien
 
 - `sp-emotron/tools/emotronic-pwa/index.html` – maßgebliche Quelle
-- `sp-emotron/tools/emotronic-pwa/Emotronic-v2.27.html` – versionierter Snapshot, nach Änderungen neu erzeugen
+- `sp-emotron/tools/emotronic-pwa/Emotronic-v2.28.html` – versionierter Snapshot, nach Änderungen neu erzeugen
 - `sp-emotron/tools/emotronic-pwa/generate_audio_assets.py` – reproduzierbarer Generator beider Soundsets
 - `assets/audio/emotronic/` – Manifest sowie `8-bit` und `8-bit_soft`
 - `sp-emotron/tools/emotronic-pwa/sw.js` – Service Worker und Cache-Version
@@ -18,10 +18,10 @@ Diese Übergabe beschreibt den aktuellen Stand der installierbaren Emotronic-PWA
 
 ## Versionierung
 
-- Aktuell: **Emotronic v2.27**
-- `APP_META.version`: `2.27`
-- `APP_META.revision`: `127`
-- Service-Worker-Cache: `emotronic-v127`
+- Aktuell: **Emotronic v2.28**
+- `APP_META.version`: `2.28`
+- `APP_META.revision`: `128`
+- Service-Worker-Cache: `emotronic-v128`
 - Beim Aktivieren nur ältere Caches mit dem Präfix `emotronic-v` entfernen; andere Anwendungen können dieselbe Domain verwenden.
 - Jede abgeschlossene Revision erhöht die Version um `0.01` und die Revision um `1`.
 - Codekopf, `APP_META`, Service Worker, versionierte HTML-Datei, README und ZIP müssen synchron bleiben.
@@ -82,7 +82,7 @@ Globale Optionen nicht zwischen die Funktionslogik verteilen.
 - Erneute Klicks auf dieselbe Gefühlstaste erzeugen bewusst weitere Schritte, auch bei identischem Zustand.
 - Replay-Start und Replay-Sharing synchronisieren den aktuellen Zustand ohne zusätzlichen Duplikatschritt.
 - `R` startet Replay.
-- Slow ist der Fragment-Tag `#s=…` eines vollständigen Replay-Links. Sein codierter Datenteil ist identisch mit `#r=…`; `applySharedPayload()` übergibt den erkannten Tag getrennt an `applyDecodedSharedPayload()`. Schrittfolge, Displayübergang und Abschluss verwenden dann über `replayTimingMultiplier()` standardmäßig Faktor 2. Die Emoji-Bewegung verwendet getrennt `replayEmojiTimingMultiplier()` und `slowEmojiMultiplier:1.15`.
+- Slow ist der Fragment-Tag `#slow=…` eines vollständigen Replay-Links. Sein codierter Datenteil ist identisch mit `#replay=…`; `applySharedPayload()` übergibt den erkannten Tag getrennt an `applyDecodedSharedPayload()`. Schrittfolge, Displayübergang und Abschluss verwenden dann über `replayTimingMultiplier()` standardmäßig Faktor 2. Die Emoji-Bewegung verwendet getrennt `replayEmojiTimingMultiplier()` und `slowEmojiMultiplier:1.15`.
 - `state.slowReplay` bleibt beim erneuten `R` für denselben Verlauf erhalten, wird aber durch Gefühl-, Intensitäts- oder Kombi-Eingaben sowie Ausschalten/Replay-Löschen zurückgesetzt.
 - Die graue Restanzahl steht während Replay neben `R`. Nach vollständiger Wiedergabe bleibt `items.length` über `showReplayCount()` als erneuter Abspielhinweis stehen; weil empfangene Replays ebenfalls `replayHistory()` verwenden, benötigen sie keinen Sonderpfad. Bricht `R` eine erneute Wiedergabe ab, ruft `cancelReplayToLatest()` `stopReplay(false,true)` auf und stellt anschließend ebenfalls die Gesamtzahl wieder her.
 - Die 13-Pixel-Zahl sitzt mit `right:13px` näher bei `R` und verwendet dieselbe 0,38-Sekunden-Deckkraft-/Skalierungsbewegung wie die ausgeschalteten Tastenhinweise. `pressEmotion()` blendet sie über `hideReplayCount()` aus.
@@ -94,16 +94,16 @@ Globale Optionen nicht zwischen die Funktionslogik verteilen.
 
 ## Sharing – Kerninvarianten
 
-- Neue Formate: `#e=<code>` für ein Gefühl, `#r=<codes>` für normale Replays, `#s=<dieselben-codes>` für langsame Replays und `#g=<scorecode>` für Game-over-Scores. Ein Base36-Zeichen `0` bis `w` codiert jeweils einen der 33 Zustände; Intensität und Kombination sind darin bereits enthalten.
-- Alte Base64url-JSON-Links mit `#share=`, `#replay=`, `#slow=` oder `#score=` bleiben vollständig lesbar.
+- Formate: `#share=<code>` für ein Gefühl, `#replay=<codes>` für normale Replays, `#slow=<dieselben-codes>` für langsame Replays und `#score=<scorecode>` für Game-over-Scores. Ein Base36-Zeichen `0` bis `w` codiert jeweils einen der 33 Zustände; Intensität und Kombination sind darin bereits enthalten.
+- Alte Base64url-JSON-Links mit denselben ausgeschriebenen Fragmentnamen bleiben vollständig lesbar.
 - Typ `emotion`: `{type:'emotion', item:...}`.
-- Typ `replay`: `{type:'replay', items:[...]}`. Der Tag `#r=` beziehungsweise `#s=` wählt ausschließlich das Wiedergabetempo. Ältere Datensätze mit `slow:true` bleiben lesbar.
+- Typ `replay`: `{type:'replay', items:[...]}`. Der Tag `#replay=` beziehungsweise `#slow=` wählt ausschließlich das Wiedergabetempo. Ältere Datensätze mit `slow:true` bleiben lesbar.
 - Daten liegen nur im URL-Fragment und werden nicht als Query an einen Server gesendet.
 - Bei `http:` oder `https:` vollständigen Link kopieren.
 - Bei `file:` oder Android `content:` nur den portablen Kurzcode kopieren.
 - UI-Text muss korrekt zwischen `Link kopiert` und `Code kopiert` unterscheiden.
 - Telefon-Doppeltipp teilt konsistent den Replay-Verlauf.
-- Wifi-/Sender-Doppeltipp teilt konsistent den vollständigen Replay-Verlauf unter `#s=…`; Telefon teilt denselben Datensatz unter `#r=…`.
+- Wifi-/Sender-Doppeltipp teilt konsistent den vollständigen Replay-Verlauf unter `#slow=…`; Telefon teilt denselben Datensatz unter `#replay=…`.
 - Die Doppeltipperkennung muss vor den Sonderfällen für Aus-, Simon- und Bereit-Direktlinks laufen; der erste Tipp darf den Direktlink auslösen, der zweite führt die feste Share-Aktion aus.
 - Der jeweils erste Tipp erklärt die Doppeltipp-Geste für drei Sekunden in der kleinen Kategoriezeile.
 - Eigene Touch-Doppeltipp-Erkennung beibehalten; nicht ausschließlich `dblclick` verwenden.
@@ -168,9 +168,9 @@ Der Validator prüft Syntax, 8+1-Datentabellen, eindeutige Begriffe und Emojis, 
 Für ein auslieferbares ZIP vom Repository-Root aus:
 
 ```bash
-rm -f emotronic-pwa-v2.27.zip
-zip -rq emotronic-pwa-v2.27.zip sp-emotron/tools/emotronic-pwa
-unzip -t emotronic-pwa-v2.27.zip
+rm -f emotronic-pwa-v2.28.zip
+zip -rq emotronic-pwa-v2.28.zip sp-emotron/tools/emotronic-pwa
+unzip -t emotronic-pwa-v2.28.zip
 ```
 
 ## Vorsicht bei Änderungen

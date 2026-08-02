@@ -114,12 +114,12 @@ Jeder Zustand belegt genau ein Base36-Zeichen. Intensität und Kombination sind 
 
 | Fragment | Inhalt |
 |---|---|
-| `#e=` | einzelner Zustand |
-| `#r=` | normaler Replay-Verlauf, höchstens 24 Zeichen |
-| `#s=` | derselbe Verlauf in langsamer Wiedergabe |
-| `#g=` | Score; Modus und Spielfolge nur, wenn vorhanden beziehungsweise nötig |
+| `#share=` | einzelner Zustand |
+| `#replay=` | normaler Replay-Verlauf, höchstens 24 Zeichen |
+| `#slow=` | derselbe Verlauf in langsamer Wiedergabe |
+| `#score=` | Score; Modus und Spielfolge nur, wenn vorhanden beziehungsweise nötig |
 
-Alte Links mit `#share=`, `#replay=`, `#slow=` und `#score=` bleiben lesbar.
+Die Fragmentnamen bleiben ausgeschrieben. Alte Links mit langem Base64url-JSON-Datenteil bleiben unter denselben Namen lesbar.
 
 ## Pflegecheck
 
