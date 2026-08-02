@@ -32,7 +32,7 @@ python sp-emotron\tools\illustrator\update_emotron_svg.py
 python sp-emotron\tools\illustrator\update_emotron_svg.py --check
 ```
 
-`emotron.svg` enthält alle OpenMoji als eingebettete Vektoren. Die sichtbare Standardansicht verwendet `Color`, `emoji_svg color`, `names for emoji` und `names for emoji - front`; Schwarzweiß, Faded und die reine Namensansicht bleiben als ausgeblendete, deckungsgleiche Gruppen erhalten.
+`emotron.svg` enthält alle OpenMoji als eingebettete Vektoren. `emoji_svg color` und `emoji_svg sw` sind ausdrücklich zwei getrennte, deckungsgleiche SVG-Ebenen; Farbe ist sichtbar, SW ausgeblendet. Die Faded-Kopie bleibt als dritte separate Ebene erhalten. Die sichtbare Standardansicht verwendet außerdem `Color` und die ursprünglichen Konturen samt gestrichelten Referenzringen; sämtliche Beschriftungsansichten bleiben ausgeblendet. Nach der Bildvorlage messen Neutral und alle 24 inneren Grundstufen einheitlich `72` SVG-Einheiten. Die acht äußeren Zwischenemotionen verwenden den geraden Faktor `3/4` und messen damit exakt `54` Einheiten. Die Mittelpunktradien liegen bei `88`, `155`, `220` und außen bei `280` Einheiten. Weiße Illustrator-Hilfsflächen werden nicht mit eingeblendet.
 
 `../tools/illustrator/inspect_emotron.jsx` kann später über Illustrators Befehl **Datei → Skripten → Anderes Skript** einen Ebenenbericht `Emotron.layers.txt` erzeugen, bevor die Vektoren und Farben eingesetzt werden.
 

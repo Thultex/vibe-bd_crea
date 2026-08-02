@@ -13,8 +13,10 @@ from pathlib import Path
 
 
 SVG_NS = "http://www.w3.org/2000/svg"
+INKSCAPE_NS = "http://www.inkscape.org/namespaces/inkscape"
 NS = {"svg": SVG_NS}
 ET.register_namespace("", SVG_NS)
+ET.register_namespace("inkscape", INKSCAPE_NS)
 
 HERE = Path(__file__).resolve()
 PROJECT = HERE.parents[2]
@@ -23,8 +25,10 @@ ASSET_ROOT = PROJECT / "files" / "openmoji"
 
 CENTER_X = 357.5
 CENTER_Y = 362.5
-EMOJI_SIZE = 46.0
-PRIMARY_RADII = (78.0, 143.0, 208.0)
+INNER_EMOJI_SIZE = 72.0
+OUTER_EMOJI_FACTOR = 0.75
+COMBO_EMOJI_SIZE = INNER_EMOJI_SIZE * OUTER_EMOJI_FACTOR
+PRIMARY_RADII = (88.0, 155.0, 220.0)
 COMBO_RADIUS = 280.0
 
 
@@ -126,6 +130,12 @@ def slots() -> list[Slot]:
 SLOTS = slots()
 
 
+def slot_size(slot: Slot) -> float:
+    if slot.kind == "combo":
+        return COMBO_EMOJI_SIZE
+    return INNER_EMOJI_SIZE
+
+
 def by_id(root: ET.Element, element_id: str) -> ET.Element | None:
     return root.find(f".//*[@id='{element_id}']")
 
@@ -174,24 +184,27 @@ def emoji_group(variant: str, *, faded: bool = False) -> ET.Element:
     group = ET.Element(q("g"), {
         "id": f"emoji_x5F_svg_{suffix}",
         "data-name": data_name,
+        f"{{{INKSCAPE_NS}}}groupmode": "layer",
+        f"{{{INKSCAPE_NS}}}label": data_name,
     })
     if variant == "sw" or faded:
         group.set("style", "display:none")
     if faded:
         group.set("opacity", ".3")
 
-    scale = EMOJI_SIZE / 72.0
     for index, slot in enumerate(SLOTS):
         asset_file = ASSET_ROOT / variant / slot.asset
         asset_root = ET.parse(asset_file).getroot()
         x, y = slot.center
+        size = slot_size(slot)
+        scale = size / 72.0
         placed = ET.SubElement(group, q("g"), {
             "id": f"emotron_{suffix}_{index:02d}_{safe_id(slot.name.lower())}",
             "data-asset": slot.asset,
             "data-code": slot.code,
             "data-name": slot.name,
             "data-kind": slot.kind,
-            "transform": f"translate({x - EMOJI_SIZE / 2:.3f} {y - EMOJI_SIZE / 2:.3f}) scale({scale:.8f})",
+            "transform": f"translate({x - size / 2:.3f} {y - size / 2:.3f}) scale({scale:.8f})",
         })
         for child in list(asset_root):
             placed.append(copy.deepcopy(child))
@@ -200,14 +213,18 @@ def emoji_group(variant: str, *, faded: bool = False) -> ET.Element:
 
 
 def text_group(element_id: str, data_name: str, mode: str) -> ET.Element:
-    group = ET.Element(q("g"), {"id": element_id, "data-name": data_name})
-    if mode == "names":
-        group.set("style", "display:none")
+    group = ET.Element(q("g"), {
+        "id": element_id,
+        "data-name": data_name,
+        f"{{{INKSCAPE_NS}}}groupmode": "layer",
+        f"{{{INKSCAPE_NS}}}label": data_name,
+    })
+    group.set("style", "display:none")
 
     for index, slot in enumerate(SLOTS):
         x, y = slot.center
         if mode != "names":
-            y += 30.0 if slot.kind != "combo" else 28.0
+            y += slot_size(slot) / 2 + 7.0
         style = "font-family:Tahoma,sans-serif;font-size:11px;text-anchor:middle;fill:#1d1d1b"
         if mode == "back":
             style += ";stroke:#fff;stroke-width:3px;stroke-linejoin:round;paint-order:stroke"
@@ -222,21 +239,38 @@ def text_group(element_id: str, data_name: str, mode: str) -> ET.Element:
     return group
 
 
+def guide_group(orientation: ET.Element) -> ET.Element:
+    guides = copy.deepcopy(orientation)
+    guides.set("data-name", "Konturen")
+    guides.set(f"{{{INKSCAPE_NS}}}groupmode", "layer")
+    guides.set(f"{{{INKSCAPE_NS}}}label", "Konturen")
+    guides.attrib.pop("style", None)
+    for child in list(guides):
+        if child.tag == q("rect") or child.get("id") == "areas_x5F_white":
+            guides.remove(child)
+    return guides
+
+
 def rebuild() -> None:
     parser = ET.XMLParser(target=ET.TreeBuilder(insert_comments=True))
     tree = ET.parse(SVG_FILE, parser=parser)
     root = tree.getroot()
     axes = by_id(root, "achsen")
     areas = by_id(root, "areas_x5F_colors")
-    if axes is None or areas is None:
-        raise ValueError("achsen oder areas_x5F_colors fehlt")
+    orientation = by_id(root, "orientierung")
+    if axes is None or areas is None or orientation is None:
+        raise ValueError("achsen, areas_x5F_colors oder orientierung fehlt")
 
     color_areas(areas, faded=False)
     areas.set("data-name", "Color")
+    areas.set(f"{{{INKSCAPE_NS}}}groupmode", "layer")
+    areas.set(f"{{{INKSCAPE_NS}}}label", "Color")
 
     faded_areas = copy.deepcopy(areas)
     faded_areas.set("id", "areas_x5F_colors_faded")
     faded_areas.set("data-name", "Color faded")
+    faded_areas.set(f"{{{INKSCAPE_NS}}}groupmode", "layer")
+    faded_areas.set(f"{{{INKSCAPE_NS}}}label", "Color faded")
     faded_areas.set("style", "display:none")
     color_areas(faded_areas, faded=True)
 
@@ -245,16 +279,16 @@ def rebuild() -> None:
         "areas_x5F_colors", "areas_x5F_colors_faded",
         "emoji_x5F_svg_sw", "emoji_x5F_svg_color", "emoji_x5F_svg_color_faded",
         "names", "names_for_emoji", "names_for_emoji_-_front",
+        "orientierung",
     }
     for child in list(axes):
         if child.get("id") not in replaced_ids:
-            if child.get("id") == "orientierung":
-                child.set("style", "display:none")
             preserved.append(child)
 
     axes[:] = [
         areas,
         faded_areas,
+        guide_group(orientation),
         emoji_group("sw"),
         emoji_group("color", faded=True),
         emoji_group("color"),
@@ -286,6 +320,20 @@ def validate() -> None:
         codes = [child.get("data-code") for child in children]
         if codes != expected_codes:
             raise ValueError(f"Falsche OpenMoji-Reihenfolge in {group_id}")
+        if group.get(f"{{{INKSCAPE_NS}}}groupmode") != "layer":
+            raise ValueError(f"Keine echte SVG-Ebene: {group_id}")
+        for child, slot in zip(children, SLOTS):
+            match = re.search(r"scale\(([-0-9.]+)\)", child.get("transform", ""))
+            expected_scale = OUTER_EMOJI_FACTOR if slot.kind == "combo" else 1.0
+            if match is None or abs(float(match.group(1)) - expected_scale) > 0.000001:
+                raise ValueError(f"Falscher Größenfaktor für {slot.name} in {group_id}")
+
+    color_layer = by_id(root, "emoji_x5F_svg_color")
+    sw_layer = by_id(root, "emoji_x5F_svg_sw")
+    if color_layer is None or color_layer.get("style") == "display:none":
+        raise ValueError("Farbebene ist nicht sichtbar")
+    if sw_layer is None or sw_layer.get("style") != "display:none":
+        raise ValueError("SW-Ebene ist nicht separat ausgeblendet")
 
     for group_id in ("names", "names_for_emoji", "names_for_emoji_-_front"):
         group = by_id(root, group_id)
@@ -299,6 +347,14 @@ def validate() -> None:
         group = by_id(root, group_id)
         if group is None or len(group.findall("./svg:path", NS)) != 32:
             raise ValueError(f"Farbflächen fehlen in {group_id}")
+
+    orientation = by_id(root, "orientierung")
+    if orientation is None or orientation.get("style") == "display:none":
+        raise ValueError("Sichtbare Konturen fehlen")
+    if by_id(root, "outer-ring") is None or by_id(root, "inner-ring") is None:
+        raise ValueError("Gestrichelte Referenzringe fehlen")
+    if orientation.findall("./svg:rect", NS) or by_id(orientation, "areas_x5F_white") is not None:
+        raise ValueError("Weiße Illustrator-Hilfsflächen sind noch sichtbar")
 
     ids = [node.get("id") for node in root.iter() if node.get("id")]
     duplicates = sorted({element_id for element_id in ids if ids.count(element_id) > 1})

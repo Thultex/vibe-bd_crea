@@ -115,21 +115,21 @@
     function rebuildEmojiLayer(layerName, variant, opacity) {
         var layer = layerByName(layerName);
         clearLayer(layer);
-        addSvg(layer, variant, "0_neutral.svg", centerX, centerY, 46, opacity);
+        addSvg(layer, variant, "0_neutral.svg", centerX, centerY, 72, opacity);
         for (var branchIndex = 0; branchIndex < branches.length; branchIndex += 1) {
             var branch = branches[branchIndex];
             for (var levelIndex = 0; levelIndex < radii.length; levelIndex += 1) {
                 var radius = radii[levelIndex];
                 var x = centerX + Math.cos(radians(branch.angle)) * radius;
                 var y = centerY + Math.sin(radians(branch.angle)) * radius;
-                addSvg(layer, variant, branch.files[levelIndex], x, y, 46, opacity);
+                addSvg(layer, variant, branch.files[levelIndex], x, y, 72, opacity);
             }
         }
         for (var combinationIndex = 0; combinationIndex < combinations.length; combinationIndex += 1) {
             var combination = combinations[combinationIndex];
             var comboX = centerX + Math.cos(radians(combination.angle)) * 278;
             var comboY = centerY + Math.sin(radians(combination.angle)) * 278;
-            addSvg(layer, variant, combination.file, comboX, comboY, 46, opacity);
+            addSvg(layer, variant, combination.file, comboX, comboY, 54, opacity);
         }
         lines.push(layerName + ": " + layer.groupItems.length + " OpenMoji-Gruppen");
     }
