@@ -33,7 +33,7 @@ COMBOS = {
     "abwertung": ("anger", "disgust"),
     "unbehagen": ("disgust", "shame"),
     "reue": ("shame", "sadness"),
-    "hilflosigkeit": ("sadness", "fear"),
+    "aufgeben": ("sadness", "fear"),
     "ueberraschung": ("fear", "curiosity"),
 }
 
