@@ -1,10 +1,10 @@
 <!--
   ============================================================================
-  Emotronic v2.17
+  Emotronic v2.18
   Projektname: Emotronic
   Autor: Rasmus Klette
   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-  Aktuelle Revision: 117
+  Aktuelle Revision: 118
   ============================================================================
 -->
 <!doctype html>
@@ -172,16 +172,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v2.17 — CODEKOPF
+   Emotronic v2.18 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 117
+   Aktuelle Revision: 118
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'2.17',
-  revision:117,
+  version:'2.18',
+  revision:118,
   author:'Rasmus Klette'
 });
 
@@ -286,9 +286,9 @@ const strengthWords=['aus','schwach','mittel','stark'];
 // Basisfarbe je Zweig. Die Intensitätsfarben werden wie bisher daraus
 // berechnet. Das vollständige Rad ist an der Y-Achse gespiegelt.
 const base={
- curiosity:{category:'Neugier',labels:['interessiert','neugierig','fasziniert'],codes:['1F928','1F914','1F9D0'],ascii:[[':-?',':-?'],[':-?',':-o?',':-?'],[':-?','8-?',':-?']],color:'#83d4cf'},
+ curiosity:{category:'Neugier',labels:['interessiert','neugierig','fasziniert'],codes:['1F60F','1FAE2','1F929'],ascii:[[':-?',':-?'],[':-?',':-o?',':-?'],[':-?','8-?',':-?']],color:'#83d4cf'},
  affection:{category:'Zuneigung',labels:['freundlich','zugewandt','verbunden'],codes:['1F609','1F917','1F970'],ascii:[[':-)',':-*'],[':-)',';-*',':-*'],[':-*',';-*',':-*']],color:'#f4b56d'},
- joy:{category:'Freude',labels:['zufrieden','fröhlich','begeistert'],codes:['1F60C','1F60A','1F604'],ascii:[[':-)',':-D'],[':-)',':-D',':-D'],[':-D','X-D',':-D']],color:'#f5df6f'},
+ joy:{category:'Freude',labels:['zufrieden','fröhlich','begeistert'],codes:['1F60C','1F60A','1F602'],ascii:[[':-)',':-D'],[':-)',':-D',':-D'],[':-D','X-D',':-D']],color:'#f5df6f'},
  fear:{category:'Angst',labels:['besorgt','ängstlich','panisch'],codes:['1F61F','1F628','1F631'],ascii:[[':-s',':-S'],[':-S',':-O',':-S'],['D-:','D:',':-S']],color:'#c2a8dc'},
  neutral:{category:'Neutral',labels:['ausgeglichen'],codes:['1F610'],ascii:[[':-|',':-|']],color:'#ddd9d0'},
  anger:{category:'Wut',labels:['gereizt','verärgert','wütend'],codes:['1F612','1F620','1F92C'],ascii:[['>:-/',':-#','>:-('],['>:-(',':-#','>:-('],['>:-O','>:-O!','>:-(']],color:'#ef938b'},
@@ -299,7 +299,7 @@ const base={
 const order=['joy','affection','curiosity','anger','neutral','fear','disgust','shame','sadness'];
 // Gültige Nachbarschafts-Kombinationen.
 const combos={
- 'curiosity|affection':{name:'Bewunderung',audioName:'bewunderung',motion:'om-curiosity',code:'1F929',ascii:['o_o','*o*','*_*'],partners:['curiosity','affection']},
+ 'curiosity|affection':{name:'Bewunderung',audioName:'bewunderung',motion:'om-curiosity',code:'1F60D',ascii:['o_o','*o*','*_*'],partners:['curiosity','affection']},
  'affection|joy':{name:'Dankbarkeit',audioName:'dankbarkeit',motion:'om-affection',code:'1F979',ascii:['^.-','^o^','^_^'],partners:['affection','joy']},
  'joy|anger':{name:'Triumph',audioName:'triumph',motion:'om-joy',code:'1F624',ascii:['>:)','>:D','>:D'],partners:['joy','anger']},
  'anger|disgust':{name:'Abwertung',audioName:'abwertung',motion:'om-disgust',code:'1F644',ascii:['>:-/','¬_o','¬_¬'],partners:['anger','disgust']},
