@@ -2,7 +2,7 @@
 
 (function () {
     var projectRoot = File($.fileName).parent.parent.parent;
-    var source = File(projectRoot.fsName + "/files/Emotron.ai");
+    var source = File(projectRoot.fsName + "/files/emotron.ai");
     var reportFile = File(projectRoot.fsName + "/files/Emotron.layers.txt");
     var documentRef = null;
 

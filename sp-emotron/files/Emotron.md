@@ -1,6 +1,6 @@
 # Emotron – verbindliche Illustrator-Referenz
 
-Diese Datei ist die mitzuführende Referenz für `Emotron.ai` und die Emotronic-PWA. Änderungen an Namen, OpenMoji-Codes oder Farben werden immer gleichzeitig hier, in der Illustrator-Datei und in `../tools/emotronic-pwa/index.html` eingetragen.
+Diese Datei ist die mitzuführende Referenz für `emotron.ai` und die Emotronic-PWA. Änderungen an Namen, OpenMoji-Codes oder Farben werden immer gleichzeitig hier, in der Illustrator-Datei und in `../tools/emotronic-pwa/index.html` eingetragen.
 
 ## Illustrator-Ebenen
 
