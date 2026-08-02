@@ -192,16 +192,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v2.26 — CODEKOPF
+   Emotronic v2.27 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 126
+   Aktuelle Revision: 127
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'2.26',
-  revision:126,
+  version:'2.27',
+  revision:127,
   author:'Rasmus Klette'
 });
 
@@ -236,6 +236,7 @@ const APP_CONFIG={
     backgroundEmojiScale:[1.48,1.55,1.63]
   },
   replay:{
+    maxItems:24,
     itemMs:750,
     emojiDurationMs:680,
     slowMultiplier:2,
@@ -342,6 +343,67 @@ const comboOverview={
  fear:'sadness|fear',
  curiosity:'fear|curiosity'
 };
+
+// Kompakte Weitergabe: 33 mögliche Zustände passen jeweils in genau ein
+// Base-36-Zeichen. 0 = Neutral, 1–o = 8 Grundemotionen × 3 Stufen,
+// p–w = die 8 Kombinationen. Intensität, Emoji, Name und Kombi-Marker sind
+// dadurch implizit und müssen nicht mehr im Link wiederholt werden.
+const SHARE_BASE_KEYS=order.filter(key=>key!=='neutral');
+const SHARE_COMBO_KEYS=Object.keys(combos);
+function comboKeyForParts(parts){
+ if(!Array.isArray(parts)||parts.length!==2)return null;
+ return SHARE_COMBO_KEYS.find(key=>{const pair=combos[key].partners;return pair.includes(parts[0])&&pair.includes(parts[1])})||null
+}
+function sharedStateNumber(item){
+ if(!item||typeof item!=='object')return null;
+ const comboKey=typeof item.combo==='string'&&combos[item.combo]?item.combo:comboKeyForParts(item.colorParts);
+ if(comboKey)return 25+SHARE_COMBO_KEYS.indexOf(comboKey);
+ if(item.key==='neutral')return 0;
+ const baseIndex=SHARE_BASE_KEYS.indexOf(item.key);if(baseIndex<0)return null;
+ const level=Math.max(1,Math.min(3,Number(item.intensity)||1));
+ return 1+baseIndex*3+(level-1)
+}
+function sharedStateItem(number){
+ const value=Number(number);if(!Number.isInteger(value)||value<0||value>32)return null;
+ if(value===0){const emotion=base.neutral;return {frames:emotion.ascii[0],key:'neutral',intensity:0,code:emotion.codes[0],isCombo:false}}
+ if(value<=24){const offset=value-1,key=SHARE_BASE_KEYS[Math.floor(offset/3)],intensity=offset%3+1,emotion=base[key];return {frames:emotion.ascii[intensity-1],key,intensity,code:emotion.codes[intensity-1],isCombo:false}}
+ const comboKey=SHARE_COMBO_KEYS[value-25],combo=combos[comboKey];if(!combo)return null;
+ const displayKey=Object.keys(comboOverview).find(key=>comboOverview[key]===comboKey)||combo.partners[0];
+ return {frames:combo.ascii,colorParts:combo.partners.slice(),displayKey,intensity:3,code:combo.code,name:combo.name,isCombo:true}
+}
+function encodeCompactHistory(items,limit=APP_CONFIG.replay.maxItems){
+ if(!Array.isArray(items))return '';
+ return items.slice(-Math.max(1,limit)).map(sharedStateNumber).filter(Number.isInteger).map(value=>value.toString(36)).join('')
+}
+function decodeCompactHistory(value,limit=APP_CONFIG.replay.maxItems){
+ if(typeof value!=='string'||!value||value.length>limit||!/^[0-9a-w]+$/i.test(value))return null;
+ const items=[...value.toLowerCase()].map(character=>sharedStateItem(parseInt(character,36)));
+ return items.every(Boolean)?items:null
+}
+function sharedGameActionNumber(action){
+ if(!action||typeof action!=='object')return null;
+ if(action.combo===true){const comboKey=comboKeyForParts([action.first,action.second]);return comboKey?25+SHARE_COMBO_KEYS.indexOf(comboKey):null}
+ return sharedStateNumber({key:action.key,intensity:action.level})
+}
+function sharedGameAction(number){
+ const item=sharedStateItem(number);if(!item||item.key==='neutral')return null;
+ return item.isCombo?{combo:true,first:item.colorParts[0],second:item.colorParts[1]}:{key:item.key,level:item.intensity}
+}
+function encodeCompactScore(payload){
+ if(!payload||payload.type!=='score')return '';
+ const score=Math.max(0,Math.min(9999,Number(payload.score)||0)).toString(36);
+ const mode=payload.mode==='easy'?'.e':payload.mode==='pro'?'.p':'';
+ const sequence=Array.isArray(payload.sequence)?payload.sequence.slice(0,80).map(sharedGameActionNumber).filter(Number.isInteger).map(value=>value.toString(36)).join(''):'';
+ return score+mode+(sequence?'~'+sequence:'')
+}
+function decodeCompactScore(value){
+ const match=typeof value==='string'&&value.match(/^([0-9a-z]+)(?:\.([ep]))?(?:~([0-9a-w]{1,80}))?$/i);if(!match)return null;
+ const score=parseInt(match[1],36);if(!Number.isFinite(score)||score<0||score>9999)return null;
+ const mode=match[2]?.toLowerCase()==='e'?'easy':match[2]?.toLowerCase()==='p'?'pro':'normal';
+ const sequence=match[3]?[...match[3].toLowerCase()].map(character=>sharedGameAction(parseInt(character,36))):[];
+ if(sequence.some(action=>!action))return null;
+ return {type:'score',score,mode,sequence}
+}
 
 // Kurze eigenständige Retro-Handheld-Signale. Audio ist rein optional:
 // Fehlt Web Audio oder blockiert der Browser den Ton, läuft die App unverändert weiter.
@@ -633,7 +695,7 @@ function recordHistory(mode='append'){
  else if(mode==='sync-current'&&last&&JSON.stringify(last)===JSON.stringify(item))return;
  else if(mode==='sync-current'&&sameHistoryEmotion(last,item))state.history[lastIndex]=item;
  else state.history.push(item);
- if(state.history.length>40)state.history.shift()
+ if(state.history.length>APP_CONFIG.replay.maxItems)state.history.splice(0,state.history.length-APP_CONFIG.replay.maxItems)
 }
 
 /* Teilbare Zustandslinks ---------------------------------------------------
@@ -648,7 +710,20 @@ function decodeSharePayload(value){
  try{const padded=value.replace(/-/g,'+').replace(/_/g,'/')+'==='.slice((value.length+3)%4);return JSON.parse(decodeURIComponent(escape(atob(padded))))}
  catch{return null}
 }
+function compactShareFragment(payload,fragmentOverride=null){
+ if(payload?.type==='score'){const value=encodeCompactScore(payload);return value?`#g=${value}`:null}
+ if(payload?.type==='replay'){const value=encodeCompactHistory(payload.items);if(!value)return null;return `#${fragmentOverride==='slow'?'s':'r'}=${value}`}
+ if(payload?.type==='emotion'){const value=encodeCompactHistory([payload.item],1);return value?`#e=${value}`:null}
+ return null
+}
+function shareTextForFragment(fragment){
+ if(location.protocol!=='http:'&&location.protocol!=='https:')return {text:fragment,isLink:false};
+ const url=new URL(location.href);url.search='';url.hash=fragment.slice(1);url.pathname=url.pathname.replace(/\/index\.html$/,'/');
+ return {text:url.toString(),isLink:true}
+}
 function shareReference(payload,fragmentOverride=null){
+ const compact=compactShareFragment(payload,fragmentOverride);
+ if(compact)return shareTextForFragment(compact);
  const encoded=encodeSharePayload(payload);
  if(!encoded)return null;
  const fragmentType=fragmentOverride==='slow'?'slow':payload?.type==='score'?'score':payload?.type==='replay'?'replay':'share';
@@ -690,7 +765,7 @@ async function copyTextRobust(text){
  return legacyCopyText(text)
 }
 async function copyModeLink(mode){
- let text=`#${mode}`;if(location.protocol==='http:'||location.protocol==='https:'){const url=new URL(location.href);url.searchParams.delete('mode');url.hash=mode;text=url.toString()}return copyTextRobust(text)
+ return copyTextRobust(shareTextForFragment(`#${mode}`).text)
 }
 async function copySharePayload(payload,label,fragmentOverride=null){
  const reference=shareReference(payload,fragmentOverride);
@@ -770,18 +845,23 @@ function applyDecodedSharedPayload(payload,slowTag=false){
   state.history=[historyItem()].filter(Boolean);render();animateCurrent();return
  }
  if(payload.type==='replay'&&Array.isArray(payload.items)){
-  const valid=payload.items.filter(item=>item&&typeof item==='object').slice(-40);if(!valid.length)return;
+  const valid=payload.items.filter(item=>item&&typeof item==='object').slice(-APP_CONFIG.replay.maxItems);if(!valid.length)return;
   state.history=valid;state.slowReplay=slowTag||payload.slow===true;restoreHistoryItem(valid.at(-1));replayHistory()
   return
  }
  if(payload.type==='score'){showSharedGameScore(payload);replayGameOverSequence()}
 }
 function applySharedPayload(){
- const match=location.hash.match(/^#(share|replay|slow|score)=(.+)$/);if(!match)return;
- const payload=decodeSharePayload(match[2]),fragmentType=match[1];
- const valid=payload&&(fragmentType==='score'?payload.type==='score':['replay','slow'].includes(fragmentType)?payload.type==='replay':['emotion','replay'].includes(payload.type));
+ const match=location.hash.match(/^#(e|r|s|g|share|replay|slow|score)=(.+)$/);if(!match)return;
+ const fragmentType=match[1],value=match[2];
+ let payload=null;
+ if(fragmentType==='e'){const items=decodeCompactHistory(value,1);if(items)payload={type:'emotion',item:items[0]}}
+ else if(fragmentType==='r'||fragmentType==='s'){const items=decodeCompactHistory(value);if(items)payload={type:'replay',items}}
+ else if(fragmentType==='g')payload=decodeCompactScore(value);
+ else payload=decodeSharePayload(value);
+ const valid=payload&&(['score','g'].includes(fragmentType)?payload.type==='score':['replay','slow','r','s'].includes(fragmentType)?payload.type==='replay':['emotion','replay'].includes(payload.type));
  if(!valid)return;
- showIncomingShare(()=>applyDecodedSharedPayload(payload,fragmentType==='slow'),payload)
+ showIncomingShare(()=>applyDecodedSharedPayload(payload,fragmentType==='slow'||fragmentType==='s'),payload)
 }
 document.addEventListener('click',event=>{
  if(!state.incomingShare||!event.target.closest('.app'))return;
@@ -1379,12 +1459,12 @@ repeatBtn.onclick=repeatAllHistory;
 repeatBtn.ondblclick=event=>{event.preventDefault();repeatAllHistory()};
 function shareReplayFromPhone(){
  recordHistory('sync-current');
- if(state.history.length)copySharePayload({type:'replay',items:state.history.slice(-40)},'Replay-Link');
+ if(state.history.length)copySharePayload({type:'replay',items:state.history.slice(-APP_CONFIG.replay.maxItems)},'Replay-Link');
  else flashShareStatus('Replay ist leer')
 }
 function shareSlowReplayFromWifi(){
  recordHistory('sync-current');
- if(state.history.length)copySharePayload({type:'replay',items:state.history.slice(-40)},'Slow-Replay-Link','slow');
+ if(state.history.length)copySharePayload({type:'replay',items:state.history.slice(-APP_CONFIG.replay.maxItems)},'Slow-Replay-Link','slow');
  else flashShareStatus('Replay ist leer')
 }
 el('sendBtn').onclick=event=>{

@@ -94,6 +94,33 @@ Die ASCII-Motive gehören ausschließlich zum Programm **Emotronic**, nicht zur 
 | Aufgeben | `(x_x)` | zusammensinkend |
 | Überraschung | `:-O!` | kurz aufspringend |
 
+## Kurzcode-Tabelle in Emotronic
+
+Jeder Zustand belegt genau ein Base36-Zeichen. Intensität und Kombination sind dadurch bereits enthalten und brauchen keine zusätzlichen Felder.
+
+| Code | Zustand | Code | Zustand | Code | Zustand |
+|---|---|---|---|---|---|
+| `0` | Neutral | `1` | zufrieden | `2` | fröhlich |
+| `3` | begeistert | `4` | freundlich | `5` | zugewandt |
+| `6` | verbunden | `7` | interessiert | `8` | neugierig |
+| `9` | fasziniert | `a` | gereizt | `b` | verärgert |
+| `c` | wütend | `d` | besorgt | `e` | ängstlich |
+| `f` | panisch | `g` | abgeneigt | `h` | angeekelt |
+| `i` | übel | `j` | verlegen | `k` | befangen |
+| `l` | beschämt | `m` | bedrückt | `n` | traurig |
+| `o` | trauernd | `p` | Bewunderung | `q` | Dankbarkeit |
+| `r` | Streitlust | `s` | Abwertung | `t` | Unbehagen |
+| `u` | Reue | `v` | Aufgeben | `w` | Überraschung |
+
+| Fragment | Inhalt |
+|---|---|
+| `#e=` | einzelner Zustand |
+| `#r=` | normaler Replay-Verlauf, höchstens 24 Zeichen |
+| `#s=` | derselbe Verlauf in langsamer Wiedergabe |
+| `#g=` | Score; Modus und Spielfolge nur, wenn vorhanden beziehungsweise nötig |
+
+Alte Links mit `#share=`, `#replay=`, `#slow=` und `#score=` bleiben lesbar.
+
 ## Pflegecheck
 
 - Keine doppelten Namen oder OpenMoji-Codes.

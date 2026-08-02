@@ -31,7 +31,7 @@ const dataStart = html.indexOf('const APP_META=');
 const dataEnd = html.indexOf('let audioCtx=null;');
 assert(dataStart >= 0 && dataEnd > dataStart, 'Datentabellen nicht gefunden');
 const data = new Function(
-  `${html.slice(dataStart, dataEnd)};return {APP_META,base,order,combos,comboOverview,soundPatterns,specialSoundPatterns};`
+  `${html.slice(dataStart, dataEnd)};return {APP_META,APP_CONFIG,base,order,combos,comboOverview,soundPatterns,specialSoundPatterns,SHARE_BASE_KEYS,SHARE_COMBO_KEYS,sharedStateNumber,sharedStateItem,encodeCompactHistory,decodeCompactHistory,encodeCompactScore,decodeCompactScore};`
 )();
 
 const keyboardStart = html.indexOf('const keyboardEmotionMap=');
@@ -144,6 +144,30 @@ for (const motion of ['curiosity','affection','joy','fear','neutral','anger','sa
   assert(html.includes(`ascii-${motion}`), `Eigene ASCII-Bewegung fehlt: ${motion}`);
 }
 
+const compactStates = [
+  { key: 'neutral', intensity: 0 },
+  ...data.SHARE_BASE_KEYS.flatMap(key => [1, 2, 3].map(intensity => ({ key, intensity }))),
+  ...data.SHARE_COMBO_KEYS.map(combo => ({ combo, colorParts: data.combos[combo].partners }))
+];
+assert(compactStates.length === 33, 'Kurzcode bildet nicht genau 33 Zustände ab');
+const compactCode = data.encodeCompactHistory(compactStates, 40);
+assert(compactCode.length === compactStates.length, 'Kurzcode verwendet nicht genau ein Zeichen pro Zustand');
+assert(/^[0-9a-w]+$/.test(compactCode), 'Kurzcode ist nicht reines Base36 im Bereich 0-w');
+const compactRoundTrip = data.decodeCompactHistory(compactCode, 40);
+assert(compactRoundTrip?.length === compactStates.length, 'Kurzcode-Verlauf lässt sich nicht vollständig lesen');
+compactStates.forEach((state, index) => {
+  assert(data.sharedStateNumber(compactRoundTrip[index]) === data.sharedStateNumber(state), `Kurzcode-Rückweg weicht an Position ${index} ab`);
+});
+const normalScore = { type: 'score', score: 123, mode: 'normal', sequence: [{ key: 'joy', level: 2 }, { combo: true, first: 'curiosity', second: 'affection' }] };
+const normalScoreCode = data.encodeCompactScore(normalScore);
+assert(normalScoreCode === '3f~2p', 'Normaler Score enthält redundante Angaben');
+assert(JSON.stringify(data.decodeCompactScore(normalScoreCode)) === JSON.stringify(normalScore), 'Normaler Score-Kurzcode ist nicht verlustfrei');
+const proScore = { ...normalScore, mode: 'pro' };
+assert(data.encodeCompactScore(proScore) === '3f.p~2p', 'Abweichender Modus wird nicht knapp codiert');
+assert(html.includes("/^#(e|r|s|g|share|replay|slow|score)="), 'Kurze und alte Fragmentformate werden nicht gemeinsam gelesen');
+assert(data.APP_CONFIG?.replay?.maxItems === 24, 'Normaler Replay-Verlauf ist nicht auf 24 Schritte begrenzt');
+assert(html.includes('state.history.splice(0,state.history.length-APP_CONFIG.replay.maxItems)'), 'Älteste Replay-Schritte werden bei neuer Eingabe nicht entfernt');
+
 const { version, revision } = data.APP_META;
 assert(html.includes(`Emotronic v${version}`), 'Codekopf und APP_META-Version weichen ab');
 assert(html.includes(`Aktuelle Revision: ${revision}`), 'Codekopf und APP_META-Revision weichen ab');
@@ -177,4 +201,4 @@ for (const setName of manifest.sets) {
   }
 }
 
-console.log(`Emotronic v${version}: Modell, Spiegelung, Emojis, Kombis, Audio, Cache und Laufzeitspiegel OK`);
+console.log(`Emotronic v${version}: Modell, Kurzlinks, Spiegelung, Emojis, Kombis, Audio, Cache und Laufzeitspiegel OK`);
