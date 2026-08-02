@@ -1,10 +1,10 @@
 <!--
   ============================================================================
-  Emotronic v2.19
+  Emotronic v2.20
   Projektname: Emotronic
   Autor: Rasmus Klette
   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-  Aktuelle Revision: 119
+  Aktuelle Revision: 120
   ============================================================================
 -->
 <!doctype html>
@@ -172,16 +172,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v2.19 — CODEKOPF
+   Emotronic v2.20 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 119
+   Aktuelle Revision: 120
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'2.19',
-  revision:119,
+  version:'2.20',
+  revision:120,
   author:'Rasmus Klette'
 });
 
@@ -294,7 +294,7 @@ const base={
  anger:{category:'Wut',labels:['gereizt','verärgert','wütend'],codes:['1F612','1F620','1F92C'],ascii:[['>:-/',':-#','>:-('],['>:-(',':-#','>:-('],['>:-O','>:-O!','>:-(']],color:'#ef938b'},
  sadness:{category:'Trauer',labels:['bedrückt','traurig','trauernd'],codes:['1F641','1F622','1F62D'],ascii:[[':-(',':-<',':-('],[';-[',':-(',':-('],['T-T',';---;',':-(']],color:'#6381d7'},
  shame:{category:'Scham',labels:['verlegen','befangen','beschämt'],codes:['1F605','1F633','1FAE3'],ascii:[[':-$',':-$'],[':-$','._.',':-$'],['>_<','._.',':-$']],color:'#bfe36f'},
- disgust:{category:'Ekel',labels:['abgeneigt','angeekelt','übel'],codes:['1F62C','1F616','1F922'],ascii:[[':-X',':-E',':-X'],['X-(',':-&',':-X'],['x-X',':-&',':-X']],color:'#6f9f68'}
+ disgust:{category:'Ekel',labels:['abgeneigt','angeekelt','übel'],codes:['1F615','1F616','1F922'],ascii:[[':-X',':-E',':-X'],['X-(',':-&',':-X'],['x-X',':-&',':-X']],color:'#6f9f68'}
 };
 const order=['joy','affection','curiosity','anger','neutral','fear','disgust','shame','sadness'];
 // Gültige Nachbarschafts-Kombinationen.
@@ -303,7 +303,7 @@ const combos={
  'affection|joy':{name:'Dankbarkeit',audioName:'dankbarkeit',motion:'om-affection',code:'1F979',ascii:['^.-','^o^','^_^'],partners:['affection','joy']},
  'joy|anger':{name:'Streitlust',audioName:'streitlust',motion:'om-joy',code:'1F608',ascii:['}:-)', '}:-D', '}:-)'],partners:['joy','anger']},
  'anger|disgust':{name:'Abwertung',audioName:'abwertung',motion:'om-disgust',code:'1F644',ascii:['>:-/','¬_o','¬_¬'],partners:['anger','disgust']},
- 'disgust|shame':{name:'Selbstekel',audioName:'selbstekel',motion:'om-shame',code:'1F92E',ascii:['>.-','>.<','>_<'],partners:['disgust','shame']},
+ 'disgust|shame':{name:'Unbehagen',audioName:'unbehagen',motion:'om-shame',code:'1F62C',ascii:[':-|',':-\\',':-/'],partners:['disgust','shame']},
  'shame|sadness':{name:'Reue',audioName:'reue',motion:'om-sadness',code:'1F61E',ascii:['._o','._.','._.'],partners:['shame','sadness']},
  'sadness|fear':{name:'Hilflosigkeit',audioName:'hilflosigkeit',motion:'om-fear',code:'1F630',ascii:['D-','D-:','D:'],partners:['sadness','fear']},
  'fear|curiosity':{name:'Überraschung',audioName:'ueberraschung',motion:'om-surprise',code:'1F632',ascii:[':-o',':-0',':-O'],partners:['fear','curiosity']}

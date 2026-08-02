@@ -31,7 +31,7 @@ COMBOS = {
     "dankbarkeit": ("affection", "joy"),
     "streitlust": ("joy", "anger"),
     "abwertung": ("anger", "disgust"),
-    "selbstekel": ("disgust", "shame"),
+    "unbehagen": ("disgust", "shame"),
     "reue": ("shame", "sadness"),
     "hilflosigkeit": ("sadness", "fear"),
     "ueberraschung": ("fear", "curiosity"),
