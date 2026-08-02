@@ -1,4 +1,4 @@
-# Codex-Handoff: Emotronic v2.25
+# Codex-Handoff: Emotronic v2.26
 
 ## Auftrag
 
@@ -7,7 +7,7 @@ Diese Übergabe beschreibt den aktuellen Stand der installierbaren Emotronic-PWA
 ## Relevante Dateien
 
 - `sp-emotron/tools/emotronic-pwa/index.html` – maßgebliche Quelle
-- `sp-emotron/tools/emotronic-pwa/Emotronic-v2.25.html` – versionierter Snapshot, nach Änderungen neu erzeugen
+- `sp-emotron/tools/emotronic-pwa/Emotronic-v2.26.html` – versionierter Snapshot, nach Änderungen neu erzeugen
 - `sp-emotron/tools/emotronic-pwa/generate_audio_assets.py` – reproduzierbarer Generator beider Soundsets
 - `assets/audio/emotronic/` – Manifest sowie `8-bit` und `8-bit_soft`
 - `sp-emotron/tools/emotronic-pwa/sw.js` – Service Worker und Cache-Version
@@ -18,10 +18,10 @@ Diese Übergabe beschreibt den aktuellen Stand der installierbaren Emotronic-PWA
 
 ## Versionierung
 
-- Aktuell: **Emotronic v2.25**
+- Aktuell: **Emotronic v2.26**
 - `APP_META.version`: `2.20`
 - `APP_META.revision`: `120`
-- Service-Worker-Cache: `emotronic-v125`
+- Service-Worker-Cache: `emotronic-v126`
 - Beim Aktivieren nur ältere Caches mit dem Präfix `emotronic-v` entfernen; andere Anwendungen können dieselbe Domain verwenden.
 - Jede abgeschlossene Revision erhöht die Version um `0.01` und die Revision um `1`.
 - Codekopf, `APP_META`, Service Worker, versionierte HTML-Datei, README und ZIP müssen synchron bleiben.
@@ -167,9 +167,9 @@ Der Validator prüft Syntax, 8+1-Datentabellen, eindeutige Begriffe und Emojis, 
 Für ein auslieferbares ZIP vom Repository-Root aus:
 
 ```bash
-rm -f emotronic-pwa-v2.25.zip
-zip -rq emotronic-pwa-v2.25.zip sp-emotron/tools/emotronic-pwa
-unzip -t emotronic-pwa-v2.25.zip
+rm -f emotronic-pwa-v2.26.zip
+zip -rq emotronic-pwa-v2.26.zip sp-emotron/tools/emotronic-pwa
+unzip -t emotronic-pwa-v2.26.zip
 ```
 
 ## Vorsicht bei Änderungen

@@ -120,6 +120,30 @@ for (const item of Object.values(data.combos)) words.push(item.name);
 const normalizedWords = words.map(word => word.toLocaleLowerCase('de-DE'));
 assert(new Set(normalizedWords).size === normalizedWords.length, 'Emotions- oder Gefühlswort ist doppelt');
 
+const asciiOwners = [];
+for (const [key, item] of Object.entries(data.base)) {
+  const expectedLevels = key === 'neutral' ? 1 : 3;
+  assert(item.ascii.length === expectedLevels, `Falsche Zahl ASCII-Stufen für ${item.category}`);
+  item.ascii.forEach((frames, index) => {
+    assert(frames.length === 3, `ASCII-Animation für ${item.category} Stufe ${index + 1} hat nicht drei Frames`);
+    asciiOwners.push([frames.at(-1), `${item.category} ${index + 1}`]);
+  });
+}
+for (const item of Object.values(data.combos)) {
+  assert(item.ascii.length === 3, `ASCII-Animation für ${item.name} hat nicht drei Frames`);
+  asciiOwners.push([item.ascii.at(-1), item.name]);
+}
+const seenAscii = new Set();
+for (const [motif, owner] of asciiOwners) {
+  assert(/^[\x20-\x7e]+$/.test(motif), `ASCII-Motiv für ${owner} enthält Nicht-ASCII-Zeichen`);
+  assert(motif.length <= 7, `ASCII-Motiv für ${owner} ist zu breit`);
+  assert(!seenAscii.has(motif), `Doppeltes ASCII-Motiv ${motif} bei ${owner}`);
+  seenAscii.add(motif);
+}
+for (const motion of ['curiosity','affection','joy','fear','neutral','anger','sadness','shame','disgust','bewunderung','dankbarkeit','streitlust','abwertung','unbehagen','reue','aufgeben','ueberraschung']) {
+  assert(html.includes(`ascii-${motion}`), `Eigene ASCII-Bewegung fehlt: ${motion}`);
+}
+
 const { version, revision } = data.APP_META;
 assert(html.includes(`Emotronic v${version}`), 'Codekopf und APP_META-Version weichen ab');
 assert(html.includes(`Aktuelle Revision: ${revision}`), 'Codekopf und APP_META-Revision weichen ab');

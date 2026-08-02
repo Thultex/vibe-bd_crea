@@ -43,6 +43,26 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 .corner.left{left:-3px;border-radius:0 0 38px 0}.corner.right{right:-3px;border-radius:0 0 0 38px}.corner.active{background:#fff0a7;box-shadow:inset 0 0 0 4px #fff,0 0 0 2px var(--ink)}
 .phone-icon{font-size:34px;transform:rotate(-20deg);line-height:1;transform-origin:50% 55%}.corner.phone-ringing .phone-icon{animation:phoneRing .72s ease-in-out 2}@keyframes phoneRing{0%,100%{transform:rotate(-20deg) translateX(0)}15%{transform:rotate(-31deg) translateX(-2px)}30%{transform:rotate(-10deg) translateX(2px)}45%{transform:rotate(-29deg) translateX(-2px)}60%{transform:rotate(-12deg) translateX(2px)}75%{transform:rotate(-24deg) translateX(-1px)}}.wifi-icon{width:45px;height:34px;position:relative}.wifi-icon:before,.wifi-icon:after,.wifi-icon i{content:"";position:absolute;left:50%;transform:translateX(-50%);border:4px solid var(--ink);border-bottom:0;border-left-color:transparent;border-right-color:transparent;border-radius:50% 50% 0 0}.wifi-icon:before{width:42px;height:22px;top:0}.wifi-icon:after{width:28px;height:15px;top:9px}.wifi-icon i{width:14px;height:8px;top:18px}.wifi-icon b{position:absolute;width:7px;height:7px;border-radius:50%;background:var(--ink);bottom:0;left:50%;transform:translateX(-50%)}
 .ascii-stage{position:relative;z-index:2;width:100%;min-width:0;max-width:100%;height:60px;display:flex;align-items:center;justify-content:center;text-align:center;font:800 clamp(25px,7.5vw,40px)/1 ui-monospace,SFMono-Regular,Consolas,monospace;white-space:pre;overflow:hidden;filter:drop-shadow(0 2px 0 #fff);padding:0 58px;transition:font-size .25s ease,opacity .2s ease,letter-spacing .2s ease}.ascii-stage.intense{font-size:clamp(30px,9vw,46px)}
+.ascii-stage.ascii-motion{transform-origin:50% 55%;animation-duration:var(--ascii-duration,.62s);animation-timing-function:cubic-bezier(.2,.82,.25,1);animation-iteration-count:2}
+.ascii-curiosity{animation-name:asciiCuriosity}.ascii-affection{animation-name:asciiAffection}.ascii-joy{animation-name:asciiJoy}.ascii-fear{animation-name:asciiFear}.ascii-neutral{animation-name:asciiNeutral}.ascii-anger{animation-name:asciiAnger}.ascii-sadness{animation-name:asciiSadness}.ascii-shame{animation-name:asciiShame}.ascii-disgust{animation-name:asciiDisgust}
+.ascii-bewunderung{animation-name:asciiAdmire}.ascii-dankbarkeit{animation-name:asciiGrateful}.ascii-streitlust{animation-name:asciiMischief}.ascii-abwertung{animation-name:asciiSideEye}.ascii-unbehagen{animation-name:asciiUnease}.ascii-reue{animation-name:asciiRegret}.ascii-aufgeben{animation-name:asciiGiveUp}.ascii-ueberraschung{animation-name:asciiSurprise}
+@keyframes asciiCuriosity{0%,100%{transform:translate(0) rotate(0)}30%{transform:translate(var(--ascii-shift-neg),-2px) rotate(var(--ascii-tilt-neg))}70%{transform:translate(var(--ascii-shift),1px) rotate(var(--ascii-tilt))}}
+@keyframes asciiAffection{0%,100%{transform:scale(1) rotate(0)}35%{transform:translateY(-2px) scale(1.08) rotate(var(--ascii-tilt-neg))}72%{transform:translateY(1px) scale(1.03) rotate(var(--ascii-tilt))}}
+@keyframes asciiJoy{0%,100%{transform:translateY(0) rotate(0)}32%{transform:translateY(var(--ascii-shift-neg)) rotate(var(--ascii-tilt-neg))}67%{transform:translateY(2px) rotate(var(--ascii-tilt))}}
+@keyframes asciiFear{0%,100%{transform:translate(0)}18%{transform:translate(var(--ascii-shift-neg),1px)}38%{transform:translate(var(--ascii-shift),-2px)}58%{transform:translate(-2px,1px)}78%{transform:translate(2px,0)}}
+@keyframes asciiNeutral{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.025);opacity:.82}}
+@keyframes asciiAnger{0%,100%{transform:translate(0) scale(1)}18%{transform:translate(var(--ascii-shift-neg),0) scale(1.03)}38%{transform:translate(var(--ascii-shift),-1px) scale(1.07)}58%{transform:translate(-3px,1px) scale(1.04)}78%{transform:translate(2px,0) scale(1.02)}}
+@keyframes asciiSadness{0%,100%{transform:translateY(0) scale(1)}45%{transform:translateY(var(--ascii-shift)) scale(.96)}75%{transform:translateY(2px) scale(.985)}}
+@keyframes asciiShame{0%,100%{transform:translate(0) scale(1) rotate(0)}40%{transform:translate(-2px,var(--ascii-shift)) scale(.94) rotate(var(--ascii-tilt-neg))}72%{transform:translate(1px,2px) scale(.98) rotate(1deg)}}
+@keyframes asciiDisgust{0%,100%{transform:translate(0) rotate(0)}38%{transform:translate(var(--ascii-shift-neg),2px) rotate(var(--ascii-tilt-neg))}72%{transform:translate(2px,-1px) rotate(1deg)}}
+@keyframes asciiAdmire{0%,100%{transform:scale(1)}42%{transform:translateY(-3px) scale(1.12)}72%{transform:scale(1.03)}}
+@keyframes asciiGrateful{0%,100%{transform:translateY(0) scale(1)}45%{transform:translateY(var(--ascii-shift-neg)) scale(1.06)}75%{transform:translateY(-1px) scale(1.02)}}
+@keyframes asciiMischief{0%,100%{transform:translateX(0) skewX(0)}38%{transform:translateX(var(--ascii-shift-neg)) skewX(-7deg)}72%{transform:translateX(2px) skewX(4deg)}}
+@keyframes asciiSideEye{0%,100%{transform:translateX(0)}42%{transform:translateX(var(--ascii-shift))}72%{transform:translateX(1px)}}
+@keyframes asciiUnease{0%,100%{transform:translate(0) rotate(0)}24%{transform:translate(-2px,1px) rotate(-2deg)}48%{transform:translate(2px,-1px) rotate(2deg)}72%{transform:translate(-1px,1px) rotate(-1deg)}}
+@keyframes asciiRegret{0%,100%{transform:translateY(0)}45%{transform:translateY(var(--ascii-shift))}75%{transform:translateY(2px)}}
+@keyframes asciiGiveUp{0%,100%{transform:translateY(0) scaleY(1)}55%{transform:translateY(var(--ascii-shift)) scaleY(.86)}80%{transform:translateY(3px) scaleY(.94)}}
+@keyframes asciiSurprise{0%,100%{transform:scale(1)}34%{transform:translateY(-3px) scale(1.18)}68%{transform:scale(.98)}}
 .emotion-name{position:relative;z-index:2;text-align:center;min-height:27px;font-size:21px;font-weight:950;margin-top:-2px}.emotion-detail{position:relative;z-index:2;text-align:center;min-height:20px;font-size:13px;font-weight:750;opacity:.72}
 .emotion-info{position:relative;z-index:3;width:calc(100% - 14px);min-width:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,auto);align-items:end;gap:12px;margin:9px 7px 0;padding:0 3px;min-height:47px;transition:opacity .28s ease;color:rgba(36,39,44,.82)}.emotion-info-left{min-width:0;padding-bottom:1px}.current-emotion{max-width:100%;font-size:21px;font-weight:900;line-height:1.18;min-height:25px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.current-category{max-width:100%;font-size:13px;font-weight:760;opacity:.60;line-height:1.25;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.current-category.share-hint{font-size:11px;letter-spacing:-.015em;opacity:.72}.current-strength{min-width:0;max-width:82px;font-size:13px;font-weight:800;opacity:.60;text-align:right;padding-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.emotion-info.empty .current-emotion{opacity:.46}.emotion-info.empty .current-category,.emotion-info.empty .current-strength{opacity:0}
 .meter-wrap{position:relative;z-index:2;margin-top:2px}
@@ -172,16 +192,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v2.25 — CODEKOPF
+   Emotronic v2.26 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 125
+   Aktuelle Revision: 126
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'2.25',
-  revision:125,
+  version:'2.26',
+  revision:126,
   author:'Rasmus Klette'
 });
 
@@ -211,7 +231,7 @@ const APP_CONFIG={
     keypadCrossfadeMs:150,       // Gesamtdauer der Tasten-Überblendung; Verlauf bleibt proportional
     emojiTransitionDelayMs:240,
     emojiDurationMs:[1000,1280,1550],
-    asciiFrameMs:[210,165,125],
+    asciiFrameMs:[190,140,105],
     backgroundEmojiOpacity:[0.14,0.60,0.50],
     backgroundEmojiScale:[1.48,1.55,1.63]
   },
@@ -286,28 +306,29 @@ const strengthWords=['aus','schwach','mittel','stark'];
 // Basisfarbe je Zweig. Die Intensitätsfarben werden wie bisher daraus
 // berechnet. Das vollständige Rad ist an der Y-Achse gespiegelt.
 const base={
- curiosity:{category:'Neugier',labels:['interessiert','neugierig','fasziniert'],codes:['1F60F','1FAE2','1F929'],ascii:[[':-?',':-?'],[':-?',':-o?',':-?'],[':-?','8-?',':-?']],color:'#83d4cf'},
- affection:{category:'Zuneigung',labels:['freundlich','zugewandt','verbunden'],codes:['1F609','1F917','1F970'],ascii:[[':-)',':-*'],[':-)',';-*',':-*'],[':-*',';-*',':-*']],color:'#f4b56d'},
- joy:{category:'Freude',labels:['zufrieden','fröhlich','begeistert'],codes:['1F60C','1F60A','1F602'],ascii:[[':-)',':-D'],[':-)',':-D',':-D'],[':-D','X-D',':-D']],color:'#f5df6f'},
- fear:{category:'Angst',labels:['besorgt','ängstlich','panisch'],codes:['1F61F','1F628','1F631'],ascii:[[':-s',':-S'],[':-S',':-O',':-S'],['D-:','D:',':-S']],color:'#c2a8dc'},
- neutral:{category:'Neutral',labels:['ausgeglichen'],codes:['1F610'],ascii:[[':-|',':-|']],color:'#ddd9d0'},
- anger:{category:'Wut',labels:['gereizt','verärgert','wütend'],codes:['1F612','1F620','1F92C'],ascii:[['>:-/',':-#','>:-('],['>:-(',':-#','>:-('],['>:-O','>:-O!','>:-(']],color:'#ef938b'},
- sadness:{category:'Trauer',labels:['bedrückt','traurig','trauernd'],codes:['1F641','1F622','1F62D'],ascii:[[':-(',':-<',':-('],[';-[',':-(',':-('],['T-T',';---;',':-(']],color:'#6381d7'},
- shame:{category:'Scham',labels:['verlegen','befangen','beschämt'],codes:['1F605','1F633','1FAE3'],ascii:[[':-$',':-$'],[':-$','._.',':-$'],['>_<','._.',':-$']],color:'#bfe36f'},
- disgust:{category:'Ekel',labels:['abgeneigt','angeekelt','übel'],codes:['1F615','1F616','1F922'],ascii:[[':-X',':-E',':-X'],['X-(',':-&',':-X'],['x-X',':-&',':-X']],color:'#6f9f68'}
+ curiosity:{category:'Neugier',labels:['interessiert','neugierig','fasziniert'],codes:['1F60F','1FAE2','1F929'],ascii:[[':-.',':-?',':-?'],['o_o?','o_O?','o_o?'],['*o*?','*_*?','*o*?']],color:'#83d4cf'},
+ affection:{category:'Zuneigung',labels:['freundlich','zugewandt','verbunden'],codes:['1F609','1F917','1F970'],ascii:[[':-)',';-)', ';-)'],[':-)',':-*',':-*'],[':-*',':-)<3',':-)<3']],color:'#f4b56d'},
+ joy:{category:'Freude',labels:['zufrieden','fröhlich','begeistert'],codes:['1F60C','1F60A','1F602'],ascii:[['-_-','^_^','^_^'],[':-)',':-D',':-D'],[':-D','X-D','X-D!']],color:'#f5df6f'},
+ fear:{category:'Angst',labels:['besorgt','ängstlich','panisch'],codes:['1F61F','1F628','1F631'],ascii:[[':-|',':-s',':-s'],[':-S','D-:','D-:'],['D:','D8<','D8<']],color:'#c2a8dc'},
+ neutral:{category:'Neutral',labels:['ausgeglichen'],codes:['1F610'],ascii:[[':-|','-_-',':-|']],color:'#ddd9d0'},
+ anger:{category:'Wut',labels:['gereizt','verärgert','wütend'],codes:['1F612','1F620','1F92C'],ascii:[['>:-/','>:-|','>:-/'],['>:-/','>:-(','>:-('],['>:-(','>:-O!','>:-O!']],color:'#ef938b'},
+ sadness:{category:'Trauer',labels:['bedrückt','traurig','trauernd'],codes:['1F641','1F622','1F62D'],ascii:[[':-|',':-(',':-('],[':-(',":'-(",":'-("],[":'-(",'T_T','T_T']],color:'#6381d7'},
+ shame:{category:'Scham',labels:['verlegen','befangen','beschämt'],codes:['1F605','1F633','1FAE3'],ascii:[[':-)',':-$',':-$'],['o_o','._.','._.'],['._.','(>_<)','(>_<)']],color:'#bfe36f'},
+ disgust:{category:'Ekel',labels:['abgeneigt','angeekelt','übel'],codes:['1F615','1F616','1F922'],ascii:[[':-|',':-/',':-/'],[':-/',':-&',':-&'],[':-&','X-P','X-P']],color:'#6f9f68'}
 };
 const order=['joy','affection','curiosity','anger','neutral','fear','disgust','shame','sadness'];
 // Gültige Nachbarschafts-Kombinationen.
 const combos={
- 'curiosity|affection':{name:'Bewunderung',audioName:'bewunderung',motion:'om-curiosity',code:'1F60D',ascii:['o_o','*o*','*_*'],partners:['curiosity','affection']},
- 'affection|joy':{name:'Dankbarkeit',audioName:'dankbarkeit',motion:'om-affection',code:'1F979',ascii:['^.-','^o^','^_^'],partners:['affection','joy']},
- 'joy|anger':{name:'Streitlust',audioName:'streitlust',motion:'om-joy',code:'1F608',ascii:['}:-)', '}:-D', '}:-)'],partners:['joy','anger']},
- 'anger|disgust':{name:'Abwertung',audioName:'abwertung',motion:'om-disgust',code:'1F644',ascii:['>:-/','¬_o','¬_¬'],partners:['anger','disgust']},
- 'disgust|shame':{name:'Unbehagen',audioName:'unbehagen',motion:'om-shame',code:'1F62C',ascii:[':-|',':-\\',':-/'],partners:['disgust','shame']},
- 'shame|sadness':{name:'Reue',audioName:'reue',motion:'om-sadness',code:'1F61E',ascii:['._o','._.','._.'],partners:['shame','sadness']},
- 'sadness|fear':{name:'Aufgeben',audioName:'aufgeben',motion:'om-sadness',code:'1F629',ascii:['(-_-)','(x_x)','(;_;)'],partners:['sadness','fear']},
- 'fear|curiosity':{name:'Überraschung',audioName:'ueberraschung',motion:'om-surprise',code:'1F632',ascii:[':-o',':-0',':-O'],partners:['fear','curiosity']}
+ 'curiosity|affection':{name:'Bewunderung',audioName:'bewunderung',motion:'om-curiosity',code:'1F60D',ascii:['o_o','*o*','(*o*)'],partners:['curiosity','affection']},
+ 'affection|joy':{name:'Dankbarkeit',audioName:'dankbarkeit',motion:'om-affection',code:'1F979',ascii:['^.^',';_;','(;_;)+'],partners:['affection','joy']},
+ 'joy|anger':{name:'Streitlust',audioName:'streitlust',motion:'om-joy',code:'1F608',ascii:['}:-)', '}:-D', '}:-D'],partners:['joy','anger']},
+ 'anger|disgust':{name:'Abwertung',audioName:'abwertung',motion:'om-disgust',code:'1F644',ascii:['-_o','>_o','>_>'],partners:['anger','disgust']},
+ 'disgust|shame':{name:'Unbehagen',audioName:'unbehagen',motion:'om-shame',code:'1F62C',ascii:[':-|',':-/',':-\\'],partners:['disgust','shame']},
+ 'shame|sadness':{name:'Reue',audioName:'reue',motion:'om-sadness',code:'1F61E',ascii:['._.','u_.','u_u'],partners:['shame','sadness']},
+ 'sadness|fear':{name:'Aufgeben',audioName:'aufgeben',motion:'om-sadness',code:'1F629',ascii:['(-_-)','(x_x)','(x_x)'],partners:['sadness','fear']},
+ 'fear|curiosity':{name:'Überraschung',audioName:'ueberraschung',motion:'om-surprise',code:'1F632',ascii:[':-o',':-O',':-O!'],partners:['fear','curiosity']}
 };
+const ASCII_MOTION_CLASSES=['ascii-curiosity','ascii-affection','ascii-joy','ascii-fear','ascii-neutral','ascii-anger','ascii-sadness','ascii-shame','ascii-disgust','ascii-bewunderung','ascii-dankbarkeit','ascii-streitlust','ascii-abwertung','ascii-unbehagen','ascii-reue','ascii-aufgeben','ascii-ueberraschung'];
 // Vollständige Kombi-Übersicht aus „Bereit“: Jede äußere Taste zeigt den
 // Übergang von ihrem gegen den Uhrzeigersinn benachbarten Zweig.
 const COMBO_OVERVIEW_KEY='__overview__';
@@ -473,7 +494,8 @@ function handleCombo(k){
 function setIntensity(n){if(state.game.active)return;if(!state.powered)return;state.slowReplay=false;if(state.selected&&typeof state.selected==='object'){state.intensity=3;render();return}n=Math.max(0,Math.min(3,n));if(!state.selected){state.intensity=0;render();return}if(state.selected==='neutral'){state.intensity=0;render();return}n=Math.max(APP_CONFIG.normalMode.minEmotionLevel,n);const changed=n!==state.intensity;state.intensity=n;recordHistory('replace-current');if(changed)triggerSenderStream();playEmotionSound(state.selected,n);animateNeedle(n);render({keypadIntensityCrossfade:changed});animateCurrent()}
 function animateNeedle(target=state.intensity){const n=el('needle'),previous=Number(n.dataset.prev||0),next=Number(target)||0,dir=next>previous?1:next<previous?-1:0,atLeftEdge=next===0;n.dataset.prev=next;n.classList.remove('swing');if(!dir)return;n.style.setProperty('--overshoot',atLeftEdge?'0px':`${dir*7}px`);n.style.setProperty('--rebound',atLeftEdge?'0px':`${dir*3}px`);void n.offsetWidth;n.classList.add('swing')}
 function getFrames(){if(!state.powered)return [''];if(!state.selected)return [''];if(typeof state.selected==='object')return state.selected.ascii;const e=base[state.selected];if(state.selected==='neutral')return e.ascii[0];return e.ascii[Math.max(0,state.intensity-1)]}
-function setStagePosition(){const stage=el('asciiStage');stage.classList.remove('intense');if(state.intensity>=3)stage.classList.add('intense')}
+function setStagePosition(){const stage=el('asciiStage'),level=Math.max(0,Math.min(3,state.intensity||0)),shift=[3,3,4,6][level],tilt=[2,2,3,4][level],duration=[760,720,600,480][level];stage.classList.remove('intense');if(level>=3)stage.classList.add('intense');stage.style.setProperty('--ascii-shift',shift+'px');stage.style.setProperty('--ascii-shift-neg',-shift+'px');stage.style.setProperty('--ascii-tilt',tilt+'deg');stage.style.setProperty('--ascii-tilt-neg',-tilt+'deg');stage.style.setProperty('--ascii-duration',duration+'ms')}
+function asciiMotionClass(){if(typeof state.selected==='object'){const combo=combos[state.selected.combo];return combo?`ascii-${combo.audioName}`:'ascii-neutral'}return `ascii-${state.selected||'neutral'}`}
 function openMojiMotionClass(){if(typeof state.selected==='object')return combos[state.selected.combo]?.motion||'om-combo';return state.selected?`om-${state.selected}`:'om-neutral'}
 function animateOpenMoji(replayMode=false,levelOverride=null,motionOverride=null){
  const cls=motionOverride||(openMojiMotionClass());
@@ -500,7 +522,7 @@ function animateOpenMoji(replayMode=false,levelOverride=null,motionOverride=null
   accent.id='intensity-motion';
  });
 }
-function animateCurrent(skipTransitionDelay=false){clearInterval(state.timer);clearTimeout(state.omDelayTimer);state.omDelayTimer=null;setStagePosition();const frames=getFrames();let i=0,stage=el('asciiStage');stage.classList.remove('pulse','shake');void stage.offsetWidth;stage.classList.add(state.intensity>=3?'shake':'pulse');stage.textContent=frames[0]||' ';const startEmojiMotion=()=>requestAnimationFrame(()=>animateOpenMoji());if(skipTransitionDelay)startEmojiMotion();else state.omDelayTimer=setTimeout(()=>{state.omDelayTimer=null;startEmojiMotion()},APP_CONFIG.normalMode.emojiTransitionDelayMs);const speed=APP_CONFIG.normalMode.asciiFrameMs[Math.max(0,Math.min(2,state.intensity-1))];state.timer=setInterval(()=>{i++;if(i>=frames.length){clearInterval(state.timer);state.timer=null;stage.textContent=frames.at(-1)||' ';return}stage.textContent=frames[i]},speed)}
+function animateCurrent(skipTransitionDelay=false){clearInterval(state.timer);clearTimeout(state.omDelayTimer);state.omDelayTimer=null;setStagePosition();const frames=getFrames();let i=0,stage=el('asciiStage');stage.classList.remove('pulse','shake','ascii-motion',...ASCII_MOTION_CLASSES);void stage.offsetWidth;stage.classList.add('ascii-motion',asciiMotionClass());stage.textContent=frames[0]||' ';const startEmojiMotion=()=>requestAnimationFrame(()=>animateOpenMoji());if(skipTransitionDelay)startEmojiMotion();else state.omDelayTimer=setTimeout(()=>{state.omDelayTimer=null;startEmojiMotion()},APP_CONFIG.normalMode.emojiTransitionDelayMs);const speed=APP_CONFIG.normalMode.asciiFrameMs[Math.max(0,Math.min(2,state.intensity-1))];state.timer=setInterval(()=>{i++;if(i>=frames.length){clearInterval(state.timer);state.timer=null;stage.textContent=frames.at(-1)||' ';return}stage.textContent=frames[i]},speed)}
 function keyCode(k){
  if(typeof state.selected==='object'&&state.displayKey===k)return state.selected.code;
  // Nur die kleinen Tasten spiegeln im Normal-/Empfängermodus die Stufe vorab.

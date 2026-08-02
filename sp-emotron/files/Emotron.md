@@ -25,6 +25,15 @@ Der vorbereitete Bestand wird ohne erneuten Download vom Repository-Stamm aus ge
 python sp-emotron\tools\illustrator\download_openmoji_assets.py --check
 ```
 
+Die vollständige, Illustrator-unabhängige SVG-Fassung wird reproduzierbar neu aufgebaut und geprüft mit:
+
+```powershell
+python sp-emotron\tools\illustrator\update_emotron_svg.py
+python sp-emotron\tools\illustrator\update_emotron_svg.py --check
+```
+
+`emotron.svg` enthält alle OpenMoji als eingebettete Vektoren. Die sichtbare Standardansicht verwendet `Color`, `emoji_svg color`, `names for emoji` und `names for emoji - front`; Schwarzweiß, Faded und die reine Namensansicht bleiben als ausgeblendete, deckungsgleiche Gruppen erhalten.
+
 `../tools/illustrator/inspect_emotron.jsx` kann später über Illustrators Befehl **Datei → Skripten → Anderes Skript** einen Ebenenbericht `Emotron.layers.txt` erzeugen, bevor die Vektoren und Farben eingesetzt werden.
 
 ## Grundemotionen, Namen, Emojis und Farben
@@ -58,6 +67,33 @@ Die Namen sind kurze, eindeutige Einwort-Nomen. Auch hier werden in `emoji_svg c
 | Trauer + Angst | Aufgeben | `1F629` 😩 | Angst |
 | Angst + Neugier | Überraschung | `1F632` 😲 | Neugier |
 
+## ASCII-Motive in Emotronic
+
+Die ASCII-Motive gehören ausschließlich zum Programm **Emotronic**, nicht zur SVG- oder Illustrator-Grafik des Emotron-Rads. Jede Darstellung besteht aus drei kurzen Animationsframes und endet auf dem hier dokumentierten eindeutigen Motiv. Die Bühne bleibt wie zuvor mittig im Displaykasten; die Schrift liegt je nach Intensität bei ungefähr `25–46 px`, die emotionsbezogene Bewegung bleibt mit etwa `2–6 px` Hub innerhalb derselben Fläche.
+
+| Emotion | schwach | mittel | stark | Bewegung |
+|---|---|---|---|---|
+| Neugier | `:-?` | `o_o?` | `*o*?` | suchend seitlich |
+| Zuneigung | `;-)` | `:-*` | `:-)<3` | weich wiegend |
+| Freude | `^_^` | `:-D` | `X-D!` | federnd nach oben |
+| Wut | `>:-/` | `>:-(` | `>:-O!` | kräftig rüttelnd |
+| Ekel | `:-/` | `:-&` | `X-P` | zurückweichend |
+| Scham | `:-$` | `._.` | `(>_<)` | klein einziehend |
+| Trauer | `:-(` | `:'-(` | `T_T` | langsam sinkend |
+| Angst | `:-s` | `D-:` | `D8<` | nervös zitternd |
+| Neutral | <code>:-&#124;</code> | – | – | ruhig atmend |
+
+| Zwischenemotion | ASCII-Motiv | Bewegung |
+|---|---|---|
+| Bewunderung | `(*o*)` | aufleuchtend |
+| Dankbarkeit | `(;_;)+` | sanft schwebend |
+| Streitlust | `}:-D` | schelmisch kippend |
+| Abwertung | `>_>` | seitlich blickend |
+| Unbehagen | `:-\` | leicht taumelnd |
+| Reue | `u_u` | gesenkt |
+| Aufgeben | `(x_x)` | zusammensinkend |
+| Überraschung | `:-O!` | kurz aufspringend |
+
 ## Pflegecheck
 
 - Keine doppelten Namen oder OpenMoji-Codes.
@@ -65,3 +101,4 @@ Die Namen sind kurze, eindeutige Einwort-Nomen. Auch hier werden in `emoji_svg c
 - Farbiges und schwarzweißes OpenMoji behalten identische Geometrie, Code-Reihenfolge und Position.
 - `Color faded` und `emoji_svg color faded` bleiben deckungsgleiche Kopien ihrer Ausgangsebenen.
 - Bei jeder Änderung PWA, Illustrator-Datei, diese Referenz und den Validator gemeinsam aktualisieren.
+- Alle Emotronic-ASCII-Endmotive sind echte ASCII-Zeichen, höchstens sieben Zeichen breit und untereinander eindeutig.

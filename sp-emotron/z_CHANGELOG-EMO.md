@@ -37,7 +37,10 @@ Erstübernahme und anschließender vollständiger Neuaufbau von Emotronic mit fu
 - Bedienung: Neutral bleibt beliebig oft wählbar. Der erste Ausschalter-Klick leert den Replay-Verlauf und wechselt zu Bereit; erst der zweite Klick schaltet aus.
 - Simon: Die diagonale Auswahl verwendet Freude für Leicht, Neutral für Normal und Trauer für Profi.
 - PWA: Anwendung auf Emotronic v2.25, Revision 125 und Cache `emotronic-v125` angehoben; Snapshot und öffentlicher Laufzeitspiegel bytegleich synchronisiert.
+- Grafik: `emotron.svg` als Illustrator-unabhängige Hauptquelle vollständig mit gespiegelten Farbflächen, 33 eingebetteten OpenMoji je Farb-, Schwarzweiß- und Faded-Gruppe sowie eindeutigen Beschriftungsgruppen neu aufgebaut; externe Bildverknüpfungen entfallen.
+- Anzeige/Animation: Alle Grund-, Intensitäts- und Zwischenemotionen verwenden im Emotronic-Display kurze, eindeutige ASCII-Endmotive mit drei Frames und eigener Bewegungscharakteristik; Schriftgröße und zentrierte Position bleiben im bisherigen Displayraster.
 - Test: JavaScript-/Python-Syntax, eindeutige Emojis und Begriffe, Rad-/Tastaturspiegelung, Kombi-Anker, WAV-Struktur, Manifestgleichlauf, Versionsstand und bytegleiche Laufzeitspiegel geprüft.
+- Versionen: Emotronic v2.26.
 
 ### 2026-07-26 - emo, struktur, tools, pwa, replay, share, anzeige, audio, doku (ca. 1,6h)
 
