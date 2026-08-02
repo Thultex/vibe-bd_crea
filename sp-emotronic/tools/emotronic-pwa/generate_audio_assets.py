@@ -29,7 +29,7 @@ EMOTION_PATTERNS = {
 COMBOS = {
     "bewunderung": ("curiosity", "affection"),
     "dankbarkeit": ("affection", "joy"),
-    "triumph": ("joy", "anger"),
+    "streitlust": ("joy", "anger"),
     "abwertung": ("anger", "disgust"),
     "selbstekel": ("disgust", "shame"),
     "reue": ("shame", "sadness"),

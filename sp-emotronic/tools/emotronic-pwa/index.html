@@ -1,10 +1,10 @@
 <!--
   ============================================================================
-  Emotronic v2.18
+  Emotronic v2.19
   Projektname: Emotronic
   Autor: Rasmus Klette
   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-  Aktuelle Revision: 118
+  Aktuelle Revision: 119
   ============================================================================
 -->
 <!doctype html>
@@ -172,16 +172,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v2.18 — CODEKOPF
+   Emotronic v2.19 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 118
+   Aktuelle Revision: 119
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'2.18',
-  revision:118,
+  version:'2.19',
+  revision:119,
   author:'Rasmus Klette'
 });
 
@@ -301,7 +301,7 @@ const order=['joy','affection','curiosity','anger','neutral','fear','disgust','s
 const combos={
  'curiosity|affection':{name:'Bewunderung',audioName:'bewunderung',motion:'om-curiosity',code:'1F60D',ascii:['o_o','*o*','*_*'],partners:['curiosity','affection']},
  'affection|joy':{name:'Dankbarkeit',audioName:'dankbarkeit',motion:'om-affection',code:'1F979',ascii:['^.-','^o^','^_^'],partners:['affection','joy']},
- 'joy|anger':{name:'Triumph',audioName:'triumph',motion:'om-joy',code:'1F624',ascii:['>:)','>:D','>:D'],partners:['joy','anger']},
+ 'joy|anger':{name:'Streitlust',audioName:'streitlust',motion:'om-joy',code:'1F608',ascii:['}:-)', '}:-D', '}:-)'],partners:['joy','anger']},
  'anger|disgust':{name:'Abwertung',audioName:'abwertung',motion:'om-disgust',code:'1F644',ascii:['>:-/','¬_o','¬_¬'],partners:['anger','disgust']},
  'disgust|shame':{name:'Selbstekel',audioName:'selbstekel',motion:'om-shame',code:'1F92E',ascii:['>.-','>.<','>_<'],partners:['disgust','shame']},
  'shame|sadness':{name:'Reue',audioName:'reue',motion:'om-sadness',code:'1F61E',ascii:['._o','._.','._.'],partners:['shame','sadness']},
