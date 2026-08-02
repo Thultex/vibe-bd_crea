@@ -1,0 +1,156 @@
+'use strict';
+
+const fs = require('fs');
+const path = require('path');
+
+const toolRoot = __dirname;
+const repoRoot = path.resolve(toolRoot, '..', '..', '..');
+const sourcePath = path.join(toolRoot, 'index.html');
+const swPath = path.join(toolRoot, 'sw.js');
+const shareRoot = path.join(repoRoot, 'share', 'apps', 'emotronic');
+const audioRoot = path.join(repoRoot, 'assets', 'audio', 'emotronic');
+
+function assert(condition, message) {
+  if (!condition) throw new Error(message);
+}
+
+function read(file) {
+  return fs.readFileSync(file);
+}
+
+function sameBytes(left, right, label) {
+  assert(Buffer.compare(read(left), read(right)) === 0, `${label} ist nicht bytegleich`);
+}
+
+const html = read(sourcePath).toString('utf8');
+for (const match of html.matchAll(/<script>([\s\S]*?)<\/script>/g)) {
+  new Function(match[1]);
+}
+
+const dataStart = html.indexOf('const APP_META=');
+const dataEnd = html.indexOf('let audioCtx=null;');
+assert(dataStart >= 0 && dataEnd > dataStart, 'Datentabellen nicht gefunden');
+const data = new Function(
+  `${html.slice(dataStart, dataEnd)};return {APP_META,base,order,combos,comboOverview,soundPatterns,specialSoundPatterns};`
+)();
+
+const keyboardStart = html.indexOf('const keyboardEmotionMap=');
+const keyboardEnd = html.indexOf('function currentGridKey()', keyboardStart);
+assert(keyboardStart >= 0 && keyboardEnd > keyboardStart, 'Tastaturtabellen nicht gefunden');
+const keyboard = new Function(
+  `${html.slice(keyboardStart, keyboardEnd)};return {keyboardEmotionMap,keyGrid};`
+)();
+
+const expectedGrid = [
+  'joy', 'affection', 'curiosity',
+  'anger', 'neutral', 'fear',
+  'disgust', 'shame', 'sadness'
+];
+assert(JSON.stringify(data.order) === JSON.stringify(expectedGrid), 'Das sichtbare Rad ist nicht korrekt an der Y-Achse gespiegelt');
+assert(JSON.stringify(keyboard.keyGrid.flat()) === JSON.stringify(expectedGrid), 'Pfeiltastengitter stimmt nicht mit dem Rad überein');
+const digitCodes = ['Digit7', 'Digit8', 'Digit9', 'Digit4', 'Digit5', 'Digit6', 'Digit1', 'Digit2', 'Digit3'];
+assert(JSON.stringify(digitCodes.map(code => keyboard.keyboardEmotionMap[code])) === JSON.stringify(expectedGrid), 'Zifferntasten stimmen nicht mit dem Rad überein');
+assert((html.match(/const choices=\{joy:'Leicht',neutral:'Normal',sadness:'Profi'\}/g) || []).length === 2, 'Simon-Auswahl liegt nicht auf Freude, Neutral und Trauer');
+assert((html.match(/const selection=\{joy:'easy',neutral:'normal',sadness:'pro'\}/g) || []).length === 2, 'Simon-Moduszuordnung liegt nicht auf Freude, Neutral und Trauer');
+assert(!html.includes('powerOffAndClearHistoryFromNeutral'), 'Neutral darf den Ausschalter nicht auslösen');
+assert(html.includes("state.selected='neutral';state.displayKey='neutral';state.intensity=0"), 'Neutral ist nicht als wiederholt wählbarer Grundzustand umgesetzt');
+assert(html.includes("cancelReplayToReady();\n state.powerArmed=true;"), 'Der erste Ausschalter-Klick wechselt nicht zu Bereit und leert die Historie');
+
+const expectedBase = {
+  curiosity: ['Neugier', ['interessiert', 'neugierig', 'fasziniert'], ['1F60F', '1FAE2', '1F929'], '#83d4cf'],
+  affection: ['Zuneigung', ['freundlich', 'zugewandt', 'verbunden'], ['1F609', '1F917', '1F970'], '#f4b56d'],
+  joy: ['Freude', ['zufrieden', 'fröhlich', 'begeistert'], ['1F60C', '1F60A', '1F602'], '#f5df6f'],
+  anger: ['Wut', ['gereizt', 'verärgert', 'wütend'], ['1F612', '1F620', '1F92C'], '#ef938b'],
+  disgust: ['Ekel', ['abgeneigt', 'angeekelt', 'übel'], ['1F615', '1F616', '1F922'], '#6f9f68'],
+  shame: ['Scham', ['verlegen', 'befangen', 'beschämt'], ['1F605', '1F633', '1FAE3'], '#bfe36f'],
+  sadness: ['Trauer', ['bedrückt', 'traurig', 'trauernd'], ['1F641', '1F622', '1F62D'], '#6381d7'],
+  fear: ['Angst', ['besorgt', 'ängstlich', 'panisch'], ['1F61F', '1F628', '1F631'], '#c2a8dc'],
+  neutral: ['Neutral', ['ausgeglichen'], ['1F610'], '#ddd9d0']
+};
+for (const [key, [category, labels, codes, color]] of Object.entries(expectedBase)) {
+  const item = data.base[key];
+  assert(item, `Grundemotion fehlt: ${key}`);
+  assert(item.category === category, `Falscher Emotionsname für ${key}`);
+  assert(JSON.stringify(item.labels) === JSON.stringify(labels), `Falsche Gefühlswörter für ${category}`);
+  assert(JSON.stringify(item.codes) === JSON.stringify(codes), `Falsche Emojis für ${category}`);
+  assert(item.color === color, `Falsche Basisfarbe für ${category}`);
+}
+
+const expectedCombos = {
+  'curiosity|affection': ['Bewunderung', 'affection', '1F60D', 'bewunderung'],
+  'affection|joy': ['Dankbarkeit', 'joy', '1F979', 'dankbarkeit'],
+  'joy|anger': ['Streitlust', 'anger', '1F608', 'streitlust'],
+  'anger|disgust': ['Abwertung', 'disgust', '1F644', 'abwertung'],
+  'disgust|shame': ['Unbehagen', 'shame', '1F62C', 'unbehagen'],
+  'shame|sadness': ['Reue', 'sadness', '1F61E', 'reue'],
+  'sadness|fear': ['Aufgeben', 'fear', '1F629', 'aufgeben'],
+  'fear|curiosity': ['Überraschung', 'curiosity', '1F632', 'ueberraschung']
+};
+for (const [pair, [name, anchor, code, audioName]] of Object.entries(expectedCombos)) {
+  assert(data.combos[pair]?.name === name, `Falsche Sekundäremotion für ${pair}`);
+  assert(data.combos[pair]?.code === code, `Falsches Gesichts-Emoji für ${name}`);
+  assert(data.combos[pair]?.audioName === audioName, `Falscher Audio-Name für ${name}`);
+  assert(data.comboOverview[anchor] === pair, `${name} liegt nicht auf ${data.base[anchor].category}`);
+  assert(!/\s/.test(name), `${name} ist nicht einwortig`);
+}
+
+for (const [key, levels] of Object.entries(data.soundPatterns)) {
+  if (key === 'neutral') continue;
+  const counts = levels.map(notes => notes.length);
+  assert(counts[0] === 2 && counts[1] === 3 && counts[2] >= 3 && counts[2] <= 4, `${key} überschreitet die gemeinsamen Grenzen 2/3/4`);
+}
+assert(JSON.stringify(data.soundPatterns.anger.map(notes => notes.length)) === JSON.stringify([2, 3, 4]), 'Wut verwendet nicht 2/3/4 Töne');
+assert(JSON.stringify(data.soundPatterns.anger[1]) === JSON.stringify([330, 196, 277]), 'Mittlere Wut-Stufe ist nicht dynamisch gestimmt');
+assert(JSON.stringify(data.soundPatterns.sadness) === JSON.stringify([[392, 330], [440, 370, 294], [440, 349, 294, 220]]), 'Trauer ist nicht dunkel gestimmt');
+
+const emojiOwners = [];
+for (const [key, item] of Object.entries(data.base)) {
+  for (const code of item.codes) emojiOwners.push([code, key]);
+}
+for (const [key, item] of Object.entries(data.combos)) emojiOwners.push([item.code, key]);
+const seenEmoji = new Set();
+for (const [code, owner] of emojiOwners) {
+  assert(!seenEmoji.has(code), `Doppeltes Emoji ${code} bei ${owner}`);
+  seenEmoji.add(code);
+}
+
+const words = [];
+for (const item of Object.values(data.base)) words.push(item.category, ...item.labels);
+for (const item of Object.values(data.combos)) words.push(item.name);
+const normalizedWords = words.map(word => word.toLocaleLowerCase('de-DE'));
+assert(new Set(normalizedWords).size === normalizedWords.length, 'Emotions- oder Gefühlswort ist doppelt');
+
+const { version, revision } = data.APP_META;
+assert(html.includes(`Emotronic v${version}`), 'Codekopf und APP_META-Version weichen ab');
+assert(html.includes(`Aktuelle Revision: ${revision}`), 'Codekopf und APP_META-Revision weichen ab');
+const snapshotPath = path.join(toolRoot, `Emotronic-v${version}.html`);
+assert(fs.existsSync(snapshotPath), 'Versionierter Snapshot fehlt');
+sameBytes(sourcePath, snapshotPath, 'Snapshot');
+sameBytes(sourcePath, path.join(shareRoot, 'index.html'), 'Öffentlicher HTML-Spiegel');
+sameBytes(swPath, path.join(shareRoot, 'sw.js'), 'Öffentlicher Service-Worker-Spiegel');
+assert(read(swPath).toString('utf8').includes(`\${CACHE_PREFIX}${revision}`), 'Cache-Version stimmt nicht mit der Revision überein');
+
+const manifest = JSON.parse(read(path.join(audioRoot, 'manifest.json')).toString('utf8'));
+assert(manifest.sounds.length === 40, 'Audio-Manifest enthält nicht 40 Klänge');
+const manifestById = new Map(manifest.sounds.map(sound => [sound.id, sound]));
+for (const [key, levels] of Object.entries(data.soundPatterns)) {
+  levels.forEach((notes, index) => {
+    const sound = manifestById.get(`emotion_${key}_${index + 1}`);
+    assert(sound && JSON.stringify(sound.notes) === JSON.stringify(notes), `Audio-Manifest weicht bei ${key} Stufe ${index + 1} ab`);
+  });
+}
+for (const item of Object.values(data.combos)) {
+  assert(manifestById.has(`combo_${item.audioName}`), `Kombi-WAV fehlt: ${item.audioName}`);
+}
+const expectedWavs = new Set(manifest.sounds.map(sound => `${sound.id}.wav`));
+for (const setName of manifest.sets) {
+  const setPath = path.join(audioRoot, setName);
+  const actualWavs = fs.readdirSync(setPath).filter(name => name.endsWith('.wav'));
+  assert(actualWavs.length === expectedWavs.size && actualWavs.every(name => expectedWavs.has(name)), `Soundset ${setName} weicht vom Manifest ab`);
+  for (const name of actualWavs) {
+    const wav = read(path.join(setPath, name));
+    assert(wav.length > 44 && wav.toString('ascii', 0, 4) === 'RIFF' && wav.toString('ascii', 8, 12) === 'WAVE', `Ungültige WAV-Datei: ${setName}/${name}`);
+  }
+}
+
+console.log(`Emotronic v${version}: Modell, Spiegelung, Emojis, Kombis, Audio, Cache und Laufzeitspiegel OK`);

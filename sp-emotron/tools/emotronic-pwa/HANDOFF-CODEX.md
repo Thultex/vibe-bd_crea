@@ -1,26 +1,27 @@
-# Codex-Handoff: Emotronic v2.15
+# Codex-Handoff: Emotronic v2.25
 
 ## Auftrag
 
-Diese Übergabe beschreibt den aktuellen Stand der installierbaren Emotronic-PWA. Änderungen sollen direkt in `sp-emotronic/tools/emotronic-pwa/index.html` erfolgen. Die App ist bewusst eine weitgehend eigenständige Einzeldatei mit eingebettetem CSS und JavaScript. Die laufende Veröffentlichungsfassung unter `share/apps/emotronic/` ist ein synchroner Spiegel der Laufzeitdateien.
+Diese Übergabe beschreibt den aktuellen Stand der installierbaren Emotronic-PWA. Änderungen sollen direkt in `sp-emotron/tools/emotronic-pwa/index.html` erfolgen. Die App ist bewusst eine weitgehend eigenständige Einzeldatei mit eingebettetem CSS und JavaScript. Die laufende Veröffentlichungsfassung unter `share/apps/emotronic/` ist ein synchroner Spiegel der Laufzeitdateien.
 
 ## Relevante Dateien
 
-- `sp-emotronic/tools/emotronic-pwa/index.html` – maßgebliche Quelle
-- `sp-emotronic/tools/emotronic-pwa/Emotronic-v2.15.html` – versionierter Snapshot, nach Änderungen neu erzeugen
-- `sp-emotronic/tools/emotronic-pwa/generate_audio_assets.py` – reproduzierbarer Generator beider Soundsets
+- `sp-emotron/tools/emotronic-pwa/index.html` – maßgebliche Quelle
+- `sp-emotron/tools/emotronic-pwa/Emotronic-v2.25.html` – versionierter Snapshot, nach Änderungen neu erzeugen
+- `sp-emotron/tools/emotronic-pwa/generate_audio_assets.py` – reproduzierbarer Generator beider Soundsets
 - `assets/audio/emotronic/` – Manifest sowie `8-bit` und `8-bit_soft`
-- `sp-emotronic/tools/emotronic-pwa/sw.js` – Service Worker und Cache-Version
-- `sp-emotronic/tools/emotronic-pwa/manifest.webmanifest` – PWA-Manifest
-- `sp-emotronic/tools/emotronic-pwa/README.md` – Nutzer- und Funktionsdokumentation
+- `sp-emotron/tools/emotronic-pwa/sw.js` – Service Worker und Cache-Version
+- `sp-emotron/tools/emotronic-pwa/manifest.webmanifest` – PWA-Manifest
+- `sp-emotron/tools/emotronic-pwa/README.md` – Nutzer- und Funktionsdokumentation
+- `sp-emotron/tools/emotronic-pwa/validate_emotronic.js` – verbindliche Gesamtprüfung
 - `share/apps/emotronic/` – veröffentlichter Spiegel der PWA-Laufzeitdateien
 
 ## Versionierung
 
-- Aktuell: **Emotronic v2.15**
-- `APP_META.version`: `2.14`
-- `APP_META.revision`: `114`
-- Service-Worker-Cache: `emotronic-v115`
+- Aktuell: **Emotronic v2.25**
+- `APP_META.version`: `2.20`
+- `APP_META.revision`: `120`
+- Service-Worker-Cache: `emotronic-v125`
 - Beim Aktivieren nur ältere Caches mit dem Präfix `emotronic-v` entfernen; andere Anwendungen können dieselbe Domain verwenden.
 - Jede abgeschlossene Revision erhöht die Version um `0.01` und die Revision um `1`.
 - Codekopf, `APP_META`, Service Worker, versionierte HTML-Datei, README und ZIP müssen synchron bleiben.
@@ -62,6 +63,8 @@ Globale Optionen nicht zwischen die Funktionslogik verteilen.
 - Standardquelle ist `APP_CONFIG.normalMode.defaultSource === 'self'`, also Telefon.
 - Grundemotionen außer Neutral haben mindestens Intensität `1`.
 - Neutral bleibt Intensität `0`.
+- Neutral bleibt eine normale, beliebig oft wählbare Emotion und darf den Ausschalter nicht auslösen.
+- Der erste Druck auf **Aus** leert den Replay-Verlauf und stellt **Bereit** her; erst der zweite Druck innerhalb des Bestätigungsfensters schaltet aus.
 - Kombinationen haben immer Intensität `3`.
 - Die Startanimation darf kein Neutral-Emoji als Zwischenbild zeigen.
 - Telefonanimation bleibt zentriert und wirkt wie Klingeln, nicht wie ausgehende Pfeile.
@@ -110,25 +113,25 @@ Globale Optionen nicht zwischen die Funktionslogik verteilen.
 
 Nur diese acht Paare sind gültig:
 
-- Freude + Zuneigung → verliebt
-- Freude + Neugier → lustig
-- Neugier + Wut → streitlustig
-- Zuneigung + Angst → starr
-- Ekel + Wut → abwertend
-- Trauer + Ekel → bereuend
-- Angst + Unsicherheit → genervt
-- Unsicherheit + Trauer → verlegen
+- Neugier + Zuneigung → Bewunderung
+- Zuneigung + Freude → Dankbarkeit
+- Freude + Wut → Streitlust
+- Wut + Ekel → Abwertung
+- Ekel + Scham → Unbehagen
+- Scham + Trauer → Reue
+- Trauer + Angst → Aufgeben
+- Angst + Neugier → Überraschung
 
-Bei aktiver Kombi-Taste zeigen gültige Partner-/Nachbartasten das resultierende Kombi-Emoji und dessen Kombinationsnamen als Vorschau. In „Bereit“ sowie bei Neutral zeigt `comboOverview` alle acht Ergebnisse auf dem äußeren Ring: Freude beginnt mit „lustig“, danach läuft die Zuordnung im Uhrzeigersinn. Beim Einstieg aus Neutral wird ausschließlich der letzte Neutral-Eintrag aus `state.history` entfernt und der sichtbare Zustand intern auf Bereit gesetzt, damit `replayHistory()` ihn nicht erneut synchronisiert. Ein Tipp übernimmt das Ergebnis auf der gedrückten Taste. Beim Abbruch werden die Grund-Emojis und übergeordneten Emotionsnamen wiederhergestellt; nach einer gültigen Wahl behält nur die gewählte Taste das echte Kombi-Emoji samt Namen. Außerhalb dieser Vorschau bleiben die normalen Tastenbeschriftungen unverändert.
+Bei aktiver Kombi-Taste zeigen gültige Partner-/Nachbartasten das resultierende Kombi-Emoji und dessen Kombinationsnamen als Vorschau. In „Bereit“ sowie bei Neutral zeigt `comboOverview` alle acht Ergebnisse auf dem äußeren Ring. Trotz Y-Spiegelung bleiben die Anker emotionsbezogen: Bewunderung liegt auf Zuneigung, Dankbarkeit auf Freude, Streitlust auf Wut, Abwertung auf Ekel, Unbehagen auf Scham, Reue auf Trauer, Aufgeben auf Angst und Überraschung auf Neugier. Beim Einstieg aus Neutral wird ausschließlich der letzte Neutral-Eintrag aus `state.history` entfernt und der sichtbare Zustand intern auf Bereit gesetzt, damit `replayHistory()` ihn nicht erneut synchronisiert. Ein Tipp übernimmt das Ergebnis auf der gedrückten Taste. Beim Abbruch werden die Grund-Emojis und übergeordneten Emotionsnamen wiederhergestellt; nach einer gültigen Wahl behält nur die gewählte Taste das echte Kombi-Emoji samt Namen. Außerhalb dieser Vorschau bleiben die normalen Tastenbeschriftungen unverändert.
 
-`starr` verwendet eine eigene Rückzugs-/Erstarrbewegung in Normalmodus, Replay und Simon.
+Jede Sekundäremotion übernimmt eine passende Bewegungscharakteristik aus ihren benachbarten Grundzweigen. Scham besitzt eine eigene zurückhaltende Bewegung.
 
 In Simon ist die Kombi-Taste deutlich abgedunkelt und ignoriert direkte Eingaben. Bei Simons Vorführung erhält sie nach dem ersten Symbol für dessen restliche Anzeigezeit `game-flash`. Beim eigenen Nachtippen leuchtet sie nach dem ersten richtigen Symbol für 0,15 Sekunden auf; eine falsche Eingabe löst kein Lichtsignal aus.
 
 ## Simon-Spiel – Kerninvarianten
 
 - Bei ausgeschaltetem Gerät öffnet nur `R` die Schwierigkeitsauswahl.
-- Telefon = ruhig, Neutral = normal, Wifi = Profi.
+- Freude = leicht, Neutral = normal, Trauer = Profi.
 - Ruhig: 3 Leben, langsamer.
 - Normal: 1 Leben.
 - Profi: 1 Leben, schneller, startet bei 5 Punkten, 25 % Endbonus.
@@ -156,27 +159,17 @@ In Simon ist die Kombi-Taste deutlich abgedunkelt und ignoriert direkte Eingaben
 ## Prüfroutine nach jeder Änderung
 
 ```bash
-cd sp-emotronic/tools/emotronic-pwa
-
-python3 - <<'PY'
-from pathlib import Path
-text=Path('index.html').read_text()
-start=text.index('<script>')+len('<script>')
-end=text.index('</script>', start)
-Path('emotronic_check.js').write_text(text[start:end])
-PY
-
-node --check emotronic_check.js
-cp index.html Emotronic-vX.XX.html
-rm emotronic_check.js
+node sp-emotron/tools/emotronic-pwa/validate_emotronic.js
 ```
+
+Der Validator prüft Syntax, 8+1-Datentabellen, eindeutige Begriffe und Emojis, Y-Spiegelung, Tastaturzuordnung, emotionsbezogene Kombi-Anker, WAV-Manifest und Soundsets, Version/Cache sowie Snapshot und Laufzeitspiegel.
 
 Für ein auslieferbares ZIP vom Repository-Root aus:
 
 ```bash
-rm -f emotronic-pwa-v2.15.zip
-zip -rq emotronic-pwa-v2.15.zip sp-emotronic/tools/emotronic-pwa
-unzip -t emotronic-pwa-v2.15.zip
+rm -f emotronic-pwa-v2.25.zip
+zip -rq emotronic-pwa-v2.25.zip sp-emotron/tools/emotronic-pwa
+unzip -t emotronic-pwa-v2.25.zip
 ```
 
 ## Vorsicht bei Änderungen

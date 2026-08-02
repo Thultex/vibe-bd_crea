@@ -4,30 +4,45 @@
 
 Ausgangsdatum: 2026-07-26
 
-*Diese Woche (ca. 3,0h, 2 Tage, Inhalte):*
+*Diese Woche (ca. 2,0h, 1 Tag, Inhalte):*
+Emotronic auf das neue funktionale 8+1-Rad umgebaut, Benennungen, Emojis, Kombinationen, Pastellfarben, Animationen und Soundsets erneuert sowie das vollständige Rad an der Y-Achse gespiegelt.
+
+*Letzte Woche (ca. 3,0h, 2 Tage, Inhalte):*
 Emotronic-PWA übernommen, strukturiert, dokumentiert, Replay-Verlauf sowie Intensitätszeiger korrigiert, Emoji-Intensitätsvorschau ergänzt und ausgeschaltete Bedientasten verfeinert.
 
-*Letzte Woche (0h, 0 Tage, Inhalte):*
-Keine Einträge.
-
-*Dieser Monat (ca. 3,0h, 2 Tage, Inhalte):*
-Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufs- und Zeigerlogik, Emoji-Intensitätsvorschau und verfeinerten Bedientasten.
+*Dieser Monat (ca. 2,0h, 1 Tag, Inhalte):*
+Vollständiger Neuaufbau des Emotionsmodells samt gespiegeltem Rad, eindeutigen Emojis, neuen Kombinationen, angepassten Bewegungen und reproduzierbaren Klangsets.
 
 *Letzter Monat (0h, 0 Tage, Inhalte):*
 Keine Einträge.
 
-*Jahr (ca. 3,0h, 2 Tage, Inhalte):*
-Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufs- und Zeigerlogik, Emoji-Intensitätsvorschau und verfeinerten Bedientasten.
+*Jahr (ca. 5,0h, 3 Tage, Inhalte):*
+Erstübernahme und anschließender vollständiger Neuaufbau von Emotronic mit funktionalem 8+1-Rad.
 
-*Insgesamt (ca. 3,0h, 2 Tage, Inhalte):*
-Erstübernahme von Emotronic samt PWA-Struktur, korrigierter Verlaufs- und Zeigerlogik, Emoji-Intensitätsvorschau und verfeinerten Bedientasten.
+*Insgesamt (ca. 5,0h, 3 Tage, Inhalte):*
+Erstübernahme und anschließender vollständiger Neuaufbau von Emotronic mit funktionalem 8+1-Rad.
 
 ## Log
+
+### 2026-08-02 - emo, modell, emojis, farben, animation, audio, pwa, doku (ca. 2,0h)
+
+- Modell: Grundzweige auf Neugier, Zuneigung, Freude, Wut, Ekel, Scham, Trauer und Angst mit Neutral im Zentrum umgestellt.
+- Spiegelung: Komplettes 3×3-Rad einschließlich Emojis, Beschriftungen, Pastellfarben und Ziffernsteuerung an der Y-Achse gespiegelt; sichtbare Reihenfolge ist Freude/Zuneigung/Neugier, Wut/Neutral/Angst, Ekel/Scham/Trauer.
+- Begriffe: Kurze Adjektivreihen `interessiert/neugierig/fasziniert`, `freundlich/zugewandt/verbunden`, `zufrieden/fröhlich/begeistert`, `gereizt/verärgert/wütend`, `abgeneigt/angeekelt/übel`, `verlegen/befangen/beschämt`, `bedrückt/traurig/trauernd` und `besorgt/ängstlich/panisch` eingeführt.
+- Kombinationen: Bewunderung, Dankbarkeit, Streitlust, Abwertung, Unbehagen, Reue, Aufgeben und Überraschung als einwortige Nomen mit eindeutigen Gesichts-Emojis und festen emotionsbezogenen Übersichtsankern umgesetzt; Streitlust verwendet wieder das alte Teufelsemoji, Unbehagen das gewünschte 😬 und Aufgeben das erschöpfte Gesicht 😩.
+- Emojis: Doppelte Motive entfernt; die klassischen Neugier- und Freude-Reihen wiederhergestellt und Bewunderung auf ein eigenes Herzaugen-Motiv umgestellt.
+- Farben: Alte Pastellpalette und bestehende Intensitätsberechnung beibehalten, semantisch mit roter Wut, gelber Freude, grüner Scham, blauer Trauer, lavendelfarbener Angst, dunkelgrünem Ekel, orangener Zuneigung und türkiser Neugier neu zugeordnet.
+- Animation: Eigene zurückhaltende Scham-Bewegung ergänzt; Sekundäremotionen übernehmen passende Bewegungscharakteristiken ihrer Grundzweige.
+- Audio: Live-Synthese, Generator, Manifest und beide 40-teiligen WAV-Sets auf Scham und die acht neuen Kombinationen umgestellt; Wut mit 2/3/4 Tönen innerhalb der gemeinsamen Obergrenzen gehalten, die mittlere Wut-Stufe durch größere Sprünge dynamischer und Trauer harmonisch dunkler gestaltet.
+- Bedienung: Neutral bleibt beliebig oft wählbar. Der erste Ausschalter-Klick leert den Replay-Verlauf und wechselt zu Bereit; erst der zweite Klick schaltet aus.
+- Simon: Die diagonale Auswahl verwendet Freude für Leicht, Neutral für Normal und Trauer für Profi.
+- PWA: Anwendung auf Emotronic v2.25, Revision 125 und Cache `emotronic-v125` angehoben; Snapshot und öffentlicher Laufzeitspiegel bytegleich synchronisiert.
+- Test: JavaScript-/Python-Syntax, eindeutige Emojis und Begriffe, Rad-/Tastaturspiegelung, Kombi-Anker, WAV-Struktur, Manifestgleichlauf, Versionsstand und bytegleiche Laufzeitspiegel geprüft.
 
 ### 2026-07-26 - emo, struktur, tools, pwa, replay, share, anzeige, audio, doku (ca. 1,6h)
 
 - Summary: Vollständige Emotronic-PWA in die Repository-Struktur übernommen und einen getrennten öffentlichen App-Spiegel vorbereitet.
-- Struktur: Projekt unter `sp-emotronic/` mit dem Kürzel `emo` und den vorgesehenen Dokumentations-, Asset-, Datei- und Toolbereichen angelegt.
+- Struktur: Projekt unter `sp-emotron/` mit dem Kürzel `emo` und den vorgesehenen Dokumentations-, Asset-, Datei- und Toolbereichen angelegt.
 - Tool: Maßgebliche PWA-Quelle unter `tools/emotronic-pwa/` mit HTML, Manifest, Service Worker, Icons, Snapshot, README und Handoff übernommen.
 - PWA: Laufzeitdateien unter `/share/apps/emotronic/` für einen stabilen öffentlichen Unterpfad gespiegelt.
 - Fix: Replay-Abbruch räumt die graue Restanzeige zuverlässig auf; der zuletzt gewählte Zustand bleibt sichtbar.

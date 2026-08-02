@@ -6,6 +6,8 @@ Emotronic wird im Browser über den Ordner `share/apps/emotronic/` geöffnet. F�
 
 Nach dem Start ist Emotronic eingeschaltet und zeigt **Bereit**. Eine der neun Gefühlstasten wählt einen Zustand. Die Pfeiltasten ändern die Intensität; Neutral bleibt auf Stufe `0`.
 
+Das an der Y-Achse gespiegelte Rad liegt sichtbar als `Freude · Zuneigung · Neugier / Wut · Neutral · Angst / Ekel · Scham · Trauer`. Emojis, Pastellfarben und Zifferntasten sind gemeinsam gespiegelt.
+
 ## Bedienung
 
 - Telefon: Eigen-/Telefonseite aktivieren; Doppeltipp teilt konsistent den Replay-Verlauf.
@@ -16,7 +18,7 @@ Beim Verstellen der Intensität auf der Telefon-/Empfängerseite zeigen alle nic
 - `R`: gespeicherte Zustände wiedergeben; erneuter Einzeldruck bricht ab.
 - Nach einer vollständigen Wiedergabe bleibt die etwas größere Schrittzahl nahe bei `R` stehen, bis eine neue Gefühlstaste gedrückt wird. Bei Simon zeigt sie am Game Over die Rundenzahl.
 - Kombinationstaste: gültige benachbarte Gefühle kombinieren.
-- Aus: Gerät aus- oder einschalten; während Replay Verlauf löschen und zu **Bereit** zurückkehren.
+- Aus: Der erste Druck löscht den Replay-Verlauf und wechselt zu **Bereit**; der zweite Druck schaltet aus. Neutral kann beliebig oft gewählt werden.
 - Im ausgeschalteten Zustand ist auch die Kombi-Taste deaktiviert und ohne Symbol; nach dem Einschalten steht sie wieder zur Verfügung. Joystick und Lupe neben `R` und der Aus-Taste erscheinen erst, wenn der Ausschaltprozess vollständig beendet ist.
 - Ein empfangener Slow-Replay-Link enthält denselben unveränderten Verlauf wie ein normaler Replay-Link. Nur dessen Wiedergabe läuft langsamer; eine neue Gefühlseingabe beendet den Slow-Zustand.
 - Ziffern `7 8 9 / 4 5 6 / 1 2 3`: sichtbare 3×3-Gefühlstasten bedienen.
@@ -31,9 +33,9 @@ Jede Person mit dem vollständigen Link kann den enthaltenen Gefühls- oder Repl
 
 Bei ausgeschaltetem Gerät öffnet `R` die Schwierigkeitsauswahl:
 
-- Telefon: Ruhig
+- Freude: Leicht
 - Neutral: Normal
-- Wifi: Profi
+- Trauer: Profi
 
 Die vollständigen Regeln und Funktionsdetails stehen in
 [`tools/emotronic-pwa/README.md`](tools/emotronic-pwa/README.md).

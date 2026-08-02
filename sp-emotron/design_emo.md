@@ -25,7 +25,10 @@ Der Laufzeitspiegel enthält ausschließlich `index.html`, Manifest, Service Wor
 - Telefon kopiert in Bereit, auf der Simon-Auswahl und im ausgeschalteten Zustand still den passenden Direktlink `#on`, `#simon` beziehungsweise `#off`.
 - Im ausgeschalteten Zustand ist auch die mittlere Kombi-Taste deaktiviert und ihr Symbol vollständig ausgeblendet. Beim Einschalten wird sie nach der Startsequenz wieder eingeblendet und freigegeben. Die kleinen Joystick- und Lupenhinweise werden erst im fertigen Aus-Zustand eingeblendet, nicht bereits während der Ausschaltsequenz.
 - `Simon Feels!` steht gegenüber seiner bisherigen Position zusätzlich um drei Viertel der eigenen Schrifthöhe tiefer; andere Simon-Anzeigen bleiben unverändert.
-- Die Simon-Auswahl verwendet drei Emotionstasten: Neugier für Leicht, Neutral für Normal und Unsicherheit für Profi; Telefon und Wifi sind dort keine Auswahl mehr.
+- Die Simon-Auswahl verwendet die Diagonale Freude für Leicht, Neutral für Normal und Trauer für Profi; Telefon und Wifi sind dort keine Auswahl mehr.
+- Das funktionale 8+1-Rad ist an der Y-Achse gespiegelt angeordnet: oben Freude, Zuneigung, Neugier; mittig Wut, Neutral, Angst; unten Ekel, Scham, Trauer. Emojis, Beschriftungen, Basisfarben sowie Ziffern-/Numpad-Zuordnung folgen gemeinsam dieser Spiegelung.
+- Die acht Grundzweige heißen Neugier, Zuneigung, Freude, Wut, Ekel, Scham, Trauer und Angst. Ihre drei Stufen tragen ausschließlich kurze Adjektive; alle 25 Grund-/Neutral- und acht Kombi-Emojis sind eindeutig.
+- Die alte Pastellpalette und ihre berechneten Intensitätsverläufe bleiben erhalten, werden aber semantisch neu zugeordnet: Wut rot, Freude gelb, Scham grün, Trauer blau, Angst lavendel, Ekel dunkelgrün, Zuneigung orange und Neugier türkis.
 - Beim Neustart über die Aus-Taste beginnt der Aufbau mit Kirby-artigen ASCII-Gesichtern, schreibt Emotronic ruhig von links nach rechts und hält den vollständigen Schriftzug rund 0,8 Sekunden.
 
 ## Verlauf
@@ -38,7 +41,7 @@ Der Laufzeitspiegel enthält ausschließlich `index.html`, Manifest, Service Wor
 - Die Wifi-/Senderanimation `>>>` startet bei jeder Gefühlsbetätigung einschließlich eines erneuten Klicks auf dasselbe Gefühl, bei jeder tatsächlichen Intensitätsänderung und beim Aktivieren der Wifi-/Sendertaste.
 - Ein Intensitätswechsel überblendet auf allen nicht-neutralen Empfängertasten und auf der aktuellen Wifi-Sendertaste das alte und neue Emoji direkt miteinander. Die in `APP_CONFIG.normalMode.keypadCrossfadeMs` definierbare Gesamtdauer beträgt standardmäßig 0,15 Sekunden. Das neue Motiv erreicht nach rund 0,12 Sekunden volle Deckkraft; das alte bleibt zunächst stehen, beginnt nach etwa 0,08 Sekunden weich auszufaden und ist am Ende verschwunden. Dadurch bleiben Mitte und Abschluss ohne Transparenzknick oder harten Bildsprung. Die Überblendung läuft unabhängig von der Bewegung; andere Sendertasten und der Display-Hintergrund erhalten keine zusätzliche Animation.
 - Tastenbilder sind dekorativ und besitzen keinen sichtbaren Alternativtext; die separate Tastenbeschriftung liefert den Namen. Das alte aktive Motiv bleibt bis zum erfolgreichen Laden des neuen SVGs sichtbar. Dadurch blitzen weder beim Wechsel noch bei einem Ladefehler große Textplatzhalter im Emoji-Feld auf.
-- Bei aktiver Kombi-Taste zeigen alle gültigen gestrichelt markierten Partner-/Nachbartasten das jeweils entstehende Kombi-Emoji samt dessen Kombinationsnamen. In „Bereit“ sowie bei gewähltem Neutral öffnet die Kombi-Taste stattdessen eine Übersicht aller acht Kombinationen auf den äußeren Tasten: Freude beginnt mit „lustig“, die übrigen Ergebnisse folgen im Uhrzeigersinn. Beim Einstieg aus Neutral wird der aktuelle Neutral-Schritt aus dem Replay entfernt und der Grundzustand intern auf „Bereit“ gesetzt; frühere Replay-Schritte bleiben bestehen. Ein Tipp übernimmt die angezeigte Kombination auf dieser Taste. Beim Abbruch kehren sämtliche Vorschauen zu den Grund-Emojis und übergeordneten Emotionsnamen zurück; nach einer Wahl behält nur die gewählte Taste das nun echte Kombi-Emoji samt Namen.
+- Bei aktiver Kombi-Taste zeigen alle gültigen gestrichelt markierten Partner-/Nachbartasten das jeweils entstehende Kombi-Emoji samt dessen kurzem, einwortigem Kombinationsnamen. In „Bereit“ sowie bei gewähltem Neutral öffnet die Kombi-Taste stattdessen eine Übersicht aller acht Übergänge des äußeren Rings. Beim Einstieg aus Neutral wird der aktuelle Neutral-Schritt aus dem Replay entfernt und der Grundzustand intern auf „Bereit“ gesetzt; frühere Replay-Schritte bleiben bestehen. Ein Tipp übernimmt die angezeigte Kombination auf dieser Taste. Beim Abbruch kehren sämtliche Vorschauen zu den Grund-Emojis und übergeordneten Emotionsnamen zurück; nach einer Wahl behält nur die gewählte Taste das nun echte Kombi-Emoji samt Namen.
 - Im Simon-Modus ist die Kombi-Taste deutlich abgedunkelt und nicht bedienbar. Bei einer erwarteten Kombi-Aktion leuchtet sie nach dem ersten richtigen Symbol kurz auf.
 - Replay-Start und Replay-Sharing synchronisieren den sichtbaren Endzustand, ohne ihn doppelt anzuhängen.
 - Nach einem vollständig abgespielten lokalen oder empfangenen Replay bleibt die Gesamtzahl seiner Schritte etwas größer und näher bei `R` als erneuter Abspielhinweis sichtbar. Erst der nächste Druck auf eine Gefühlstaste blendet die Zahl mit derselben weichen Skalierungs-/Deckkraftbewegung wie die ausgeschalteten Tastenhinweise aus.
@@ -47,7 +50,8 @@ Der Laufzeitspiegel enthält ausschließlich `index.html`, Manifest, Service Wor
 - Die Slow-Markierung bleibt für erneutes Abspielen desselben empfangenen Verlaufs erhalten und wird bei der nächsten Gefühl-, Intensitäts- oder Kombi-Eingabe entfernt.
 - Das normale Replay blendet Gefühl, Emotion und Intensität mit einem sehr leichten Fade während der Wiedergabe aus und danach wieder ein.
 - Ein empfangenes Replay rendert vor seinem ersten Schritt nicht mehr kurz den gespeicherten Endzustand.
-- Zweimaliges Drücken von Neutral wechselt zu Bereit und leert dabei den gesamten Replay-Verlauf.
+- Neutral ist ein normaler Grundzustand mit Intensität 0 und kann beliebig oft gewählt werden.
+- Der erste Druck auf Aus leert den gesamten Replay-Verlauf und wechselt zu Bereit; ein zweiter Druck innerhalb des Bestätigungsfensters schaltet das Gerät aus.
 - Eingehende Emotions- und Replay-Links zeigen bis zur nächsten Interaktion ein ruhig weiterlaufendes Nachrichtensymbol direkt im normalen Display.
 - Ein Tipp auf den Bildschirm oder eine beliebige Taste außer Aus startet die Wiedergabe ohne zusätzlichen Empfangston.
 - Nach dem Starttipp lässt die App rund 0,1 Sekunden Abstand, bevor der empfangene Inhalt beginnt.
@@ -59,7 +63,7 @@ Der Laufzeitspiegel enthält ausschließlich `index.html`, Manifest, Service Wor
 - Gefühle verwenden `#share=…`, normale Replays `#replay=…`, langsame Replays `#slow=…` und Game-over-Links `#score=…`. Ältere Replay-Links unter `#share=…` bleiben lesbar.
 - Beim Game Over versucht die App den Score-Link automatisch zu kopieren; Telefon wiederholt dies manuell und `R` spielt die mitgeteilte Folge erneut ab.
 - Die Telefontaste wird am Game Over ausdrücklich für das manuelle Kopieren freigeschaltet.
-- Am Game Over bleiben Neugier, Neutral und Unsicherheit eingeblendet und starten direkt ein neues Spiel in Leicht, Normal beziehungsweise Profi; `R` bleibt Replay und `⏻` Schluss.
+- Am Game Over bleiben Freude, Neutral und Trauer eingeblendet und starten direkt ein neues Spiel in Leicht, Normal beziehungsweise Profi; `R` bleibt Replay und `⏻` Schluss.
 - Während des Score-Replays entfällt der Game-over-Auswahlzustand: Die drei Modustasten werden wieder zu normalen Gefühlen und gemeinsam mit den übrigen inaktiven Tasten abgedunkelt.
 - Aus führt vom Game Over zurück zur Simon-Titelauswahl und schaltet die App erst bei erneutem Drücken in dieser Auswahl aus.
 - `R` auf der Simon-Titelauswahl stellt den letzten Game-over-Zustand samt Modus und Folge wieder her.

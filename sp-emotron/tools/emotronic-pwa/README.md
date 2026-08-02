@@ -1,8 +1,8 @@
-# Emotronic v2.15
+# Emotronic v2.25
 
 Emotronic ist eine installierbare, offlinefähige PWA zur Auswahl, Darstellung, Kombination und Wiedergabe von Gefühlen. Die Oberfläche ist an ein kompaktes Retro-Handgerät angelehnt und für Touch, Maus und Tastatur ausgelegt.
 
-Die maßgebliche PWA-Quelle liegt unter `sp-emotronic/tools/emotronic-pwa/`. Alle PWA-Pfade sind relativ, sodass dieselben Laufzeitdateien unter `share/apps/emotronic/` als öffentlicher App-Spiegel bereitgestellt werden können.
+Die maßgebliche PWA-Quelle liegt unter `sp-emotron/tools/emotronic-pwa/`. Alle PWA-Pfade sind relativ, sodass dieselben Laufzeitdateien unter `share/apps/emotronic/` als öffentlicher App-Spiegel bereitgestellt werden können.
 
 Wenn GitHub Pages den Branch `main` aus dem Repository-Root veröffentlicht, lautet der PWA-Link:
 
@@ -26,7 +26,7 @@ Emotronic speichert keine Gefühls-, Replay- oder Score-Daten auf einem Server. 
 Beispiel für einen lokalen Testserver:
 
 ```bash
-cd sp-emotronic/tools/emotronic-pwa
+cd sp-emotron/tools/emotronic-pwa
 python3 -m http.server 8080
 ```
 
@@ -47,7 +47,7 @@ Ein Druck auf Telefon kopiert in **Bereit**, auf der `Simon Feels!`-Auswahl oder
 | Datei | Zweck |
 |---|---|
 | `index.html` | Hauptanwendung mit Oberfläche, CSS und JavaScript |
-| `Emotronic-v2.15.html` | Versionierte Kopie der Hauptanwendung |
+| `Emotronic-v2.25.html` | Versionierte Kopie der Hauptanwendung |
 | `manifest.webmanifest` | PWA-Metadaten und Installationskonfiguration |
 | `sw.js` | Service Worker für Offline-Cache |
 | `icon-192.png`, `icon-512.png` | PWA-Symbole |
@@ -55,6 +55,7 @@ Ein Druck auf Telefon kopiert in **Bereit**, auf der `Simon Feels!`-Auswahl oder
 | `favicon.png`, `apple-touch-icon.png` | Browser- und iOS-Symbole |
 | `HANDOFF-CODEX.md` | Technische Übergabe für Codex oder andere Entwickler |
 | `README-INSTALLATION.txt` | Kurze Installationshinweise |
+| `validate_emotronic.js` | Gesamtprüfung von Modell, Spiegelung, Emojis, Audio, Version und Laufzeitspiegel |
 
 ## Share-Spiegel
 
@@ -87,15 +88,32 @@ Die neun Tasten sind wie folgt angeordnet:
 
 | Position | Gefühl |
 |---|---|
-| oben links | Neugier |
-| oben Mitte | Freude |
-| oben rechts | Zuneigung |
+| oben links | Freude |
+| oben Mitte | Zuneigung |
+| oben rechts | Neugier |
 | Mitte links | Wut |
 | Mitte | Neutral |
 | Mitte rechts | Angst |
 | unten links | Ekel |
-| unten Mitte | Trauer |
-| unten rechts | Unsicherheit |
+| unten Mitte | Scham |
+| unten rechts | Trauer |
+
+Die vollständige Anordnung einschließlich Emojis, Beschriftungen und Farben ist gegenüber der ersten Neufassung an der Y-Achse gespiegelt.
+
+Die acht Grundzweige verwenden kurze Adjektive und jeweils drei eindeutige OpenMoji-Motive:
+
+| Grundemotion | schwach | mittel | stark |
+|---|---|---|---|
+| Neugier | interessiert | neugierig | fasziniert |
+| Zuneigung | freundlich | zugewandt | verbunden |
+| Freude | zufrieden | fröhlich | begeistert |
+| Wut | gereizt | verärgert | wütend |
+| Ekel | abgeneigt | angeekelt | übel |
+| Scham | verlegen | befangen | beschämt |
+| Trauer | bedrückt | traurig | trauernd |
+| Angst | besorgt | ängstlich | panisch |
+
+Die Basisfarben stammen aus der bisherigen Pastellpalette und werden wie zuvor für die drei Intensitäten aufgehellt beziehungsweise abgedunkelt. Wut bleibt rot, Freude gelb, Scham grün, Trauer blau, Angst lavendel, Ekel dunkelgrün, Zuneigung orange und Neugier türkis.
 
 Grundemotionen haben drei Intensitätsstufen. Im Telefon-/Selbstmodus bleibt die aktuelle Intensität beim Wechsel zwischen nicht-neutralen Gefühlen erhalten. Im Wifi-Sendemodus beginnt das neue Gefühl nach einem Wechsel wieder auf Mindeststufe `1`. Neutral setzt in beiden Modi auf `0`.
 
@@ -114,20 +132,20 @@ Im Telefon-/Empfängermodus zeigen alle nicht-neutralen Gefühlstasten die OpenM
 
 Die Kombinationstaste verwendet die aktuell gewählte Grundemotion als ersten Partner. Danach wird eine gültige Nachbar-Emotion gewählt. Während die Kombi-Taste aktiv ist, zeigen die gültigen gestrichelt markierten Nachbartasten bereits das jeweils entstehende Kombi-Emoji und dessen Kombinationsnamen.
 
-Im Zustand **Bereit**, also ohne gewähltes Gefühl, sowie bei gewähltem Neutral zeigt die Kombi-Taste stattdessen alle acht Kombinationen auf den äußeren Gefühlstasten. Auf Freude beginnt die Übersicht mit „lustig“; danach folgen die übrigen Ergebnisse im Uhrzeigersinn. Beim Öffnen aus Neutral wird dieser aktuelle Neutral-Schritt aus dem Replay entfernt und der Grundzustand intern zu Bereit; frühere Replay-Schritte bleiben erhalten. Ein Tipp wählt die Kombination auf der jeweiligen Taste aus. Beim Abbruch kehren alle Vorschauen zu ihren Grund-Emojis und übergeordneten Emotionsnamen zurück. Nach einer gültigen Wahl behält nur die gewählte Taste das nun echte Kombi-Emoji samt Namen. Im normalen Modus bleiben die Beschriftungen unverändert bei den übergeordneten Emotionen, da deren Motive lediglich Intensitätsabstufungen darstellen.
+Im Zustand **Bereit**, also ohne gewähltes Gefühl, sowie bei gewähltem Neutral zeigt die Kombi-Taste stattdessen alle acht Kombinationen auf den äußeren Gefühlstasten. Jede Taste zeigt den Übergang von ihrem gegen den Uhrzeigersinn benachbarten Zweig; zusammen ergibt sich die vollständige Übersicht des neuen Emotionsrads. Beim Öffnen aus Neutral wird dieser aktuelle Neutral-Schritt aus dem Replay entfernt und der Grundzustand intern zu Bereit; frühere Replay-Schritte bleiben erhalten. Ein Tipp wählt die Kombination auf der jeweiligen Taste aus. Beim Abbruch kehren alle Vorschauen zu ihren Grund-Emojis und übergeordneten Emotionsnamen zurück. Nach einer gültigen Wahl behält nur die gewählte Taste das nun echte Kombi-Emoji samt Namen. Im normalen Modus bleiben die Beschriftungen unverändert bei den übergeordneten Emotionen, da deren Motive lediglich Intensitätsabstufungen darstellen.
 
-| Kombination | Ergebnis |
-|---|---|
-| Freude + Zuneigung | verliebt |
-| Freude + Neugier | lustig |
-| Neugier + Wut | streitlustig |
-| Zuneigung + Angst | starr |
-| Ekel + Wut | abwertend |
-| Trauer + Ekel | bereuend |
-| Angst + Unsicherheit | genervt |
-| Unsicherheit + Trauer | verlegen |
+| Kombination | Ergebnis | Übersicht auf |
+|---|---|---|
+| Neugier + Zuneigung | Bewunderung | Zuneigung |
+| Zuneigung + Freude | Dankbarkeit | Freude |
+| Freude + Wut | Streitlust | Wut |
+| Wut + Ekel | Abwertung | Ekel |
+| Ekel + Scham | Unbehagen | Scham |
+| Scham + Trauer | Reue | Trauer |
+| Trauer + Angst | Aufgeben | Angst |
+| Angst + Neugier | Überraschung | Neugier |
 
-Die Animation von **starr** ist eine kurze Rückzugs- und Erstarrbewegung.
+Jede Kombination übernimmt eine zu ihrer Bedeutung passende Bewegung aus den benachbarten Grundzweigen.
 
 ### Telefon und Wifi
 
@@ -154,7 +172,8 @@ Die Animation von **starr** ist eine kurze Rückzugs- und Erstarrbewegung.
 - Im normalen Replay werden Gefühl, Emotion und Intensität mit einem sehr leichten Fade aus- und anschließend wieder eingeblendet, damit nur die Wiedergabe selbst im Mittelpunkt steht.
 - Ein empfangenes Replay beginnt direkt mit seinem ersten Schritt, ohne zuvor kurz den gespeicherten Endzustand einzublenden.
 - `R` während des Replays bricht nur die Wiedergabe ab, zeigt wieder den neuesten Zustand und behält die Gesamtzahl als erneuten Replay-Hinweis bei.
-- **Aus** während des Replays bricht ab, leert den Verlauf und geht direkt zu **Bereit**.
+- Der erste Druck auf **Aus** bricht gegebenenfalls ein Replay ab, leert den gesamten Verlauf und wechselt zu **Bereit**. Neutral bleibt dabei unberührt und kann beliebig oft gewählt werden.
+- Ein zweiter Druck innerhalb des Bestätigungsfensters schaltet das Gerät aus.
 - Ein normaler Neustart leert den Replay-Verlauf vollständig.
 - Bei ausgeschaltetem Gerät ist auch die Kombi-Taste deaktiviert und ihr Symbol ausgeblendet; nach der Einschaltsequenz erscheint und funktioniert sie wieder.
 
@@ -213,9 +232,9 @@ Am Game Over zeigt die Zahl neben `R` sofort die Anzahl der gespeicherten Runden
 
 | Auswahl | Modus | Eigenschaften |
 |---|---|---|
-| Neugier | Leicht | langsamer, 3 Leben, Wiederholen erlaubt |
+| Freude | Leicht | langsamer, 3 Leben, Wiederholen erlaubt |
 | Neutral | Normal | Standardtempo, 1 Leben |
-| Unsicherheit | Profi | schneller, Start bei 5 Punkten, 25 % Endbonus |
+| Trauer | Profi | schneller, Start bei 5 Punkten, 25 % Endbonus |
 
 ### Spielablauf
 
@@ -265,7 +284,7 @@ Am Game Over zeigt die Zahl neben `R` sofort die Anzahl der gespeicherten Runden
 - Während dieses Score-Replays werden die drei Modustasten wieder als normale Gefühle dargestellt und wie die übrigen inaktiven Tasten abgedunkelt.
 - **Aus** fordert `AUS?` an; ein zweiter Druck bestätigt.
 - Nach Game Over reagieren `R`, Telefon und **Aus**.
-- Nach Game Over bleiben Neugier, Neutral und Unsicherheit als direkte Auswahl für Leicht, Normal und Profi sichtbar.
+- Nach Game Over bleiben Freude, Neutral und Trauer als direkte Auswahl für Leicht, Normal und Profi sichtbar.
 - Die Hinweise nennen dort die drei Modi sowie `R: Replay` und `⏻: Schluss`.
 - **Aus** führt vom Game Over zunächst zurück zur Simon-Titelauswahl; dort schaltet **Aus** die App direkt aus.
 - `R` auf der Simon-Titelauswahl kehrt zum zuletzt gespeicherten Game-over-Bildschirm zurück; ohne vorheriges Game Over geschieht nichts.
@@ -306,10 +325,14 @@ Diese Reihenfolge soll bei weiteren Änderungen erhalten bleiben.
 ## Offline/PWA
 
 - Der Service Worker cached die Kernressourcen.
-- Die aktuelle Cache-Version lautet `emotronic-v115`.
+- Die aktuelle Cache-Version lautet `emotronic-v125`.
 - Beim Aktivieren werden nur ältere Emotronic-Caches entfernt; Caches anderer Anwendungen auf derselben Domain bleiben erhalten.
 - Nicht gecachte GET-Anfragen werden aus dem Netz geladen und anschließend gespeichert.
 - Bei einem Netzfehler wird als Fallback `index.html` verwendet.
+
+## Prüfung
+
+Vom Repository-Root aus prüft `node sp-emotron/tools/emotronic-pwa/validate_emotronic.js` die JavaScript-Syntax, das gespiegelte Rad samt Ziffernsteuerung, alle kurzen Begriffe und eindeutigen Emojis, die acht emotionsbezogenen Kombi-Anker, beide WAV-Sets, Version/Cache sowie die bytegleichen HTML- und Service-Worker-Spiegel.
 
 ## Drittmaterial
 
