@@ -16,25 +16,25 @@ AUDIO_ROOT = REPO_ROOT / "assets" / "audio" / "emotronic"
 
 EMOTION_PATTERNS = {
     "curiosity": [[523, 659], [523, 659, 784], [659, 784, 988]],
-    "joy": [[659, 784], [659, 784, 988], [784, 988, 1175]],
     "affection": [[587, 740], [587, 740, 880], [740, 880, 1109]],
-    "anger": [[220, 196], [247, 220, 196], [294, 247, 196, 165]],
-    "neutral": [[330]],
+    "joy": [[659, 784], [659, 784, 988], [784, 988, 1175]],
     "fear": [[392, 330], [392, 330, 277], [440, 370, 294, 247]],
-    "disgust": [[277, 247], [294, 247, 220], [330, 277, 233, 196]],
+    "neutral": [[330]],
+    "anger": [[220, 196], [247, 220, 196], [294, 247, 196, 165]],
     "sadness": [[440, 392], [440, 370, 330], [440, 392, 330, 262]],
-    "surprise": [[494, 659], [494, 659, 831], [587, 784, 988, 1175]],
+    "shame": [[494, 440], [494, 440, 392], [523, 466, 392, 330]],
+    "disgust": [[277, 247], [294, 247, 220], [330, 277, 233, 196]],
 }
 
 COMBOS = {
-    "verliebt": ("joy", "affection"),
-    "lustig": ("joy", "curiosity"),
-    "streitlustig": ("curiosity", "anger"),
-    "starr": ("affection", "fear"),
-    "abwertend": ("disgust", "anger"),
-    "bereuend": ("sadness", "disgust"),
-    "genervt": ("fear", "surprise"),
-    "verlegen": ("surprise", "sadness"),
+    "bewunderung": ("curiosity", "affection"),
+    "dankbarkeit": ("affection", "joy"),
+    "triumph": ("joy", "anger"),
+    "abwertung": ("anger", "disgust"),
+    "selbstekel": ("disgust", "shame"),
+    "reue": ("shame", "sadness"),
+    "hilflosigkeit": ("sadness", "fear"),
+    "ueberraschung": ("fear", "curiosity"),
 }
 
 SPECIAL_PATTERNS = {
@@ -146,9 +146,15 @@ def sound_specs() -> list[dict]:
 
 def main() -> None:
     specs = sound_specs()
+    expected_files = {f"{spec['id']}.wav" for spec in specs}
     for set_name, soft in (("8-bit", False), ("8-bit_soft", True)):
+        set_path = AUDIO_ROOT / set_name
+        set_path.mkdir(parents=True, exist_ok=True)
+        for old_file in set_path.glob("*.wav"):
+            if old_file.name not in expected_files:
+                old_file.unlink()
         for spec in specs:
-            write_wav(AUDIO_ROOT / set_name / f"{spec['id']}.wav", render(spec["notes"], spec["level"], soft))
+            write_wav(set_path / f"{spec['id']}.wav", render(spec["notes"], spec["level"], soft))
 
     manifest = {
         "version": 1,

@@ -37,35 +37,6 @@
       "level": 3
     },
     {
-      "id": "emotion_joy_1",
-      "kind": "emotion",
-      "notes": [
-        659,
-        784
-      ],
-      "level": 1
-    },
-    {
-      "id": "emotion_joy_2",
-      "kind": "emotion",
-      "notes": [
-        659,
-        784,
-        988
-      ],
-      "level": 2
-    },
-    {
-      "id": "emotion_joy_3",
-      "kind": "emotion",
-      "notes": [
-        784,
-        988,
-        1175
-      ],
-      "level": 3
-    },
-    {
       "id": "emotion_affection_1",
       "kind": "emotion",
       "notes": [
@@ -95,42 +66,33 @@
       "level": 3
     },
     {
-      "id": "emotion_anger_1",
+      "id": "emotion_joy_1",
       "kind": "emotion",
       "notes": [
-        220,
-        196
+        659,
+        784
       ],
       "level": 1
     },
     {
-      "id": "emotion_anger_2",
+      "id": "emotion_joy_2",
       "kind": "emotion",
       "notes": [
-        247,
-        220,
-        196
+        659,
+        784,
+        988
       ],
       "level": 2
     },
     {
-      "id": "emotion_anger_3",
+      "id": "emotion_joy_3",
       "kind": "emotion",
       "notes": [
-        294,
-        247,
-        196,
-        165
+        784,
+        988,
+        1175
       ],
       "level": 3
-    },
-    {
-      "id": "emotion_neutral_1",
-      "kind": "emotion",
-      "notes": [
-        330
-      ],
-      "level": 1
     },
     {
       "id": "emotion_fear_1",
@@ -163,32 +125,40 @@
       "level": 3
     },
     {
-      "id": "emotion_disgust_1",
+      "id": "emotion_neutral_1",
       "kind": "emotion",
       "notes": [
-        277,
-        247
+        330
       ],
       "level": 1
     },
     {
-      "id": "emotion_disgust_2",
+      "id": "emotion_anger_1",
       "kind": "emotion",
       "notes": [
-        294,
+        220,
+        196
+      ],
+      "level": 1
+    },
+    {
+      "id": "emotion_anger_2",
+      "kind": "emotion",
+      "notes": [
         247,
-        220
+        220,
+        196
       ],
       "level": 2
     },
     {
-      "id": "emotion_disgust_3",
+      "id": "emotion_anger_3",
       "kind": "emotion",
       "notes": [
-        330,
-        277,
-        233,
-        196
+        294,
+        247,
+        196,
+        165
       ],
       "level": 3
     },
@@ -223,120 +193,150 @@
       "level": 3
     },
     {
-      "id": "emotion_surprise_1",
+      "id": "emotion_shame_1",
       "kind": "emotion",
       "notes": [
         494,
-        659
+        440
       ],
       "level": 1
     },
     {
-      "id": "emotion_surprise_2",
+      "id": "emotion_shame_2",
       "kind": "emotion",
       "notes": [
         494,
-        659,
-        831
+        440,
+        392
       ],
       "level": 2
     },
     {
-      "id": "emotion_surprise_3",
+      "id": "emotion_shame_3",
       "kind": "emotion",
       "notes": [
-        587,
-        784,
-        988,
-        1175
+        523,
+        466,
+        392,
+        330
       ],
       "level": 3
     },
     {
-      "id": "combo_verliebt",
-      "kind": "combo",
+      "id": "emotion_disgust_1",
+      "kind": "emotion",
       "notes": [
-        784,
-        740,
-        1175,
-        1109
-      ],
-      "level": 3
-    },
-    {
-      "id": "combo_lustig",
-      "kind": "combo",
-      "notes": [
-        784,
-        659,
-        1175,
-        988
-      ],
-      "level": 3
-    },
-    {
-      "id": "combo_streitlustig",
-      "kind": "combo",
-      "notes": [
-        659,
-        294,
-        988,
-        165
-      ],
-      "level": 3
-    },
-    {
-      "id": "combo_starr",
-      "kind": "combo",
-      "notes": [
-        740,
-        440,
-        1109,
+        277,
         247
       ],
-      "level": 3
+      "level": 1
     },
     {
-      "id": "combo_abwertend",
-      "kind": "combo",
+      "id": "emotion_disgust_2",
+      "kind": "emotion",
       "notes": [
-        330,
         294,
-        196,
-        165
+        247,
+        220
       ],
-      "level": 3
+      "level": 2
     },
     {
-      "id": "combo_bereuend",
-      "kind": "combo",
+      "id": "emotion_disgust_3",
+      "kind": "emotion",
       "notes": [
-        440,
         330,
-        262,
+        277,
+        233,
         196
       ],
       "level": 3
     },
     {
-      "id": "combo_genervt",
+      "id": "combo_bewunderung",
       "kind": "combo",
       "notes": [
-        440,
-        587,
-        247,
+        659,
+        740,
+        988,
+        1109
+      ],
+      "level": 3
+    },
+    {
+      "id": "combo_dankbarkeit",
+      "kind": "combo",
+      "notes": [
+        740,
+        784,
+        1109,
         1175
       ],
       "level": 3
     },
     {
-      "id": "combo_verlegen",
+      "id": "combo_triumph",
       "kind": "combo",
       "notes": [
-        587,
-        440,
+        784,
+        294,
         1175,
+        165
+      ],
+      "level": 3
+    },
+    {
+      "id": "combo_abwertung",
+      "kind": "combo",
+      "notes": [
+        294,
+        330,
+        165,
+        196
+      ],
+      "level": 3
+    },
+    {
+      "id": "combo_selbstekel",
+      "kind": "combo",
+      "notes": [
+        330,
+        523,
+        196,
+        330
+      ],
+      "level": 3
+    },
+    {
+      "id": "combo_reue",
+      "kind": "combo",
+      "notes": [
+        523,
+        440,
+        330,
         262
+      ],
+      "level": 3
+    },
+    {
+      "id": "combo_hilflosigkeit",
+      "kind": "combo",
+      "notes": [
+        440,
+        440,
+        262,
+        247
+      ],
+      "level": 3
+    },
+    {
+      "id": "combo_ueberraschung",
+      "kind": "combo",
+      "notes": [
+        440,
+        659,
+        247,
+        988
       ],
       "level": 3
     },

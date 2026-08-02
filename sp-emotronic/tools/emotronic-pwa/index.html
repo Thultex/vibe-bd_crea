@@ -86,10 +86,10 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 .om-fear{animation-name:omFear!important}:is(.emotion-key.selected,.emotion-key.game-flash) img.om-fear{animation-name:omFearKey!important}
 .om-disgust{animation-name:omDisgust!important}:is(.emotion-key.selected,.emotion-key.game-flash) img.om-disgust{animation-name:omDisgustKey!important}
 .om-sadness{animation-name:omSadness!important}:is(.emotion-key.selected,.emotion-key.game-flash) img.om-sadness{animation-name:omSadnessKey!important}
+.om-shame{animation-name:omShame!important}:is(.emotion-key.selected,.emotion-key.game-flash) img.om-shame{animation-name:omShameKey!important}
 .om-surprise{animation-name:omSurprise!important}:is(.emotion-key.selected,.emotion-key.game-flash) img.om-surprise{animation-name:omSurpriseKey!important}
 .om-neutral{animation-name:omNeutral!important}:is(.emotion-key.selected,.emotion-key.game-flash) img.om-neutral{animation-name:omNeutralKey!important}
 .om-combo{animation-name:omCombo!important}:is(.emotion-key.selected,.emotion-key.game-flash) img.om-combo{animation-name:omComboKey!important}
-.om-starr{animation-name:omStarr!important}:is(.emotion-key.selected,.emotion-key.game-flash) img.om-starr{animation-name:omStarrKey!important}
 @keyframes omSoftPulse{0%,100%{transform:translate(-50%,-50%) scale(var(--ghost-scale,1))}45%{transform:translate(-50%,-50%) scale(calc(var(--ghost-scale,1) * 1.035))}}
 @keyframes omSoftPulseKey{0%,100%{transform:translateY(-1px) scale(1)}45%{transform:translateY(-3px) scale(1.07)}}
 @keyframes omJoy{0%,100%{transform:translate(-50%,-50%) scale(var(--ghost-scale,1)) rotate(0)}35%{transform:translate(-50%,calc(-50% - 7px)) scale(calc(var(--ghost-scale,1) * 1.04)) rotate(-2deg)}65%{transform:translate(-50%,calc(-50% + 2px)) scale(calc(var(--ghost-scale,1) * .99)) rotate(2deg)}}
@@ -106,16 +106,14 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 @keyframes omDisgustKey{0%,100%{transform:translateY(-1px) rotate(0)}40%{transform:translate(-4px,2px) scale(.96) rotate(-5deg)}70%{transform:translate(2px,-1px) rotate(2deg)}}
 @keyframes omSadness{0%,100%{transform:translate(-50%,-50%) scale(var(--ghost-scale,1))}40%{transform:translate(-50%,calc(-50% + 7px)) scale(calc(var(--ghost-scale,1) * .985))}75%{transform:translate(-50%,calc(-50% + 3px)) scale(calc(var(--ghost-scale,1) * .995))}}
 @keyframes omSadnessKey{0%,100%{transform:translateY(-1px)}40%{transform:translateY(5px) scale(.97)}75%{transform:translateY(2px)}}
+@keyframes omShame{0%,100%{transform:translate(-50%,-50%) scale(var(--ghost-scale,1)) rotate(0)}35%{transform:translate(calc(-50% - 3px),calc(-50% + 5px)) scale(calc(var(--ghost-scale,1) * .965)) rotate(-3deg)}72%{transform:translate(calc(-50% + 1px),calc(-50% + 2px)) scale(calc(var(--ghost-scale,1) * .985)) rotate(1deg)}}
+@keyframes omShameKey{0%,100%{transform:translateY(-1px) scale(1) rotate(0)}35%{transform:translate(-2px,4px) scale(.93) rotate(-4deg)}72%{transform:translate(1px,1px) scale(.97) rotate(1deg)}}
 @keyframes omSurprise{0%,100%{transform:translate(-50%,-50%) scale(var(--ghost-scale,1))}35%{transform:translate(-50%,calc(-50% - 5px)) scale(calc(var(--ghost-scale,1) * 1.08))}70%{transform:translate(-50%,-50%) scale(calc(var(--ghost-scale,1) * .99))}}
 @keyframes omSurpriseKey{0%,100%{transform:translateY(-1px) scale(1)}35%{transform:translateY(-5px) scale(1.14)}70%{transform:translateY(-1px) scale(.99)}}
 @keyframes omNeutral{0%,100%{transform:translate(-50%,-50%) scale(var(--ghost-scale,1))}48%{transform:translate(-50%,-50%) scale(calc(var(--ghost-scale,1) * .985))}58%{transform:translate(-50%,-50%) scale(var(--ghost-scale,1))}}
 @keyframes omNeutralKey{0%,100%{transform:translateY(-1px)}48%{transform:translateY(0) scale(.97)}58%{transform:translateY(-1px)}}
 @keyframes omCombo{0%,100%{transform:translate(-50%,-50%) scale(var(--ghost-scale,1)) rotate(0)}30%{transform:translate(calc(-50% - 4px),calc(-50% - 3px)) scale(calc(var(--ghost-scale,1) * 1.035)) rotate(-3deg)}65%{transform:translate(calc(-50% + 4px),calc(-50% - 2px)) scale(calc(var(--ghost-scale,1) * 1.05)) rotate(3deg)}}
 @keyframes omComboKey{0%,100%{transform:translateY(-1px) rotate(0)}30%{transform:translate(-3px,-4px) scale(1.07) rotate(-4deg)}65%{transform:translate(3px,-3px) scale(1.1) rotate(4deg)}}
-/* Starr: kurzer Rückzug, dann abruptes Einfrieren ohne Schwingen. */
-@keyframes omStarr{0%{transform:translate(-50%,-50%) scale(var(--ghost-scale,1));filter:var(--ghost-filter) brightness(1)}28%{transform:translate(-50%,calc(-50% + 4px)) scale(calc(var(--ghost-scale,1) * .94));filter:var(--ghost-filter) brightness(.92)}42%,88%{transform:translate(-50%,calc(-50% + 2px)) scale(calc(var(--ghost-scale,1) * .965));filter:var(--ghost-filter) brightness(.96)}100%{transform:translate(-50%,-50%) scale(var(--ghost-scale,1));filter:var(--ghost-filter) brightness(1)}}
-@keyframes omStarrKey{0%{transform:translateY(-1px) scale(1)}28%{transform:translateY(3px) scale(.91)}42%,88%{transform:translateY(1px) scale(.94)}100%{transform:translateY(-1px) scale(1)}}
-
 /* Gedächtnisspiel im ausgeschalteten Zustand */
 .app.game-mode .corner{pointer-events:none;opacity:.62}
 .app.game-mode .corner.active{opacity:1}
@@ -301,14 +299,14 @@ const base={
 const order=['curiosity','affection','joy','fear','neutral','anger','sadness','shame','disgust'];
 // Gültige Nachbarschafts-Kombinationen.
 const combos={
- 'curiosity|affection':{name:'Bewunderung',audioName:'bewunderung',code:'1F929',ascii:['o_o','*o*','*_*'],partners:['curiosity','affection']},
- 'affection|joy':{name:'Dankbarkeit',audioName:'dankbarkeit',code:'1F979',ascii:['^.-','^o^','^_^'],partners:['affection','joy']},
- 'joy|anger':{name:'Triumph',audioName:'triumph',code:'1F624',ascii:['>:)','>:D','>:D'],partners:['joy','anger']},
- 'anger|disgust':{name:'Verachtung',audioName:'verachtung',code:'1F644',ascii:['>:-/','¬_o','¬_¬'],partners:['anger','disgust']},
- 'disgust|shame':{name:'Selbstekel',audioName:'selbstekel',code:'1F92E',ascii:['>.-','>.<','>_<'],partners:['disgust','shame']},
- 'shame|sadness':{name:'Reue',audioName:'reue',code:'1F61E',ascii:['._o','._.','._.'],partners:['shame','sadness']},
- 'sadness|fear':{name:'Hilflosigkeit',audioName:'hilflosigkeit',code:'1F630',ascii:['D-','D-:','D:'],partners:['sadness','fear']},
- 'fear|curiosity':{name:'Überraschung',audioName:'ueberraschung',code:'1F632',ascii:[':-o',':-0',':-O'],partners:['fear','curiosity']}
+ 'curiosity|affection':{name:'Bewunderung',audioName:'bewunderung',motion:'om-curiosity',code:'1F929',ascii:['o_o','*o*','*_*'],partners:['curiosity','affection']},
+ 'affection|joy':{name:'Dankbarkeit',audioName:'dankbarkeit',motion:'om-affection',code:'1F979',ascii:['^.-','^o^','^_^'],partners:['affection','joy']},
+ 'joy|anger':{name:'Triumph',audioName:'triumph',motion:'om-joy',code:'1F624',ascii:['>:)','>:D','>:D'],partners:['joy','anger']},
+ 'anger|disgust':{name:'Abwertung',audioName:'abwertung',motion:'om-disgust',code:'1F644',ascii:['>:-/','¬_o','¬_¬'],partners:['anger','disgust']},
+ 'disgust|shame':{name:'Selbstekel',audioName:'selbstekel',motion:'om-shame',code:'1F92E',ascii:['>.-','>.<','>_<'],partners:['disgust','shame']},
+ 'shame|sadness':{name:'Reue',audioName:'reue',motion:'om-sadness',code:'1F61E',ascii:['._o','._.','._.'],partners:['shame','sadness']},
+ 'sadness|fear':{name:'Hilflosigkeit',audioName:'hilflosigkeit',motion:'om-fear',code:'1F630',ascii:['D-','D-:','D:'],partners:['sadness','fear']},
+ 'fear|curiosity':{name:'Überraschung',audioName:'ueberraschung',motion:'om-surprise',code:'1F632',ascii:[':-o',':-0',':-O'],partners:['fear','curiosity']}
 };
 // Vollständige Kombi-Übersicht aus „Bereit“: Jede äußere Taste zeigt den
 // Übergang von ihrem gegen den Uhrzeigersinn benachbarten Zweig.
@@ -336,7 +334,7 @@ const soundPatterns={
  fear:[[392,330],[392,330,277],[440,370,294,247]],
  disgust:[[277,247],[294,247,220],[330,277,233,196]],
  sadness:[[440,392],[440,370,330],[440,392,330,262]],
- shame:[[494,659],[494,659,831],[587,784,988,1175]]
+ shame:[[494,440],[494,440,392],[523,466,392,330]]
 };
 const specialSoundPatterns={
  gameWin:[659,784,988,1175,1319],
@@ -474,7 +472,7 @@ function setIntensity(n){if(state.game.active)return;if(!state.powered)return;st
 function animateNeedle(target=state.intensity){const n=el('needle'),previous=Number(n.dataset.prev||0),next=Number(target)||0,dir=next>previous?1:next<previous?-1:0,atLeftEdge=next===0;n.dataset.prev=next;n.classList.remove('swing');if(!dir)return;n.style.setProperty('--overshoot',atLeftEdge?'0px':`${dir*7}px`);n.style.setProperty('--rebound',atLeftEdge?'0px':`${dir*3}px`);void n.offsetWidth;n.classList.add('swing')}
 function getFrames(){if(!state.powered)return [''];if(!state.selected)return [''];if(typeof state.selected==='object')return state.selected.ascii;const e=base[state.selected];if(state.selected==='neutral')return e.ascii[0];return e.ascii[Math.max(0,state.intensity-1)]}
 function setStagePosition(){const stage=el('asciiStage');stage.classList.remove('intense');if(state.intensity>=3)stage.classList.add('intense')}
-function openMojiMotionClass(){if(typeof state.selected==='object')return 'om-combo';return state.selected?`om-${state.selected}`:'om-neutral'}
+function openMojiMotionClass(){if(typeof state.selected==='object')return combos[state.selected.combo]?.motion||'om-combo';return state.selected?`om-${state.selected}`:'om-neutral'}
 function animateOpenMoji(replayMode=false,levelOverride=null,motionOverride=null){
  const cls=motionOverride||(openMojiMotionClass());
  const level=Math.max(1,Math.min(3,levelOverride??state.intensity??1));
@@ -487,7 +485,7 @@ function animateOpenMoji(replayMode=false,levelOverride=null,motionOverride=null
  const targets=[...document.querySelectorAll('.screen-emoji-bg .bg-layer.show,.emotion-key.selected img,.emotion-key.game-flash img')];
  targets.forEach(node=>{
   node.getAnimations().forEach(animation=>{if(animation.id==='intensity-motion')animation.cancel()});
-  node.classList.remove('om-motion','om-joy','om-affection','om-curiosity','om-anger','om-fear','om-disgust','om-sadness','om-shame','om-surprise','om-neutral','om-combo','om-starr');
+  node.classList.remove('om-motion','om-joy','om-affection','om-curiosity','om-anger','om-fear','om-disgust','om-sadness','om-shame','om-surprise','om-neutral','om-combo');
   node.style.setProperty('--om-duration',duration+'ms');
   void node.offsetWidth;
   node.classList.add('om-motion',cls);
@@ -961,7 +959,7 @@ function gameShowAction(action){
   const c1=base[action.first].color,c2=base[action.second].color;
   screen.style.setProperty('--emotion-bg',`color-mix(in srgb, color-mix(in srgb, ${c1} 50%, ${c2}) 66%, #3f4348 34%)`);
   updateGhostEmoji(combo?combo.code:null,3,true);playComboSound(combo);el('asciiStage').textContent=combo?combo.ascii.at(-1):'KOMBI';
-  requestAnimationFrame(()=>animateOpenMoji(false,3,'om-combo'));return;
+  requestAnimationFrame(()=>animateOpenMoji(false,3,combo?.motion||'om-combo'));return;
  }
  const key=gameActionKey(action),level=gameActionLevel(action),e=base[key],code=e.codes[level-1];
  const previousLevel=state.game.level;state.game.level=level;renderGameKeypad(key,false);state.game.level=previousLevel;screen.style.transitionDuration='.28s';
@@ -1210,7 +1208,7 @@ function replayHistory(){
   else if(item.key)playEmotionSound(item.key,item.intensity||1);
   renderReplayKeypad(item);hideReplayLabels();
   const replayComboKey=item.isCombo&&item.colorParts?pairKey(item.colorParts[0],item.colorParts[1]):null;
-  const replayMotion=item.isCombo?'om-combo':`om-${item.key||'neutral'}`;
+  const replayMotion=item.isCombo?(replayComboKey&&combos[replayComboKey]?.motion)||'om-combo':`om-${item.key||'neutral'}`;
   requestAnimationFrame(()=>animateOpenMoji(true,item.intensity||1,replayMotion));
   i++;
   if(i>=items.length){
