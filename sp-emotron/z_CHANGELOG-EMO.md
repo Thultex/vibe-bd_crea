@@ -29,7 +29,7 @@ Erstübernahme und anschließender vollständiger Neuaufbau von Emotronic mit fu
 - Modell: Grundzweige auf Neugier, Zuneigung, Freude, Wut, Ekel, Scham, Trauer und Angst mit Neutral im Zentrum umgestellt.
 - Spiegelung: Komplettes 3×3-Rad einschließlich Emojis, Beschriftungen, Pastellfarben und Ziffernsteuerung an der Y-Achse gespiegelt; sichtbare Reihenfolge ist Freude/Zuneigung/Neugier, Wut/Neutral/Angst, Ekel/Scham/Trauer.
 - Begriffe: Kurze Adjektivreihen `interessiert/neugierig/fasziniert`, `freundlich/zugewandt/verbunden`, `zufrieden/fröhlich/begeistert`, `gereizt/verärgert/wütend`, `abgeneigt/angeekelt/übel`, `verlegen/befangen/beschämt`, `bedrückt/traurig/trauernd` und `besorgt/ängstlich/panisch` eingeführt.
-- Kombinationen: Bewunderung, Dankbarkeit, Streitlust, Abwertung, Unbehagen, Reue, Aufgeben und Überraschung als einwortige Nomen mit eindeutigen Gesichts-Emojis und festen emotionsbezogenen Übersichtsankern umgesetzt; Streitlust verwendet wieder das alte Teufelsemoji, Unbehagen 😣 und Aufgeben das erschöpfte Gesicht 😩. Ekel verwendet 😬 in seiner mittleren Stufe.
+- Kombinationen: Bewunderung, Dankbarkeit, Streitlust, Abwertung, Unbehagen, Reue, Aufgeben und Überraschung als einwortige Nomen mit eindeutigen Gesichts-Emojis und festen emotionsbezogenen Übersichtsankern umgesetzt; Streitlust verwendet wieder das alte Teufelsemoji, Unbehagen 😣 und Aufgeben das erschöpfte Gesicht 😩. Ekel verwendet 😬 in Intensität 1 und wie zuvor 😖 in Intensität 2.
 - Emojis: Doppelte Motive entfernt; die klassischen Neugier- und Freude-Reihen wiederhergestellt und Bewunderung auf ein eigenes Herzaugen-Motiv umgestellt.
 - Farben: Alte Pastellpalette und bestehende Intensitätsberechnung beibehalten, semantisch mit roter Wut, gelber Freude, grüner Scham, blauer Trauer, lavendelfarbener Angst, dunkelgrünem Ekel, orangener Zuneigung und türkiser Neugier neu zugeordnet.
 - Animation: Eigene zurückhaltende Scham-Bewegung ergänzt; Sekundäremotionen übernehmen passende Bewegungscharakteristiken ihrer Grundzweige.
@@ -42,7 +42,7 @@ Erstübernahme und anschließender vollständiger Neuaufbau von Emotronic mit fu
 - Sharing: Die ausgeschriebenen Fragmente `#share`, `#replay`, `#slow` und `#score` bleiben erhalten. Alle 33 Zustände werden im Datenteil mit je einem Base36-Zeichen codiert; Intensität und Kombination sind implizit, der Normalmodus im Score wird weggelassen und alte lange Links bleiben lesbar.
 - Replay: Der normale Verlauf ist auf 24 Schritte begrenzt und entfernt bei jeder weiteren Eingabe den ältesten Eintrag; Simons eigene Spielfolge bleibt unverändert.
 - Test: JavaScript-/Python-Syntax, eindeutige Emojis und Begriffe, Rad-/Tastaturspiegelung, Kombi-Anker, WAV-Struktur, Manifestgleichlauf, Versionsstand und bytegleiche Laufzeitspiegel geprüft.
-- Versionen: Emotronic v2.29.
+- Versionen: Emotronic v2.30.
 
 ### 2026-07-26 - emo, struktur, tools, pwa, replay, share, anzeige, audio, doku (ca. 1,6h)
 

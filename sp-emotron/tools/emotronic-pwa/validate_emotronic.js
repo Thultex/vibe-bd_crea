@@ -61,7 +61,7 @@ const expectedBase = {
   affection: ['Zuneigung', ['freundlich', 'zugewandt', 'verbunden'], ['1F609', '1F917', '1F970'], '#f4b56d'],
   joy: ['Freude', ['zufrieden', 'fröhlich', 'begeistert'], ['1F60C', '1F60A', '1F602'], '#f5df6f'],
   anger: ['Wut', ['gereizt', 'verärgert', 'wütend'], ['1F612', '1F620', '1F92C'], '#ef938b'],
-  disgust: ['Ekel', ['abgeneigt', 'angeekelt', 'übel'], ['1F615', '1F62C', '1F922'], '#6f9f68'],
+  disgust: ['Ekel', ['abgeneigt', 'angeekelt', 'übel'], ['1F62C', '1F616', '1F922'], '#6f9f68'],
   shame: ['Scham', ['verlegen', 'befangen', 'beschämt'], ['1F605', '1F633', '1FAE3'], '#bfe36f'],
   sadness: ['Trauer', ['bedrückt', 'traurig', 'trauernd'], ['1F641', '1F622', '1F62D'], '#6381d7'],
   fear: ['Angst', ['besorgt', 'ängstlich', 'panisch'], ['1F61F', '1F628', '1F631'], '#c2a8dc'],

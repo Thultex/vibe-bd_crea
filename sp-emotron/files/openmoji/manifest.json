@@ -144,7 +144,7 @@
     {
       "variant": "color",
       "file": "color/5_ekel_1_abgeneigt.svg",
-      "code": "1F615",
+      "code": "1F62C",
       "emotion": "Ekel",
       "name": "abgeneigt",
       "kind": "base"
@@ -152,7 +152,7 @@
     {
       "variant": "color",
       "file": "color/5_ekel_2_angeekelt.svg",
-      "code": "1F62C",
+      "code": "1F616",
       "emotion": "Ekel",
       "name": "angeekelt",
       "kind": "base"
@@ -408,7 +408,7 @@
     {
       "variant": "sw",
       "file": "sw/5_ekel_1_abgeneigt.svg",
-      "code": "1F615",
+      "code": "1F62C",
       "emotion": "Ekel",
       "name": "abgeneigt",
       "kind": "base"
@@ -416,7 +416,7 @@
     {
       "variant": "sw",
       "file": "sw/5_ekel_2_angeekelt.svg",
-      "code": "1F62C",
+      "code": "1F616",
       "emotion": "Ekel",
       "name": "angeekelt",
       "kind": "base"
