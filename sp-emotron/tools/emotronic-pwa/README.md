@@ -267,8 +267,8 @@ Am Game Over zeigt die Zahl neben `R` sofort die Anzahl der gespeicherten Runden
 - Nach dem Verlust des letzten sichtbaren Herzens darf mit 0 Herzen weitergespielt werden; der nächste Fehler beendet das Spiel.
 - Beim Lebensverlust erscheinen eine große Herzanimation und ein eigener Ton.
 - Der Geschafft-Jingle beginnt rund 0,2 Sekunden nach dem letzten korrekten Tastendruck, damit beide Töne klarer getrennt bleiben.
-- Bei 10, 20, 30 usw. Punkten wird ein zusätzliches Leben vergeben.
-- Alle 5 Punkte läuft eine Kirby-artige Retro-Bonusanimation; ab 10 Punkten stehen zusätzliche Varianten bereit.
+- Bei 10, 20, 30 usw. Punkten wird ein zusätzliches Leben mit besonders hervorgehobener Zwischenanimation vergeben.
+- Alle 5 Punkte läuft eine deutlich größere, bewegte Kirby-artige Retro-Bonusanimation; ab 10 Punkten stehen zusätzliche Varianten bereit. Ausschließlich diese Zwischenanimation läuft in Leicht länger und in Normal etwas länger als in Profi. Zehnerschritte verstärken Größe, Bewegung und Dauer zusätzlich.
 - Bei Spielende werden Punktzahl und Leistungs-Kommentar angezeigt.
 - Im Profi-Modus wird die Endpunktzahl mit 25 % Bonus berechnet.
 - Beim Game Over wird ein Link mit Score, Modus und vollständiger gespielter Folge automatisch in die Zwischenablage kopiert, soweit der Browser dies zulässt.

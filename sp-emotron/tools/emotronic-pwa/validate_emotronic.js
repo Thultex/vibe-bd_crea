@@ -55,6 +55,9 @@ assert((html.match(/const selection=\{joy:'easy',neutral:'normal',sadness:'pro'\
 assert(!html.includes('powerOffAndClearHistoryFromNeutral'), 'Neutral darf den Ausschalter nicht auslösen');
 assert(html.includes("state.selected='neutral';state.displayKey='neutral';state.intensity=0"), 'Neutral ist nicht als wiederholt wählbarer Grundzustand umgesetzt');
 assert(/cancelReplayToReady\(\);\r?\n state\.powerArmed=true;/.test(html), 'Der erste Ausschalter-Klick wechselt nicht zu Bereit und leert die Historie');
+assert(html.includes('function gameBonusTiming(extraMs=0)'), 'Modusabhängige Dauer der Simon-Zwischenanimation fehlt');
+assert(html.includes('function showGameBonusFrame(stage,text,index)'), 'Dynamische Simon-Zwischenanimation fehlt');
+assert(html.includes('game-bonus-milestone'), 'Hervorhebung der Simon-Zehnerschritte fehlt');
 
 const expectedBase = {
   curiosity: ['Neugier', ['interessiert', 'neugierig', 'fasziniert'], ['1F60F', '1FAE2', '1F929'], '#83d4cf'],

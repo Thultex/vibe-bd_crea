@@ -141,6 +141,7 @@ In Simon ist die Kombi-Taste deutlich abgedunkelt und ignoriert direkte Eingaben
 - Kein Eingabe-Timeout.
 - Nächste Runde startet automatisch.
 - Beschleunigung beginnt nach Punkt 5 und erreicht Maximum bei Punkt 20.
+- Nur die Bonus-Zwischenanimationen erhalten modusabhängige Standzeiten: Leicht länger, Normal leicht länger, Profi unverändert knapp. Zehnerschritte verstärken Größe, Bewegung und Dauer zusätzlich; das allgemeine Spieltempo bleibt davon unberührt.
 - Letzter Cue darf während Fade-out eingegeben werden.
 - Intensität wird pro Sequenzschritt gespeichert und später nicht rückwirkend erhöht.
 - Profi-Kombis ab 5; andere Modi ab `APP_CONFIG.simon.comboAt`.
