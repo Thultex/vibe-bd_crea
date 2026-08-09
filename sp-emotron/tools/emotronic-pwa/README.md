@@ -1,4 +1,4 @@
-# Emotronic v2.30
+# Emotronic v2.31
 
 Emotronic ist eine installierbare, offlinefähige PWA zur Auswahl, Darstellung, Kombination und Wiedergabe von Gefühlen. Die Oberfläche ist an ein kompaktes Retro-Handgerät angelehnt und für Touch, Maus und Tastatur ausgelegt.
 
@@ -47,7 +47,7 @@ Ein Druck auf Telefon kopiert in **Bereit**, auf der `Simon Feels!`-Auswahl oder
 | Datei | Zweck |
 |---|---|
 | `index.html` | Hauptanwendung mit Oberfläche, CSS und JavaScript |
-| `Emotronic-v2.30.html` | Versionierte Kopie der Hauptanwendung |
+| `Emotronic-v2.31.html` | Versionierte Kopie der Hauptanwendung |
 | `manifest.webmanifest` | PWA-Metadaten und Installationskonfiguration |
 | `sw.js` | Service Worker für Offline-Cache |
 | `icon-192.png`, `icon-512.png` | PWA-Symbole |
@@ -296,8 +296,8 @@ Am Game Over zeigt die Zahl neben `R` sofort die Anzahl der gespeicherten Runden
   - `8-bit/` erhält den härteren ursprünglichen Retro-Charakter.
   - `8-bit_soft/` verwendet dieselben Tonhöhen und Rhythmen, aber weichere Ein-/Ausläufe sowie einen kurzen dezenten Nachhall.
 - `generate_audio_assets.py` erzeugt beide Ordner und `manifest.json` reproduzierbar. Neue Sounds werden zuerst in den Datentabellen des Generators ergänzt und anschließend für beide Sets generiert.
-- Die WAV-Sets sind nur vorbereitet und werden von der Live-PWA noch nicht geladen oder gecached. Ihre Audioausgabe bleibt bis zur gesonderten Aktivierung bei der bestehenden Web-Audio-Synthese.
-- Für die spätere Aktivierung ist `8-bit_soft` als Standard und `8-bit` als wählbare Alternative vorgesehen.
+- Die Live-PWA verwendet standardmäßig `8-bit_soft`. Der einzelne Wert `APP_CONFIG.audio.soundSet` kann auf `8-bit` gesetzt werden, um ohne weitere Codeänderung zur härteren Fassung zu wechseln.
+- Kann eine WAV-Datei nicht geladen oder abgespielt werden, fällt die App für dieses Ereignis automatisch auf die bisherige Web-Audio-Synthese zurück. Erfolgreich geladene Sounds werden durch den Service Worker im Laufzeitcache gehalten.
 - Der laufende Ton ist optional und über `APP_CONFIG.audio.enabled` abschaltbar. Fehlt Web Audio oder blockiert der Browser Audio, läuft die App ohne Funktionsverlust weiter.
 
 ## Tastatur

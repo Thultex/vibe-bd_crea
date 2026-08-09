@@ -28,6 +28,8 @@ Erstübernahme und anschließender vollständiger Neuaufbau von Emotronic mit fu
 
 - Schwierigkeit: Profi startet bei 0 statt 5 Punkten; Leicht startet mit 1 Leben bei unverändert langsamerem Spieltempo.
 - Zwischenanimation: Bonusmotive deutlich vergrößert und pro Frame dynamisch bewegt; ausschließlich ihre Standzeit ist in Leicht und Normal länger, Zehnerschritte erhalten eine zusätzliche Hervorhebung.
+- Audio: Beide reproduzierbaren 40er-Soundsets geprüft und `8-bit_soft` als WAV-Standard eingebunden; ein einzelner Konfigurationswert wechselt vollständig auf `8-bit`, die bisherige Synthese bleibt als automatischer Fehler-Fallback erhalten.
+- Version: Emotronic v2.31 mit Cache-Revision 131.
 
 ### 2026-08-02 - emo, modell, emojis, farben, animation, audio, pwa, doku (ca. 2,0h)
 

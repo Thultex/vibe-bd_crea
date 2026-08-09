@@ -197,16 +197,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v2.30 — CODEKOPF
+   Emotronic v2.31 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 130
+   Aktuelle Revision: 131
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'2.30',
-  revision:130,
+  version:'2.31',
+  revision:131,
   author:'Rasmus Klette'
 });
 
@@ -225,7 +225,9 @@ const APP_CONFIG={
   },
   audio:{
     enabled:true,              // false = App bleibt vollständig lautlos
-    masterVolume:1             // 0 bis 1
+    masterVolume:1,            // 0 bis 1
+    soundSet:'8-bit_soft',     // für die härtere Fassung nur auf '8-bit' wechseln
+    assetRoot:'../../../assets/audio/emotronic'
   },
   normalMode:{
     minEmotionLevel:1,         // Grundemotionen dürfen nicht unter diese Stufe fallen
@@ -434,6 +436,7 @@ const specialSoundPatterns={
  powerOff:[659,523,392,262]
 };
 let audioCtx=null;
+const activeSoundPlayers=new Set();
 function ensureAudio(){
  try{
   const AC=window.AudioContext||window.webkitAudioContext;
@@ -442,6 +445,22 @@ function ensureAudio(){
   if(audioCtx.state==='suspended')audioCtx.resume().catch(()=>{});
   return audioCtx;
  }catch(_){return null}
+}
+function playSoundAsset(id,synthFallback){
+ if(!APP_CONFIG.audio.enabled)return;
+ const fallback=()=>{try{synthFallback?.()}catch(_){/* Ton bleibt optional. */}};
+ const set=APP_CONFIG.audio.soundSet;
+ if(!id||!['8-bit','8-bit_soft'].includes(set)||typeof Audio==='undefined'){fallback();return}
+ try{
+  const root=String(APP_CONFIG.audio.assetRoot||'').replace(/\/$/,'');
+  const player=new Audio(`${root}/${set}/${id}.wav`);let finished=false;
+  const cleanup=()=>{activeSoundPlayers.delete(player)};
+  const useFallback=()=>{if(finished)return;finished=true;cleanup();fallback()};
+  player.preload='auto';player.volume=Math.max(0,Math.min(1,Number(APP_CONFIG.audio.masterVolume)||0));
+  player.addEventListener('ended',()=>{finished=true;cleanup()},{once:true});
+  player.addEventListener('error',useFallback,{once:true});activeSoundPlayers.add(player);
+  const started=player.play();if(started&&typeof started.catch==='function')started.catch(useFallback)
+ }catch(_){fallback()}
 }
 function playTonePattern(notes,level=1){
  if(!APP_CONFIG.audio.enabled)return;
@@ -461,16 +480,18 @@ function playTonePattern(notes,level=1){
 function playEmotionSound(key,level=1){
  const patterns=soundPatterns[key];if(!patterns)return;
  const index=key==='neutral'?0:Math.max(0,Math.min(2,(level||1)-1));
- playTonePattern(patterns[index],Math.max(1,level||1));
+ const soundLevel=Math.max(1,level||1);
+ playSoundAsset(`emotion_${key}_${index+1}`,()=>playTonePattern(patterns[index],soundLevel));
 }
 function playComboSound(combo){
  if(!combo)return;
  const a=soundPatterns[combo.partners[0]]?.[2]||[],b=soundPatterns[combo.partners[1]]?.[2]||[];
- playTonePattern([a[0],b[0],a.at(-1),b.at(-1)].filter(Boolean),3);
+ playSoundAsset(`combo_${combo.audioName}`,()=>playTonePattern([a[0],b[0],a.at(-1),b.at(-1)].filter(Boolean),3));
 }
 function playSpecialSound(name){
  const notes=specialSoundPatterns[name];if(!notes)return;
- playTonePattern(notes,name==='gameLose'||name==='lifeLose'||name==='powerOff'?2:3);
+ const soundId=name.replace(/[A-Z]/g,letter=>`_${letter.toLowerCase()}`);
+ playSoundAsset(`special_${soundId}`,()=>playTonePattern(notes,name==='gameLose'||name==='lifeLose'||name==='powerOff'?2:3));
 }
 let state={selected:null,displayKey:null,intensity:0,last:null,comboMode:false,comboFirst:null,source:APP_CONFIG.normalMode.defaultSource,timer:null,powered:true,history:[],slowReplay:false,powerArmed:false,powerArmTimer:null,longPressTimer:null,longPressTriggered:false,bgCode:null,bgFlip:false,replaying:false,repeatClickTimer:null,powerAnimating:false,replayRun:0,bootTimer:null,omDelayTimer:null,senderStreamTimer:null,shareStatus:'',shareStatusTimer:null,incomingShare:false,incomingShareReady:null,incomingShareStartTimer:null,simonLinkWaiting:false,lastGameOver:null,lastPhoneTap:0,lastWifiTap:0,game:{active:false,phase:'idle',sequence:[],inputIndex:0,score:0,level:1,flashKey:null,awaitingShutdown:false,timers:[],inputTimer:null,actions:[],comboInput:[]}};
 const el=id=>document.getElementById(id);

@@ -178,6 +178,30 @@ for (const fragment of ['#e=', '#r=', '#s=', '#g=']) {
 }
 assert(data.APP_CONFIG?.replay?.maxItems === 24, 'Normaler Replay-Verlauf ist nicht auf 24 Schritte begrenzt');
 assert(html.includes('state.history.splice(0,state.history.length-APP_CONFIG.replay.maxItems)'), 'Älteste Replay-Schritte werden bei neuer Eingabe nicht entfernt');
+assert(data.APP_CONFIG?.audio?.soundSet === '8-bit_soft', 'Weiches WAV-Soundset ist nicht Standard');
+assert(data.APP_CONFIG?.audio?.assetRoot === '../../../assets/audio/emotronic', 'WAV-Basispfad ist nicht für Quelle und Laufzeitspiegel gemeinsam');
+assert(html.includes("['8-bit','8-bit_soft'].includes(set)"), 'Einfacher Soundset-Wechsel fehlt');
+assert(html.includes('function playSoundAsset(id,synthFallback)'), 'WAV-Wiedergabe mit Synthese-Fallback fehlt');
+for (const prefix of ['emotion_', 'combo_', 'special_']) assert(html.includes(`playSoundAsset(\`${prefix}`), `WAV-Zuordnung fehlt: ${prefix}`);
+const audioStart = html.indexOf('const soundPatterns=');
+const audioEnd = html.indexOf('let state=', audioStart);
+assert(audioStart >= 0 && audioEnd > audioStart, 'Audio-Laufzeitcode nicht gefunden');
+const playedAudioUrls = [];
+class TestAudio {
+  constructor(url) { this.url = url; playedAudioUrls.push(url); }
+  addEventListener() {}
+  play() { return Promise.resolve(); }
+}
+const audioRuntime = new Function(
+  'APP_CONFIG', 'Audio',
+  `${html.slice(audioStart, audioEnd)};return {playEmotionSound,playComboSound,playSpecialSound};`
+)(data.APP_CONFIG, TestAudio);
+audioRuntime.playEmotionSound('anger', 2);
+audioRuntime.playComboSound(data.combos['anger|disgust']);
+audioRuntime.playSpecialSound('lifeGain');
+assert(playedAudioUrls[0]?.endsWith('/8-bit_soft/emotion_anger_2.wav'), 'Emotions-WAV wird nicht korrekt aufgelöst');
+assert(playedAudioUrls[1]?.endsWith('/8-bit_soft/combo_abwertung.wav'), 'Kombi-WAV wird nicht korrekt aufgelöst');
+assert(playedAudioUrls[2]?.endsWith('/8-bit_soft/special_life_gain.wav'), 'Spezial-WAV wird nicht korrekt aufgelöst');
 
 const { version, revision } = data.APP_META;
 assert(html.includes(`Emotronic v${version}`), 'Codekopf und APP_META-Version weichen ab');

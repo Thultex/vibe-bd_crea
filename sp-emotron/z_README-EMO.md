@@ -16,7 +16,7 @@ Emotronic ist eine installierbare, offlinefähige PWA zur Auswahl, Darstellung, 
 
 ## Aktueller Stand
 
-- Anwendung: Emotronic v2.30
+- Anwendung: Emotronic v2.31
 - Service-Worker-Cache: `emotronic-v130`
 - Öffentlicher Zielpfad: `/share/apps/emotronic/`
 - Erwarteter GitHub-Pages-Link:
