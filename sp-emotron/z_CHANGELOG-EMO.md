@@ -24,6 +24,10 @@ Erstübernahme und anschließender vollständiger Neuaufbau von Emotronic mit fu
 
 ## Log
 
+### 2026-08-09 - simon, schwierigkeit
+
+- Schwierigkeit: Profi startet bei 0 statt 5 Punkten; Leicht startet mit 1 Leben bei unverändert langsamerem Spieltempo.
+
 ### 2026-08-02 - emo, modell, emojis, farben, animation, audio, pwa, doku (ca. 2,0h)
 
 - Modell: Grundzweige auf Neugier, Zuneigung, Freude, Wut, Ekel, Scham, Trauer und Angst mit Neutral im Zentrum umgestellt.

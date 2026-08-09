@@ -54,7 +54,7 @@ assert((html.match(/const choices=\{joy:'Leicht',neutral:'Normal',sadness:'Profi
 assert((html.match(/const selection=\{joy:'easy',neutral:'normal',sadness:'pro'\}/g) || []).length === 2, 'Simon-Moduszuordnung liegt nicht auf Freude, Neutral und Trauer');
 assert(!html.includes('powerOffAndClearHistoryFromNeutral'), 'Neutral darf den Ausschalter nicht auslösen');
 assert(html.includes("state.selected='neutral';state.displayKey='neutral';state.intensity=0"), 'Neutral ist nicht als wiederholt wählbarer Grundzustand umgesetzt');
-assert(html.includes("cancelReplayToReady();\n state.powerArmed=true;"), 'Der erste Ausschalter-Klick wechselt nicht zu Bereit und leert die Historie');
+assert(/cancelReplayToReady\(\);\r?\n state\.powerArmed=true;/.test(html), 'Der erste Ausschalter-Klick wechselt nicht zu Bereit und leert die Historie');
 
 const expectedBase = {
   curiosity: ['Neugier', ['interessiert', 'neugierig', 'fasziniert'], ['1F60F', '1FAE2', '1F929'], '#83d4cf'],

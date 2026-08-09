@@ -232,9 +232,9 @@ Am Game Over zeigt die Zahl neben `R` sofort die Anzahl der gespeicherten Runden
 
 | Auswahl | Modus | Eigenschaften |
 |---|---|---|
-| Freude | Leicht | langsamer, 3 Leben, Wiederholen erlaubt |
+| Freude | Leicht | langsamer, 1 Leben, Wiederholen erlaubt |
 | Neutral | Normal | Standardtempo, 1 Leben |
-| Trauer | Profi | schneller, Start bei 5 Punkten, 25 % Endbonus |
+| Trauer | Profi | schneller, Start bei 0 Punkten, 25 % Endbonus |
 
 ### Spielablauf
 
@@ -262,7 +262,7 @@ Am Game Over zeigt die Zahl neben `R` sofort die Anzahl der gespeicherten Runden
 
 ### Leben, Bonus und Spielende
 
-- Ruhig startet mit 3 Leben; Normal und Profi mit 1 Leben.
+- Alle drei Schwierigkeitsstufen starten mit 1 Leben. Ruhig bleibt im vorhandenen langsameren Tempo und erlaubt weiterhin eine Wiederholung.
 - Ein sichtbares Herz entspricht einem erlaubten Fehler.
 - Nach dem Verlust des letzten sichtbaren Herzens darf mit 0 Herzen weitergespielt werden; der nächste Fehler beendet das Spiel.
 - Beim Lebensverlust erscheinen eine große Herzanimation und ein eigener Ton.

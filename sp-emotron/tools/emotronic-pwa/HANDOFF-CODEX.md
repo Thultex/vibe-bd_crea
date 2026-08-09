@@ -135,9 +135,9 @@ In Simon ist die Kombi-Taste deutlich abgedunkelt und ignoriert direkte Eingaben
 
 - Bei ausgeschaltetem Gerät öffnet nur `R` die Schwierigkeitsauswahl.
 - Freude = leicht, Neutral = normal, Trauer = Profi.
-- Ruhig: 3 Leben, langsamer.
+- Ruhig: 1 Leben, langsamer.
 - Normal: 1 Leben.
-- Profi: 1 Leben, schneller, startet bei 5 Punkten, 25 % Endbonus.
+- Profi: 1 Leben, schneller, startet bei 0 Punkten, 25 % Endbonus.
 - Kein Eingabe-Timeout.
 - Nächste Runde startet automatisch.
 - Beschleunigung beginnt nach Punkt 5 und erreicht Maximum bei Punkt 20.
