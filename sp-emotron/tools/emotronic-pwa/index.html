@@ -1,10 +1,10 @@
 <!--
   ============================================================================
-  Emotronic v2.32
+  Emotronic v2.33
   Projektname: Emotronic
   Autor: Rasmus Klette
   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-  Aktuelle Revision: 132
+  Aktuelle Revision: 133
   ============================================================================
 -->
 <!doctype html>
@@ -197,16 +197,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v2.32 — CODEKOPF
+   Emotronic v2.33 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 132
+   Aktuelle Revision: 133
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'2.32',
-  revision:132,
+  version:'2.33',
+  revision:133,
   author:'Rasmus Klette'
 });
 
@@ -251,7 +251,8 @@ const APP_CONFIG={
     dimInactiveKeys:true
   },
   share:{
-    incomingStartDelayMs:100
+    incomingStartDelayMs:100,
+    multiTapMs:520
   },
   confirmations:{
     powerOffMs:5000,
@@ -411,6 +412,19 @@ function decodeCompactScore(value){
  if(sequence.some(action=>!action))return null;
  return {type:'score',score,mode,sequence}
 }
+function emojiCharacterForCode(code){
+ if(typeof code!=='string'||!code)return '';
+ try{return String.fromCodePoint(...code.split('-').map(part=>parseInt(part,16)).filter(Number.isFinite))}catch{return ''}
+}
+function replayEmojiText(items){
+ if(!Array.isArray(items))return '';
+ return items.map(item=>{
+  if(!item||typeof item!=='object')return '';
+  if(typeof item.code==='string')return emojiCharacterForCode(item.code);
+  const normalized=sharedStateItem(sharedStateNumber(item));
+  return normalized?emojiCharacterForCode(normalized.code):''
+ }).filter(Boolean).join(' ')
+}
 
 // Kurze eigenständige Retro-Handheld-Signale. Audio ist rein optional:
 // Fehlt Web Audio oder blockiert der Browser den Ton, läuft die App unverändert weiter.
@@ -493,7 +507,7 @@ function playSpecialSound(name){
  const soundId=name.replace(/[A-Z]/g,letter=>`_${letter.toLowerCase()}`);
  playSoundAsset(`special_${soundId}`,()=>playTonePattern(notes,name==='gameLose'||name==='lifeLose'||name==='powerOff'?2:3));
 }
-let state={selected:null,displayKey:null,intensity:0,last:null,comboMode:false,comboFirst:null,source:APP_CONFIG.normalMode.defaultSource,timer:null,powered:true,history:[],slowReplay:false,powerArmed:false,powerArmTimer:null,longPressTimer:null,longPressTriggered:false,bgCode:null,bgFlip:false,replaying:false,repeatClickTimer:null,powerAnimating:false,replayRun:0,bootTimer:null,omDelayTimer:null,senderStreamTimer:null,shareStatus:'',shareStatusTimer:null,incomingShare:false,incomingShareReady:null,incomingShareStartTimer:null,simonLinkWaiting:false,lastGameOver:null,lastPhoneTap:0,lastWifiTap:0,game:{active:false,phase:'idle',sequence:[],inputIndex:0,score:0,level:1,flashKey:null,awaitingShutdown:false,timers:[],inputTimer:null,actions:[],comboInput:[]}};
+let state={selected:null,displayKey:null,intensity:0,last:null,comboMode:false,comboFirst:null,source:APP_CONFIG.normalMode.defaultSource,timer:null,powered:true,history:[],slowReplay:false,powerArmed:false,powerArmTimer:null,longPressTimer:null,longPressTriggered:false,bgCode:null,bgFlip:false,replaying:false,repeatClickTimer:null,powerAnimating:false,replayRun:0,bootTimer:null,omDelayTimer:null,senderStreamTimer:null,shareStatus:'',shareStatusTimer:null,incomingShare:false,incomingShareReady:null,incomingShareStartTimer:null,simonLinkWaiting:false,lastGameOver:null,phoneTapCount:0,phoneTapTimer:null,lastWifiTap:0,game:{active:false,phase:'idle',sequence:[],inputIndex:0,score:0,level:1,flashKey:null,awaitingShutdown:false,timers:[],inputTimer:null,actions:[],comboInput:[]}};
 const el=id=>document.getElementById(id);
 function setOfflineHintsVisible(visible){['repeatHint','powerHint'].forEach(id=>{const hint=el(id);hint.hidden=false;hint.classList.toggle('visible',visible)})}
 function showReplayCount(count){
@@ -819,10 +833,9 @@ async function shareGameScore(){
  setGameMeta(copied?'Score-Link kopiert · R: Replay · ☎ Teilen':'☎ Score teilen · R: Replay · ⏻: Schluss');
  return copied
 }
-function isDoubleTap(slot){
- const now=Date.now(),property=slot==='phone'?'lastPhoneTap':'lastWifiTap';
- const doubled=now-state[property]>0&&now-state[property]<=520;
- state[property]=doubled?0:now;
+function isWifiDoubleTap(){
+ const now=Date.now(),doubled=now-state.lastWifiTap>0&&now-state.lastWifiTap<=Math.max(1,Number(APP_CONFIG.share.multiTapMs)||520);
+ state.lastWifiTap=doubled?0:now;
  return doubled
 }
 function restoreHistoryItem(item){
@@ -1497,25 +1510,42 @@ function shareReplayFromPhone(){
  if(state.history.length)copySharePayload({type:'replay',items:state.history.slice(-APP_CONFIG.replay.maxItems)},'Replay-Link');
  else flashShareStatus('Replay ist leer')
 }
-function shareSlowReplayFromWifi(){
+function shareSlowReplayFromPhone(){
  recordHistory('sync-current');
  if(state.history.length)copySharePayload({type:'replay',items:state.history.slice(-APP_CONFIG.replay.maxItems)},'Slow-Replay-Link','slow');
  else flashShareStatus('Replay ist leer')
 }
-el('sendBtn').onclick=event=>{
- const doubled=isDoubleTap('phone');
- if(doubled){event.preventDefault();shareReplayFromPhone();return}
+async function shareReplayEmojisFromWifi(){
+ recordHistory('sync-current');
+ const text=replayEmojiText(state.history.slice(-APP_CONFIG.replay.maxItems));
+ if(!text){flashShareStatus('Replay ist leer');return}
+ const copied=await copyTextRobust(text);
+ flashShareStatus(copied?'Replay-Emojis kopiert':'Kopieren nicht möglich')
+}
+function runPhoneSingleTap(){
  if(!state.powered){copyModeLink('off');return}
  if(state.game.active&&state.game.phase==='select'){copyModeLink('simon');return}
  if(!state.selected&&!state.powerAnimating&&!state.powerArmed){copyModeLink('on');return}
- state.source='self';render();animateSource('self');flashShareStatus('Replay teilen: Zweimal ☎ klicken.',3000)
-};
+ state.source='self';render();animateSource('self');flashShareStatus('2× ☎ Replay · 3× ☎ Slow',3000)
+}
+function queuePhoneTap(event){
+ state.phoneTapCount=Math.min(3,state.phoneTapCount+1);
+ clearTimeout(state.phoneTapTimer);
+ if(state.phoneTapCount===3){
+  event.preventDefault();state.phoneTapCount=0;state.phoneTapTimer=null;shareSlowReplayFromPhone();return
+ }
+ state.phoneTapTimer=setTimeout(()=>{
+  const taps=state.phoneTapCount;state.phoneTapCount=0;state.phoneTapTimer=null;
+  if(taps===2)shareReplayFromPhone();else if(taps===1)runPhoneSingleTap()
+ },Math.max(1,Number(APP_CONFIG.share.multiTapMs)||520))
+}
+el('sendBtn').onclick=queuePhoneTap;
 el('receiveBtn').onclick=event=>{
- const doubled=isDoubleTap('wifi');
- if(doubled){event.preventDefault();shareSlowReplayFromWifi();return}
+ const doubled=isWifiDoubleTap();
+ if(doubled){event.preventDefault();shareReplayEmojisFromWifi();return}
  if(!state.powered)return;
  if(state.game.active&&state.game.phase==='select')return;
- state.source='other';render();animateSource('other');flashShareStatus('Slow-Replay teilen: Zweimal 📶 klicken.',3000)
+ state.source='other';render();animateSource('other');flashShareStatus('Emojis teilen: Zweimal 📶 klicken.',3000)
 };
 
 // Tastatursteuerung: Ziffern entsprechen der sichtbaren 3×3-Tastenanordnung.

@@ -1,4 +1,4 @@
-# Codex-Handoff: Emotronic v2.32
+# Codex-Handoff: Emotronic v2.33
 
 ## Auftrag
 
@@ -7,7 +7,7 @@ Diese Übergabe beschreibt den aktuellen Stand der installierbaren Emotronic-PWA
 ## Relevante Dateien
 
 - `sp-emotron/tools/emotronic-pwa/index.html` – maßgebliche Quelle
-- `sp-emotron/tools/emotronic-pwa/Emotronic-v2.32.html` – versionierter Snapshot, nach Änderungen neu erzeugen
+- `sp-emotron/tools/emotronic-pwa/Emotronic-v2.33.html` – versionierter Snapshot, nach Änderungen neu erzeugen
 - `sp-emotron/tools/emotronic-pwa/generate_audio_assets.py` – reproduzierbarer Generator beider Soundsets
 - `assets/audio/emotronic/` – Manifest sowie `8-bit` und `8-bit_soft`
 - `sp-emotron/tools/emotronic-pwa/sw.js` – Service Worker und Cache-Version
@@ -20,10 +20,10 @@ Diese Übergabe beschreibt den aktuellen Stand der installierbaren Emotronic-PWA
 
 ## Versionierung
 
-- Aktuell: **Emotronic v2.32**
-- `APP_META.version`: `2.31`
-- `APP_META.revision`: `130`
-- Service-Worker-Cache: `emotronic-v132`
+- Aktuell: **Emotronic v2.33**
+- `APP_META.version`: `2.33`
+- `APP_META.revision`: `133`
+- Service-Worker-Cache: `emotronic-v133`
 - Beim Aktivieren nur ältere Caches mit dem Präfix `emotronic-v` entfernen; andere Anwendungen können dieselbe Domain verwenden.
 - Jede abgeschlossene Revision erhöht die Version um `0.01` und die Revision um `1`.
 - Codekopf, `APP_META`, Service Worker, versionierte HTML-Datei, README und ZIP müssen synchron bleiben.
@@ -104,11 +104,11 @@ Globale Optionen nicht zwischen die Funktionslogik verteilen.
 - Bei `http:` oder `https:` vollständigen Link kopieren.
 - Bei `file:` oder Android `content:` nur den portablen Kurzcode kopieren.
 - UI-Text muss korrekt zwischen `Link kopiert` und `Code kopiert` unterscheiden.
-- Telefon-Doppeltipp teilt konsistent den Replay-Verlauf.
-- Wifi-/Sender-Doppeltipp teilt konsistent den vollständigen Replay-Verlauf unter `#slow=…`; Telefon teilt denselben Datensatz unter `#replay=…`.
-- Die Doppeltipperkennung muss vor den Sonderfällen für Aus-, Simon- und Bereit-Direktlinks laufen; der erste Tipp darf den Direktlink auslösen, der zweite führt die feste Share-Aktion aus.
-- Der jeweils erste Tipp erklärt die Doppeltipp-Geste für drei Sekunden in der kleinen Kategoriezeile.
-- Eigene Touch-Doppeltipp-Erkennung beibehalten; nicht ausschließlich `dblclick` verwenden.
+- Telefon-Doppeltipp teilt den Replay-Verlauf unter `#replay=…`; Telefon-Dreifachtipp teilt denselben Datensatz unter `#slow=…`.
+- Die Telefonaktion muss bis zum Ende von `APP_CONFIG.share.multiTapMs` warten, damit ein Doppeltipp nicht vor einem möglichen dritten Tipp ausgeführt wird; zustandsabhängige Direktlinks bleiben die Einzeltippaktion.
+- Wifi-/Sender-Doppeltipp kopiert die sichtbaren Replay-Emojis in zeitlicher Reihenfolge als durch Leerzeichen getrennten Text.
+- Der jeweils erste Tipp erklärt die Mehrfachtipp-Geste für drei Sekunden in der kleinen Kategoriezeile.
+- Eigene Touch-Mehrfachtipp-Erkennung beibehalten; nicht ausschließlich `dblclick` verwenden.
 - Clipboard API plus `document.execCommand('copy')`-Fallback beibehalten.
 - Fehler beim Kopieren dürfen keine normale Funktion blockieren.
 
@@ -171,9 +171,9 @@ Der Validator prüft Syntax, 8+1-Datentabellen, eindeutige Begriffe und Emojis, 
 Für ein auslieferbares ZIP vom Repository-Root aus:
 
 ```bash
-rm -f emotronic-pwa-v2.32.zip
-zip -rq emotronic-pwa-v2.32.zip sp-emotron/tools/emotronic-pwa
-unzip -t emotronic-pwa-v2.32.zip
+rm -f emotronic-pwa-v2.33.zip
+zip -rq emotronic-pwa-v2.33.zip sp-emotron/tools/emotronic-pwa
+unzip -t emotronic-pwa-v2.33.zip
 ```
 
 ## Vorsicht bei Änderungen

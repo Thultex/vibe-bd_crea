@@ -56,8 +56,9 @@ Der Laufzeitspiegel enthält ausschließlich `index.html`, Manifest, Service Wor
 - Ein Tipp auf den Bildschirm oder eine beliebige Taste außer Aus startet die Wiedergabe ohne zusätzlichen Empfangston.
 - Nach dem Starttipp lässt die App rund 0,1 Sekunden Abstand, bevor der empfangene Inhalt beginnt.
 - Aus bricht die wartende Empfangsphase oder eine laufende Replay-Wiedergabe unmittelbar ab.
-- Ein einfacher Tipp auf Telefon oder Wifi ersetzt die kleine Kategoriezeile drei Sekunden lang durch einen passenden Hinweis auf die jeweilige Doppeltipp-Teilgeste.
-- Ein Telefon-Doppeltipp teilt immer den vollständigen Replay-Verlauf unter `#replay=…`; ein Wifi-/Sender-Doppeltipp teilt denselben vollständigen Datensatz unter `#slow=…`. Die Erkennung läuft vor den zustandsabhängigen Direktlink-Aktionen, damit die Zuordnung auch in Bereit, Aus und Simon konsistent bleibt.
+- Ein einfacher Tipp auf Telefon oder Wifi ersetzt die kleine Kategoriezeile drei Sekunden lang durch einen passenden Hinweis auf die jeweilige Mehrfachtipp-Teilgeste.
+- Ein Telefon-Doppeltipp teilt den vollständigen Replay-Verlauf unter `#replay=…`; ein Telefon-Dreifachtipp teilt denselben vollständigen Datensatz unter `#slow=…`. Die Telefonaktion wartet das konfigurierbare Mehrfachtippfenster ab, damit der Doppeltipp nicht vor einem möglichen dritten Tipp ausgelöst wird.
+- Ein Wifi-/Sender-Doppeltipp kopiert die Emojis des vollständigen Replay-Verlaufs als durch Leerzeichen getrennten Text in ihrer zeitlichen Reihenfolge. Intensitätsstufen und Kombinationen verwenden dabei exakt ihre sichtbaren Emojis.
 - Score-Links enthalten Endstand, Simon-Modus und die vollständige gespielte Folge; ihre Empfangsanimation ergänzt das Nachrichtensymbol um einen kleinen Pokal und die wartende Punktzahl.
 - Nach der Bestätigung eines Score-Links spielt die App die Folge automatisch. Währenddessen steht links die Punktzahl mit dem Abbruchhinweis darunter; jeder Tastenklick stellt sofort das Game Over wieder her.
 - Gefühle verwenden `#share=…`, normale Replays `#replay=…`, langsame Replays `#slow=…` und Game-over-Links `#score=…`. Ältere Replay-Links unter `#share=…` bleiben lesbar.

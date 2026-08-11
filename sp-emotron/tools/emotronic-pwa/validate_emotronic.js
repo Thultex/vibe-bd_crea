@@ -31,7 +31,7 @@ const dataStart = html.indexOf('const APP_META=');
 const dataEnd = html.indexOf('let audioCtx=null;');
 assert(dataStart >= 0 && dataEnd > dataStart, 'Datentabellen nicht gefunden');
 const data = new Function(
-  `${html.slice(dataStart, dataEnd)};return {APP_META,APP_CONFIG,base,order,combos,comboOverview,soundPatterns,specialSoundPatterns,SHARE_BASE_KEYS,SHARE_COMBO_KEYS,sharedStateNumber,sharedStateItem,encodeCompactHistory,decodeCompactHistory,encodeCompactScore,decodeCompactScore};`
+  `${html.slice(dataStart, dataEnd)};return {APP_META,APP_CONFIG,base,order,combos,comboOverview,soundPatterns,specialSoundPatterns,SHARE_BASE_KEYS,SHARE_COMBO_KEYS,sharedStateNumber,sharedStateItem,encodeCompactHistory,decodeCompactHistory,encodeCompactScore,decodeCompactScore,replayEmojiText};`
 )();
 
 const keyboardStart = html.indexOf('const keyboardEmotionMap=');
@@ -167,6 +167,16 @@ assert(normalScoreCode === '3f~2p', 'Normaler Score enthält redundante Angaben'
 assert(JSON.stringify(data.decodeCompactScore(normalScoreCode)) === JSON.stringify(normalScore), 'Normaler Score-Kurzcode ist nicht verlustfrei');
 const proScore = { ...normalScore, mode: 'pro' };
 assert(data.encodeCompactScore(proScore) === '3f.p~2p', 'Abweichender Modus wird nicht knapp codiert');
+const emojiReplayText = data.replayEmojiText([
+  { key: 'joy', intensity: 2 },
+  { key: 'neutral', intensity: 0 },
+  { combo: 'anger|disgust', colorParts: ['anger', 'disgust'] }
+]);
+assert(emojiReplayText === '😊 😐 🙄', 'Replay-Emojis werden nicht in zeitlicher Reihenfolge als Text erzeugt');
+assert(data.APP_CONFIG?.share?.multiTapMs === 520, 'Zeitfenster für Mehrfachtipps weicht vom Standard ab');
+assert(html.includes('state.phoneTapCount===3') && html.includes('shareSlowReplayFromPhone()'), 'Telefon-Dreifachtipp teilt keinen Slow-Replay');
+assert(html.includes('if(taps===2)shareReplayFromPhone();else if(taps===1)runPhoneSingleTap()'), 'Telefon-Einzel- und Doppeltipp werden nicht verzögert unterschieden');
+assert(html.includes('if(doubled){event.preventDefault();shareReplayEmojisFromWifi();return}'), 'Wifi-/Sender-Doppeltipp teilt keine Replay-Emojis');
 assert(html.includes("/^#(share|replay|slow|score)="), 'Ausgeschriebene Fragmentnamen fehlen');
 assert(html.includes('if(!payload)payload=decodeSharePayload(value)'), 'Alte lange Links werden nicht als Rückfall gelesen');
 for (const fragment of ['#share=', '#score=']) {

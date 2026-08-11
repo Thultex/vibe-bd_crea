@@ -24,6 +24,12 @@ Erstübernahme und anschließender vollständiger Neuaufbau von Emotronic mit fu
 
 ## Log
 
+### 2026-08-11 - teilen
+
+- Sharing: Telefon-Doppeltipp teilt weiterhin den normalen Replay-Link; Telefon-Dreifachtipp teilt denselben Verlauf als Slow-Link.
+- Emoji-Text: Wifi-/Sender-Doppeltipp kopiert alle Replay-Emojis einschließlich Intensitäten und Kombinationen in zeitlicher Reihenfolge als Text.
+- Version: Emotronic v2.33 mit Cache-Revision 133.
+
 ### 2026-08-11 - audio
 
 - Audio: Gemäß Issue #11 wieder das ursprüngliche `8-bit`-Soundset als Standard eingebunden; `8-bit_soft` bleibt vollständig als auswählbare Alternative erhalten.

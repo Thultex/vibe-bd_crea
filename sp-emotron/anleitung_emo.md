@@ -10,8 +10,8 @@ Das an der Y-Achse gespiegelte Rad liegt sichtbar als `Freude · Zuneigung · Ne
 
 ## Bedienung
 
-- Telefon: Eigen-/Telefonseite aktivieren; Doppeltipp teilt konsistent den Replay-Verlauf.
-- Wifi/Sender: andere Seite aktivieren; Doppeltipp teilt den vollständigen aktuellen Replay-Verlauf mit aktivierter langsamer Wiedergabe.
+- Telefon: Eigen-/Telefonseite aktivieren; Doppeltipp teilt den Replay-Verlauf, Dreifachtipp denselben Verlauf als Slow-Replay.
+- Wifi/Sender: andere Seite aktivieren; Doppeltipp kopiert die Emojis des Replay-Verlaufs in zeitlicher Reihenfolge als Text.
 
 Beim Verstellen der Intensität auf der Telefon-/Empfängerseite zeigen alle nicht-neutralen Gefühlstasten gemeinsam die passende Emoji-Stufe. Der Hintergrund zeigt nur das angeklickte Gefühl. Auf der Wifi-Senderseite bleibt die Vorschau unverändert; in Simon erscheinen Motiv und Effekt erst beim Drücken.
 - Im Wifi-/Sendermodus läuft `>>>` bei jeder Gefühlsbetätigung einschließlich eines erneuten Klicks auf dasselbe Gefühl, bei Intensitätsänderung und beim Aktivieren der Sendertaste.

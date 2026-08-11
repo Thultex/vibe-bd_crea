@@ -1,4 +1,4 @@
-# Emotronic v2.32
+# Emotronic v2.33
 
 Emotronic ist eine installierbare, offlinefähige PWA zur Auswahl, Darstellung, Kombination und Wiedergabe von Gefühlen. Die Oberfläche ist an ein kompaktes Retro-Handgerät angelehnt und für Touch, Maus und Tastatur ausgelegt.
 
@@ -47,7 +47,7 @@ Ein Druck auf Telefon kopiert in **Bereit**, auf der `Simon Feels!`-Auswahl oder
 | Datei | Zweck |
 |---|---|
 | `index.html` | Hauptanwendung mit Oberfläche, CSS und JavaScript |
-| `Emotronic-v2.32.html` | Versionierte Kopie der Hauptanwendung |
+| `Emotronic-v2.33.html` | Versionierte Kopie der Hauptanwendung |
 | `manifest.webmanifest` | PWA-Metadaten und Installationskonfiguration |
 | `sw.js` | Service Worker für Offline-Cache |
 | `icon-192.png`, `icon-512.png` | PWA-Symbole |
@@ -152,9 +152,9 @@ Jede Kombination übernimmt eine zu ihrer Bedeutung passende Bewegung aus den be
 - **Telefon** aktiviert den Telefon-/Eigenmodus und zeigt eine zentrierte Klingelanimation.
 - **Wifi** aktiviert die andere Seite. Bei neu ausgewählten Gefühlen kann dort die `>>>`-Sendeanimation erscheinen.
 - Im Wifi-/Sendermodus startet `>>>` außerdem beim erneuten Klick auf dasselbe Gefühl, bei einer tatsächlichen Intensitätsänderung und unmittelbar beim Aktivieren der Wifi-/Sendertaste.
-- Ein einfacher Telefon-Tipp zeigt unter der kleinen Emotionsanzeige `Replay teilen: Zweimal ☎ klicken.`.
-- Ein einfacher Wifi-Tipp zeigt dort `Slow-Replay teilen: Zweimal 📶 klicken.`.
-- Die normale Auswahlfunktion bleibt auch bei einem Doppeltipp erhalten.
+- Ein einfacher Telefon-Tipp zeigt unter der kleinen Emotionsanzeige `2× ☎ Replay · 3× ☎ Slow`.
+- Ein einfacher Wifi-Tipp zeigt dort `Emojis teilen: Zweimal 📶 klicken.`.
+- Die Telefontaste wertet Einzel-, Doppel- und Dreifachtipp erst nach dem konfigurierbaren Mehrfachtippfenster eindeutig aus.
 
 ### Verlauf und Replay
 
@@ -183,7 +183,7 @@ Emotronic speichert geteilte Daten ausschließlich im URL-Fragment. Die Namen bl
 
 ### Slow-Replay-Link teilen
 
-- Wifi/Sender zweimal kurz tippen.
+- Telefon dreimal kurz tippen.
 - Der vollständige aktuelle Replay-Verlauf wird unverändert unter dem Tag `#slow=…` kopiert.
 - Die codierten Daten sind dieselben wie bei `#replay=…`; im Link muss nur `replay` gegen `slow` getauscht werden.
 - Unter `http://` oder `https://` wird ein vollständiger anklickbarer `#slow=…`-Link erzeugt; bei einer lokalen Datei wird der portable `#slow=…`-Code kopiert.
@@ -196,6 +196,12 @@ Emotronic speichert geteilte Daten ausschließlich im URL-Fragment. Die Namen bl
 - Unter `http://` oder `https://` entsteht ein vollständiger Link.
 - Bei lokalen Dateiadressen entsteht ein portabler Share-Code.
 
+### Replay-Emojis als Text teilen
+
+- Wifi/Sender zweimal kurz tippen.
+- Alle sichtbaren Replay-Emojis werden einschließlich Intensitätsstufen und Kombinationen in ihrer zeitlichen Reihenfolge kopiert.
+- Der kopierte Text enthält ausschließlich die Emojis, jeweils durch ein Leerzeichen getrennt.
+
 ### Rückmeldung
 
 Die kleine Zeile unter dem Gefühlsnamen zeigt kurz eine der folgenden Meldungen:
@@ -204,6 +210,7 @@ Die kleine Zeile unter dem Gefühlsnamen zeigt kurz eine der folgenden Meldungen
 - `Slow-Replay-Code kopiert`
 - `Replay-Link kopiert`
 - `Replay-Code kopiert`
+- `Replay-Emojis kopiert`
 - eine verständliche Fehlermeldung, falls die Zwischenablage blockiert ist
 
 ### Link öffnen
@@ -325,7 +332,7 @@ Diese Reihenfolge soll bei weiteren Änderungen erhalten bleiben.
 ## Offline/PWA
 
 - Der Service Worker cached die Kernressourcen.
-- Die aktuelle Cache-Version lautet `emotronic-v132`.
+- Die aktuelle Cache-Version lautet `emotronic-v133`.
 - Beim Aktivieren werden nur ältere Emotronic-Caches entfernt; Caches anderer Anwendungen auf derselben Domain bleiben erhalten.
 - Nicht gecachte GET-Anfragen werden aus dem Netz geladen und anschließend gespeichert.
 - Bei einem Netzfehler wird als Fallback `index.html` verwendet.
