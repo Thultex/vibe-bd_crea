@@ -1,4 +1,4 @@
-# Codex-Handoff: Emotronic v2.31
+# Codex-Handoff: Emotronic v2.32
 
 ## Auftrag
 
@@ -7,7 +7,7 @@ Diese Übergabe beschreibt den aktuellen Stand der installierbaren Emotronic-PWA
 ## Relevante Dateien
 
 - `sp-emotron/tools/emotronic-pwa/index.html` – maßgebliche Quelle
-- `sp-emotron/tools/emotronic-pwa/Emotronic-v2.31.html` – versionierter Snapshot, nach Änderungen neu erzeugen
+- `sp-emotron/tools/emotronic-pwa/Emotronic-v2.32.html` – versionierter Snapshot, nach Änderungen neu erzeugen
 - `sp-emotron/tools/emotronic-pwa/generate_audio_assets.py` – reproduzierbarer Generator beider Soundsets
 - `assets/audio/emotronic/` – Manifest sowie `8-bit` und `8-bit_soft`
 - `sp-emotron/tools/emotronic-pwa/sw.js` – Service Worker und Cache-Version
@@ -20,10 +20,10 @@ Diese Übergabe beschreibt den aktuellen Stand der installierbaren Emotronic-PWA
 
 ## Versionierung
 
-- Aktuell: **Emotronic v2.31**
+- Aktuell: **Emotronic v2.32**
 - `APP_META.version`: `2.31`
 - `APP_META.revision`: `130`
-- Service-Worker-Cache: `emotronic-v130`
+- Service-Worker-Cache: `emotronic-v132`
 - Beim Aktivieren nur ältere Caches mit dem Präfix `emotronic-v` entfernen; andere Anwendungen können dieselbe Domain verwenden.
 - Jede abgeschlossene Revision erhöht die Version um `0.01` und die Revision um `1`.
 - Codekopf, `APP_META`, Service Worker, versionierte HTML-Datei, README und ZIP müssen synchron bleiben.
@@ -48,8 +48,8 @@ Globale Optionen nicht zwischen die Funktionslogik verteilen.
 
 - `/assets/audio/emotronic/8-bit/` und `/assets/audio/emotronic/8-bit_soft/` enthalten dieselben 40 Sound-IDs; `manifest.json` ist die maschinenlesbare Übersicht.
 - Neue oder geänderte Tonfolgen zuerst in `generate_audio_assets.py` pflegen und danach beide Ordner neu generieren.
-- Die WAV-Dateien sind vorbereitet, aber noch nicht in die Live-PWA oder den Service-Worker-Cache eingebunden. `playEmotionSound`, `playComboSound` und `playSpecialSound` verwenden weiterhin ausschließlich `playTonePattern`.
-- Die PWA lädt standardmäßig `8-bit_soft`. Zum vollständigen Wechsel auf die harte Fassung genügt `APP_CONFIG.audio.soundSet='8-bit'`; fehlgeschlagene WAV-Wiedergabe fällt automatisch auf die bisherige Synthese zurück.
+- `playEmotionSound`, `playComboSound` und `playSpecialSound` laden die passenden WAV-Dateien; `playTonePattern` bleibt als automatischer Fehler-Fallback erhalten.
+- Die PWA lädt standardmäßig wieder `8-bit`. Zum vollständigen Wechsel auf die weichere Fassung genügt `APP_CONFIG.audio.soundSet='8-bit_soft'`; fehlgeschlagene WAV-Wiedergabe fällt automatisch auf die bisherige Synthese zurück.
 
 ## Öffentliches Repository und Datenschutz
 
@@ -171,9 +171,9 @@ Der Validator prüft Syntax, 8+1-Datentabellen, eindeutige Begriffe und Emojis, 
 Für ein auslieferbares ZIP vom Repository-Root aus:
 
 ```bash
-rm -f emotronic-pwa-v2.31.zip
-zip -rq emotronic-pwa-v2.31.zip sp-emotron/tools/emotronic-pwa
-unzip -t emotronic-pwa-v2.31.zip
+rm -f emotronic-pwa-v2.32.zip
+zip -rq emotronic-pwa-v2.32.zip sp-emotron/tools/emotronic-pwa
+unzip -t emotronic-pwa-v2.32.zip
 ```
 
 ## Vorsicht bei Änderungen

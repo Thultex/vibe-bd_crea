@@ -158,7 +158,7 @@ def main() -> None:
 
     manifest = {
         "version": 1,
-        "recommendedSet": "8-bit_soft",
+        "recommendedSet": "8-bit",
         "sampleRate": SAMPLE_RATE,
         "sets": ["8-bit", "8-bit_soft"],
         "sounds": specs,

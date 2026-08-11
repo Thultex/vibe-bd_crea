@@ -24,6 +24,11 @@ Erstübernahme und anschließender vollständiger Neuaufbau von Emotronic mit fu
 
 ## Log
 
+### 2026-08-11 - audio
+
+- Audio: Gemäß Issue #11 wieder das ursprüngliche `8-bit`-Soundset als Standard eingebunden; `8-bit_soft` bleibt vollständig als auswählbare Alternative erhalten.
+- Version: Emotronic v2.32 mit Cache-Revision 132.
+
 ### 2026-08-09 - simon, schwierigkeit
 
 - Schwierigkeit: Profi startet bei 0 statt 5 Punkten; Leicht startet mit 1 Leben bei unverändert langsamerem Spieltempo.
