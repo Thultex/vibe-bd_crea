@@ -72,10 +72,10 @@ Der Laufzeitspiegel enthält ausschließlich `index.html`, Manifest, Service Wor
 
 ## Audio
 
-- Alle 40 Klangereignisse liegen reproduzierbar in zwei WAV-Sets unter `/assets/audio/emotronic/`: `8-bit` bewahrt die harte Retro-Fassung, `8-bit_soft` verwendet dieselben Tonhöhen und Rhythmen mit weicheren Hüllkurven und kurzem Nachhall.
-- `generate_audio_assets.py` erzeugt beide Sets und `manifest.json` aus einer gemeinsamen Datengrundlage. Neue Sounds werden dort ergänzt und stets für beide Ordner generiert.
-- Die Live-PWA verwendet wieder `8-bit` als Standard. Über den einzelnen Konfigurationswert `APP_CONFIG.audio.soundSet` kann vollständig auf `8-bit_soft` gewechselt werden.
-- Die bisherige Web-Audio-Synthese bleibt als automatischer Fallback erhalten, falls eine WAV-Datei nicht geladen oder abgespielt werden kann.
+- Alle 40 Klangereignisse der optionalen weicheren Variante liegen reproduzierbar unter `/assets/audio/emotronic/8-bit_soft/`; sie verwendet die Tonhöhen und Rhythmen der klassischen Synthese mit weicheren Hüllkurven und kurzem Nachhall.
+- `generate_audio_assets.py` erzeugt das Soft-Set und `manifest.json` aus einer gemeinsamen Datengrundlage. Neue Sounds werden dort ergänzt und für den Soft-Ordner generiert.
+- Die Live-PWA verwendet wieder die ursprüngliche direkte Web-Audio-Synthese als klassische Standardvariante. Über den einzelnen Konfigurationswert `APP_CONFIG.audio.soundSet` kann ausschließlich auf `8-bit_soft` gewechselt werden.
+- Bei der Soft-WAV-Variante bleibt die klassische Web-Audio-Synthese als automatischer Fallback erhalten, falls eine Datei nicht geladen oder abgespielt werden kann.
 - Der Geschafft-Jingle folgt mit rund 0,2 Sekunden Abstand auf den letzten korrekten Tastendruck.
 
 ## Datenschutz

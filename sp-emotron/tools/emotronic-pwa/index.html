@@ -1,10 +1,10 @@
 <!--
   ============================================================================
-  Emotronic v2.33
+  Emotronic v2.34
   Projektname: Emotronic
   Autor: Rasmus Klette
   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-  Aktuelle Revision: 133
+  Aktuelle Revision: 134
   ============================================================================
 -->
 <!doctype html>
@@ -197,16 +197,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v2.33 — CODEKOPF
+   Emotronic v2.34 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 133
+   Aktuelle Revision: 134
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'2.33',
-  revision:133,
+  version:'2.34',
+  revision:134,
   author:'Rasmus Klette'
 });
 
@@ -226,7 +226,7 @@ const APP_CONFIG={
   audio:{
     enabled:true,              // false = App bleibt vollständig lautlos
     masterVolume:1,            // 0 bis 1
-    soundSet:'8-bit',          // für die weichere Fassung auf '8-bit_soft' wechseln
+    soundSet:'classic',        // einzige WAV-Alternative: '8-bit_soft'
     assetRoot:'../../../assets/audio/emotronic'
   },
   normalMode:{
@@ -464,7 +464,8 @@ function playSoundAsset(id,synthFallback){
  if(!APP_CONFIG.audio.enabled)return;
  const fallback=()=>{try{synthFallback?.()}catch(_){/* Ton bleibt optional. */}};
  const set=APP_CONFIG.audio.soundSet;
- if(!id||!['8-bit','8-bit_soft'].includes(set)||typeof Audio==='undefined'){fallback();return}
+ if(set==='classic'){fallback();return}
+ if(!id||set!=='8-bit_soft'||typeof Audio==='undefined'){fallback();return}
  try{
   const root=String(APP_CONFIG.audio.assetRoot||'').replace(/\/$/,'');
   const player=new Audio(`${root}/${set}/${id}.wav`);let finished=false;

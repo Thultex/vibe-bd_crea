@@ -4,25 +4,32 @@
 
 Ausgangsdatum: 2026-07-26
 
-*Diese Woche (ca. 2,0h, 1 Tag, Inhalte):*
-Emotronic auf das neue funktionale 8+1-Rad umgebaut, Benennungen, Emojis, Kombinationen, Pastellfarben, Animationen und Soundsets erneuert sowie das vollständige Rad an der Y-Achse gespiegelt.
+*Diese Woche (ca. 2,2h, 2 Tage, Inhalte):*
+Emotronic auf das neue funktionale 8+1-Rad umgebaut und anschließend die klassische Audiosynthese als Standard mit Soft als einziger optionaler Variante wiederhergestellt.
 
 *Letzte Woche (ca. 3,0h, 2 Tage, Inhalte):*
 Emotronic-PWA übernommen, strukturiert, dokumentiert, Replay-Verlauf sowie Intensitätszeiger korrigiert, Emoji-Intensitätsvorschau ergänzt und ausgeschaltete Bedientasten verfeinert.
 
-*Dieser Monat (ca. 2,0h, 1 Tag, Inhalte):*
-Vollständiger Neuaufbau des Emotionsmodells samt gespiegeltem Rad, eindeutigen Emojis, neuen Kombinationen, angepassten Bewegungen und reproduzierbaren Klangsets.
+*Dieser Monat (ca. 2,2h, 2 Tage, Inhalte):*
+Vollständiger Neuaufbau des Emotionsmodells samt gespiegeltem Rad, eindeutigen Emojis, neuen Kombinationen, angepassten Bewegungen sowie klassischem Standardsound mit optionaler Soft-Variante.
 
 *Letzter Monat (0h, 0 Tage, Inhalte):*
 Keine Einträge.
 
-*Jahr (ca. 5,0h, 3 Tage, Inhalte):*
-Erstübernahme und anschließender vollständiger Neuaufbau von Emotronic mit funktionalem 8+1-Rad.
+*Jahr (ca. 5,2h, 4 Tage, Inhalte):*
+Erstübernahme, vollständiger Neuaufbau von Emotronic mit funktionalem 8+1-Rad und Wiederherstellung der klassischen Standardsynthese.
 
-*Insgesamt (ca. 5,0h, 3 Tage, Inhalte):*
-Erstübernahme und anschließender vollständiger Neuaufbau von Emotronic mit funktionalem 8+1-Rad.
+*Insgesamt (ca. 5,2h, 4 Tage, Inhalte):*
+Erstübernahme, vollständiger Neuaufbau von Emotronic mit funktionalem 8+1-Rad und Wiederherstellung der klassischen Standardsynthese.
 
 ## Log
+
+### 2026-08-12 - audio, pwa, doku (ca. 0,2h)
+
+- Fix: (#11) Die echte klassische direkte Web-Audio-Synthese ist wieder Standard; der zuvor ausgewählte harte `8-bit`-WAV-Nachbau war klanglich und durch den Datei-Ladeweg nicht mit der klassischen Variante identisch.
+- Audio: Nur `8-bit_soft` bleibt über `APP_CONFIG.audio.soundSet` als nicht aktivierte WAV-Alternative verfügbar und fällt bei Ladefehlern auf die klassische Synthese zurück; das harte WAV-Set wurde entfernt.
+- Test/Doku: Audioauswahl, Laufzeitspiegel, Snapshot und Cache-Version auf den korrigierten Standard abgestimmt.
+- Version: Emotronic v2.34 mit Cache-Revision 134.
 
 ### 2026-08-11 - teilen
 

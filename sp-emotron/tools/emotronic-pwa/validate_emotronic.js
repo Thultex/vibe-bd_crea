@@ -188,9 +188,10 @@ for (const fragment of ['#e=', '#r=', '#s=', '#g=']) {
 }
 assert(data.APP_CONFIG?.replay?.maxItems === 24, 'Normaler Replay-Verlauf ist nicht auf 24 Schritte begrenzt');
 assert(html.includes('state.history.splice(0,state.history.length-APP_CONFIG.replay.maxItems)'), 'Älteste Replay-Schritte werden bei neuer Eingabe nicht entfernt');
-assert(data.APP_CONFIG?.audio?.soundSet === '8-bit', 'Ursprüngliches 8-Bit-WAV-Soundset ist nicht Standard');
+assert(data.APP_CONFIG?.audio?.soundSet === 'classic', 'Klassische Web-Audio-Synthese ist nicht Standard');
 assert(data.APP_CONFIG?.audio?.assetRoot === '../../../assets/audio/emotronic', 'WAV-Basispfad ist nicht für Quelle und Laufzeitspiegel gemeinsam');
-assert(html.includes("['8-bit','8-bit_soft'].includes(set)"), 'Einfacher Soundset-Wechsel fehlt');
+assert(html.includes("set!=='8-bit_soft'"), 'Soft-WAV ist nicht als einzige auswählbare Alternative begrenzt');
+assert(html.includes("if(set==='classic'){fallback();return}"), 'Direkte Auswahl der klassischen Synthese fehlt');
 assert(html.includes('function playSoundAsset(id,synthFallback)'), 'WAV-Wiedergabe mit Synthese-Fallback fehlt');
 for (const prefix of ['emotion_', 'combo_', 'special_']) assert(html.includes(`playSoundAsset(\`${prefix}`), `WAV-Zuordnung fehlt: ${prefix}`);
 const audioStart = html.indexOf('const soundPatterns=');
@@ -202,16 +203,22 @@ class TestAudio {
   addEventListener() {}
   play() { return Promise.resolve(); }
 }
+const classicRuntime = new Function(
+  'APP_CONFIG', 'Audio',
+  `${html.slice(audioStart, audioEnd)};return {playEmotionSound};`
+)(data.APP_CONFIG, TestAudio);
+classicRuntime.playEmotionSound('anger', 2);
+assert(playedAudioUrls.length === 0, 'Klassischer Standard versucht unerwartet eine WAV-Datei abzuspielen');
 const audioRuntime = new Function(
   'APP_CONFIG', 'Audio',
   `${html.slice(audioStart, audioEnd)};return {playEmotionSound,playComboSound,playSpecialSound};`
-)(data.APP_CONFIG, TestAudio);
+ )({ ...data.APP_CONFIG, audio: { ...data.APP_CONFIG.audio, soundSet: '8-bit_soft' } }, TestAudio);
 audioRuntime.playEmotionSound('anger', 2);
 audioRuntime.playComboSound(data.combos['anger|disgust']);
 audioRuntime.playSpecialSound('lifeGain');
-assert(playedAudioUrls[0]?.endsWith('/8-bit/emotion_anger_2.wav'), 'Emotions-WAV wird nicht korrekt aufgelöst');
-assert(playedAudioUrls[1]?.endsWith('/8-bit/combo_abwertung.wav'), 'Kombi-WAV wird nicht korrekt aufgelöst');
-assert(playedAudioUrls[2]?.endsWith('/8-bit/special_life_gain.wav'), 'Spezial-WAV wird nicht korrekt aufgelöst');
+assert(playedAudioUrls[0]?.endsWith('/8-bit_soft/emotion_anger_2.wav'), 'Soft-Emotions-WAV wird nicht korrekt aufgelöst');
+assert(playedAudioUrls[1]?.endsWith('/8-bit_soft/combo_abwertung.wav'), 'Soft-Kombi-WAV wird nicht korrekt aufgelöst');
+assert(playedAudioUrls[2]?.endsWith('/8-bit_soft/special_life_gain.wav'), 'Soft-Spezial-WAV wird nicht korrekt aufgelöst');
 
 const { version, revision } = data.APP_META;
 assert(html.includes(`Emotronic v${version}`), 'Codekopf und APP_META-Version weichen ab');
@@ -224,7 +231,9 @@ sameBytes(swPath, path.join(shareRoot, 'sw.js'), 'Öffentlicher Service-Worker-S
 assert(read(swPath).toString('utf8').includes(`\${CACHE_PREFIX}${revision}`), 'Cache-Version stimmt nicht mit der Revision überein');
 
 const manifest = JSON.parse(read(path.join(audioRoot, 'manifest.json')).toString('utf8'));
-assert(manifest.recommendedSet === data.APP_CONFIG?.audio?.soundSet, 'Empfohlenes Audio-Set und PWA-Standard weichen voneinander ab');
+assert(manifest.defaultPlayback === 'classic', 'Audio-Manifest nennt die klassische Synthese nicht als Standard');
+assert(manifest.optionalSet === '8-bit_soft', 'Audio-Manifest nennt Soft nicht als einzige Laufzeitalternative');
+assert(JSON.stringify(manifest.sets) === JSON.stringify(['8-bit_soft']), 'Audio-Manifest enthält weitere WAV-Sets neben Soft');
 assert(manifest.sounds.length === 40, 'Audio-Manifest enthält nicht 40 Klänge');
 const manifestById = new Map(manifest.sounds.map(sound => [sound.id, sound]));
 for (const [key, levels] of Object.entries(data.soundPatterns)) {

@@ -9,7 +9,7 @@ Diese Übergabe beschreibt den aktuellen Stand der installierbaren Emotronic-PWA
 - `sp-emotron/tools/emotronic-pwa/index.html` – maßgebliche Quelle
 - `sp-emotron/tools/emotronic-pwa/Emotronic-v2.33.html` – versionierter Snapshot, nach Änderungen neu erzeugen
 - `sp-emotron/tools/emotronic-pwa/generate_audio_assets.py` – reproduzierbarer Generator beider Soundsets
-- `assets/audio/emotronic/` – Manifest sowie `8-bit` und `8-bit_soft`
+- `assets/audio/emotronic/` – Manifest und optionale Variante `8-bit_soft`
 - `sp-emotron/tools/emotronic-pwa/sw.js` – Service Worker und Cache-Version
 - `sp-emotron/tools/emotronic-pwa/manifest.webmanifest` – PWA-Manifest
 - `sp-emotron/tools/emotronic-pwa/README.md` – Nutzer- und Funktionsdokumentation
@@ -46,10 +46,10 @@ Globale Optionen nicht zwischen die Funktionslogik verteilen.
 
 ## Audio – Kerninvarianten
 
-- `/assets/audio/emotronic/8-bit/` und `/assets/audio/emotronic/8-bit_soft/` enthalten dieselben 40 Sound-IDs; `manifest.json` ist die maschinenlesbare Übersicht.
-- Neue oder geänderte Tonfolgen zuerst in `generate_audio_assets.py` pflegen und danach beide Ordner neu generieren.
+- `/assets/audio/emotronic/8-bit_soft/` enthält 40 Sound-IDs; `manifest.json` ist die maschinenlesbare Übersicht.
+- Neue oder geänderte Tonfolgen zuerst in `generate_audio_assets.py` pflegen und danach das Soft-Set neu generieren.
 - `playEmotionSound`, `playComboSound` und `playSpecialSound` laden die passenden WAV-Dateien; `playTonePattern` bleibt als automatischer Fehler-Fallback erhalten.
-- Die PWA lädt standardmäßig wieder `8-bit`. Zum vollständigen Wechsel auf die weichere Fassung genügt `APP_CONFIG.audio.soundSet='8-bit_soft'`; fehlgeschlagene WAV-Wiedergabe fällt automatisch auf die bisherige Synthese zurück.
+- Die PWA verwendet standardmäßig mit `APP_CONFIG.audio.soundSet='classic'` wieder die ursprüngliche direkte Web-Audio-Synthese. Nur `8-bit_soft` ist als optionale Laufzeitvariante auswählbar. Fehlgeschlagene Soft-WAV-Wiedergabe fällt automatisch auf die klassische Synthese zurück.
 
 ## Öffentliches Repository und Datenschutz
 

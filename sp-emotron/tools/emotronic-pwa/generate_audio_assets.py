@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate the two deterministic Emotronic WAV sound sets."""
+"""Generate the optional deterministic Emotronic soft WAV sound set."""
 
 from __future__ import annotations
 
@@ -147,7 +147,7 @@ def sound_specs() -> list[dict]:
 def main() -> None:
     specs = sound_specs()
     expected_files = {f"{spec['id']}.wav" for spec in specs}
-    for set_name, soft in (("8-bit", False), ("8-bit_soft", True)):
+    for set_name, soft in (("8-bit_soft", True),):
         set_path = AUDIO_ROOT / set_name
         set_path.mkdir(parents=True, exist_ok=True)
         for old_file in set_path.glob("*.wav"):
@@ -158,14 +158,15 @@ def main() -> None:
 
     manifest = {
         "version": 1,
-        "recommendedSet": "8-bit",
+        "defaultPlayback": "classic",
+        "optionalSet": "8-bit_soft",
         "sampleRate": SAMPLE_RATE,
-        "sets": ["8-bit", "8-bit_soft"],
+        "sets": ["8-bit_soft"],
         "sounds": specs,
     }
     AUDIO_ROOT.mkdir(parents=True, exist_ok=True)
     (AUDIO_ROOT / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"Generated {len(specs)} sounds in each set under {AUDIO_ROOT}")
+    print(f"Generated {len(specs)} sounds in {AUDIO_ROOT / '8-bit_soft'}")
 
 
 if __name__ == "__main__":
