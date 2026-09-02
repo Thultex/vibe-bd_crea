@@ -4,19 +4,31 @@
 
 Ausgangsdatum: 2026-07-12
 
-*Diese Woche (ca. 0,1h, 1 Tag, Inhalte):* Privaten lokalen Projektpfad aus dem nanDECK-Startskript entfernt.
+*Diese Woche (ca. 0,1h, 1 Tag, Inhalte):*
+Merkmalstabelle und Bilder-Checklisten für Gegenstände und Merkmale ergänzt.
 
-*Letzte Woche (ca. 0,7h, 1 Tag, Inhalte):* Kartengenerator auf MPC-Jumboformat umgestellt.
+*Letzte Woche (0h, 0 Tage, Inhalte):*
+Keine Einträge.
 
-*Dieser Monat (ca. 1,6h, 3 Tage, Inhalte):* Ruckpacken-Projektgrundlage angelegt, Drucklayout vorbereitet und Startskript portabel gemacht.
+*Dieser Monat (ca. 0,1h, 1 Tag, Inhalte):*
+Merkmalstabelle und Bilder-Checklisten für Gegenstände und Merkmale ergänzt.
 
-*Letzter Monat (0h, 0 Tage, Inhalte):* Keine Einträge.
+*Letzter Monat (0h, 0 Tage, Inhalte):*
+Keine Einträge.
 
-*Jahr (ca. 1,6h, 3 Tage, Inhalte):* Ruckpacken v1.00 begonnen und Werkzeugpfade portabel gehalten.
+*Jahr (ca. 1,7h, 4 Tage, Inhalte):*
+Ruckpacken v1.00 begonnen, Drucklayout vorbereitet, Werkzeugpfade portabel gehalten und Bildplanung ergänzt.
 
-*Insgesamt (ca. 1,6h, 3 Tage, Inhalte):* Ruckpacken v1.00 begonnen und Werkzeugpfade portabel gehalten.
+*Insgesamt (ca. 1,7h, 4 Tage, Inhalte):*
+Ruckpacken v1.00 begonnen, Drucklayout vorbereitet, Werkzeugpfade portabel gehalten und Bildplanung ergänzt.
 
 ## Log
+
+### 2026-09-02 - rupa, assets, doku (ca. 0,1h)
+
+- Material: Merkmalsübersicht (#13) in `files/ruckpacken_merkmale.md` mit den Spalten Nr., Note, Typ, Name und Items ergänzt; 85 Merkmale sind nach Handlung, Eigenschaft und Ort geordnet und ihren Gegenständen zugeordnet.
+- Doku: Bilder-Checklisten für 73 Gegenstände (#12) und 85 Merkmale (#13) angelegt; Gegenstands- und Merkmalsnamen in beiden Issues fett formatiert und Übersichten im README verlinkt.
+- Test: 25 Handlungen, 40 Eigenschaften, 20 Orte und alle 584 Zuordnungen mit den CSV-Quellen abgeglichen; vier Eigenschaften ohne Gegenstände ausdrücklich gekennzeichnet.
 
 ### 2026-07-26 - rupa, tools, datenschutz (ca. 0,1h)
 

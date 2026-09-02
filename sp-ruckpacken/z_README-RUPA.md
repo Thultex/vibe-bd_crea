@@ -6,6 +6,8 @@ Ruckpacken ist ein semantisches Karten- und Deduktionsspiel. Der aktuelle Protot
 
 - `anleitung_rupa.md`: Spielanleitung v1.00.
 - `design_rupa.md`: Kartendesign und technische Grundlage.
+- `files/ruckpacken_gegenstaende.md`: nummerierte Übersicht aller 73 Gegenstände mit Notizspalte und Kategorien; Checkliste für Gegenstandsbilder in [Issue #12](https://github.com/Thultex/vibe-bd_crea/issues/12).
+- `files/ruckpacken_merkmale.md`: nummerierte Übersicht aller 85 Merkmale mit Notizspalte, Typ und zugeordneten Gegenständen, sortiert nach Handlung, Eigenschaft und Ort; Checkliste für Merkmalsbilder in [Issue #13](https://github.com/Thultex/vibe-bd_crea/issues/13).
 - `files/data/ruckpacken_74.csv`: 73 Gegenstände samt Häufigkeit und Kategorien; der bestehende Dateiname bleibt aus Kompatibilitätsgründen erhalten.
 - `files/data/ruckpacken_kats.csv`: Kategorien, Frequenzbewertung und Trefferzahlen im Korpus.
 - `files/data/ruckpacken_arasaac_mapping.csv`: API-Kandidaten für alle 73 Gegenstände mit Farb-, Schwarz-Weiß- und Alternativlinks.
