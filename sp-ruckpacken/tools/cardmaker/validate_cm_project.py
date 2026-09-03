@@ -8,6 +8,8 @@ import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
+from build_cm_data import active_image_path
+from sync_custom_images import synchronize
 from configure_runtime_transforms import (
     CUT_HEIGHT,
     CUT_INSET,
@@ -111,14 +113,19 @@ def validate(folder: Path) -> None:
     image_references = []
     for card in cards:
         for slot in range(1, 10):
-            image = folder / card[f"slot_{slot:02}"]
-            image_references.append(card[f"slot_{slot:02}"])
+            value = card[f"slot_{slot:02}"]
+            if value != active_image_path(value):
+                raise RuntimeError(f"Bildreferenz muss direkt auf assets/images/sym_<Nr>.png zeigen: {value}")
+            image = folder / value
+            image_references.append(value)
             if not image.is_file():
                 missing.append(str(image))
     if missing:
         raise RuntimeError("Fehlende Bilder:\n" + "\n".join(missing))
     if len(set(image_references)) != 73:
         raise RuntimeError(f"Erwartet: 73 eindeutige Bildassets; gefunden: {len(set(image_references))}")
+    if synchronize(folder.resolve().parents[1], check=True):
+        raise RuntimeError("Bildzuordnung oder aktiver Bildsatz veraltet; sync_custom_images.py ausführen.")
     print("CM-Projekt: MPC Jumbo 1120 × 1570 px, 300 dpi, 73 Karten, 9 zentrierte Layout-Bildplätze, 73 eindeutige Bildassets, Guides und JavaScript-Laufzeitzufall valide")
 
 

@@ -4,25 +4,34 @@
 
 Ausgangsdatum: 2026-07-12
 
-*Diese Woche (ca. 0,2h, 1 Tag, Inhalte):*
-Merkmalstabelle und Bilder-Checklisten für Gegenstände und Merkmale ergänzt.
+*Diese Woche (ca. 0,5h, 2 Tage, Inhalte):*
+Eigene Bilder mit ARASAAC-Ergänzung in CardMaker eingebunden; Merkmalstabelle und Bilder-Checklisten ergänzt.
 
 *Letzte Woche (0h, 0 Tage, Inhalte):*
 Keine Einträge.
 
-*Dieser Monat (ca. 0,2h, 1 Tag, Inhalte):*
-Merkmalstabelle und Bilder-Checklisten für Gegenstände und Merkmale ergänzt.
+*Dieser Monat (ca. 0,5h, 2 Tage, Inhalte):*
+Eigene Bilder mit ARASAAC-Ergänzung in CardMaker eingebunden; Merkmalstabelle und Bilder-Checklisten ergänzt.
 
 *Letzter Monat (0h, 0 Tage, Inhalte):*
 Keine Einträge.
 
-*Jahr (ca. 1,8h, 4 Tage, Inhalte):*
-Ruckpacken v1.00 begonnen, Drucklayout vorbereitet, Werkzeugpfade portabel gehalten und Bildplanung ergänzt.
+*Jahr (ca. 2,1h, 5 Tage, Inhalte):*
+Ruckpacken v1.00 begonnen, Drucklayout vorbereitet, eigene Bilder in CardMaker eingebunden und Bildplanung ergänzt.
 
-*Insgesamt (ca. 1,8h, 4 Tage, Inhalte):*
-Ruckpacken v1.00 begonnen, Drucklayout vorbereitet, Werkzeugpfade portabel gehalten und Bildplanung ergänzt.
+*Insgesamt (ca. 2,1h, 5 Tage, Inhalte):*
+Ruckpacken v1.00 begonnen, Drucklayout vorbereitet, eigene Bilder in CardMaker eingebunden und Bildplanung ergänzt.
 
 ## Log
+
+### 2026-09-03 - rupa, assets, cardmaker, tools, doku (ca. 0,3h)
+
+- Material: Eigenes Ball-Motiv aus `assets/img/objects/rp1_ball.concepts` und `rp1_ball.png` übernommen; die leere Größen-/Linien-TXT bleibt Orientierung.
+- Tool: Wiederverwendbare Routine `sync_custom_images.py` erkennt Concepts/PNG-Paare, prüft Gegenstandsnummer und Name und dokumentiert alle 73 Zuordnungen in `files/data/custom-img_mapping.csv`; das Vorgehen für spätere Importe liegt in `files/routine_import-img.md`.
+- Change: Eigene PNGs nach `tools/cardmaker/assets/images/custom/` kopiert; aktiver Bildsatz direkt unter `tools/cardmaker/assets/images/sym_1.png` bis `sym_73.png` besteht aus 1 Custom-Motiv und 72 ARASAAC-Ergänzungen.
+- Change: Alle 657 Bildreferenzen in `cards.csv` auf den aktiven Bildsatz umgestellt; CSV-Generator und Projektvalidator berücksichtigen Custom-Vorrang und aktuelle Bildkopien.
+- Test: Sechs Regressionstests sowie den CardMaker-Projektvalidator erfolgreich ausgeführt; Paarerkennung, Rückfallbilder, unveränderte Kartenbelegung und wiederholbarer Abgleich geprüft.
+- Versionen: sync_custom_images v1.00.
 
 ### 2026-09-02 - rupa, assets, doku (ca. 0,2h)
 

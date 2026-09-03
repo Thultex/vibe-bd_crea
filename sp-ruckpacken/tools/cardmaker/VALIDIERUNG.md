@@ -16,10 +16,16 @@
 - Seitenverhältnis: gesperrt (`lockaspect=true`), daher keine Bildverzerrung
 - CSV: keine Transformationswerte
 - CSV: 11 Spalten (`Count`, `card_id`, neun Bildpfade)
-- Bildstatus: 73 farbige, freigestellte ARASAAC-PNGs
+- Bildstatus: 1 eigenes Motiv (Ball) und 72 ARASAAC-PNGs
+- Aktiver Bildsatz: `assets/images/sym_1.png` bis `assets/images/sym_73.png`; alle 657 Bildreferenzen zeigen direkt dorthin
+- Custom-Quelle: gleichnamige Concepts/PNG-Paare unter `assets/img/` im Spielordner; PNG-Kopien unter `assets/images/custom/` im CardMaker-Ordner
+- Mapping: `files/data/custom-img_mapping.csv` im Spielordner; 73 Gegenstände mit Quelle, Originalpaar und aktiver Bildreferenz
+- Wiederholbarkeit: erneuter Abgleich ohne Quelländerungen schreibt keine Dateien
 - Hintergrund: vollflächig weiß bis in den Beschnitt
 - Editorhilfen: rote, ungefüllte Schnitt- und Sicherheitsrahmen; beim Export deaktiviert
 
 Die rechnerischen 657 Bildbelegungen (`73 × 9`) sind keine 657 Layoutplätze oder Dateien. Das CM-Layout definiert nur neun Graphic-Elemente; CardMaker verwendet sie für jede der 73 Karten erneut.
 
 Der Validator verlangt für alle neun Elemente `rotation="0"`, `centerimageonorigin="false"`, den JavaScript-Übersetzer sowie gekoppelte Laufzeit-Overrides für X, Y, Breite, Höhe und Rotation. Zusätzlich prüft er Vollbeschnitt, Schnittfläche, Sicherheitsfläche, weißen Hintergrund, proportionale Symbolgeometrie und exportfreie Editorrahmen.
+
+Der Bildabgleich prüft die Gegenstandsnamen gegen die ARASAAC-Symbolnummern, vollständige Dateipaare, eindeutige Motivzuordnungen und die Byte-Gleichheit der PNG-Kopien. Der Projektvalidator verlangt die direkten Bildpfade und einen aktuellen Mapping- und Bildstand. Sechs gezielte Regressionstests prüfen Custom-Vorrang, unveränderte Kartenbelegung, Wiederholbarkeit, neue und entfernte Paare, unvollständige oder widersprüchliche Zuordnungen, fehlende Rückfallbilder und ältere Windows-Bildpfade.

@@ -11,10 +11,19 @@ Ruckpacken ist ein semantisches Karten- und Deduktionsspiel. Der aktuelle Protot
 - `files/data/ruckpacken_74.csv`: 73 Gegenstände samt Häufigkeit und Kategorien; der bestehende Dateiname bleibt aus Kompatibilitätsgründen erhalten.
 - `files/data/ruckpacken_kats.csv`: Kategorien, Frequenzbewertung und Trefferzahlen im Korpus.
 - `files/data/ruckpacken_arasaac_mapping.csv`: API-Kandidaten für alle 73 Gegenstände mit Farb-, Schwarz-Weiß- und Alternativlinks.
+- `files/data/custom-img_mapping.csv`: Zuordnung aller 73 Gegenstände zu eigenen Concepts/PNG-Paaren oder ARASAAC, einschließlich der aktiven CardMaker-Bildpfade.
+- `files/routine_import-img.md`: Vorgehen für spätere Bildimporte, Dateinamensregeln, Zuordnung und CardMaker-Prüfung.
+- `assets/img/objects/`: eigene Concepts-Zeichnungen und gleichnamige PNG-Exporte; die leere TXT-Datei ist eine Orientierung für Größe und Linienbreite.
 - `files/archive/ruckpacken_nanndeck.zip`: unveränderte Archivkopie des ursprünglichen nanDECK-Pakets.
 - `tools/arasaac/`: API-Mapping und reproduzierbarer Download der ausgewählten ARASAAC-Piktogramme.
 - `tools/cardmaker/`: bevorzugtes Kartengenerierungswerkzeug für [nhmkdev/cardmaker](https://github.com/nhmkdev/cardmaker), projektintern kurz `cm`.
 - `tools/nandeck/`: Legacy-Prototyp; bleibt vorerst zur Nachvollziehbarkeit erhalten.
+
+## Neue Bilder übernehmen
+
+Aus dem Repository-Root `python -B sp-ruckpacken/tools/cardmaker/sync_custom_images.py` ausführen. Das Vorgehen steht in [files/routine_import-img.md](files/routine_import-img.md). Die Routine erkennt vollständige Concepts/PNG-Paare unter `assets/img/`, aktualisiert `custom-img_mapping.csv` und kopiert eigene Bilder nach `tools/cardmaker/assets/images/custom/`.
+
+CardMaker verlinkt über `cards.csv` direkt auf `tools/cardmaker/assets/images/sym_1.png` bis `sym_73.png`. Dort haben eigene Bilder Vorrang; fehlende Motive werden aus ARASAAC ergänzt. Aktuell sind der eigene Ball und 72 ARASAAC-Motive eingebunden.
 
 ## ARASAAC-Mapping
 

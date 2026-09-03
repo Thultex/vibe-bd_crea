@@ -32,6 +32,16 @@ AddOverrideField('rotation', Math.floor(Math.random() * 360).toString());
 
 Die normalen XML-/Editorwerte `x`, `y`, `width` und `height` bilden dabei die Grundgeometrie. Wird ein Symbol im CardMaker-Editor verschoben oder in seiner Grundgröße geändert, verwendet das JavaScript diese neuen Werte automatisch als Standard und korrigiert nur die zufällige Größenabweichung um deren Mittelpunkt. Die XML-Attribute `rotation` bleiben alle auf `0`; es gibt keine pro Karte gespeicherten Transformationswerte in der CSV. `centerimageonorigin` bleibt bewusst deaktiviert: CardMaker berechnet die Elementrotation bereits um die Mitte des Rechtecks, während diese Bildoption einen zweiten, inkompatiblen Ursprung verwendet. Die ARASAAC-Bilder und ihre Attribution liegen unter `assets/images/arasaac/`.
 
+## Routine: neue Assets erkennen und zuordnen
+
+Das Vorgehen für spätere Importe steht in [files/routine_import-img.md](../../files/routine_import-img.md). Vollständige Concepts/PNG-Paare unter `assets/img/` im Spielordner ablegen und aus dem Repository-Root starten:
+
+```powershell
+python -B sp-ruckpacken/tools/cardmaker/sync_custom_images.py
+```
+
+Die Routine aktualisiert `custom-img_mapping.csv`, die eigenen PNG-Kopien unter `assets/images/custom/` und den aktiven Bildsatz direkt unter `assets/images/sym_1.png` bis `sym_73.png`. `cards.csv` verlinkt diese aktiven Bilder. Eigene Motive haben Vorrang, fehlende Motive werden aus ARASAAC ergänzt. Aktueller Stand: 1 eigenes Ball-Motiv und 72 ARASAAC-Bilder.
+
 ## MPC-Flächen
 
 | Fläche | Pixel bei 300 dpi | Umsetzung |
@@ -50,7 +60,7 @@ Die bisherigen Abstände der Symbolmittelpunkte zur Kartenmitte werden auf der X
 python build_cm_data.py cards.csv cards.csv
 ```
 
-Die aktive CSV enthält ausschließlich `Count`, `card_id` und `slot_01` bis `slot_09`.
+Die aktive CSV enthält ausschließlich `Count`, `card_id` und `slot_01` bis `slot_09`. `build_cm_data.py` normalisiert auch ältere ARASAAC-Pfade und zweistellige Symbolnummern auf den aktiven Bildsatz unter `assets/images/sym_<Nr>.png`. Für den vollständigen Abgleich inklusive Bildkopien und Mapping die Routine `sync_custom_images.py` verwenden.
 
 Nach Layoutänderungen lassen sich die Laufzeittransformationen reproduzierbar neu eintragen und prüfen:
 
