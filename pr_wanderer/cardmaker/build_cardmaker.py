@@ -3,7 +3,9 @@
 
 from __future__ import annotations
 
+import argparse
 import csv
+import json
 import os
 import re
 import xml.etree.ElementTree as ET
@@ -13,6 +15,8 @@ from pathlib import Path
 
 CARDMAKER_DIR = Path(__file__).resolve().parent
 PROJECT_DIR = CARDMAKER_DIR.parent
+TEXT_VERSION_PATH = CARDMAKER_DIR / "text-version.json"
+TEXT_VERSIONS = ("phrase", "phrase_story")
 PROJECT_PATHS = {
     "print": CARDMAKER_DIR / "wanderer-print.cmp",
     "paper": CARDMAKER_DIR / "wanderer-paper.cmp",
@@ -33,23 +37,52 @@ class ListSpec:
     title: str
     source: Path
     plain_field: str
+    story_field: str | None
     target_fields: tuple[str, ...]
     font_size: int
 
 
 LIST_SPECS = (
-    ListSpec("ort", "Ort", PROJECT_DIR / "cards" / "ort" / "liste-ort.tsv", "phrase", ("wort_1", "wort_2"), 64),
+    ListSpec(
+        "ort",
+        "Ort",
+        PROJECT_DIR / "cards" / "ort" / "liste-ort.tsv",
+        "phrase",
+        "phrase_story",
+        ("wort_1", "wort_2"),
+        64,
+    ),
     ListSpec(
         "aufgabe",
         "Aufgabe",
         PROJECT_DIR / "cards" / "aufgabe" / "liste-aufgabe.tsv",
         "phrase",
+        "phrase_story",
         ("wort_1", "wort_2"),
         68,
     ),
-    ListSpec("wort", "Wort", PROJECT_DIR / "cards" / "wort" / "liste-wort.tsv", "wort", ("wort",), 92),
-    ListSpec("figur", "Figur", PROJECT_DIR / "cards" / "figur" / "liste-figur.tsv", "name", ("name",), 88),
+    ListSpec("wort", "Wort", PROJECT_DIR / "cards" / "wort" / "liste-wort.tsv", "wort", None, ("wort",), 92),
+    ListSpec("figur", "Figur", PROJECT_DIR / "cards" / "figur" / "liste-figur.tsv", "name", None, ("name",), 88),
 )
+
+
+def load_text_version() -> str:
+    with TEXT_VERSION_PATH.open(encoding="utf-8") as handle:
+        value = json.load(handle).get("text_version", "")
+    if value not in TEXT_VERSIONS:
+        allowed = ", ".join(TEXT_VERSIONS)
+        raise ValueError(f"Ungültige Textfassung {value!r} in {TEXT_VERSION_PATH}; erlaubt: {allowed}.")
+    return value
+
+
+def resolve_text(row: dict[str, str], spec: ListSpec, text_version: str) -> str:
+    if text_version not in TEXT_VERSIONS:
+        raise ValueError(f"Unbekannte Textfassung: {text_version!r}")
+    if text_version == "phrase_story" and spec.story_field:
+        story = (row.get(spec.story_field) or "").strip()
+        if story:
+            return story
+    return row[spec.plain_field]
 
 
 def load_tsv(spec: ListSpec) -> list[dict[str, str]]:
@@ -126,8 +159,8 @@ def format_phrase(text: str, targets: list[str], colors: list[str]) -> str:
     return "".join(output)
 
 
-def formatted_text(row: dict[str, str], spec: ListSpec, *, light_card: bool) -> str:
-    text = row[spec.plain_field]
+def formatted_text(row: dict[str, str], spec: ListSpec, text_version: str, *, light_card: bool) -> str:
+    text = resolve_text(row, spec, text_version)
     base_colors = [row[f"col{index}"] for index in range(1, len(spec.target_fields) + 1)]
     colors = [darken_color(color) for color in base_colors] if light_card else base_colors
     if len(spec.target_fields) == 1 and spec.target_fields[0] == spec.plain_field:
@@ -143,7 +176,7 @@ def display_id(value: str) -> str:
     return f"{match.group(1).upper()}{int(match.group(2))}"
 
 
-def write_reference(spec: ListSpec, rows: list[dict[str, str]]) -> int:
+def write_reference(spec: ListSpec, rows: list[dict[str, str]], text_version: str) -> int:
     output = CARDMAKER_DIR / f"{spec.key}.csv"
     fields = [
         "Count",
@@ -166,14 +199,14 @@ def write_reference(spec: ListSpec, rows: list[dict[str, str]]) -> int:
                 {
                     "Count": row.get("anzahl", "1") or "1",
                     "card_id": row["id"],
-                    "plain_text": row[spec.plain_field],
+                    "plain_text": resolve_text(row, spec, text_version),
                     "img": image,
                     "subtyp": row.get("subtyp", ""),
                     "paper-label": f"{spec.title.upper()} · {display_id(row['id'])}",
                     "col1": row.get("col1", ""),
                     "col2": row.get("col2", ""),
-                    "format-hell": formatted_text(row, spec, light_card=True),
-                    "format-dunkel": formatted_text(row, spec, light_card=False),
+                    "format-hell": formatted_text(row, spec, text_version, light_card=True),
+                    "format-dunkel": formatted_text(row, spec, text_version, light_card=False),
                 }
             )
     return len(rows)
@@ -368,14 +401,24 @@ def write_project(variant: str) -> None:
     ET.ElementTree(root).write(PROJECT_PATHS[variant], encoding="utf-8", xml_declaration=True)
 
 
-def build() -> None:
+def build(text_version: str) -> None:
     counts: dict[str, int] = {}
     for spec in LIST_SPECS:
-        counts[spec.key] = write_reference(spec, load_tsv(spec))
+        counts[spec.key] = write_reference(spec, load_tsv(spec), text_version)
     write_project("print")
     write_project("paper")
-    print(f"CardMaker-Projekte erzeugt: print + paper, vier Layouts je Projekt, {sum(counts.values())} Karten.")
+    print(
+        f"CardMaker-Projekte erzeugt: print + paper, vier Layouts je Projekt, "
+        f"{sum(counts.values())} Karten, Textfassung {text_version}."
+    )
 
 
 if __name__ == "__main__":
-    build()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--text-version",
+        choices=TEXT_VERSIONS,
+        help="Überschreibt text-version.json für diesen Build.",
+    )
+    arguments = parser.parse_args()
+    build(arguments.text_version or load_text_version())

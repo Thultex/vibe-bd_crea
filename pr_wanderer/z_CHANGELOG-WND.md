@@ -4,25 +4,34 @@
 
 Ausgangsdatum: 2026-11-13
 
-*Diese Woche (ca. 4,2h, 2 Tage, 18 Inhalte):*
-WND: Projektgrundlage übernommen, Kartenlisten vereinheitlicht und getrennte CardMaker-Projekte für dunklen Print sowie kompakte quadratische Paper-Karten ergänzt.
+*Diese Woche (ca. 4,5h, 2 Tage, 19 Inhalte):*
+WND: Projektgrundlage übernommen, Kartenlisten vereinheitlicht und CardMaker um austauschbare Minimal- und Storytexte ergänzt.
 
 *Letzte Woche (0,0h, 0 Tage, 0 Inhalte):*
 Keine Einträge.
 
-*Dieser Monat (ca. 4,2h, 2 Tage, 18 Inhalte):*
-WND: Anleitung, Design, Materialbestand, Kartenverzeichnisse und getrennte CardMaker-Produktionswege aufgebaut.
+*Dieser Monat (ca. 4,5h, 2 Tage, 19 Inhalte):*
+WND: Anleitung, Design, Materialbestand, Kartenverzeichnisse und getrennte CardMaker-Produktionswege mit Textfassungswahl aufgebaut.
 
 *Letzter Monat (0,0h, 0 Tage, 0 Inhalte):*
 Keine Einträge.
 
-*Jahr (ca. 4,2h, 2 Tage, 18 Inhalte):*
+*Jahr (ca. 4,5h, 2 Tage, 19 Inhalte):*
 WND: Projektgrundlage mit Dokumentation, vereinheitlichten Kartendaten und CardMaker-Ausgabe erstellt.
 
-*Insgesamt (ca. 4,2h, 2 Tage, 18 Inhalte):*
+*Insgesamt (ca. 4,5h, 2 Tage, 19 Inhalte):*
 WND: Projektgrundlage mit Dokumentation, vereinheitlichten Kartendaten und CardMaker-Ausgabe erstellt.
 
 ## Log
+
+### 2026-11-15 - wnd, listen, phrase-story, cardmaker (ca. 0,3h)
+
+- Summary: Orts- und Aufgabenlisten um austauschbare Minimal- und Storytexte ergänzt.
+- Material: Zielwörter vor die Texte gestellt; `phrase` als kurze Basisfassung beibehalten und direkt dahinter das vorerst leere Feld `phrase_story` für den vollständigen Erzähltext ergänzt.
+- CardMaker: Zentrale Auswahl in `text-version.json` und einmalige CLI-Überschreibung zwischen `phrase` und `phrase_story` ergänzt; leere Storyfelder fallen kartengenau auf die Minimalphrase zurück.
+- CardMaker: Farbige Hervorhebung und beide Ausgabeprojekte verwenden automatisch die ausgewählte Fassung.
+- Doku: Listendokumentation, CardMaker-README, Projekt-README, Design v1.21 und Material v1.10 an Reihenfolge, Semantik und Umschaltung angepasst.
+- Test: Beide Textfassungen gebaut und validiert; Spaltenreihenfolge, leere Storyfelder, Fallback, Formatfarben und zehn Karten geprüft.
 
 ### 2026-11-15 - wnd, cardmaker, paper, a4 (ca. 0,4h)
 

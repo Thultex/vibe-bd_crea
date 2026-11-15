@@ -1,6 +1,6 @@
 # Wanderer und Träumende Götter
 ## Material
-**Version 1.09 · Konkreter Kartenbestand und Prototypplanung**
+**Version 1.10 · Konkreter Kartenbestand und Prototypplanung**
 
 Das Materialdokument erfasst **tatsächlich konkretisierte Karten** und getrennt davon **Kandidaten**. Es ersetzt die Materialtabellen im Designdokument.
 
@@ -20,49 +20,49 @@ Das Materialdokument erfasst **tatsächlich konkretisierte Karten** und getrennt
 
 Kennungen sind **kleingeschrieben** und je Kategorie ab `01` zweistellig nummeriert, etwa `e01`, `ag01`, `wa02`.
 
-Die maschinenlesbaren Daten stehen in je einer gemeinsamen TSV-Datei pro Kartengruppe: `cards/ort/liste-ort.tsv`, `cards/aufgabe/liste-aufgabe.tsv`, `cards/wort/liste-wort.tsv` und `cards/figur/liste-figur.tsv`. Auf Stückzahl, ID und Punkte folgen die gruppenspezifischen Inhaltsfelder samt den Ausgangsfarben `col1`, `col2` usw., anschließend Bildpfade, eine leere Trennspalte und die Metadaten Subtyp, Bildmotiv sowie `frequenz`, `komplexität` und `spezifität`. Verbideen werden universell in der letzten Spalte `vorschläge-verben` geführt. Wortkandidaten ohne ID stehen getrennt in `cards/wort/liste-wort-kandidaten.tsv`.
+Die maschinenlesbaren Daten stehen in je einer gemeinsamen TSV-Datei pro Kartengruppe: `cards/ort/liste-ort.tsv`, `cards/aufgabe/liste-aufgabe.tsv`, `cards/wort/liste-wort.tsv` und `cards/figur/liste-figur.tsv`. Auf Stückzahl, ID und Punkte folgen die gruppenspezifischen Inhaltsfelder samt den Ausgangsfarben `col1`, `col2` usw., anschließend Bildpfade, eine leere Trennspalte und die Metadaten Subtyp, Bildmotiv sowie `frequenz`, `komplexität` und `spezifität`. Bei Orten und Aufgaben stehen die Zielwörter vor `phrase` und `phrase_story`. `phrase` enthält die Minimalphrase; `phrase_story` ist für den vollständigen Erzähltext vorgesehen und bleibt bis zu dessen Festlegung leer. CardMaker kann zentral zwischen beiden Fassungen wechseln und verwendet bei leerer Story die Minimalphrase. Verbideen werden universell in der letzten Spalte `vorschläge-verben` geführt. Wortkandidaten ohne ID stehen getrennt in `cards/wort/liste-wort-kandidaten.tsv`.
 
 Die drei Bewertungsfelder verwenden vorläufig Werte von 1 bis 5: `frequenz` reicht von hochfrequent bis selten, `komplexität` von sehr einfach bis hochkomplex und `spezifität` von breit einsetzbar bis stark spezifisch. Die Einordnungen sind Materialhypothesen und später empirisch zu prüfen. Ermittlungsgrundlage und aktuelle Werte des gesamten Kartenmaterials stehen in `cards/info-listen.md`.
 
 ### 2. Ortskarten (e)
 
-| ID | Ort | Phrase | Wort 1 | Wort 2 |
-|---|---|---|---|---|
-| `e01` | Wüste | „In der Wüste ist der Sand heiß.“ | Sand | heiß |
-| `e02` | Wald | „Im Wald ist es dunkel. Überall stehen Bäume.“ | Baum | dunkel |
+| ID | Ort | Wort 1 | Wort 2 | Minimalphrase | Storytext |
+|---|---|---|---|---|---|
+| `e01` | Wüste | Sand | heiß | „In der Wüste ist der Sand heiß.“ | – |
+| `e02` | Wald | Baum | dunkel | „Im Wald ist es dunkel. Überall stehen Bäume.“ | – |
 
 **Zielmenge: 6.** Weitere Karten offen. Das Adjektiv soll **typisch für den Ort selbst** sein, nicht bloß für ein dortiges Objekt.
 
 ### 3. Aufgabenkarten (ax)
 
-Alle Aufgaben besitzen eine **Art/Kategorie, Phrase, zwei Zielwörter, ein festes Kleinod-Symbol** und eine Liste **antizipierter Vorschläge-Verben**. Die Vorschläge-Verben sind qualitativ nach vermuteter Naheliegenheit geordnet, **nicht** empirisch getestet. Sie sind weder Pflichtlösungen noch Wortkarten.
+Alle Aufgaben besitzen eine **Art/Kategorie, zwei Zielwörter, eine Minimalphrase, ein optionales Storytextfeld, ein festes Kleinod-Symbol** und eine Liste **antizipierter Vorschläge-Verben**. Die Vorschläge-Verben sind qualitativ nach vermuteter Naheliegenheit geordnet, **nicht** empirisch getestet. Sie sind weder Pflichtlösungen noch Wortkarten.
 
 #### 3.1 Gefahr (ag)
 
-| ID | Phrase | Wort 1 | Wort 2 | Kleinod | Vorschläge-Verben |
-|---|---|---|---|---|---|
-| `ag01` | „Ein Haus brennt!“ | Haus | brennen | Schlüsselanhänger | löschen, abkühlen, retten, schützen |
-| `ag02` | „Ein Dieb klaut Geld!“ | Dieb | klauen | Münze | greifen, erschrecken, fangen, finden, verfolgen, stehlen |
+| ID | Wort 1 | Wort 2 | Minimalphrase | Storytext | Kleinod | Vorschläge-Verben |
+|---|---|---|---|---|---|---|
+| `ag01` | Haus | brennen | „Ein Haus brennt!“ | – | Schlüsselanhänger | löschen, abkühlen, retten, schützen |
+| `ag02` | Dieb | klauen | „Ein Dieb klaut Geld!“ | – | Münze | greifen, erschrecken, fangen, finden, verfolgen, stehlen |
 
 Zur Materialprüfung für `ag02` mögliche Verknüpfungen: **greifen – Greifer; erschrecken – Maske oder laut; fangen – Netz; finden – Lupe; verfolgen – schnell; stehlen – leise**. Nicht alle genannten Wörter sind bereits in den Prototyp aufgenommen.
 
 #### 3.2 Sozial (as)
 
-| ID | Phrase | Wort 1 | Wort 2 | Kleinod | Vorschläge-Verben |
-|---|---|---|---|---|---|
-| *noch offen* | – | – | – | – | – |
+| ID | Wort 1 | Wort 2 | Minimalphrase | Storytext | Kleinod | Vorschläge-Verben |
+|---|---|---|---|---|---|---|
+| *noch offen* | – | – | – | – | – | – |
 
 #### 3.3 Technisch (at)
 
-| ID | Phrase | Wort 1 | Wort 2 | Kleinod | Vorschläge-Verben |
-|---|---|---|---|---|---|
-| *noch offen* | – | – | – | – | – |
+| ID | Wort 1 | Wort 2 | Minimalphrase | Storytext | Kleinod | Vorschläge-Verben |
+|---|---|---|---|---|---|---|
+| *noch offen* | – | – | – | – | – | – |
 
 #### 3.4 Hindernis (ah)
 
-| ID | Phrase | Wort 1 | Wort 2 | Kleinod | Vorschläge-Verben |
-|---|---|---|---|---|---|
-| *noch offen* | – | – | – | – | – |
+| ID | Wort 1 | Wort 2 | Minimalphrase | Storytext | Kleinod | Vorschläge-Verben |
+|---|---|---|---|---|---|---|
+| *noch offen* | – | – | – | – | – | – |
 
 **Zielmenge: 16 Aufgabenkarten**, vorläufig je vier in jeder der vier Kategorien. **Kleinode sind keine eigenen Karten.** Das auf einer Aufgabenkarte abgebildete Kleinod wird bei erfolgreicher Lösung gewonnen, ohne dafür sofort einen Punkt zu erhalten.
 

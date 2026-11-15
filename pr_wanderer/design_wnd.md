@@ -1,6 +1,6 @@
 # Wanderer und Träumende Götter
 ## Design- und Entwicklungsdokument
-**Version 1.20 · Entwurf**
+**Version 1.21 · Entwurf**
 
 ### 1. Grundkonzept
 
@@ -66,11 +66,11 @@ Die Grundkarten sollen **mehrere naheliegende Vorschläge-Verben je Aufgabe und 
 
 **`ax`** bezeichnet die Aufgabenkarten zusammengefasst. Die IDs sind klein geschrieben und zweistellig nummeriert: `e01`, `ag01`, `wn01` usw. **Kleinode** sind feste Symbole auf Aufgabenkarten; **Lösungen** sind keine Karten.
 
-Die maschinenlesbaren Kartendaten stehen in je einer gemeinsamen TSV-Datei pro übergeordneter Kartengruppe: `liste-ort.tsv`, `liste-aufgabe.tsv`, `liste-wort.tsv` und `liste-figur.tsv`. Alle Listen verwenden dieselbe Produktionsstruktur: Auf `anzahl`, `id` und `punkte` folgen die gruppenspezifischen Inhaltsfelder und die dazugehörigen Farbwerte `col1`, `col2` usw.; anschließend stehen `img`, `ai`, eine leere Trennspalte und die Metadaten `subtyp`, `bildmotiv`, `frequenz`, `komplexität` und `spezifität`. Die universelle Spalte `vorschläge-verben` bildet den Abschluss.
+Die maschinenlesbaren Kartendaten stehen in je einer gemeinsamen TSV-Datei pro übergeordneter Kartengruppe: `liste-ort.tsv`, `liste-aufgabe.tsv`, `liste-wort.tsv` und `liste-figur.tsv`. Alle Listen verwenden dieselbe Produktionsstruktur: Auf `anzahl`, `id` und `punkte` folgen die gruppenspezifischen Inhaltsfelder und die dazugehörigen Farbwerte `col1`, `col2` usw.; anschließend stehen `img`, `ai`, eine leere Trennspalte und die Metadaten `subtyp`, `bildmotiv`, `frequenz`, `komplexität` und `spezifität`. Bei Orten und Aufgaben stehen die beiden Zielwörter vor `phrase` und `phrase_story`: `phrase` ist die kurze Basisfassung, `phrase_story` die optionale ausführliche Erzählfassung. Die universelle Spalte `vorschläge-verben` bildet den Abschluss.
 
-Bei Aufgaben stehen nach `phrase` unmittelbar `wort_1`, `wort_2` und `kleinod`; bei Orten folgen auf `ort` und `phrase` die beiden Zielwörter. Figuren behalten `name` und `faehigkeiten`, Wörter das Feld `wort`. Visuelle Beschreibungen stehen unabhängig von der Kartengruppe in `bildmotiv`, Verbideen ausschließlich in `vorschläge-verben`.
+Bei Aufgaben stehen `wort_1`, `wort_2`, `phrase`, `phrase_story` und `kleinod` in dieser Reihenfolge; bei Orten folgen auf `ort` dieselben Zielwort- und Textfelder. Figuren behalten `name` und `faehigkeiten`, Wörter das Feld `wort`. Visuelle Beschreibungen stehen unabhängig von der Kartengruppe in `bildmotiv`, Verbideen ausschließlich in `vorschläge-verben`.
 
-Die TSV-Farben sind als helle Ausgangswerte für dunkle Karten definiert. Der CardMaker-Generator erzeugt daraus in den CSV-Referenzen `format-dunkel` und die abgedunkelte Variante `format-hell`; dabei werden auch flektierte Zielwortformen innerhalb der Phrase markiert. `wanderer-print.cmp` besitzt je Kartentyp ein Bridge-Layout und erzeugt Bildkarten beziehungsweise helle Schrift auf Schwarz. `wanderer-paper.cmp` verwendet je Kartentyp ein kompaktes quadratisches Layout von ungefähr 45 × 45 mm mit dunkler Schrift auf Weiß und einer kleinen Kennzeichnung aus Kartenart und Anzeige-ID links oben. Ohne eingezeichnete Crop-Zeichen passen über den PDF-Export bis zu 24 Paper-Karten im 4 × 6-Raster auf A4.
+Die TSV-Farben sind als helle Ausgangswerte für dunkle Karten definiert. Der CardMaker-Generator erzeugt daraus in den CSV-Referenzen `format-dunkel` und die abgedunkelte Variante `format-hell`; dabei werden auch flektierte Zielwortformen innerhalb der gewählten Textfassung markiert. `text-version.json` schaltet zentral zwischen `phrase` und `phrase_story` um; ist die Storyfassung einer Karte noch leer, wird die Minimalphrase verwendet. `wanderer-print.cmp` besitzt je Kartentyp ein Bridge-Layout und erzeugt Bildkarten beziehungsweise helle Schrift auf Schwarz. `wanderer-paper.cmp` verwendet je Kartentyp ein kompaktes quadratisches Layout von ungefähr 45 × 45 mm mit dunkler Schrift auf Weiß und einer kleinen Kennzeichnung aus Kartenart und Anzeige-ID links oben. Ohne eingezeichnete Crop-Zeichen passen über den PDF-Export bis zu 24 Paper-Karten im 4 × 6-Raster auf A4.
 
 Die Bewertungsfelder verwenden vorläufig eine Skala von 1 bis 5. Bei `frequenz` bedeutet 1 hochfrequent und 5 selten, bei `komplexität` bedeutet 1 sehr einfach und 5 hochkomplex, bei `spezifität` bedeutet 1 breit einsetzbar und 5 stark spezifisch. Sie unterstützen Materialauswahl und Balance, ersetzen aber keine spätere empirische Prüfung. Details und aktuelle Werte stehen in `cards/info-listen.md`.
 
@@ -205,8 +205,8 @@ Die Stufen sind **vorläufige Testkonfigurationen**. Sprache, Alter, Kartenverte
 
 #### 6.2 Kartenlayout
 
-- **Ort:** Name, Bild, kurze Phrase mit zwei hervorgehobenen Zielwörtern.
-- **Aufgabe:** Phrase, Kernereignis, Kategorienkennzeichnung, festes Kleinod-Symbol.
+- **Ort:** Name, Bild, zwei hervorgehobene Zielwörter sowie wahlweise Minimalphrase oder Storytext.
+- **Aufgabe:** Zwei hervorgehobene Zielwörter, wahlweise Minimalphrase oder Storytext, Kernereignis, Kategorienkennzeichnung und festes Kleinod-Symbol.
 - **Wort:** Großes Bild, Begriff, gegebenenfalls Artikel/Wortart und **optional** Punktwert.
 - **Figur:** Name und einfache Personendarstellung.
 

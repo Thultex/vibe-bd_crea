@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import argparse
 import csv
 import re
 import xml.etree.ElementTree as ET
@@ -12,11 +13,16 @@ from build_cardmaker import (
     BRIDGE_WIDTH,
     CARDMAKER_DIR,
     COLOR_PATTERN,
+    ListSpec,
     LIST_SPECS,
     PAPER_HEIGHT,
     PAPER_WIDTH,
     PROJECT_PATHS,
+    TEXT_VERSIONS,
+    formatted_text,
     load_tsv,
+    load_text_version,
+    resolve_text,
 )
 
 
@@ -39,6 +45,10 @@ def validate_tsv() -> None:
             raise RuntimeError(f"Uneinheitliche Spaltenzahl: {source}")
         if "format_text" in header:
             raise RuntimeError(f"format_text gehört nicht mehr in die TSV-Datei: {source}")
+        if source.name in {"liste-ort.tsv", "liste-aufgabe.tsv"}:
+            words_and_phrases = ["wort_1", "wort_2", "phrase", "phrase_story"]
+            if [field for field in header if field in words_and_phrases] != words_and_phrases:
+                raise RuntimeError(f"Zielwörter, phrase und phrase_story stehen in falscher Reihenfolge: {source}")
         expected_colors = [f"col{index}" for index in range(1, color_count + 1)]
         if header[header.index("img") - color_count : header.index("img")] != expected_colors:
             raise RuntimeError(f"Farbspalten müssen direkt vor img stehen: {source}")
@@ -51,8 +61,25 @@ def validate_tsv() -> None:
                     raise RuntimeError(f"Ungültiger Farbwert: {source}:{line_number}")
 
 
-def validate_csv(spec_key: str, expected_count: int) -> None:
-    path = CARDMAKER_DIR / f"{spec_key}.csv"
+def validate_text_selection() -> None:
+    for spec in LIST_SPECS:
+        if not spec.story_field:
+            continue
+        source_row = load_tsv(spec)[0]
+        if resolve_text(source_row, spec, "phrase_story") != source_row[spec.plain_field]:
+            raise RuntimeError(f"Leeres phrase_story fällt bei {spec.key} nicht auf phrase zurück.")
+        story_row = source_row.copy()
+        story_row[spec.story_field] = f"{source_row[spec.plain_field]} Danach geht die Geschichte weiter."
+        if resolve_text(story_row, spec, "phrase_story") != story_row[spec.story_field]:
+            raise RuntimeError(f"phrase_story wird bei {spec.key} nicht ausgewählt.")
+        for light_card in (True, False):
+            formatted = formatted_text(story_row, spec, "phrase_story", light_card=light_card)
+            if TAG.sub("", formatted) != story_row[spec.story_field]:
+                raise RuntimeError(f"Storyformatierung verändert den Text bei {spec.key}.")
+
+
+def validate_csv(spec: ListSpec, source_rows: list[dict[str, str]], text_version: str) -> None:
+    path = CARDMAKER_DIR / f"{spec.key}.csv"
     expected_fields = [
         "Count",
         "card_id",
@@ -70,9 +97,12 @@ def validate_csv(spec_key: str, expected_count: int) -> None:
         if reader.fieldnames != expected_fields:
             raise RuntimeError(f"Falsches CSV-Schema: {path}")
         rows = list(reader)
-    if len(rows) != expected_count:
-        raise RuntimeError(f"Falsche Kartenanzahl in {path}: {len(rows)} statt {expected_count}")
-    for row in rows:
+    if len(rows) != len(source_rows):
+        raise RuntimeError(f"Falsche Kartenanzahl in {path}: {len(rows)} statt {len(source_rows)}")
+    for row, source_row in zip(rows, source_rows, strict=True):
+        expected_text = resolve_text(source_row, spec, text_version)
+        if row["plain_text"] != expected_text:
+            raise RuntimeError(f"Falsche Textfassung bei {row['card_id']}: erwartet {text_version}.")
         if not re.fullmatch(r"[A-ZÄÖÜ]+ · [A-Z]+[1-9][0-9]*", row["paper-label"]):
             raise RuntimeError(f"Ungültige Paper-Kennung bei {row['card_id']}: {row['paper-label']}")
         if TAG.sub("", row["format-hell"]) != row["plain_text"]:
@@ -140,15 +170,27 @@ def validate_project(variant: str) -> None:
             if "@[img]" not in image_variable or "#empty" not in image_variable:
                 raise RuntimeError(f"print/{spec.key}: Bildumschaltung prüft img nicht direkt.")
 
-def main() -> None:
+def main(text_version: str) -> None:
     validate_tsv()
-    counts = {spec.key: len(load_tsv(spec)) for spec in LIST_SPECS}
-    for key, count in counts.items():
-        validate_csv(key, count)
+    validate_text_selection()
+    source_rows = {spec.key: load_tsv(spec) for spec in LIST_SPECS}
+    for spec in LIST_SPECS:
+        validate_csv(spec, source_rows[spec.key], text_version)
     validate_project("print")
     validate_project("paper")
-    print(f"WND CardMaker valide: {sum(counts.values())} Karten, vier Print- und vier quadratische Paper-Layouts.")
+    count = sum(len(rows) for rows in source_rows.values())
+    print(
+        f"WND CardMaker valide: {count} Karten, vier Print- und vier quadratische Paper-Layouts, "
+        f"Textfassung {text_version}."
+    )
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--text-version",
+        choices=TEXT_VERSIONS,
+        help="Prüft einen Build mit abweichender Textfassung.",
+    )
+    arguments = parser.parse_args()
+    main(arguments.text_version or load_text_version())

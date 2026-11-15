@@ -1,3 +1,3 @@
-anzahl	id	punkte	phrase	wort_1	wort_2	kleinod	col1	col2	img	ai		subtyp	bildmotiv	frequenz	komplexität	spezifität	vorschläge-verben
-1	ag01		Ein Haus brennt!	Haus	brennen	Schlüsselanhänger	0x54D7CC	0xFF9A5C				gefahr		2	2	4	löschen; abkühlen; retten; schützen
-1	ag02		Ein Dieb klaut Geld!	Dieb	klauen	Münze	0x54D7CC	0xFF9A5C				gefahr		3	2	4	greifen; erschrecken; fangen; finden; verfolgen; stehlen
+anzahl	id	punkte	wort_1	wort_2	phrase	phrase_story	kleinod	col1	col2	img	ai		subtyp	bildmotiv	frequenz	komplexität	spezifität	vorschläge-verben
+1	ag01		Haus	brennen	Ein Haus brennt!		Schlüsselanhänger	0x54D7CC	0xFF9A5C				gefahr		2	2	4	löschen; abkühlen; retten; schützen
+1	ag02		Dieb	klauen	Ein Dieb klaut Geld!		Münze	0x54D7CC	0xFF9A5C				gefahr		3	2	4	greifen; erschrecken; fangen; finden; verfolgen; stehlen

@@ -23,6 +23,23 @@ Der Generator schreibt `ort.csv`, `aufgabe.csv`, `wort.csv` und `figur.csv`. Die
 
 Die TSV-Farbspalten enthalten ausschließlich Werte der Form `0xRRGGBB`, keine CardMaker-Tags. `col1` gehört zum ersten Zielwort beziehungsweise Einzelwort, `col2` zum zweiten Zielwort. Der Generator erkennt in Phrasen auch flektierte Formen wie `brennt`, `klaut` und `Bäume` und erzeugt daraus CardMakers `FormattedText`-Tags.
 
+## Minimal- oder Storyfassung
+
+Für Orte und Aufgaben enthält die TSV nach den Zielwörtern zwei Texte: `phrase` ist die kurze Minimalphrase, `phrase_story` der vollständige Erzähltext. Die zentrale Auswahl steht in `text-version.json`:
+
+```json
+{
+  "text_version": "phrase"
+}
+```
+
+Zulässig sind `phrase` und `phrase_story`. Ein leeres `phrase_story` fällt automatisch auf `phrase` zurück. Nach einer Änderung wird `python build_cardmaker.py` erneut ausgeführt; beide CardMaker-Projekte verwenden dann dieselbe gewählte Fassung. Für einen einmaligen Test kann die Konfiguration ohne Dateiänderung überschrieben werden:
+
+```powershell
+python build_cardmaker.py --text-version phrase_story
+python validate_cardmaker.py --text-version phrase_story
+```
+
 Die Grundschrift ist `Arial Rounded MT Bold`. Falls sie auf einem Rechner fehlt, muss in CardMaker eine vergleichbare klare Rundschrift gewählt werden.
 
 ## A4-PDF für Paper

@@ -23,8 +23,8 @@ Konkretisierte Karten haben derzeit jeweils die Stückzahl `1`. Noch nicht festg
 
 | Gruppe | Inhaltsfelder nach `punkte` |
 |---|---|
-| Ort | `ort`, `phrase`, `wort_1`, `wort_2` |
-| Aufgabe | `phrase`, `wort_1`, `wort_2`, `kleinod` |
+| Ort | `ort`, `wort_1`, `wort_2`, `phrase`, `phrase_story` |
+| Aufgabe | `wort_1`, `wort_2`, `phrase`, `phrase_story`, `kleinod` |
 | Wort | `wort` |
 | Figur | `name`, `faehigkeiten` |
 
@@ -32,10 +32,10 @@ Die konkreten Kopfzeilen lauten:
 
 ```text
 liste-ort.tsv:
-anzahl  id  punkte  ort  phrase  wort_1  wort_2  col1  col2  img  ai  [leer]  subtyp  bildmotiv  frequenz  komplexität  spezifität  vorschläge-verben
+anzahl  id  punkte  ort  wort_1  wort_2  phrase  phrase_story  col1  col2  img  ai  [leer]  subtyp  bildmotiv  frequenz  komplexität  spezifität  vorschläge-verben
 
 liste-aufgabe.tsv:
-anzahl  id  punkte  phrase  wort_1  wort_2  kleinod  col1  col2  img  ai  [leer]  subtyp  bildmotiv  frequenz  komplexität  spezifität  vorschläge-verben
+anzahl  id  punkte  wort_1  wort_2  phrase  phrase_story  kleinod  col1  col2  img  ai  [leer]  subtyp  bildmotiv  frequenz  komplexität  spezifität  vorschläge-verben
 
 liste-wort.tsv:
 anzahl  id  punkte  wort  col1  img  ai  [leer]  subtyp  bildmotiv  frequenz  komplexität  spezifität  vorschläge-verben
@@ -45,6 +45,13 @@ anzahl  id  punkte  name  faehigkeiten  col1  img  ai  [leer]  subtyp  bildmotiv
 ```
 
 Die Kandidatenliste ergänzt vor `vorschläge-verben` das Feld `status`.
+
+Bei Orten und Aufgaben stehen zuerst die beiden Zielwörter, danach die zwei austauschbaren Textfassungen:
+
+- `phrase`: kurze Minimalphrase und derzeitige Basisfassung, beispielsweise „In der Wüste ist der Sand heiß.“
+- `phrase_story`: vollständiger Erzähltext für die ausführliche Fassung. Das Feld darf während der Erarbeitung leer bleiben; der CardMaker fällt dann automatisch auf `phrase` zurück.
+
+Welche Fassung CardMaker verwendet, steht zentral in `../cardmaker/text-version.json`. Erlaubt sind `phrase` und `phrase_story`. Die Auswahl gilt gleichzeitig für Paper und Print; Wörter und Figuren sind davon nicht betroffen.
 
 ## Bedeutung gemeinsamer Felder
 
@@ -135,4 +142,4 @@ wort/img/WA01_Schnell.ai
 wort/img/WA01_Schnell-01.png
 ```
 
-Bleed-Dateien wie `E01_Wüste-02.png` werden nicht versioniert. Kleine `.ai`-Quelldateien gehören ausdrücklich ins Repository. Die festen Projekte `../cardmaker/wanderer-print.cmp` und `../cardmaker/wanderer-paper.cmp` verwenden dieselben erzeugten CSV-Referenzen. `paper-label` enthält darin die kleine Kartenart-/Nummernkennung ohne führende Null; die letzten Spalten `format-hell` und `format-dunkel` enthalten die vollständig formatierten Wörter beziehungsweise Phrasen.
+Bleed-Dateien wie `E01_Wüste-02.png` werden nicht versioniert. Kleine `.ai`-Quelldateien gehören ausdrücklich ins Repository. Die festen Projekte `../cardmaker/wanderer-print.cmp` und `../cardmaker/wanderer-paper.cmp` verwenden dieselben erzeugten CSV-Referenzen. `paper-label` enthält darin die kleine Kartenart-/Nummernkennung ohne führende Null; die letzten Spalten `format-hell` und `format-dunkel` enthalten die vollständig formatierte, aktuell ausgewählte Textfassung.
