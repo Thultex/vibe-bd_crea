@@ -31,6 +31,7 @@ WND: Projektgrundlage mit Dokumentation, vereinheitlichten Kartendaten und CardM
 - CardMaker: `wanderer-print.cmp` für dunkle Bridge-Karten mit Bild- beziehungsweise Text-Fallback und `wanderer-paper.cmp` für helle Bridge-Textkarten erzeugt.
 - CardMaker: Alle eingezeichneten Crop-Zeichen entfernt; Exportmaße auf 675 × 1050 px bei 300 dpi festgelegt und beim Paper-Projekt nur den Export-Kartenrand ohne Kreuze aktiviert.
 - CardMaker: CSVs um die abschließenden Spalten `format-hell` und `format-dunkel` ergänzt; der Generator dunkelt Farben für helle Karten automatisch ab und erkennt flektierte Formen in den Phrasen.
+- CardMaker: Bild-/Textumschaltung ohne zusätzliche Hilfsspalte umgesetzt; die Print-Layouts prüfen unmittelbar, ob `img` leer ist oder einen vorhandenen Bildpfad enthält.
 - Paper: Bridge-Layouts für CardMakers A4-PDF-Packung beibehalten; mit den dokumentierten Rändern passen bis zu neun Karten im 3 × 3-Raster auf eine Seite.
 - Doku: CardMaker-README, `cards/info-listen.md`, Projekt-README, Design v1.19 und Material v1.09 an die getrennten Projekte und Farbverarbeitung angepasst.
 - Test: TSV-Schemata, Farbwerte, zehn Karten, beide Formatspalten, zwei Projekte, acht Layouts, Exportmaße, fehlende Crop-Zeichen sowie Bild-Fallback validiert.

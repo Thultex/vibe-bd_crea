@@ -56,17 +56,17 @@ def load_tsv(spec: ListSpec) -> list[dict[str, str]]:
     return [row for row in rows if (row.get("id") or "").strip()]
 
 
-def image_reference(raw_value: str, source: Path) -> tuple[str, bool]:
+def image_reference(raw_value: str, source: Path) -> str:
     value = raw_value.strip()
     if not value:
-        return "", False
+        return ""
     value_path = Path(value)
     candidates = [value_path] if value_path.is_absolute() else [source.parent / value_path, PROJECT_DIR / value_path]
     for candidate in candidates:
         if candidate.is_file():
             relative = os.path.relpath(candidate.resolve(), CARDMAKER_DIR).replace("\\", "/")
-            return relative, True
-    return "", False
+            return relative
+    return ""
 
 
 def darken_color(value: str, factor: float = 0.55) -> str:
@@ -141,7 +141,6 @@ def write_reference(spec: ListSpec, rows: list[dict[str, str]]) -> int:
         "card_id",
         "plain_text",
         "img",
-        "has_img",
         "subtyp",
         "col1",
         "col2",
@@ -152,14 +151,13 @@ def write_reference(spec: ListSpec, rows: list[dict[str, str]]) -> int:
         writer = csv.DictWriter(handle, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
         for row in rows:
-            image, has_image = image_reference(row.get("img", ""), spec.source)
+            image = image_reference(row.get("img", ""), spec.source)
             writer.writerow(
                 {
                     "Count": row.get("anzahl", "1") or "1",
                     "card_id": row["id"],
                     "plain_text": row[spec.plain_field],
                     "img": image,
-                    "has_img": "1" if has_image else "0",
                     "subtyp": row.get("subtyp", ""),
                     "col1": row.get("col1", ""),
                     "col2": row.get("col2", ""),
@@ -272,7 +270,7 @@ def add_layout(root: ET.Element, spec: ListSpec, variant: str) -> None:
             layout,
             name="Formatted print fallback",
             kind="FormattedText",
-            variable="#(if @[has_img] == 1 then #nodraw)#@[format-dunkel]",
+            variable="#(if @[img] != #empty then #nodraw)#@[format-dunkel]",
             x=48,
             y=48,
             width=BRIDGE_WIDTH - 96,
@@ -285,7 +283,7 @@ def add_layout(root: ET.Element, spec: ListSpec, variant: str) -> None:
             layout,
             name="Card image",
             kind="Graphic",
-            variable="#(if @[has_img] != 1 then #nodraw)#@[img]",
+            variable="#(if @[img] == #empty then #nodraw)#@[img]",
             x=0,
             y=0,
             width=BRIDGE_WIDTH,

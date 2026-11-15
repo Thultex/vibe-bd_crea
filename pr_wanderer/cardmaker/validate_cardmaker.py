@@ -56,7 +56,6 @@ def validate_csv(spec_key: str, expected_count: int) -> None:
         "card_id",
         "plain_text",
         "img",
-        "has_img",
         "subtyp",
         "col1",
         "col2",
@@ -84,7 +83,7 @@ def validate_csv(spec_key: str, expected_count: int) -> None:
             raise RuntimeError(f"format-dunkel übernimmt die TSV-Farben bei {row['card_id']} nicht unverändert.")
         if any(channel_sum(light) >= channel_sum(dark) for light, dark in zip(light_colors, dark_colors, strict=True)):
             raise RuntimeError(f"format-hell ist bei {row['card_id']} nicht dunkler als format-dunkel.")
-        if row["has_img"] == "1" and not (CARDMAKER_DIR / row["img"]).is_file():
+        if row["img"] and not (CARDMAKER_DIR / row["img"]).is_file():
             raise RuntimeError(f"Fehlendes Bild für {row['card_id']}: {row['img']}")
 
 
@@ -125,9 +124,12 @@ def validate_project(variant: str) -> None:
                 raise RuntimeError(f"print/{spec.key}: Schwarzer Hintergrund fehlt.")
             if "@[format-dunkel]" not in elements["Formatted print fallback"].get("variable", ""):
                 raise RuntimeError(f"print/{spec.key}: format-dunkel wird nicht verwendet.")
-            if "@[has_img]" not in elements["Card image"].get("variable", ""):
-                raise RuntimeError(f"print/{spec.key}: Bildumschaltung fehlt.")
-
+            fallback_variable = elements["Formatted print fallback"].get("variable", "")
+            image_variable = elements["Card image"].get("variable", "")
+            if "@[img]" not in fallback_variable or "#empty" not in fallback_variable:
+                raise RuntimeError(f"print/{spec.key}: Textumschaltung prüft img nicht direkt.")
+            if "@[img]" not in image_variable or "#empty" not in image_variable:
+                raise RuntimeError(f"print/{spec.key}: Bildumschaltung prüft img nicht direkt.")
 
 def main() -> None:
     validate_tsv()

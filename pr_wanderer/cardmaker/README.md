@@ -41,3 +41,4 @@ Die Paper-Layouts bleiben im echten Bridge-Format, damit CardMakers PDF-Export s
 Damit passen bis zu neun Bridge-Karten in einem 3 × 3-Raster auf eine A4-Seite. Die Projekte definieren Kartenformat, Auflösung, Exportdateinamen und Exportrand; das A4-Seitenformat selbst ist eine globale CardMaker-PDF-Einstellung und wird nicht in einer `.cmp`-Datei gespeichert.
 
 Ein Bild wird nur benutzt, wenn der in `img` eingetragene Pfad beim Bauen tatsächlich existiert. Relative Bildpfade dürfen vom jeweiligen Listenordner oder vom Projektordner `pr_wanderer/` ausgehen.
+Die Print-Layouts prüfen `img` direkt: ein leeres Feld zeigt die Textkarte, ein vorhandener Pfad die Bildkarte. Eine zusätzliche Hilfsvariable wird dafür nicht erzeugt.
