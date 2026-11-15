@@ -4,25 +4,35 @@
 
 Ausgangsdatum: 2026-11-13
 
-*Diese Woche (ca. 3,8h, 2 Tage, 17 Inhalte):*
-WND: Projektgrundlage übernommen, Kartenlisten vereinheitlicht und getrennte CardMaker-Projekte für dunklen Print und platzsparenden A4-Paperdruck ergänzt.
+*Diese Woche (ca. 4,2h, 2 Tage, 18 Inhalte):*
+WND: Projektgrundlage übernommen, Kartenlisten vereinheitlicht und getrennte CardMaker-Projekte für dunklen Print sowie kompakte quadratische Paper-Karten ergänzt.
 
 *Letzte Woche (0,0h, 0 Tage, 0 Inhalte):*
 Keine Einträge.
 
-*Dieser Monat (ca. 3,8h, 2 Tage, 17 Inhalte):*
+*Dieser Monat (ca. 4,2h, 2 Tage, 18 Inhalte):*
 WND: Anleitung, Design, Materialbestand, Kartenverzeichnisse und getrennte CardMaker-Produktionswege aufgebaut.
 
 *Letzter Monat (0,0h, 0 Tage, 0 Inhalte):*
 Keine Einträge.
 
-*Jahr (ca. 3,8h, 2 Tage, 17 Inhalte):*
+*Jahr (ca. 4,2h, 2 Tage, 18 Inhalte):*
 WND: Projektgrundlage mit Dokumentation, vereinheitlichten Kartendaten und CardMaker-Ausgabe erstellt.
 
-*Insgesamt (ca. 3,8h, 2 Tage, 17 Inhalte):*
+*Insgesamt (ca. 4,2h, 2 Tage, 18 Inhalte):*
 WND: Projektgrundlage mit Dokumentation, vereinheitlichten Kartendaten und CardMaker-Ausgabe erstellt.
 
 ## Log
+
+### 2026-11-15 - wnd, cardmaker, paper, a4 (ca. 0,4h)
+
+- Summary: Paper-Karten auf ein kompaktes Quadratformat umgestellt und um eine kleine Kartenart-/Nummernkennung ergänzt.
+- Paper: Layouts auf 531 × 531 px bei 300 dpi verkleinert, entsprechend ungefähr 45 × 45 mm.
+- Paper: A4-PDF-Anordnung auf bis zu 24 Karten im 4 × 6-Raster verdichtet; Print bleibt unverändert im Bridge-Format.
+- Paper: Links oben eine kleine Kennzeichnung aus Kartenart und Anzeige-ID ergänzt, beispielsweise `ORT · E1`; die interne ID `e01` bleibt in den Quelldaten unverändert.
+- CSV: `paper-label` als generiertes Feld ergänzt; `format-hell` und `format-dunkel` bleiben die beiden letzten Spalten.
+- Doku: CardMaker-README, Projekt-README und Design v1.20 an Quadratformat, Kennzeichnung und A4-Belegung angepasst.
+- Test: Paper-Geometrie, Exportmaß, Labelposition, Anzeige-IDs, CSV-Spaltenfolge, zehn Karten und unveränderte Print-Layouts validiert.
 
 ### 2026-11-15 - wnd, cardmaker, farben, paper (ca. 0,6h)
 

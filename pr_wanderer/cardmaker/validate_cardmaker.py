@@ -13,6 +13,8 @@ from build_cardmaker import (
     CARDMAKER_DIR,
     COLOR_PATTERN,
     LIST_SPECS,
+    PAPER_HEIGHT,
+    PAPER_WIDTH,
     PROJECT_PATHS,
     load_tsv,
 )
@@ -57,6 +59,7 @@ def validate_csv(spec_key: str, expected_count: int) -> None:
         "plain_text",
         "img",
         "subtyp",
+        "paper-label",
         "col1",
         "col2",
         "format-hell",
@@ -70,6 +73,8 @@ def validate_csv(spec_key: str, expected_count: int) -> None:
     if len(rows) != expected_count:
         raise RuntimeError(f"Falsche Kartenanzahl in {path}: {len(rows)} statt {expected_count}")
     for row in rows:
+        if not re.fullmatch(r"[A-ZÄÖÜ]+ · [A-Z]+[1-9][0-9]*", row["paper-label"]):
+            raise RuntimeError(f"Ungültige Paper-Kennung bei {row['card_id']}: {row['paper-label']}")
         if TAG.sub("", row["format-hell"]) != row["plain_text"]:
             raise RuntimeError(f"format-hell verändert den Text von {row['card_id']}.")
         if TAG.sub("", row["format-dunkel"]) != row["plain_text"]:
@@ -97,9 +102,10 @@ def validate_project(variant: str) -> None:
 
     for layout, spec in zip(layouts, LIST_SPECS, strict=True):
         size = (int(layout.get("width", "0")), int(layout.get("height", "0")))
-        if size != (BRIDGE_WIDTH, BRIDGE_HEIGHT) or layout.get("dpi") != "300":
+        expected_size = (PAPER_WIDTH, PAPER_HEIGHT) if variant == "paper" else (BRIDGE_WIDTH, BRIDGE_HEIGHT)
+        if size != expected_size or layout.get("dpi") != "300":
             raise RuntimeError(f"{variant}/{spec.key}: Falsches Kartenformat {size}.")
-        if layout.findtext("exportWidth") != str(BRIDGE_WIDTH) or layout.findtext("exportHeight") != str(BRIDGE_HEIGHT):
+        if layout.findtext("exportWidth") != str(expected_size[0]) or layout.findtext("exportHeight") != str(expected_size[1]):
             raise RuntimeError(f"{variant}/{spec.key}: Exportmaß fehlt.")
         if layout.findtext("exportLayoutBorderCrossSize") != "0":
             raise RuntimeError(f"{variant}/{spec.key}: Crop-Zeichen sind aktiviert.")
@@ -115,6 +121,9 @@ def validate_project(variant: str) -> None:
                 raise RuntimeError(f"paper/{spec.key}: Weißer Hintergrund fehlt.")
             if elements["Formatted paper text"].get("variable") != "@[format-hell]":
                 raise RuntimeError(f"paper/{spec.key}: format-hell wird nicht verwendet.")
+            label = elements.get("Paper card label")
+            if label is None or label.get("variable") != "@[paper-label]" or label.get("horizontalalign") != "0":
+                raise RuntimeError(f"paper/{spec.key}: Kennzeichnung links oben fehlt.")
             if any(element.get("type") == "Graphic" for element in elements.values()):
                 raise RuntimeError(f"paper/{spec.key}: Paper soll keine Bilder enthalten.")
             if layout.findtext("exportLayoutBorder") != "true":
@@ -138,7 +147,7 @@ def main() -> None:
         validate_csv(key, count)
     validate_project("print")
     validate_project("paper")
-    print(f"WND CardMaker valide: {sum(counts.values())} Karten, zwei Projekte, je vier Bridge-Layouts.")
+    print(f"WND CardMaker valide: {sum(counts.values())} Karten, vier Print- und vier quadratische Paper-Layouts.")
 
 
 if __name__ == "__main__":

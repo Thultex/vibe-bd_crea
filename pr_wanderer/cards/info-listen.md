@@ -135,4 +135,4 @@ wort/img/WA01_Schnell.ai
 wort/img/WA01_Schnell-01.png
 ```
 
-Bleed-Dateien wie `E01_Wüste-02.png` werden nicht versioniert. Kleine `.ai`-Quelldateien gehören ausdrücklich ins Repository. Die festen Projekte `../cardmaker/wanderer-print.cmp` und `../cardmaker/wanderer-paper.cmp` verwenden dieselben erzeugten CSV-Referenzen. Deren letzte Spalten `format-hell` und `format-dunkel` enthalten die vollständig formatierten Wörter beziehungsweise Phrasen.
+Bleed-Dateien wie `E01_Wüste-02.png` werden nicht versioniert. Kleine `.ai`-Quelldateien gehören ausdrücklich ins Repository. Die festen Projekte `../cardmaker/wanderer-print.cmp` und `../cardmaker/wanderer-paper.cmp` verwenden dieselben erzeugten CSV-Referenzen. `paper-label` enthält darin die kleine Kartenart-/Nummernkennung ohne führende Null; die letzten Spalten `format-hell` und `format-dunkel` enthalten die vollständig formatierten Wörter beziehungsweise Phrasen.

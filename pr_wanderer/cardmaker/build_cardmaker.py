@@ -20,6 +20,8 @@ PROJECT_PATHS = {
 
 BRIDGE_WIDTH = 675
 BRIDGE_HEIGHT = 1050
+PAPER_WIDTH = 531
+PAPER_HEIGHT = 531
 DPI = 300
 COLOR_PATTERN = re.compile(r"^0x[0-9A-Fa-f]{6}$")
 WORD_PATTERN = re.compile(r"[A-Za-zÄÖÜäöüß]+")
@@ -134,6 +136,13 @@ def formatted_text(row: dict[str, str], spec: ListSpec, *, light_card: bool) -> 
     return format_phrase(text, targets, colors)
 
 
+def display_id(value: str) -> str:
+    match = re.fullmatch(r"([A-Za-z]+)0*([0-9]+)", value.strip())
+    if not match:
+        return value.upper()
+    return f"{match.group(1).upper()}{int(match.group(2))}"
+
+
 def write_reference(spec: ListSpec, rows: list[dict[str, str]]) -> int:
     output = CARDMAKER_DIR / f"{spec.key}.csv"
     fields = [
@@ -142,6 +151,7 @@ def write_reference(spec: ListSpec, rows: list[dict[str, str]]) -> int:
         "plain_text",
         "img",
         "subtyp",
+        "paper-label",
         "col1",
         "col2",
         "format-hell",
@@ -159,6 +169,7 @@ def write_reference(spec: ListSpec, rows: list[dict[str, str]]) -> int:
                     "plain_text": row[spec.plain_field],
                     "img": image,
                     "subtyp": row.get("subtyp", ""),
+                    "paper-label": f"{spec.title.upper()} · {display_id(row['id'])}",
                     "col1": row.get("col1", ""),
                     "col2": row.get("col2", ""),
                     "format-hell": formatted_text(row, spec, light_card=True),
@@ -182,6 +193,8 @@ def element(
     element_color: str = "0x000000FF",
     background_color: str = "0x00000000",
     auto_scale: bool = False,
+    horizontal_align: int = 1,
+    vertical_align: int = 1,
 ) -> ET.Element:
     return ET.SubElement(
         parent,
@@ -200,8 +213,8 @@ def element(
             "centerimageonorigin": "false",
             "outlinethickness": "0",
             "rotation": "0",
-            "horizontalalign": "1",
-            "verticalalign": "1",
+            "horizontalalign": str(horizontal_align),
+            "verticalalign": str(vertical_align),
             "colortype": "0",
             "opacity": "255",
             "tilesize": "",
@@ -225,15 +238,16 @@ def element(
 
 def add_layout(root: ET.Element, spec: ListSpec, variant: str) -> None:
     paper = variant == "paper"
+    width, height = (PAPER_WIDTH, PAPER_HEIGHT) if paper else (BRIDGE_WIDTH, BRIDGE_HEIGHT)
     layout = ET.SubElement(
         root,
         "Layout",
         {
             "combineReferences": "false",
-            "width": str(BRIDGE_WIDTH),
-            "height": str(BRIDGE_HEIGHT),
+            "width": str(width),
+            "height": str(height),
             "buffer": "0",
-            "Name": f"{spec.title} – {'PAPER hell' if paper else 'PRINT dunkel'}",
+            "Name": f"{spec.title} – {'PAPER Quadrat 45 mm' if paper else 'PRINT dunkel'}",
             "defaultCount": "1",
             "dpi": str(DPI),
             "drawBorder": str(paper).lower(),
@@ -243,14 +257,27 @@ def add_layout(root: ET.Element, spec: ListSpec, variant: str) -> None:
     if paper:
         element(
             layout,
+            name="Paper card label",
+            kind="Text",
+            variable="@[paper-label]",
+            x=18,
+            y=14,
+            width=PAPER_WIDTH - 36,
+            height=30,
+            font_size=18,
+            element_color="0x4A4A4AFF",
+            horizontal_align=0,
+        )
+        element(
+            layout,
             name="Formatted paper text",
             kind="FormattedText",
             variable="@[format-hell]",
-            x=48,
-            y=48,
-            width=BRIDGE_WIDTH - 96,
-            height=BRIDGE_HEIGHT - 96,
-            font_size=spec.font_size,
+            x=32,
+            y=54,
+            width=PAPER_WIDTH - 64,
+            height=PAPER_HEIGHT - 86,
+            font_size=round(spec.font_size * 0.70),
             element_color="0x252525FF",
             auto_scale=True,
         )
@@ -261,8 +288,8 @@ def add_layout(root: ET.Element, spec: ListSpec, variant: str) -> None:
             variable="''",
             x=0,
             y=0,
-            width=BRIDGE_WIDTH,
-            height=BRIDGE_HEIGHT,
+            width=PAPER_WIDTH,
+            height=PAPER_HEIGHT,
             background_color="0xFFFFFFFF",
         )
     else:
@@ -307,9 +334,9 @@ def add_layout(root: ET.Element, spec: ListSpec, variant: str) -> None:
         ("exportRotation", "0"),
         ("exportTransparentBackground", "false"),
         ("exportPDFAsPageBack", "false"),
-        ("exportWidth", str(BRIDGE_WIDTH)),
-        ("exportHeight", str(BRIDGE_HEIGHT)),
-        ("zoom", "0.65"),
+        ("exportWidth", str(width)),
+        ("exportHeight", str(height)),
+        ("zoom", "0.85" if paper else "0.65"),
         ("exportLayoutBorder", str(paper).lower()),
         ("exportLayoutBorderCrossSize", "0"),
     ):

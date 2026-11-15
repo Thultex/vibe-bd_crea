@@ -1,6 +1,6 @@
 # Wanderer und Träumende Götter
 ## Design- und Entwicklungsdokument
-**Version 1.19 · Entwurf**
+**Version 1.20 · Entwurf**
 
 ### 1. Grundkonzept
 
@@ -70,7 +70,7 @@ Die maschinenlesbaren Kartendaten stehen in je einer gemeinsamen TSV-Datei pro �
 
 Bei Aufgaben stehen nach `phrase` unmittelbar `wort_1`, `wort_2` und `kleinod`; bei Orten folgen auf `ort` und `phrase` die beiden Zielwörter. Figuren behalten `name` und `faehigkeiten`, Wörter das Feld `wort`. Visuelle Beschreibungen stehen unabhängig von der Kartengruppe in `bildmotiv`, Verbideen ausschließlich in `vorschläge-verben`.
 
-Die TSV-Farben sind als helle Ausgangswerte für dunkle Karten definiert. Der CardMaker-Generator erzeugt daraus in den CSV-Referenzen `format-dunkel` und die abgedunkelte Variante `format-hell`; dabei werden auch flektierte Zielwortformen innerhalb der Phrase markiert. Zwei getrennte CardMaker-Projekte besitzen je Kartentyp genau ein Bridge-Layout: `wanderer-print.cmp` erzeugt Bildkarten beziehungsweise helle Schrift auf Schwarz, `wanderer-paper.cmp` dunkle Schrift auf Weiß. Die Paper-Karten werden ohne eingezeichnete Crop-Zeichen über den PDF-Export platzsparend auf A4 angeordnet.
+Die TSV-Farben sind als helle Ausgangswerte für dunkle Karten definiert. Der CardMaker-Generator erzeugt daraus in den CSV-Referenzen `format-dunkel` und die abgedunkelte Variante `format-hell`; dabei werden auch flektierte Zielwortformen innerhalb der Phrase markiert. `wanderer-print.cmp` besitzt je Kartentyp ein Bridge-Layout und erzeugt Bildkarten beziehungsweise helle Schrift auf Schwarz. `wanderer-paper.cmp` verwendet je Kartentyp ein kompaktes quadratisches Layout von ungefähr 45 × 45 mm mit dunkler Schrift auf Weiß und einer kleinen Kennzeichnung aus Kartenart und Anzeige-ID links oben. Ohne eingezeichnete Crop-Zeichen passen über den PDF-Export bis zu 24 Paper-Karten im 4 × 6-Raster auf A4.
 
 Die Bewertungsfelder verwenden vorläufig eine Skala von 1 bis 5. Bei `frequenz` bedeutet 1 hochfrequent und 5 selten, bei `komplexität` bedeutet 1 sehr einfach und 5 hochkomplex, bei `spezifität` bedeutet 1 breit einsetzbar und 5 stark spezifisch. Sie unterstützen Materialauswahl und Balance, ersetzen aber keine spätere empirische Prüfung. Details und aktuelle Werte stehen in `cards/info-listen.md`.
 
@@ -226,4 +226,4 @@ Farbsystem, Kartengröße und Schriftarten sind noch offen.
 
 **Das vollständige konkrete Karteninventar steht ausschließlich im separat versionierten Dokument `material_wnd.md` und den zugehörigen TSV-Dateien.**
 
-**Ende des Designdokuments – v1.19**
+**Ende des Designdokuments – v1.20**
