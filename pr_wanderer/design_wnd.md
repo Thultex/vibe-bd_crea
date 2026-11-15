@@ -1,6 +1,6 @@
 # Wanderer und Träumende Götter
 ## Design- und Entwicklungsdokument
-**Version 1.14 · Entwurf**
+**Version 1.15 · Entwurf**
 
 ### 1. Grundkonzept
 
@@ -65,6 +65,8 @@ Die Grundkarten sollen **mehrere naheliegende Lösungsverben je Aufgabe und Gege
 | **Figur** | `f` | Name | Optionaler neutraler Handlungsträger |
 
 **`ax`** bezeichnet die Aufgabenkarten zusammengefasst. Die IDs sind klein geschrieben und zweistellig nummeriert: `e01`, `ag01`, `wn01` usw. **Kleinode** sind feste Symbole auf Aufgabenkarten; **Lösungen** sind keine Karten.
+
+Die maschinenlesbaren Kartendaten stehen in je einer gemeinsamen TSV-Datei pro übergeordneter Kartengruppe. `anzahl` und `subtyp` sind stets die ersten beiden Spalten; anschließend folgen Karten-ID, gruppenspezifische Daten und optionale Pfade zu tatsächlich vorhandenen Bilddateien. Aufgaben werden gemeinsam in `cards/aufgabe/liste-aufgaben.tsv`, Nomen und Adjektive gemeinsam in `cards/wort/liste-wörter.tsv` geführt.
 
 #### 3.1 Orte
 
@@ -216,6 +218,6 @@ Farbsystem, Kartengröße und Schriftarten sind noch offen.
 | **Bewertung** | Kriterien für originelle Lösungen und Verfahren der Spielleitung |
 | **Design** | Maße, Farben, Typografie und Symbolverständlichkeit |
 
-**Das vollständige konkrete Karteninventar steht ausschließlich im separat versionierten Dokument `Material.md`.**
+**Das vollständige konkrete Karteninventar steht ausschließlich im separat versionierten Dokument `material_wnd.md` und den zugehörigen TSV-Dateien.**
 
-**Ende des Designdokuments – v1.14**
+**Ende des Designdokuments – v1.15**

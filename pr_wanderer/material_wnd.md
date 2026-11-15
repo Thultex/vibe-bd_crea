@@ -1,6 +1,6 @@
 # Wanderer und Träumende Götter
 ## Material
-**Version 1.04 · Konkreter Kartenbestand und Prototypplanung**
+**Version 1.05 · Konkreter Kartenbestand und Prototypplanung**
 
 Das Materialdokument erfasst **tatsächlich konkretisierte Karten** und getrennt davon **Kandidaten**. Es ersetzt die Materialtabellen im Designdokument.
 
@@ -19,6 +19,8 @@ Das Materialdokument erfasst **tatsächlich konkretisierte Karten** und getrennt
 | Figuren | `f` |
 
 Kennungen sind **kleingeschrieben** und je Kategorie ab `01` zweistellig nummeriert, etwa `e01`, `ag01`, `wa02`.
+
+Die maschinenlesbaren Daten stehen in je einer gemeinsamen TSV-Datei pro Kartengruppe: `cards/ort/liste-orte.tsv`, `cards/aufgabe/liste-aufgaben.tsv`, `cards/wort/liste-wörter.tsv` und `cards/figur/liste-figuren.tsv`. In jeder Kartenliste sind `anzahl` und `subtyp` die ersten beiden Spalten; jede konkretisierte Karte hat derzeit die Stückzahl `1`. Die optionalen Felder `bild_png` und `bild_ai` bleiben leer, solange keine entsprechende Datei vorhanden ist. Wortkandidaten ohne ID werden getrennt in `cards/wort/liste-wörter-kandidaten.tsv` geführt.
 
 ### 2. Ortskarten (e)
 
@@ -138,4 +140,4 @@ Ob der Punktwert **mitgedruckt** wird, ist offen. Die Einordnung muss anhand der
 
 Die Punktewertung ist optional: **leicht ohne Punkte, mittel mit Kartenpunkten und Originalitätsbonus, schwer zusätzlich mit Restkartenwertung**. Sie wird im Design- und Anleitungsdokument geregelt und hier für die Materialwerte zusammengefasst.
 
-**Ende Material – v1.04**
+**Ende Material – v1.05**
