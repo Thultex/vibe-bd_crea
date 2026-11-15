@@ -1,5 +1,5 @@
-﻿Count,card_id,plain_text,format_text,img,has_img,subtyp
-1,wn01,Eimer,<fc=0x008577>Eimer</fc>,,0,nomen
-1,wn02,Seil,<fc=0x008577>Seil</fc>,,0,nomen
-1,wa01,schnell,<fc=0xB85C00>schnell</fc>,,0,adjektiv
-1,wa02,kalt,<fc=0xB85C00>kalt</fc>,,0,adjektiv
+﻿Count,card_id,plain_text,img,has_img,subtyp,col1,col2,format-hell,format-dunkel
+1,wn01,Eimer,,0,nomen,0x54D7CC,,<fc=0x2E7670>Eimer</fc>,<fc=0x54D7CC>Eimer</fc>
+1,wn02,Seil,,0,nomen,0x54D7CC,,<fc=0x2E7670>Seil</fc>,<fc=0x54D7CC>Seil</fc>
+1,wa01,schnell,,0,adjektiv,0xFF9A5C,,<fc=0x8C5533>schnell</fc>,<fc=0xFF9A5C>schnell</fc>
+1,wa02,kalt,,0,adjektiv,0xFF9A5C,,<fc=0x8C5533>kalt</fc>,<fc=0xFF9A5C>kalt</fc>

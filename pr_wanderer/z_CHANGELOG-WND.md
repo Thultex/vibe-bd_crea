@@ -4,25 +4,36 @@
 
 Ausgangsdatum: 2026-11-13
 
-*Diese Woche (ca. 3,2h, 2 Tage, 16 Inhalte):*
-WND: Projektgrundlage übernommen, Kartenlisten vereinheitlicht und einen schaltbaren CardMaker für Paper- und Printausgaben ergänzt.
+*Diese Woche (ca. 3,8h, 2 Tage, 17 Inhalte):*
+WND: Projektgrundlage übernommen, Kartenlisten vereinheitlicht und getrennte CardMaker-Projekte für dunklen Print und platzsparenden A4-Paperdruck ergänzt.
 
 *Letzte Woche (0,0h, 0 Tage, 0 Inhalte):*
 Keine Einträge.
 
-*Dieser Monat (ca. 3,2h, 2 Tage, 16 Inhalte):*
-WND: Anleitung, Design, Materialbestand, Kartenverzeichnisse und einen minimalen CardMaker-Produktionsweg aufgebaut.
+*Dieser Monat (ca. 3,8h, 2 Tage, 17 Inhalte):*
+WND: Anleitung, Design, Materialbestand, Kartenverzeichnisse und getrennte CardMaker-Produktionswege aufgebaut.
 
 *Letzter Monat (0,0h, 0 Tage, 0 Inhalte):*
 Keine Einträge.
 
-*Jahr (ca. 3,2h, 2 Tage, 16 Inhalte):*
+*Jahr (ca. 3,8h, 2 Tage, 17 Inhalte):*
 WND: Projektgrundlage mit Dokumentation, vereinheitlichten Kartendaten und CardMaker-Ausgabe erstellt.
 
-*Insgesamt (ca. 3,2h, 2 Tage, 16 Inhalte):*
+*Insgesamt (ca. 3,8h, 2 Tage, 17 Inhalte):*
 WND: Projektgrundlage mit Dokumentation, vereinheitlichten Kartendaten und CardMaker-Ausgabe erstellt.
 
 ## Log
+
+### 2026-11-15 - wnd, cardmaker, farben, paper (ca. 0,6h)
+
+- Summary: Den Modusschalter durch zwei feste CardMaker-Projekte ersetzt und den Paper-Export auf platzsparende A4-PDF-Anordnung ausgerichtet.
+- Material: `format_text` aus allen TSV-Listen entfernt und durch `col1`, `col2` usw. direkt vor `img` ersetzt; diese Spalten enthalten ausschließlich die hellen Ausgangsfarben für dunkle Karten.
+- CardMaker: `wanderer-print.cmp` für dunkle Bridge-Karten mit Bild- beziehungsweise Text-Fallback und `wanderer-paper.cmp` für helle Bridge-Textkarten erzeugt.
+- CardMaker: Alle eingezeichneten Crop-Zeichen entfernt; Exportmaße auf 675 × 1050 px bei 300 dpi festgelegt und beim Paper-Projekt nur den Export-Kartenrand ohne Kreuze aktiviert.
+- CardMaker: CSVs um die abschließenden Spalten `format-hell` und `format-dunkel` ergänzt; der Generator dunkelt Farben für helle Karten automatisch ab und erkennt flektierte Formen in den Phrasen.
+- Paper: Bridge-Layouts für CardMakers A4-PDF-Packung beibehalten; mit den dokumentierten Rändern passen bis zu neun Karten im 3 × 3-Raster auf eine Seite.
+- Doku: CardMaker-README, `cards/info-listen.md`, Projekt-README, Design v1.19 und Material v1.09 an die getrennten Projekte und Farbverarbeitung angepasst.
+- Test: TSV-Schemata, Farbwerte, zehn Karten, beide Formatspalten, zwei Projekte, acht Layouts, Exportmaße, fehlende Crop-Zeichen sowie Bild-Fallback validiert.
 
 ### 2026-11-15 - wnd, cardmaker, listen, export (ca. 1,0h)
 

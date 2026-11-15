@@ -1,3 +1,3 @@
-﻿Count,card_id,plain_text,format_text,img,has_img,subtyp
-1,f01,Jonas,<fc=0x6F62A6>Jonas</fc>,,0,figur
-1,f02,Mira,<fc=0x6F62A6>Mira</fc>,,0,figur
+﻿Count,card_id,plain_text,img,has_img,subtyp,col1,col2,format-hell,format-dunkel
+1,f01,Jonas,,0,figur,0xB9A7FF,,<fc=0x665C8C>Jonas</fc>,<fc=0xB9A7FF>Jonas</fc>
+1,f02,Mira,,0,figur,0xB9A7FF,,<fc=0x665C8C>Mira</fc>,<fc=0xB9A7FF>Mira</fc>

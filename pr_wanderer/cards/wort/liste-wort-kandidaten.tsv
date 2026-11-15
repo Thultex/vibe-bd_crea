@@ -1,6 +1,6 @@
-anzahl	id	punkte	wort	format_text	img	ai		subtyp	bildmotiv	frequenz	komplexität	spezifität	status	vorschläge-verben
-		3	Lupe	<fc=0x008577>Lupe</fc>				nomen		2	1	4	Kandidat	suchen; finden; untersuchen; als Brennglas mit besonderer Begründung
-		3	Kompass	<fc=0x008577>Kompass</fc>				nomen		2	2	4	Kandidat	orientieren; finden
-			Greifer	<fc=0x008577>Greifer</fc>				nomen		4	2	3	Kandidat aus Aufgabenprüfung	greifen; festhalten
-			Maske	<fc=0x008577>Maske</fc>				nomen		2	2	3	Kandidat aus Aufgabenprüfung	verkleiden; erschrecken
-			Netz	<fc=0x008577>Netz</fc>				nomen		1	2	2	Kandidat aus Aufgabenprüfung	fangen; abdecken
+anzahl	id	punkte	wort	col1	img	ai		subtyp	bildmotiv	frequenz	komplexität	spezifität	status	vorschläge-verben
+		3	Lupe	0x54D7CC				nomen		2	1	4	Kandidat	suchen; finden; untersuchen; als Brennglas mit besonderer Begründung
+		3	Kompass	0x54D7CC				nomen		2	2	4	Kandidat	orientieren; finden
+			Greifer	0x54D7CC				nomen		4	2	3	Kandidat aus Aufgabenprüfung	greifen; festhalten
+			Maske	0x54D7CC				nomen		2	2	3	Kandidat aus Aufgabenprüfung	verkleiden; erschrecken
+			Netz	0x54D7CC				nomen		1	2	2	Kandidat aus Aufgabenprüfung	fangen; abdecken

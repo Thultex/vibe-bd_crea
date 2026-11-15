@@ -1,6 +1,6 @@
 # Wanderer und Träumende Götter
 ## Design- und Entwicklungsdokument
-**Version 1.18 · Entwurf**
+**Version 1.19 · Entwurf**
 
 ### 1. Grundkonzept
 
@@ -66,11 +66,11 @@ Die Grundkarten sollen **mehrere naheliegende Vorschläge-Verben je Aufgabe und 
 
 **`ax`** bezeichnet die Aufgabenkarten zusammengefasst. Die IDs sind klein geschrieben und zweistellig nummeriert: `e01`, `ag01`, `wn01` usw. **Kleinode** sind feste Symbole auf Aufgabenkarten; **Lösungen** sind keine Karten.
 
-Die maschinenlesbaren Kartendaten stehen in je einer gemeinsamen TSV-Datei pro übergeordneter Kartengruppe: `liste-ort.tsv`, `liste-aufgabe.tsv`, `liste-wort.tsv` und `liste-figur.tsv`. Alle Listen verwenden dieselbe Produktionsstruktur: Auf `anzahl`, `id` und `punkte` folgen die gruppenspezifischen Inhaltsfelder und `format_text`; anschließend stehen `img`, `ai`, eine leere Trennspalte und die Metadaten `subtyp`, `bildmotiv`, `frequenz`, `komplexität` und `spezifität`. Die universelle Spalte `vorschläge-verben` bildet den Abschluss.
+Die maschinenlesbaren Kartendaten stehen in je einer gemeinsamen TSV-Datei pro übergeordneter Kartengruppe: `liste-ort.tsv`, `liste-aufgabe.tsv`, `liste-wort.tsv` und `liste-figur.tsv`. Alle Listen verwenden dieselbe Produktionsstruktur: Auf `anzahl`, `id` und `punkte` folgen die gruppenspezifischen Inhaltsfelder und die dazugehörigen Farbwerte `col1`, `col2` usw.; anschließend stehen `img`, `ai`, eine leere Trennspalte und die Metadaten `subtyp`, `bildmotiv`, `frequenz`, `komplexität` und `spezifität`. Die universelle Spalte `vorschläge-verben` bildet den Abschluss.
 
 Bei Aufgaben stehen nach `phrase` unmittelbar `wort_1`, `wort_2` und `kleinod`; bei Orten folgen auf `ort` und `phrase` die beiden Zielwörter. Figuren behalten `name` und `faehigkeiten`, Wörter das Feld `wort`. Visuelle Beschreibungen stehen unabhängig von der Kartengruppe in `bildmotiv`, Verbideen ausschließlich in `vorschläge-verben`.
 
-`format_text` enthält den sichtbaren Karteninhalt in CardMakers `FormattedText`-Syntax. Zielwörter werden semantisch einheitlich farbig hervorgehoben; die Karte selbst bleibt auch ohne Bild lesbar. Das CardMaker-Projekt besitzt je Kartentyp genau ein Layout und wird über einen Modusschalter entweder als helle A4-Papierfassung mit Schnittmarken oder als Bridge-Printkarte mit Bild beziehungsweise heller Schrift auf Schwarz erzeugt.
+Die TSV-Farben sind als helle Ausgangswerte für dunkle Karten definiert. Der CardMaker-Generator erzeugt daraus in den CSV-Referenzen `format-dunkel` und die abgedunkelte Variante `format-hell`; dabei werden auch flektierte Zielwortformen innerhalb der Phrase markiert. Zwei getrennte CardMaker-Projekte besitzen je Kartentyp genau ein Bridge-Layout: `wanderer-print.cmp` erzeugt Bildkarten beziehungsweise helle Schrift auf Schwarz, `wanderer-paper.cmp` dunkle Schrift auf Weiß. Die Paper-Karten werden ohne eingezeichnete Crop-Zeichen über den PDF-Export platzsparend auf A4 angeordnet.
 
 Die Bewertungsfelder verwenden vorläufig eine Skala von 1 bis 5. Bei `frequenz` bedeutet 1 hochfrequent und 5 selten, bei `komplexität` bedeutet 1 sehr einfach und 5 hochkomplex, bei `spezifität` bedeutet 1 breit einsetzbar und 5 stark spezifisch. Sie unterstützen Materialauswahl und Balance, ersetzen aber keine spätere empirische Prüfung. Details und aktuelle Werte stehen in `cards/info-listen.md`.
 
@@ -226,4 +226,4 @@ Farbsystem, Kartengröße und Schriftarten sind noch offen.
 
 **Das vollständige konkrete Karteninventar steht ausschließlich im separat versionierten Dokument `material_wnd.md` und den zugehörigen TSV-Dateien.**
 
-**Ende des Designdokuments – v1.18**
+**Ende des Designdokuments – v1.19**

@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
-"""Erzeugt das minimale CardMaker-Projekt aus den WND-TSV-Listen."""
+"""Erzeugt die festen Print- und Paper-Projekte für WND aus den TSV-Listen."""
 
 from __future__ import annotations
 
-import argparse
 import csv
-import json
 import os
+import re
 import xml.etree.ElementTree as ET
 from dataclasses import dataclass
 from pathlib import Path
@@ -14,15 +13,16 @@ from pathlib import Path
 
 CARDMAKER_DIR = Path(__file__).resolve().parent
 PROJECT_DIR = CARDMAKER_DIR.parent
-CONFIG_PATH = CARDMAKER_DIR / "cardmaker.json"
-PROJECT_PATH = CARDMAKER_DIR / "wanderer.cmp"
-BUILD_INFO_PATH = CARDMAKER_DIR / "build-info.json"
+PROJECT_PATHS = {
+    "print": CARDMAKER_DIR / "wanderer-print.cmp",
+    "paper": CARDMAKER_DIR / "wanderer-paper.cmp",
+}
 
-A4_WIDTH = 2480
-A4_HEIGHT = 3508
 BRIDGE_WIDTH = 675
 BRIDGE_HEIGHT = 1050
 DPI = 300
+COLOR_PATTERN = re.compile(r"^0x[0-9A-Fa-f]{6}$")
+WORD_PATTERN = re.compile(r"[A-Za-zÄÖÜäöüß]+")
 
 
 @dataclass(frozen=True)
@@ -31,23 +31,23 @@ class ListSpec:
     title: str
     source: Path
     plain_field: str
+    target_fields: tuple[str, ...]
     font_size: int
 
 
 LIST_SPECS = (
-    ListSpec("ort", "Ort", PROJECT_DIR / "cards" / "ort" / "liste-ort.tsv", "phrase", 64),
-    ListSpec("aufgabe", "Aufgabe", PROJECT_DIR / "cards" / "aufgabe" / "liste-aufgabe.tsv", "phrase", 68),
-    ListSpec("wort", "Wort", PROJECT_DIR / "cards" / "wort" / "liste-wort.tsv", "wort", 92),
-    ListSpec("figur", "Figur", PROJECT_DIR / "cards" / "figur" / "liste-figur.tsv", "name", 88),
+    ListSpec("ort", "Ort", PROJECT_DIR / "cards" / "ort" / "liste-ort.tsv", "phrase", ("wort_1", "wort_2"), 64),
+    ListSpec(
+        "aufgabe",
+        "Aufgabe",
+        PROJECT_DIR / "cards" / "aufgabe" / "liste-aufgabe.tsv",
+        "phrase",
+        ("wort_1", "wort_2"),
+        68,
+    ),
+    ListSpec("wort", "Wort", PROJECT_DIR / "cards" / "wort" / "liste-wort.tsv", "wort", ("wort",), 92),
+    ListSpec("figur", "Figur", PROJECT_DIR / "cards" / "figur" / "liste-figur.tsv", "name", ("name",), 88),
 )
-
-
-def read_mode(override: str | None) -> str:
-    config = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
-    mode = override or config.get("mode")
-    if mode not in {"paper", "print"}:
-        raise ValueError("cardmaker.json: 'mode' muss 'paper' oder 'print' sein.")
-    return mode
 
 
 def load_tsv(spec: ListSpec) -> list[dict[str, str]]:
@@ -60,7 +60,6 @@ def image_reference(raw_value: str, source: Path) -> tuple[str, bool]:
     value = raw_value.strip()
     if not value:
         return "", False
-
     value_path = Path(value)
     candidates = [value_path] if value_path.is_absolute() else [source.parent / value_path, PROJECT_DIR / value_path]
     for candidate in candidates:
@@ -70,9 +69,85 @@ def image_reference(raw_value: str, source: Path) -> tuple[str, bool]:
     return "", False
 
 
+def darken_color(value: str, factor: float = 0.55) -> str:
+    if not COLOR_PATTERN.fullmatch(value):
+        raise ValueError(f"Ungültiger Farbwert: {value!r}")
+    channels = [int(value[index : index + 2], 16) for index in (2, 4, 6)]
+    darkened = [max(0, min(255, round(channel * factor))) for channel in channels]
+    return "0x" + "".join(f"{channel:02X}" for channel in darkened)
+
+
+def umlaut_variant(value: str) -> str:
+    replacements = (("au", "äu"), ("a", "ä"), ("o", "ö"), ("u", "ü"))
+    lowered = value.casefold()
+    for old, new in replacements:
+        position = lowered.rfind(old)
+        if position >= 0:
+            return lowered[:position] + new + lowered[position + len(old) :]
+    return lowered
+
+
+def token_matches(token: str, target: str) -> bool:
+    token_value = token.casefold()
+    target_value = target.casefold()
+    if token_value == target_value:
+        return True
+
+    stems = {target_value, umlaut_variant(target_value)}
+    if target_value.endswith("en") and len(target_value) > 3:
+        stems.add(target_value[:-2])
+    elif target_value.endswith("n") and len(target_value) > 3:
+        stems.add(target_value[:-1])
+    return any(len(stem) >= 3 and token_value.startswith(stem) for stem in stems)
+
+
+def format_phrase(text: str, targets: list[str], colors: list[str]) -> str:
+    tokens = list(WORD_PATTERN.finditer(text))
+    selected: list[tuple[int, int, str]] = []
+    used_tokens: set[int] = set()
+    for target, color in zip(targets, colors, strict=True):
+        for token_index, token in enumerate(tokens):
+            if token_index not in used_tokens and token_matches(token.group(0), target):
+                selected.append((token.start(), token.end(), color))
+                used_tokens.add(token_index)
+                break
+        else:
+            raise ValueError(f"Zielwort {target!r} wurde in {text!r} nicht gefunden.")
+
+    output: list[str] = []
+    cursor = 0
+    for start, end, color in sorted(selected):
+        output.append(text[cursor:start])
+        output.append(f"<fc={color}>{text[start:end]}</fc>")
+        cursor = end
+    output.append(text[cursor:])
+    return "".join(output)
+
+
+def formatted_text(row: dict[str, str], spec: ListSpec, *, light_card: bool) -> str:
+    text = row[spec.plain_field]
+    base_colors = [row[f"col{index}"] for index in range(1, len(spec.target_fields) + 1)]
+    colors = [darken_color(color) for color in base_colors] if light_card else base_colors
+    if len(spec.target_fields) == 1 and spec.target_fields[0] == spec.plain_field:
+        return f"<fc={colors[0]}>{text}</fc>"
+    targets = [row[field] for field in spec.target_fields]
+    return format_phrase(text, targets, colors)
+
+
 def write_reference(spec: ListSpec, rows: list[dict[str, str]]) -> int:
     output = CARDMAKER_DIR / f"{spec.key}.csv"
-    fields = ["Count", "card_id", "plain_text", "format_text", "img", "has_img", "subtyp"]
+    fields = [
+        "Count",
+        "card_id",
+        "plain_text",
+        "img",
+        "has_img",
+        "subtyp",
+        "col1",
+        "col2",
+        "format-hell",
+        "format-dunkel",
+    ]
     with output.open("w", encoding="utf-8-sig", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=fields, lineterminator="\n")
         writer.writeheader()
@@ -82,11 +157,14 @@ def write_reference(spec: ListSpec, rows: list[dict[str, str]]) -> int:
                 {
                     "Count": row.get("anzahl", "1") or "1",
                     "card_id": row["id"],
-                    "plain_text": row.get(spec.plain_field, ""),
-                    "format_text": row.get("format_text", "") or row.get(spec.plain_field, ""),
+                    "plain_text": row[spec.plain_field],
                     "img": image,
                     "has_img": "1" if has_image else "0",
                     "subtyp": row.get("subtyp", ""),
+                    "col1": row.get("col1", ""),
+                    "col2": row.get("col2", ""),
+                    "format-hell": formatted_text(row, spec, light_card=True),
+                    "format-dunkel": formatted_text(row, spec, light_card=False),
                 }
             )
     return len(rows)
@@ -105,10 +183,7 @@ def element(
     font_size: int = 12,
     element_color: str = "0x000000FF",
     background_color: str = "0x00000000",
-    border_color: str = "0x00000000",
-    border_thickness: int = 0,
     auto_scale: bool = False,
-    lock_aspect: bool = False,
 ) -> ET.Element:
     return ET.SubElement(
         parent,
@@ -120,9 +195,9 @@ def element(
             "y": str(y),
             "width": str(width),
             "height": str(height),
-            "borderthickness": str(border_thickness),
+            "borderthickness": "0",
             "autoscalefont": str(auto_scale).lower(),
-            "lockaspect": str(lock_aspect).lower(),
+            "lockaspect": "false",
             "keeporiginalsize": "false",
             "centerimageonorigin": "false",
             "outlinethickness": "0",
@@ -140,7 +215,7 @@ def element(
             "name": name,
             "font": f"Arial Rounded MT Bold;{font_size};0;0;0;0",
             "elementcolor": element_color,
-            "bordercolor": border_color,
+            "bordercolor": "0x00000000",
             "backgroundcolor": background_color,
             "enabled": "true",
             "outlinecolor": "0x000000FF",
@@ -150,90 +225,54 @@ def element(
     )
 
 
-def add_crop_marks(layout: ET.Element) -> None:
-    card_x = round((A4_WIDTH - BRIDGE_WIDTH) / 2)
-    card_y = round((A4_HEIGHT - BRIDGE_HEIGHT) / 2)
-    mark_length = 48
-    gap = 14
-    thickness = 3
-    right = card_x + BRIDGE_WIDTH
-    bottom = card_y + BRIDGE_HEIGHT
-    marks = (
-        ("Crop top left horizontal", card_x - gap - mark_length, card_y, mark_length, thickness),
-        ("Crop top left vertical", card_x, card_y - gap - mark_length, thickness, mark_length),
-        ("Crop top right horizontal", right + gap, card_y, mark_length, thickness),
-        ("Crop top right vertical", right - thickness, card_y - gap - mark_length, thickness, mark_length),
-        ("Crop bottom left horizontal", card_x - gap - mark_length, bottom - thickness, mark_length, thickness),
-        ("Crop bottom left vertical", card_x, bottom + gap, thickness, mark_length),
-        ("Crop bottom right horizontal", right + gap, bottom - thickness, mark_length, thickness),
-        ("Crop bottom right vertical", right - thickness, bottom + gap, thickness, mark_length),
-    )
-    for name, x, y, width, height in marks:
-        element(
-            layout,
-            name=name,
-            kind="Text",
-            variable="''",
-            x=x,
-            y=y,
-            width=width,
-            height=height,
-            background_color="0x111111FF",
-        )
-
-
-def add_layout(root: ET.Element, spec: ListSpec, mode: str) -> None:
-    paper = mode == "paper"
-    width, height = (A4_WIDTH, A4_HEIGHT) if paper else (BRIDGE_WIDTH, BRIDGE_HEIGHT)
+def add_layout(root: ET.Element, spec: ListSpec, variant: str) -> None:
+    paper = variant == "paper"
     layout = ET.SubElement(
         root,
         "Layout",
         {
             "combineReferences": "false",
-            "width": str(width),
-            "height": str(height),
+            "width": str(BRIDGE_WIDTH),
+            "height": str(BRIDGE_HEIGHT),
             "buffer": "0",
-            "Name": f"{spec.title} – {'PAPER A4' if paper else 'PRINT Bridge'}",
+            "Name": f"{spec.title} – {'PAPER hell' if paper else 'PRINT dunkel'}",
             "defaultCount": "1",
             "dpi": str(DPI),
-            "drawBorder": "false",
+            "drawBorder": str(paper).lower(),
         },
     )
 
     if paper:
-        card_x = round((A4_WIDTH - BRIDGE_WIDTH) / 2)
-        card_y = round((A4_HEIGHT - BRIDGE_HEIGHT) / 2)
         element(
             layout,
-            name="Formatted content",
+            name="Formatted paper text",
             kind="FormattedText",
-            variable="format_text",
-            x=card_x + 48,
-            y=card_y + 48,
+            variable="@[format-hell]",
+            x=48,
+            y=48,
             width=BRIDGE_WIDTH - 96,
             height=BRIDGE_HEIGHT - 96,
             font_size=spec.font_size,
             element_color="0x252525FF",
             auto_scale=True,
         )
-        add_crop_marks(layout)
         element(
             layout,
-            name="White A4 background",
+            name="White background",
             kind="Text",
             variable="''",
             x=0,
             y=0,
-            width=A4_WIDTH,
-            height=A4_HEIGHT,
+            width=BRIDGE_WIDTH,
+            height=BRIDGE_HEIGHT,
             background_color="0xFFFFFFFF",
         )
     else:
         element(
             layout,
-            name="Formatted fallback",
+            name="Formatted print fallback",
             kind="FormattedText",
-            variable="if (has_img === '1') { AddOverrideField('enabled', 'false'); } format_text",
+            variable="#(if @[has_img] == 1 then #nodraw)#@[format-dunkel]",
             x=48,
             y=48,
             width=BRIDGE_WIDTH - 96,
@@ -246,7 +285,7 @@ def add_layout(root: ET.Element, spec: ListSpec, mode: str) -> None:
             layout,
             name="Card image",
             kind="Graphic",
-            variable="if (has_img !== '1') { AddOverrideField('enabled', 'false'); } img",
+            variable="#(if @[has_img] != 1 then #nodraw)#@[img]",
             x=0,
             y=0,
             width=BRIDGE_WIDTH,
@@ -266,20 +305,20 @@ def add_layout(root: ET.Element, spec: ListSpec, mode: str) -> None:
 
     ET.SubElement(layout, "Reference", {"RelativePath": f"{spec.key}.csv", "Default": "true"})
     for tag, value in (
-        ("exportNameFormat", f"wnd_{spec.key}_#_"),
+        ("exportNameFormat", f"wnd_{variant}_{spec.key}_#_"),
         ("exportRotation", "0"),
         ("exportTransparentBackground", "false"),
         ("exportPDFAsPageBack", "false"),
-        ("exportWidth", str(width)),
-        ("exportHeight", str(height)),
-        ("zoom", "0.24" if paper else "0.65"),
-        ("exportLayoutBorder", "false"),
+        ("exportWidth", str(BRIDGE_WIDTH)),
+        ("exportHeight", str(BRIDGE_HEIGHT)),
+        ("zoom", "0.65"),
+        ("exportLayoutBorder", str(paper).lower()),
         ("exportLayoutBorderCrossSize", "0"),
     ):
         ET.SubElement(layout, tag).text = value
 
 
-def write_project(mode: str) -> None:
+def write_project(variant: str) -> None:
     root = ET.Element(
         "Project",
         {
@@ -288,10 +327,10 @@ def write_project(mode: str) -> None:
         },
     )
     for spec in LIST_SPECS:
-        add_layout(root, spec, mode)
+        add_layout(root, spec, variant)
     for tag, value in (
-        ("translatorName", "JavaScript"),
-        ("exportNameFormat", "wnd_#_"),
+        ("translatorName", "Incept"),
+        ("exportNameFormat", f"wnd_{variant}_#_"),
         ("defaultDefineReferenceType", "CSV"),
         ("overrideDefineReferenceName", ""),
         ("jsTildeMeansCode", "true"),
@@ -301,29 +340,17 @@ def write_project(mode: str) -> None:
     ):
         ET.SubElement(root, tag).text = value
     ET.indent(root, space="  ")
-    ET.ElementTree(root).write(PROJECT_PATH, encoding="utf-8", xml_declaration=True)
+    ET.ElementTree(root).write(PROJECT_PATHS[variant], encoding="utf-8", xml_declaration=True)
 
 
-def build(mode_override: str | None = None) -> None:
-    mode = read_mode(mode_override)
+def build() -> None:
     counts: dict[str, int] = {}
     for spec in LIST_SPECS:
         counts[spec.key] = write_reference(spec, load_tsv(spec))
-    write_project(mode)
-    BUILD_INFO_PATH.write_text(
-        json.dumps({"mode": mode, "dpi": DPI, "cards": counts}, ensure_ascii=False, indent=2) + "\n",
-        encoding="utf-8",
-    )
-    total = sum(counts.values())
-    print(f"CardMaker-Projekt erzeugt: {mode}, {len(LIST_SPECS)} Layouts, {total} Karten.")
-
-
-def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--mode", choices=("paper", "print"), help="Überschreibt den Modus aus cardmaker.json.")
-    args = parser.parse_args()
-    build(args.mode)
+    write_project("print")
+    write_project("paper")
+    print(f"CardMaker-Projekte erzeugt: print + paper, vier Layouts je Projekt, {sum(counts.values())} Karten.")
 
 
 if __name__ == "__main__":
-    main()
+    build()

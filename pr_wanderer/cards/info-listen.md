@@ -17,7 +17,7 @@ Alle Dateien sind UTF-8-kodierte TSV-Dateien mit echten Tabulatoren. Mehrere Ein
 
 ## Gemeinsame Produktionsstruktur
 
-Nach `anzahl`, `id` und `punkte` folgen geschlossen die gruppenspezifischen Inhaltsfelder. `format_text` steht als letztes Inhaltsfeld direkt vor `img`. Danach folgen `img` und `ai`, eine absichtlich leere Trennspalte und erst rechts davon die Metadaten `subtyp`, `bildmotiv`, `frequenz`, `komplexität` und `spezifität`. `vorschläge-verben` ist universell die letzte Spalte.
+Nach `anzahl`, `id` und `punkte` folgen geschlossen die gruppenspezifischen Inhaltsfelder. Direkt dahinter stehen `col1`, `col2` usw. für die Farben der zugehörigen Zielwörter, anschließend `img` und `ai`. Eine absichtlich leere Trennspalte grenzt davon die Metadaten `subtyp`, `bildmotiv`, `frequenz`, `komplexität` und `spezifität` ab. `vorschläge-verben` ist universell die letzte Spalte.
 
 Konkretisierte Karten haben derzeit jeweils die Stückzahl `1`. Noch nicht festgelegte Werte bleiben leer. Karten-IDs sind intern kleingeschrieben.
 
@@ -32,23 +32,23 @@ Die konkreten Kopfzeilen lauten:
 
 ```text
 liste-ort.tsv:
-anzahl  id  punkte  ort  phrase  wort_1  wort_2  format_text  img  ai  [leer]  subtyp  bildmotiv  frequenz  komplexität  spezifität  vorschläge-verben
+anzahl  id  punkte  ort  phrase  wort_1  wort_2  col1  col2  img  ai  [leer]  subtyp  bildmotiv  frequenz  komplexität  spezifität  vorschläge-verben
 
 liste-aufgabe.tsv:
-anzahl  id  punkte  phrase  wort_1  wort_2  kleinod  format_text  img  ai  [leer]  subtyp  bildmotiv  frequenz  komplexität  spezifität  vorschläge-verben
+anzahl  id  punkte  phrase  wort_1  wort_2  kleinod  col1  col2  img  ai  [leer]  subtyp  bildmotiv  frequenz  komplexität  spezifität  vorschläge-verben
 
 liste-wort.tsv:
-anzahl  id  punkte  wort  format_text  img  ai  [leer]  subtyp  bildmotiv  frequenz  komplexität  spezifität  vorschläge-verben
+anzahl  id  punkte  wort  col1  img  ai  [leer]  subtyp  bildmotiv  frequenz  komplexität  spezifität  vorschläge-verben
 
 liste-figur.tsv:
-anzahl  id  punkte  name  faehigkeiten  format_text  img  ai  [leer]  subtyp  bildmotiv  frequenz  komplexität  spezifität  vorschläge-verben
+anzahl  id  punkte  name  faehigkeiten  col1  img  ai  [leer]  subtyp  bildmotiv  frequenz  komplexität  spezifität  vorschläge-verben
 ```
 
 Die Kandidatenliste ergänzt vor `vorschläge-verben` das Feld `status`.
 
 ## Bedeutung gemeinsamer Felder
 
-- `format_text`: sichtbares Kartenwort oder die sichtbare Phrase in CardMakers `FormattedText`-Syntax. Schlüsselwörter werden mit `<fc=0xRRGGBB>…</fc>` farbig hervorgehoben. Bei Wörtern und Figuren wird der ganze sichtbare Text markiert; bei Phrasen die in `wort_1` und `wort_2` gemeinten, gegebenenfalls flektierten Formen.
+- `col1`, `col2` usw.: Ausgangsfarben der zugehörigen Zielwörter als `0xRRGGBB`. Die Werte sind für dunkle Karten gewählt: `col1` gehört zu `wort_1` beziehungsweise dem Einzelwort, `col2` zu `wort_2`. Der CardMaker-Generator erzeugt für helle Karten automatisch dunklere Varianten.
 - `img`: Pfad zum normalen PNG- oder JPG-Export ohne Beschnittzugabe.
 - `ai`: Pfad zur editierbaren Illustrator-Originaldatei.
 - leere Spalte hinter `ai`: rein visuelle Trennung zwischen Inhalts-/Produktionsdaten und den folgenden Metadaten; sie hat bewusst keinen Spaltennamen und wird nicht verarbeitet.
@@ -135,4 +135,4 @@ wort/img/WA01_Schnell.ai
 wort/img/WA01_Schnell-01.png
 ```
 
-Bleed-Dateien wie `E01_Wüste-02.png` werden nicht versioniert. Kleine `.ai`-Quelldateien gehören ausdrücklich ins Repository. Das CardMaker-Projekt und sein Paper-/Print-Schalter liegen in `../cardmaker/`; es erzeugt die benötigten Ausgabeformate aus diesen Listen.
+Bleed-Dateien wie `E01_Wüste-02.png` werden nicht versioniert. Kleine `.ai`-Quelldateien gehören ausdrücklich ins Repository. Die festen Projekte `../cardmaker/wanderer-print.cmp` und `../cardmaker/wanderer-paper.cmp` verwenden dieselben erzeugten CSV-Referenzen. Deren letzte Spalten `format-hell` und `format-dunkel` enthalten die vollständig formatierten Wörter beziehungsweise Phrasen.

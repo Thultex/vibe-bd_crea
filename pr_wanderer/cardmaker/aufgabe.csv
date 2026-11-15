@@ -1,3 +1,3 @@
-﻿Count,card_id,plain_text,format_text,img,has_img,subtyp
-1,ag01,Ein Haus brennt!,Ein <fc=0x008577>Haus</fc> <fc=0xB85C00>brennt</fc>!,,0,gefahr
-1,ag02,Ein Dieb klaut Geld!,Ein <fc=0x008577>Dieb</fc> <fc=0xB85C00>klaut</fc> Geld!,,0,gefahr
+﻿Count,card_id,plain_text,img,has_img,subtyp,col1,col2,format-hell,format-dunkel
+1,ag01,Ein Haus brennt!,,0,gefahr,0x54D7CC,0xFF9A5C,Ein <fc=0x2E7670>Haus</fc> <fc=0x8C5533>brennt</fc>!,Ein <fc=0x54D7CC>Haus</fc> <fc=0xFF9A5C>brennt</fc>!
+1,ag02,Ein Dieb klaut Geld!,,0,gefahr,0x54D7CC,0xFF9A5C,Ein <fc=0x2E7670>Dieb</fc> <fc=0x8C5533>klaut</fc> Geld!,Ein <fc=0x54D7CC>Dieb</fc> <fc=0xFF9A5C>klaut</fc> Geld!

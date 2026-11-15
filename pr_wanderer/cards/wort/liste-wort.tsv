@@ -1,5 +1,5 @@
-anzahl	id	punkte	wort	format_text	img	ai		subtyp	bildmotiv	frequenz	komplexität	spezifität	vorschläge-verben
-1	wn01	2	Eimer	<fc=0x008577>Eimer</fc>				nomen	einfacher Eimer	2	3	2	füllen; tragen; schütten; holen; löschen
-1	wn02	2	Seil	<fc=0x008577>Seil</fc>				nomen	aufgerolltes Seil	2	4	1	ziehen; halten; binden; verbinden
-1	wa01	1	schnell	<fc=0xB85C00>schnell</fc>				adjektiv	Luftwirbel	1	1	1	laufen; ausweichen
-1	wa02	1	kalt	<fc=0xB85C00>kalt</fc>				adjektiv	Eiskristalle	1	2	2	einfrieren; kühlen; erstarren
+anzahl	id	punkte	wort	col1	img	ai		subtyp	bildmotiv	frequenz	komplexität	spezifität	vorschläge-verben
+1	wn01	2	Eimer	0x54D7CC				nomen	einfacher Eimer	2	3	2	füllen; tragen; schütten; holen; löschen
+1	wn02	2	Seil	0x54D7CC				nomen	aufgerolltes Seil	2	4	1	ziehen; halten; binden; verbinden
+1	wa01	1	schnell	0xFF9A5C				adjektiv	Luftwirbel	1	1	1	laufen; ausweichen
+1	wa02	1	kalt	0xFF9A5C				adjektiv	Eiskristalle	1	2	2	einfrieren; kühlen; erstarren

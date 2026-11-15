@@ -1,3 +1,3 @@
-﻿Count,card_id,plain_text,format_text,img,has_img,subtyp
-1,e01,In der Wüste ist der Sand heiß.,In der Wüste ist der <fc=0x008577>Sand</fc> <fc=0xB85C00>heiß</fc>.,,0,ort
-1,e02,Im Wald ist es dunkel. Überall stehen Bäume.,Im Wald ist es <fc=0xB85C00>dunkel</fc>. Überall stehen <fc=0x008577>Bäume</fc>.,,0,ort
+﻿Count,card_id,plain_text,img,has_img,subtyp,col1,col2,format-hell,format-dunkel
+1,e01,In der Wüste ist der Sand heiß.,,0,ort,0x54D7CC,0xFF9A5C,In der Wüste ist der <fc=0x2E7670>Sand</fc> <fc=0x8C5533>heiß</fc>.,In der Wüste ist der <fc=0x54D7CC>Sand</fc> <fc=0xFF9A5C>heiß</fc>.
+1,e02,Im Wald ist es dunkel. Überall stehen Bäume.,,0,ort,0x54D7CC,0xFF9A5C,Im Wald ist es <fc=0x8C5533>dunkel</fc>. Überall stehen <fc=0x2E7670>Bäume</fc>.,Im Wald ist es <fc=0xFF9A5C>dunkel</fc>. Überall stehen <fc=0x54D7CC>Bäume</fc>.

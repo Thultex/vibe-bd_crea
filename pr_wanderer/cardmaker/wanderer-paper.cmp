@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Project xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Layout combineReferences="false" width="675" height="1050" buffer="0" Name="Ort – PAPER hell" defaultCount="1" dpi="300" drawBorder="true">
+    <Element variable="@[format-hell]" type="FormattedText" x="48" y="48" width="579" height="954" borderthickness="0" autoscalefont="true" lockaspect="false" keeporiginalsize="false" centerimageonorigin="false" outlinethickness="0" rotation="0" horizontalalign="1" verticalalign="1" colortype="0" opacity="255" tilesize="" mirrortype="0" imagemasksurface="false" lineheight="14" wordspace="0" justifiedtext="false" name="Formatted paper text" font="Arial Rounded MT Bold;64;0;0;0;0" elementcolor="0x252525FF" bordercolor="0x00000000" backgroundcolor="0x00000000" enabled="true" outlinecolor="0x000000FF" gradient="" colormatrix="" />
+    <Element variable="''" type="Text" x="0" y="0" width="675" height="1050" borderthickness="0" autoscalefont="false" lockaspect="false" keeporiginalsize="false" centerimageonorigin="false" outlinethickness="0" rotation="0" horizontalalign="1" verticalalign="1" colortype="0" opacity="255" tilesize="" mirrortype="0" imagemasksurface="false" lineheight="14" wordspace="0" justifiedtext="false" name="White background" font="Arial Rounded MT Bold;12;0;0;0;0" elementcolor="0x000000FF" bordercolor="0x00000000" backgroundcolor="0xFFFFFFFF" enabled="true" outlinecolor="0x000000FF" gradient="" colormatrix="" />
+    <Reference RelativePath="ort.csv" Default="true" />
+    <exportNameFormat>wnd_paper_ort_#_</exportNameFormat>
+    <exportRotation>0</exportRotation>
+    <exportTransparentBackground>false</exportTransparentBackground>
+    <exportPDFAsPageBack>false</exportPDFAsPageBack>
+    <exportWidth>675</exportWidth>
+    <exportHeight>1050</exportHeight>
+    <zoom>0.65</zoom>
+    <exportLayoutBorder>true</exportLayoutBorder>
+    <exportLayoutBorderCrossSize>0</exportLayoutBorderCrossSize>
+  </Layout>
+  <Layout combineReferences="false" width="675" height="1050" buffer="0" Name="Aufgabe – PAPER hell" defaultCount="1" dpi="300" drawBorder="true">
+    <Element variable="@[format-hell]" type="FormattedText" x="48" y="48" width="579" height="954" borderthickness="0" autoscalefont="true" lockaspect="false" keeporiginalsize="false" centerimageonorigin="false" outlinethickness="0" rotation="0" horizontalalign="1" verticalalign="1" colortype="0" opacity="255" tilesize="" mirrortype="0" imagemasksurface="false" lineheight="14" wordspace="0" justifiedtext="false" name="Formatted paper text" font="Arial Rounded MT Bold;68;0;0;0;0" elementcolor="0x252525FF" bordercolor="0x00000000" backgroundcolor="0x00000000" enabled="true" outlinecolor="0x000000FF" gradient="" colormatrix="" />
+    <Element variable="''" type="Text" x="0" y="0" width="675" height="1050" borderthickness="0" autoscalefont="false" lockaspect="false" keeporiginalsize="false" centerimageonorigin="false" outlinethickness="0" rotation="0" horizontalalign="1" verticalalign="1" colortype="0" opacity="255" tilesize="" mirrortype="0" imagemasksurface="false" lineheight="14" wordspace="0" justifiedtext="false" name="White background" font="Arial Rounded MT Bold;12;0;0;0;0" elementcolor="0x000000FF" bordercolor="0x00000000" backgroundcolor="0xFFFFFFFF" enabled="true" outlinecolor="0x000000FF" gradient="" colormatrix="" />
+    <Reference RelativePath="aufgabe.csv" Default="true" />
+    <exportNameFormat>wnd_paper_aufgabe_#_</exportNameFormat>
+    <exportRotation>0</exportRotation>
+    <exportTransparentBackground>false</exportTransparentBackground>
+    <exportPDFAsPageBack>false</exportPDFAsPageBack>
+    <exportWidth>675</exportWidth>
+    <exportHeight>1050</exportHeight>
+    <zoom>0.65</zoom>
+    <exportLayoutBorder>true</exportLayoutBorder>
+    <exportLayoutBorderCrossSize>0</exportLayoutBorderCrossSize>
+  </Layout>
+  <Layout combineReferences="false" width="675" height="1050" buffer="0" Name="Wort – PAPER hell" defaultCount="1" dpi="300" drawBorder="true">
+    <Element variable="@[format-hell]" type="FormattedText" x="48" y="48" width="579" height="954" borderthickness="0" autoscalefont="true" lockaspect="false" keeporiginalsize="false" centerimageonorigin="false" outlinethickness="0" rotation="0" horizontalalign="1" verticalalign="1" colortype="0" opacity="255" tilesize="" mirrortype="0" imagemasksurface="false" lineheight="14" wordspace="0" justifiedtext="false" name="Formatted paper text" font="Arial Rounded MT Bold;92;0;0;0;0" elementcolor="0x252525FF" bordercolor="0x00000000" backgroundcolor="0x00000000" enabled="true" outlinecolor="0x000000FF" gradient="" colormatrix="" />
+    <Element variable="''" type="Text" x="0" y="0" width="675" height="1050" borderthickness="0" autoscalefont="false" lockaspect="false" keeporiginalsize="false" centerimageonorigin="false" outlinethickness="0" rotation="0" horizontalalign="1" verticalalign="1" colortype="0" opacity="255" tilesize="" mirrortype="0" imagemasksurface="false" lineheight="14" wordspace="0" justifiedtext="false" name="White background" font="Arial Rounded MT Bold;12;0;0;0;0" elementcolor="0x000000FF" bordercolor="0x00000000" backgroundcolor="0xFFFFFFFF" enabled="true" outlinecolor="0x000000FF" gradient="" colormatrix="" />
+    <Reference RelativePath="wort.csv" Default="true" />
+    <exportNameFormat>wnd_paper_wort_#_</exportNameFormat>
+    <exportRotation>0</exportRotation>
+    <exportTransparentBackground>false</exportTransparentBackground>
+    <exportPDFAsPageBack>false</exportPDFAsPageBack>
+    <exportWidth>675</exportWidth>
+    <exportHeight>1050</exportHeight>
+    <zoom>0.65</zoom>
+    <exportLayoutBorder>true</exportLayoutBorder>
+    <exportLayoutBorderCrossSize>0</exportLayoutBorderCrossSize>
+  </Layout>
+  <Layout combineReferences="false" width="675" height="1050" buffer="0" Name="Figur – PAPER hell" defaultCount="1" dpi="300" drawBorder="true">
+    <Element variable="@[format-hell]" type="FormattedText" x="48" y="48" width="579" height="954" borderthickness="0" autoscalefont="true" lockaspect="false" keeporiginalsize="false" centerimageonorigin="false" outlinethickness="0" rotation="0" horizontalalign="1" verticalalign="1" colortype="0" opacity="255" tilesize="" mirrortype="0" imagemasksurface="false" lineheight="14" wordspace="0" justifiedtext="false" name="Formatted paper text" font="Arial Rounded MT Bold;88;0;0;0;0" elementcolor="0x252525FF" bordercolor="0x00000000" backgroundcolor="0x00000000" enabled="true" outlinecolor="0x000000FF" gradient="" colormatrix="" />
+    <Element variable="''" type="Text" x="0" y="0" width="675" height="1050" borderthickness="0" autoscalefont="false" lockaspect="false" keeporiginalsize="false" centerimageonorigin="false" outlinethickness="0" rotation="0" horizontalalign="1" verticalalign="1" colortype="0" opacity="255" tilesize="" mirrortype="0" imagemasksurface="false" lineheight="14" wordspace="0" justifiedtext="false" name="White background" font="Arial Rounded MT Bold;12;0;0;0;0" elementcolor="0x000000FF" bordercolor="0x00000000" backgroundcolor="0xFFFFFFFF" enabled="true" outlinecolor="0x000000FF" gradient="" colormatrix="" />
+    <Reference RelativePath="figur.csv" Default="true" />
+    <exportNameFormat>wnd_paper_figur_#_</exportNameFormat>
+    <exportRotation>0</exportRotation>
+    <exportTransparentBackground>false</exportTransparentBackground>
+    <exportPDFAsPageBack>false</exportPDFAsPageBack>
+    <exportWidth>675</exportWidth>
+    <exportHeight>1050</exportHeight>
+    <zoom>0.65</zoom>
+    <exportLayoutBorder>true</exportLayoutBorder>
+    <exportLayoutBorderCrossSize>0</exportLayoutBorderCrossSize>
+  </Layout>
+  <translatorName>Incept</translatorName>
+  <exportNameFormat>wnd_paper_#_</exportNameFormat>
+  <defaultDefineReferenceType>CSV</defaultDefineReferenceType>
+  <overrideDefineReferenceName />
+  <jsTildeMeansCode>true</jsTildeMeansCode>
+  <jsKeepFunctions>true</jsKeepFunctions>
+  <jsSingleQuoteStartsCode>true</jsSingleQuoteStartsCode>
+  <collapsedNodes />
+</Project>
