@@ -1,0 +1,6 @@
+anzahl	id	punkte	wort	img	ai	subtyp	bildmotiv	frequenz	komplexität	spezifität	status	vorschläge-verben
+		3	Lupe			nomen		2	1	4	Kandidat	suchen; finden; untersuchen; als Brennglas mit besonderer Begründung
+		3	Kompass			nomen		2	2	4	Kandidat	orientieren; finden
+			Greifer			nomen		4	2	3	Kandidat aus Aufgabenprüfung	greifen; festhalten
+			Maske			nomen		2	2	3	Kandidat aus Aufgabenprüfung	verkleiden; erschrecken
+			Netz			nomen		1	2	2	Kandidat aus Aufgabenprüfung	fangen; abdecken

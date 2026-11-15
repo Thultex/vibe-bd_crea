@@ -1,0 +1,3 @@
+anzahl	id	punkte	ort	phrase	wort_1	wort_2	img	ai	subtyp	bildmotiv	frequenz	komplexität	spezifität	vorschläge-verben
+1	e01		Wüste	In der Wüste ist der Sand heiß.	Sand	heiß			ort		2	2	3	
+1	e02		Wald	Im Wald ist es dunkel. Überall stehen Bäume.	Baum	dunkel			ort		1	2	2	

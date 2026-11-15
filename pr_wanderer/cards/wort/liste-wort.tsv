@@ -1,0 +1,5 @@
+anzahl	id	punkte	wort	img	ai	subtyp	bildmotiv	frequenz	komplexität	spezifität	vorschläge-verben
+1	wn01	2	Eimer			nomen	einfacher Eimer	2	3	2	füllen; tragen; schütten; holen; löschen
+1	wn02	2	Seil			nomen	aufgerolltes Seil	2	4	1	ziehen; halten; binden; verbinden
+1	wa01	1	schnell			adjektiv	Luftwirbel	1	1	1	laufen; ausweichen
+1	wa02	1	kalt			adjektiv	Eiskristalle	1	2	2	einfrieren; kühlen; erstarren

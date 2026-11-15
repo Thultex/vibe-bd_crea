@@ -1,6 +1,6 @@
 # Wanderer und Träumende Götter
 ## Material
-**Version 1.06 · Konkreter Kartenbestand und Prototypplanung**
+**Version 1.07 · Konkreter Kartenbestand und Prototypplanung**
 
 Das Materialdokument erfasst **tatsächlich konkretisierte Karten** und getrennt davon **Kandidaten**. Es ersetzt die Materialtabellen im Designdokument.
 
@@ -20,7 +20,9 @@ Das Materialdokument erfasst **tatsächlich konkretisierte Karten** und getrennt
 
 Kennungen sind **kleingeschrieben** und je Kategorie ab `01` zweistellig nummeriert, etwa `e01`, `ag01`, `wa02`.
 
-Die maschinenlesbaren Daten stehen in je einer gemeinsamen TSV-Datei pro Kartengruppe: `cards/ort/liste-e.tsv`, `cards/aufgabe/liste-a.tsv`, `cards/wort/liste-w.tsv` und `cards/figur/liste-f.tsv`. Jede Liste beginnt mit `anzahl`; jede konkretisierte Karte hat derzeit die Stückzahl `1`. Die weiteren Spalten folgen dem Bedarf der Kartengruppe. Die Wortliste enthält zusätzlich die kompakten Bewertungsfelder `freq`, `komplex` und `breite`. Wortkandidaten ohne ID werden getrennt in `cards/wort/liste-w-kandidaten.tsv` geführt.
+Die maschinenlesbaren Daten stehen in je einer gemeinsamen TSV-Datei pro Kartengruppe: `cards/ort/liste-ort.tsv`, `cards/aufgabe/liste-aufgabe.tsv`, `cards/wort/liste-wort.tsv` und `cards/figur/liste-figur.tsv`. Auf Stückzahl, ID und Punkte folgen die gruppenspezifischen Inhaltsfelder, anschließend Bildpfade, Subtyp, Bildmotiv und die Bewertungsfelder `frequenz`, `komplexität` und `spezifität`. Verbideen werden universell in der letzten Spalte `vorschläge-verben` geführt. Wortkandidaten ohne ID stehen getrennt in `cards/wort/liste-wort-kandidaten.tsv`.
+
+Die drei Bewertungsfelder verwenden vorläufig Werte von 1 bis 5: `frequenz` reicht von hochfrequent bis selten, `komplexität` von sehr einfach bis hochkomplex und `spezifität` von breit einsetzbar bis stark spezifisch. Die Einordnungen sind Materialhypothesen und später empirisch zu prüfen. Ermittlungsgrundlage und aktuelle Werte des gesamten Kartenmaterials stehen in `cards/info-listen.md`.
 
 ### 2. Ortskarten (e)
 
@@ -33,32 +35,32 @@ Die maschinenlesbaren Daten stehen in je einer gemeinsamen TSV-Datei pro Karteng
 
 ### 3. Aufgabenkarten (ax)
 
-Alle Aufgaben besitzen eine **Art/Kategorie, Phrase, zwei Zielwörter, ein festes Kleinod-Symbol** und eine Liste **antizipierter Lösungsverben**. Die Lösungsverben sind qualitativ nach vermuteter Naheliegenheit geordnet, **nicht** empirisch getestet. Sie sind weder Pflichtlösungen noch Wortkarten.
+Alle Aufgaben besitzen eine **Art/Kategorie, Phrase, zwei Zielwörter, ein festes Kleinod-Symbol** und eine Liste **antizipierter Vorschläge-Verben**. Die Vorschläge-Verben sind qualitativ nach vermuteter Naheliegenheit geordnet, **nicht** empirisch getestet. Sie sind weder Pflichtlösungen noch Wortkarten.
 
 #### 3.1 Gefahr (ag)
 
-| ID | Phrase | Wort 1 | Wort 2 | Kleinod | Lösungsverben |
+| ID | Phrase | Wort 1 | Wort 2 | Kleinod | Vorschläge-Verben |
 |---|---|---|---|---|---|
-| `ag01` | „Ein Haus brennt.“ | Haus | brennen | Schlüsselanhänger | löschen, abkühlen, retten, schützen |
-| `ag02` | „Ein Dieb klaut Geld.“ | Dieb | klauen | Münze | greifen, erschrecken, fangen, finden, verfolgen, stehlen |
+| `ag01` | „Ein Haus brennt!“ | Haus | brennen | Schlüsselanhänger | löschen, abkühlen, retten, schützen |
+| `ag02` | „Ein Dieb klaut Geld!“ | Dieb | klauen | Münze | greifen, erschrecken, fangen, finden, verfolgen, stehlen |
 
 Zur Materialprüfung für `ag02` mögliche Verknüpfungen: **greifen – Greifer; erschrecken – Maske oder laut; fangen – Netz; finden – Lupe; verfolgen – schnell; stehlen – leise**. Nicht alle genannten Wörter sind bereits in den Prototyp aufgenommen.
 
 #### 3.2 Sozial (as)
 
-| ID | Phrase | Wort 1 | Wort 2 | Kleinod | Lösungsverben |
+| ID | Phrase | Wort 1 | Wort 2 | Kleinod | Vorschläge-Verben |
 |---|---|---|---|---|---|
 | *noch offen* | – | – | – | – | – |
 
 #### 3.3 Technisch (at)
 
-| ID | Phrase | Wort 1 | Wort 2 | Kleinod | Lösungsverben |
+| ID | Phrase | Wort 1 | Wort 2 | Kleinod | Vorschläge-Verben |
 |---|---|---|---|---|---|
 | *noch offen* | – | – | – | – | – |
 
 #### 3.4 Hindernis (ah)
 
-| ID | Phrase | Wort 1 | Wort 2 | Kleinod | Lösungsverben |
+| ID | Phrase | Wort 1 | Wort 2 | Kleinod | Vorschläge-Verben |
 |---|---|---|---|---|---|
 | *noch offen* | – | – | – | – | – |
 
@@ -66,12 +68,12 @@ Zur Materialprüfung für `ag02` mögliche Verknüpfungen: **greifen – Greifer
 
 ### 4. Wortkarten – Nomen (wn)
 
-| ID | Wort | Artikel | Bildmotiv | Mögliche Handlungsverben | Punkte |
+| ID | Wort | Artikel | Bildmotiv | Vorschläge-Verben | Punkte |
 |---|---|---|---|---|---:|
 | `wn01` | Eimer | der | Einfacher Eimer | füllen, tragen, schütten, holen, löschen | **2** |
 | `wn02` | Seil | das | Aufgerolltes Seil | ziehen, halten, binden, verbinden | **2** |
 
-**Zielmenge: 12 Nomenkarten.** Die Handlungsverben sind typische Verwendungen, keine zusätzlichen Regeln.
+**Zielmenge: 12 Nomenkarten.** Die Vorschläge-Verben sind typische Verwendungen, keine zusätzlichen Regeln.
 
 #### Weitere Kandidaten (noch keine Karten-ID)
 
@@ -87,7 +89,7 @@ Diese Kandidaten sind **nicht** in den Zählungen der konkretisierten Karten ent
 
 ### 5. Wortkarten – Adjektive (wa)
 
-| ID | Wort | Bildmotiv | Mögliche Verben | Punkte |
+| ID | Wort | Bildmotiv | Vorschläge-Verben | Punkte |
 |---|---|---|---|---:|
 | `wa01` | schnell | Luftwirbel | laufen, ausweichen | **1** |
 | `wa02` | kalt | Eiskristalle | einfrieren, kühlen, erstarren | **1** |
@@ -140,4 +142,4 @@ Ob der Punktwert **mitgedruckt** wird, ist offen. Die Einordnung muss anhand der
 
 Die Punktewertung ist optional: **leicht ohne Punkte, mittel mit Kartenpunkten und Originalitätsbonus, schwer zusätzlich mit Restkartenwertung**. Sie wird im Design- und Anleitungsdokument geregelt und hier für die Materialwerte zusammengefasst.
 
-**Ende Material – v1.06**
+**Ende Material – v1.07**

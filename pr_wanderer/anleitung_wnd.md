@@ -1,6 +1,6 @@
 # Wanderer und Träumende Götter
 ## Spielanleitung
-**Version 1.09 · Entwurf**
+**Version 1.10 · Entwurf**
 
 ### 1. Die Geschichte
 
@@ -95,7 +95,7 @@ Spielmechanische und sprachliche Schwierigkeit dürfen unterschiedlich eingestel
 ### 10. Beispiel einer Station
 
 **Ort:** „In der Wüste ist der Sand heiß.“  
-**Aufgaben:** „Ein Haus brennt.“ und „Ein Dieb klaut Geld.“  
+**Aufgaben:** „Ein Haus brennt!“ und „Ein Dieb klaut Geld!“  
 **Worte:** Eimer, schnell.
 
 **Mögliche Geschichte:** „Jonas wird schnell und läuft dem Dieb hinterher. Er holt das Geld zurück. Anschließend bringt er mit dem Eimer Sand zu einer kleinen Flamme vor dem brennenden Haus, während die anderen Wanderer den Bewohnern helfen.“
@@ -108,4 +108,4 @@ Nach der letzten Station erreichen die Wanderer das angekündigte Loch zurück n
 
 In der taktischen Variante wird anschließend die Schlusswertung durchgeführt, einschließlich der Punkte für verbliebene Wortkarten.
 
-**Ende der Spielanleitung – v1.09**
+**Ende der Spielanleitung – v1.10**

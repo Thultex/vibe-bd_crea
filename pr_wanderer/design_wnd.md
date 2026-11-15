@@ -1,6 +1,6 @@
 # Wanderer und Träumende Götter
 ## Design- und Entwicklungsdokument
-**Version 1.16 · Entwurf**
+**Version 1.17 · Entwurf**
 
 ### 1. Grundkonzept
 
@@ -49,7 +49,7 @@ Ortskarten sollen **typische Eigenschaften des Ortes selbst** zeigen: *Wald – 
 | **Erzählung** | Ereignisse sinnvoll verbinden und begründen |
 | **Strategie** | Wortvorrat planen, Kleinode klug erklären und einsetzen |
 
-Die Grundkarten sollen **mehrere naheliegende Lösungsverben je Aufgabe und Gegenstand** ermöglichen, bevorzugt auch solche aus den ersten Spracherwerbsjahren. Sprachliche und spielmechanische Schwierigkeit sind getrennt einstellbar.
+Die Grundkarten sollen **mehrere naheliegende Vorschläge-Verben je Aufgabe und Gegenstand** ermöglichen, bevorzugt auch solche aus den ersten Spracherwerbsjahren. Sprachliche und spielmechanische Schwierigkeit sind getrennt einstellbar.
 
 ### 3. Kartensystem
 
@@ -66,9 +66,11 @@ Die Grundkarten sollen **mehrere naheliegende Lösungsverben je Aufgabe und Gege
 
 **`ax`** bezeichnet die Aufgabenkarten zusammengefasst. Die IDs sind klein geschrieben und zweistellig nummeriert: `e01`, `ag01`, `wn01` usw. **Kleinode** sind feste Symbole auf Aufgabenkarten; **Lösungen** sind keine Karten.
 
-Die maschinenlesbaren Kartendaten stehen in je einer gemeinsamen TSV-Datei pro übergeordneter Kartengruppe: `liste-e.tsv`, `liste-a.tsv`, `liste-w.tsv` und `liste-f.tsv`. Jede Liste beginnt mit `anzahl`; anschließend folgen die für die Kartengruppe benötigten Produktions- und Inhaltsfelder.
+Die maschinenlesbaren Kartendaten stehen in je einer gemeinsamen TSV-Datei pro übergeordneter Kartengruppe: `liste-ort.tsv`, `liste-aufgabe.tsv`, `liste-wort.tsv` und `liste-figur.tsv`. Alle Listen verwenden dieselbe Produktionsstruktur: Auf `anzahl`, `id` und `punkte` folgen die gruppenspezifischen Inhaltsfelder; anschließend stehen `img`, `ai`, `subtyp`, `bildmotiv`, `frequenz`, `komplexität` und `spezifität`. Die universelle Spalte `vorschläge-verben` bildet den Abschluss.
 
-Die Wortliste ordnet die unmittelbar für Kartenerzeugung und Spiel relevanten Felder zuerst an: ID, Punkte, Wort, Verben sowie Bildpfade. Danach folgen Subtyp, Bildmotiv und die kompakten Bewertungsfelder `freq`, `komplex` und `breite` für spätere Auswahl- und Balanceprüfungen.
+Bei Aufgaben stehen nach `phrase` unmittelbar `wort_1`, `wort_2` und `kleinod`; bei Orten folgen auf `ort` und `phrase` die beiden Zielwörter. Figuren behalten `name` und `faehigkeiten`, Wörter das Feld `wort`. Visuelle Beschreibungen stehen unabhängig von der Kartengruppe in `bildmotiv`, Verbideen ausschließlich in `vorschläge-verben`.
+
+Die Bewertungsfelder verwenden vorläufig eine Skala von 1 bis 5. Bei `frequenz` bedeutet 1 hochfrequent und 5 selten, bei `komplexität` bedeutet 1 sehr einfach und 5 hochkomplex, bei `spezifität` bedeutet 1 breit einsetzbar und 5 stark spezifisch. Sie unterstützen Materialauswahl und Balance, ersetzen aber keine spätere empirische Prüfung. Details und aktuelle Werte stehen in `cards/info-listen.md`.
 
 #### 3.1 Orte
 
@@ -78,14 +80,14 @@ Ortskarten führen die Umgebung und ihre typischen Materialien/Eigenschaften ein
 
 Vier Kategorien: **Sozial, Gefahr, Technisch, Hindernis**. Eine Aufgabenkarte zeigt nur ein knappes Kernereignis mit zwei Zielwörtern und festem Kleinod-Symbol. **Ort, Ursache, Verlauf und Lösung bleiben offen**; mehrere Aufgaben dürfen sich zu einer Handlung verbinden.
 
-#### 3.3 Antizipierte Lösungsverben
+#### 3.3 Vorschläge-Verben
 
-Jede Aufgabe erhält eine Liste möglicher **Lösungsverben**, geordnet nach vorläufig geschätzter Naheliegenheit. Auch Nomen-Wortkarten erhalten mögliche Handlungsverben. Gesucht werden insbesondere **konkrete, bildlich vermittelbare und durch Wortkarten unterstützbare Handlungen** statt unspezifischer Sammelverben.
+Jede Aufgabe und jede passende Wortkarte kann eine Liste möglicher **Vorschläge-Verben** erhalten, geordnet nach vorläufig geschätzter Naheliegenheit. Gesucht werden insbesondere **konkrete, bildlich vermittelbare und durch Wortkarten unterstützbare Handlungen** statt unspezifischer Sammelverben.
 
 Beispiele:
 
-- *Ein Haus brennt*: löschen, abkühlen, retten, schützen.
-- *Ein Dieb klaut Geld*: greifen (Greifer), erschrecken (Maske, laut), fangen (Netz), finden (Lupe), verfolgen (schnell), stehlen (leise).
+- *Ein Haus brennt!*: löschen, abkühlen, retten, schützen.
+- *Ein Dieb klaut Geld!*: greifen (Greifer), erschrecken (Maske, laut), fangen (Netz), finden (Lupe), verfolgen (schnell), stehlen (leise).
 - *Eimer*: füllen, tragen, schütten, holen, löschen.
 
 Diese Verben und Klammerbeispiele sind **Hypothesen für Materialentwicklung und gegebenenfalls Spielleitung**, keine Musterlösungen oder bereits beschlossenen Wortkarten. Die Reihenfolge ist nicht empirisch gemessen. Kreative, plausible Alternativen bleiben offen.
@@ -157,7 +159,7 @@ Eine Wortkarte kann magisch für mehrere Aufgaben derselben Station wirken. **Ob
 
 #### 4.7 Entscheidung über Lösungen
 
-Entweder **gemeinsame Abstimmung** oder eine **Spielleitung**, die ähnlich einer Pen-and-Paper-Runde Hindernisse auswählt und Lösungen beurteilt. Vorab festgelegte Lösungsverben sind Hilfen für die Entwicklung, keine Pflichtantworten. Der Bonus soll originelle, plausible Handlungen fördern.
+Entweder **gemeinsame Abstimmung** oder eine **Spielleitung**, die ähnlich einer Pen-and-Paper-Runde Hindernisse auswählt und Lösungen beurteilt. Vorab festgelegte Vorschläge-Verben sind Hilfen für die Entwicklung, keine Pflichtantworten. Der Bonus soll originelle, plausible Handlungen fördern.
 
 ### 5. Spielwelt und Schwierigkeit
 
@@ -222,4 +224,4 @@ Farbsystem, Kartengröße und Schriftarten sind noch offen.
 
 **Das vollständige konkrete Karteninventar steht ausschließlich im separat versionierten Dokument `material_wnd.md` und den zugehörigen TSV-Dateien.**
 
-**Ende des Designdokuments – v1.16**
+**Ende des Designdokuments – v1.17**
