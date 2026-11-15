@@ -1,0 +1,10 @@
+{
+  "mode": "paper",
+  "dpi": 300,
+  "cards": {
+    "ort": 2,
+    "aufgabe": 2,
+    "wort": 4,
+    "figur": 2
+  }
+}

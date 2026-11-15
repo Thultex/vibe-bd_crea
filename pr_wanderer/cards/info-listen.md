@@ -17,7 +17,7 @@ Alle Dateien sind UTF-8-kodierte TSV-Dateien mit echten Tabulatoren. Mehrere Ein
 
 ## Gemeinsame Produktionsstruktur
 
-Nach `anzahl`, `id` und `punkte` folgen geschlossen die gruppenspezifischen Inhaltsfelder. Danach stehen die gemeinsamen Felder `img`, `ai`, `subtyp`, `bildmotiv`, `frequenz`, `komplexität` und `spezifität`. `vorschläge-verben` ist universell die letzte Spalte.
+Nach `anzahl`, `id` und `punkte` folgen geschlossen die gruppenspezifischen Inhaltsfelder. `format_text` steht als letztes Inhaltsfeld direkt vor `img`. Danach folgen `img` und `ai`, eine absichtlich leere Trennspalte und erst rechts davon die Metadaten `subtyp`, `bildmotiv`, `frequenz`, `komplexität` und `spezifität`. `vorschläge-verben` ist universell die letzte Spalte.
 
 Konkretisierte Karten haben derzeit jeweils die Stückzahl `1`. Noch nicht festgelegte Werte bleiben leer. Karten-IDs sind intern kleingeschrieben.
 
@@ -32,24 +32,26 @@ Die konkreten Kopfzeilen lauten:
 
 ```text
 liste-ort.tsv:
-anzahl  id  punkte  ort  phrase  wort_1  wort_2  img  ai  subtyp  bildmotiv  frequenz  komplexität  spezifität  vorschläge-verben
+anzahl  id  punkte  ort  phrase  wort_1  wort_2  format_text  img  ai  [leer]  subtyp  bildmotiv  frequenz  komplexität  spezifität  vorschläge-verben
 
 liste-aufgabe.tsv:
-anzahl  id  punkte  phrase  wort_1  wort_2  kleinod  img  ai  subtyp  bildmotiv  frequenz  komplexität  spezifität  vorschläge-verben
+anzahl  id  punkte  phrase  wort_1  wort_2  kleinod  format_text  img  ai  [leer]  subtyp  bildmotiv  frequenz  komplexität  spezifität  vorschläge-verben
 
 liste-wort.tsv:
-anzahl  id  punkte  wort  img  ai  subtyp  bildmotiv  frequenz  komplexität  spezifität  vorschläge-verben
+anzahl  id  punkte  wort  format_text  img  ai  [leer]  subtyp  bildmotiv  frequenz  komplexität  spezifität  vorschläge-verben
 
 liste-figur.tsv:
-anzahl  id  punkte  name  faehigkeiten  img  ai  subtyp  bildmotiv  frequenz  komplexität  spezifität  vorschläge-verben
+anzahl  id  punkte  name  faehigkeiten  format_text  img  ai  [leer]  subtyp  bildmotiv  frequenz  komplexität  spezifität  vorschläge-verben
 ```
 
 Die Kandidatenliste ergänzt vor `vorschläge-verben` das Feld `status`.
 
 ## Bedeutung gemeinsamer Felder
 
+- `format_text`: sichtbares Kartenwort oder die sichtbare Phrase in CardMakers `FormattedText`-Syntax. Schlüsselwörter werden mit `<fc=0xRRGGBB>…</fc>` farbig hervorgehoben. Bei Wörtern und Figuren wird der ganze sichtbare Text markiert; bei Phrasen die in `wort_1` und `wort_2` gemeinten, gegebenenfalls flektierten Formen.
 - `img`: Pfad zum normalen PNG- oder JPG-Export ohne Beschnittzugabe.
 - `ai`: Pfad zur editierbaren Illustrator-Originaldatei.
+- leere Spalte hinter `ai`: rein visuelle Trennung zwischen Inhalts-/Produktionsdaten und den folgenden Metadaten; sie hat bewusst keinen Spaltennamen und wird nicht verarbeitet.
 - `subtyp`: fachliche Untergruppe der Karte.
 - `bildmotiv`: Beschreibung der geplanten visuellen Darstellung; dafür werden keine gruppenspezifischen Feldnamen verwendet.
 - `vorschläge-verben`: mögliche Handlungen als Material- und Entwicklungshilfe, keine Pflichtlösung.
@@ -118,7 +120,7 @@ Die Werte dienen Materialauswahl, Mischung und Balance. Sie sind Arbeitshypothes
 
 ## Bilddateien
 
-Jede Kartengruppe hat genau einen Ordner `img/` für editierbare Illustrator-Originale und normale PNG- oder JPG-Exporte ohne Beschnittzugabe. Separate `ai/`- und `bleed/`-Ordner sind nicht vorgesehen. Druckexporte mit Bleed soll später der Cardmaker erzeugen.
+Jede Kartengruppe hat genau einen Ordner `img/` für editierbare Illustrator-Originale und normale PNG- oder JPG-Exporte ohne Beschnittzugabe. Separate `ai/`- und `bleed/`-Ordner sind nicht vorgesehen. Druckausgaben erzeugt der CardMaker bei Bedarf aus den normalen Exporten.
 
 Die Karten-ID wird im Dateinamen großgeschrieben. Auf einen kurzen Kartennamen folgt bei normalen Exporten die Illustrator-Zeichenflächenkennung `-01`:
 
@@ -133,4 +135,4 @@ wort/img/WA01_Schnell.ai
 wort/img/WA01_Schnell-01.png
 ```
 
-Bleed-Dateien wie `E01_Wüste-02.png` werden nicht versioniert. Kleine `.ai`-Quelldateien gehören ausdrücklich ins Repository.
+Bleed-Dateien wie `E01_Wüste-02.png` werden nicht versioniert. Kleine `.ai`-Quelldateien gehören ausdrücklich ins Repository. Das CardMaker-Projekt und sein Paper-/Print-Schalter liegen in `../cardmaker/`; es erzeugt die benötigten Ausgabeformate aus diesen Listen.

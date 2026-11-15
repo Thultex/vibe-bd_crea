@@ -1,0 +1,5 @@
+﻿Count,card_id,plain_text,format_text,img,has_img,subtyp
+1,wn01,Eimer,<fc=0x008577>Eimer</fc>,,0,nomen
+1,wn02,Seil,<fc=0x008577>Seil</fc>,,0,nomen
+1,wa01,schnell,<fc=0xB85C00>schnell</fc>,,0,adjektiv
+1,wa02,kalt,<fc=0xB85C00>kalt</fc>,,0,adjektiv

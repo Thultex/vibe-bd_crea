@@ -1,0 +1,3 @@
+﻿Count,card_id,plain_text,format_text,img,has_img,subtyp
+1,ag01,Ein Haus brennt!,Ein <fc=0x008577>Haus</fc> <fc=0xB85C00>brennt</fc>!,,0,gefahr
+1,ag02,Ein Dieb klaut Geld!,Ein <fc=0x008577>Dieb</fc> <fc=0xB85C00>klaut</fc> Geld!,,0,gefahr

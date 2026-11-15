@@ -4,25 +4,37 @@
 
 Ausgangsdatum: 2026-11-13
 
-*Diese Woche (ca. 2,2h, 2 Tage, 15 Inhalte):*
-WND: Projektgrundlage übernommen und auf die gemeinsame Kartenlisten-, Bild- und Pfadstruktur umgestellt.
+*Diese Woche (ca. 3,2h, 2 Tage, 16 Inhalte):*
+WND: Projektgrundlage übernommen, Kartenlisten vereinheitlicht und einen schaltbaren CardMaker für Paper- und Printausgaben ergänzt.
 
 *Letzte Woche (0,0h, 0 Tage, 0 Inhalte):*
 Keine Einträge.
 
-*Dieser Monat (ca. 2,2h, 2 Tage, 15 Inhalte):*
-WND: Anleitung, Design, Materialbestand und Cardmaker-taugliche Kartenverzeichnisse aufgebaut.
+*Dieser Monat (ca. 3,2h, 2 Tage, 16 Inhalte):*
+WND: Anleitung, Design, Materialbestand, Kartenverzeichnisse und einen minimalen CardMaker-Produktionsweg aufgebaut.
 
 *Letzter Monat (0,0h, 0 Tage, 0 Inhalte):*
 Keine Einträge.
 
-*Jahr (ca. 2,2h, 2 Tage, 15 Inhalte):*
-WND: Projektgrundlage mit vollständiger Dokumentation und vereinheitlichten maschinenlesbaren Kartendaten erstellt.
+*Jahr (ca. 3,2h, 2 Tage, 16 Inhalte):*
+WND: Projektgrundlage mit Dokumentation, vereinheitlichten Kartendaten und CardMaker-Ausgabe erstellt.
 
-*Insgesamt (ca. 2,2h, 2 Tage, 15 Inhalte):*
-WND: Projektgrundlage mit vollständiger Dokumentation und vereinheitlichten maschinenlesbaren Kartendaten erstellt.
+*Insgesamt (ca. 3,2h, 2 Tage, 16 Inhalte):*
+WND: Projektgrundlage mit Dokumentation, vereinheitlichten Kartendaten und CardMaker-Ausgabe erstellt.
 
 ## Log
+
+### 2026-11-15 - wnd, cardmaker, listen, export (ca. 1,0h)
+
+- Summary: Minimalen CardMaker-Produktionsweg mit Paper-/Print-Schalter und typbezogenen Layouts ergänzt.
+- Material: `format_text` in allen konkreten Listen und der Wortkandidatenliste direkt vor `img` eingefügt; sichtbare Wörter beziehungsweise Phrasen mit semantischen CardMaker-Farbtags versehen.
+- Material: Hinter `ai` in allen Listen eine namenlose Leerspalte als sichtbare Grenze zu den Metadaten eingefügt.
+- CardMaker: Generator unter `cardmaker/` angelegt; er liest die vier konkreten TSV-Listen und erzeugt vier CSV-Referenzen sowie genau ein Layout pro Kartentyp.
+- CardMaker: Paper-Modus als A4 bei 300 dpi mit weißem Hintergrund, mittiger Bridge-Fläche, dunklem Text und acht Schnittmarken umgesetzt.
+- CardMaker: Print-Modus als Bridge-Karte 675 × 1050 px umgesetzt; vorhandene Bilder füllen die Karte, fehlende Bilder schalten auf hellen, vertikal zentrierten Text auf Schwarz um.
+- CardMaker: `Arial Rounded MT Bold` als klare Rundschrift hinterlegt und Exportmaße sowie Dateinamensmuster im Projekt gespeichert.
+- Test: Beide Modi gebaut und validiert; TSV-Spalten, Farbmarken, Kartenanzahl, CSV-Referenzen, Layoutgrößen, Schnittmarken und Bild-Fallback geprüft. Eingecheckter Standardmodus bleibt `paper`.
+- Doku: `cards/info-listen.md`, Projekt-README, Design v1.18 und Material v1.08 an Formattext, Leerspalte und CardMaker-Datenfluss angepasst.
 
 ### 2026-11-15 - wnd, struktur, doku, material, assets (ca. 1,5h)
 
