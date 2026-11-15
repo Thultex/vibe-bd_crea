@@ -4,17 +4,17 @@ Diese Datei ist die zentrale Dokumentation für alle maschinenlesbaren Kartenlis
 
 ## Dateien und Kartengruppen
 
-| Gruppe | TSV-Datei | Subtypen |
+| Gruppe | Datei | Subtypen |
 |---|---|---|
 | Orte | `ort/liste-ort.tsv` | `ort` |
 | Aufgaben | `aufgabe/liste-aufgabe.tsv` | `gefahr`, `sozial`, `technisch`, `hindernis` |
 | Wörter | `wort/liste-wort.tsv` | `nomen`, `adjektiv` |
 | Figuren | `figur/liste-figur.tsv` | `figur` |
-| Wortideen | `liste-wortideen.tsv` | `nomen`, `adjektiv` |
+| Ideen | `liste-ideen.md` | alle Kartenarten |
 
-Alle noch nicht konkretisierten Wortideen stehen gemeinsam in `liste-wortideen.tsv` direkt im Verzeichnis `cards/`. Sie haben noch keine Karten-ID oder Stückzahl und zählen nicht zum konkretisierten Kartenbestand. Nicht konkretisierte Aufgaben werden nicht als Platzhalterzeilen geführt.
+Alle noch nicht konkretisierten Ideen stehen gemeinsam in `liste-ideen.md` direkt im Verzeichnis `cards/`. Die Markdown-Tabelle gilt für alle Kartenarten; ihre unbeschriftete linke Spalte dient zum Abhaken. Ideen haben noch keine Karten-ID oder Stückzahl und zählen nicht zum konkretisierten Kartenbestand. Nicht konkretisierte Aufgaben werden nicht als Platzhalterzeilen in den TSV-Dateien geführt.
 
-Alle Dateien sind UTF-8-kodierte TSV-Dateien mit echten Tabulatoren. Mehrere Einträge in `vorschläge-verben` sind mit Semikolon getrennt.
+Alle Produktionslisten sind UTF-8-kodierte TSV-Dateien mit echten Tabulatoren. Mehrere Einträge in `vorschläge-verben` sind mit Semikolon getrennt. Die allgemeine Ideenliste ist eine UTF-8-kodierte Markdown-Datei.
 
 ## Gemeinsame Produktionsstruktur
 
@@ -43,12 +43,9 @@ anzahl  id  punkte  wort  col1  img  ai  [leer]  subtyp  bildmotiv  frequenz  ko
 
 liste-figur.tsv:
 anzahl  id  punkte  name  faehigkeiten  col1  img  ai  [leer]  subtyp  bildmotiv  frequenz  komplexität  spezifität  vorschläge-verben
-
-liste-wortideen.tsv:
-anzahl  id  punkte  wort  col1  img  ai  [leer]  subtyp  bildmotiv  frequenz  komplexität  spezifität  status  vorschläge-verben
 ```
 
-Die zentrale Wortideenliste verwendet dasselbe Schema wie `liste-wort.tsv` und ergänzt vor `vorschläge-verben` das Feld `status`.
+Die allgemeine Ideenliste ist bewusst keine Produktions-TSV. Ihre gemeinsame Markdown-Tabelle enthält Kartenart, Idee beziehungsweise Minimalphrase, optionale Bewertungen und Produktionshinweise. Erst konkretisierte Einträge werden in die passende TSV-Liste übertragen.
 
 Bei Orten und Aufgaben stehen zuerst die beiden Zielwörter, danach die zwei austauschbaren Textfassungen:
 
@@ -118,18 +115,6 @@ Die Werte dienen Materialauswahl, Mischung und Balance. Sie sind Arbeitshypothes
 |---|---|---:|---:|---:|
 | `f01` | Jonas | 4 | 1 | 1 |
 | `f02` | Mira | 4 | 1 | 1 |
-
-### Wortideen
-
-| Inhalt | Frequenz | Komplexität | Spezifität |
-|---|---:|---:|---:|
-| Lupe | 2 | 1 | 4 |
-| Kompass | 2 | 2 | 4 |
-| Greifer | 4 | 2 | 3 |
-| Maske | 2 | 2 | 3 |
-| Netz | 1 | 2 | 2 |
-| laut | 1 | 1 | 1 |
-| leise | 1 | 1 | 1 |
 
 ## Bilddateien
 

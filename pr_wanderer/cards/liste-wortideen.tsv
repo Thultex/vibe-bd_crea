@@ -1,8 +1,0 @@
-anzahl	id	punkte	wort	col1	img	ai		subtyp	bildmotiv	frequenz	komplexität	spezifität	status	vorschläge-verben
-		3	Lupe	0x54D7CC				nomen		2	1	4	Kandidat	suchen; finden; untersuchen; als Brennglas mit besonderer Begründung
-		3	Kompass	0x54D7CC				nomen		2	2	4	Kandidat	orientieren; finden
-			Greifer	0x54D7CC				nomen		4	2	3	Kandidat aus Aufgabenprüfung	greifen; festhalten
-			Maske	0x54D7CC				nomen		2	2	3	Kandidat aus Aufgabenprüfung	verkleiden; erschrecken
-			Netz	0x54D7CC				nomen		1	2	2	Kandidat aus Aufgabenprüfung	fangen; abdecken
-			laut	0x54D7CC				adjektiv		1	1	1	Kombinationskandidat	erschrecken
-			leise	0x54D7CC				adjektiv		1	1	1	Kombinationskandidat	stehlen

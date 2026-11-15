@@ -6,7 +6,7 @@ Kurzversion: `wnd`
 
 - `anleitung_wnd.md`: Spielanleitung v1.10.
 - `design_wnd.md`: Design- und Entwicklungsdokument v1.21.
-- `material_wnd.md`: konkreter Kartenbestand und Prototypplanung v1.11.
+- `material_wnd.md`: konkreter Kartenbestand und Prototypplanung v1.12.
 - `cards/`: gemeinsame TSV-Kartenlisten pro Kartengruppe und zugehörige Bildordner.
 - `cardmaker/`: getrennte Print- und Paper-Projekte, erzeugte Referenzdaten sowie Build- und Prüfskripte.
 - `z_CHANGELOG-WND.md`: Arbeits- und Versionsverlauf.
@@ -16,7 +16,7 @@ Kurzversion: `wnd`
 
 Orte, Aufgaben, Wörter und Figuren liegen jeweils in einer gemeinsamen TSV-Liste ihrer Kartengruppe: `liste-ort.tsv`, `liste-aufgabe.tsv`, `liste-wort.tsv` und `liste-figur.tsv`. Alle Listen verwenden dieselbe Produktionsstruktur mit gemeinsamen Spalten an festen Positionen und gruppenspezifischen Kernfeldern. Bei Orten und Aufgaben folgen auf die Zielwörter `phrase` als Minimalfassung und `phrase_story` als optionale ausführliche Erzählfassung. `col1`, `col2` usw. enthalten direkt vor `img` die hellen Ausgangsfarben für dunkle Karten; eine leere Spalte hinter `ai` trennt die anschließenden Metadaten sichtbar ab. Konkretisierte Karten haben derzeit die Stückzahl `1`; die internen IDs bleiben kleingeschrieben.
 
-Alle Wortideen ohne Karten-ID stehen gemeinsam in `cards/liste-wortideen.tsv` getrennt vom konkretisierten Kartenbestand. Die zentrale Dokumentation für Spalten, Dateinamen, Bildpfade, Bewertungsskala und aktuelle Materialwerte steht in `cards/info-listen.md`.
+Alle Ideen ohne Karten-ID stehen unabhängig von der Kartenart gemeinsam in der abhakbaren Markdown-Tabelle `cards/liste-ideen.md`. Die zentrale Dokumentation für Spalten, Dateinamen, Bildpfade, Bewertungsskala und aktuelle Materialwerte steht in `cards/info-listen.md`.
 
 ## Bildquellen und Exporte
 

@@ -1,8 +1,8 @@
 # Wanderer und Träumende Götter
 ## Material
-**Version 1.11 · Konkreter Kartenbestand und Prototypplanung**
+**Version 1.12 · Konkreter Kartenbestand und Prototypplanung**
 
-Das Materialdokument erfasst **tatsächlich konkretisierte Karten** und getrennt davon **Wortideen**. Es ersetzt die Materialtabellen im Designdokument.
+Das Materialdokument erfasst **tatsächlich konkretisierte Karten**. Noch nicht konkretisierte Ideen aller Kartenarten stehen getrennt in `cards/liste-ideen.md`. Es ersetzt die Materialtabellen im Designdokument.
 
 ### 1. Kennungen
 
@@ -20,7 +20,7 @@ Das Materialdokument erfasst **tatsächlich konkretisierte Karten** und getrennt
 
 Kennungen sind **kleingeschrieben** und je Kategorie ab `01` zweistellig nummeriert, etwa `e01`, `ag01`, `wa02`.
 
-Die maschinenlesbaren Daten stehen in je einer gemeinsamen TSV-Datei pro Kartengruppe: `cards/ort/liste-ort.tsv`, `cards/aufgabe/liste-aufgabe.tsv`, `cards/wort/liste-wort.tsv` und `cards/figur/liste-figur.tsv`. Auf Stückzahl, ID und Punkte folgen die gruppenspezifischen Inhaltsfelder samt den Ausgangsfarben `col1`, `col2` usw., anschließend Bildpfade, eine leere Trennspalte und die Metadaten Subtyp, Bildmotiv sowie `frequenz`, `komplexität` und `spezifität`. Bei Orten und Aufgaben stehen die Zielwörter vor `phrase` und `phrase_story`. `phrase` enthält die Minimalphrase; `phrase_story` ist für den vollständigen Erzähltext vorgesehen und bleibt bis zu dessen Festlegung leer. CardMaker kann zentral zwischen beiden Fassungen wechseln und verwendet bei leerer Story die Minimalphrase. Verbideen werden universell in der letzten Spalte `vorschläge-verben` geführt. Alle Wortideen ohne ID stehen gemeinsam in `cards/liste-wortideen.tsv`.
+Die maschinenlesbaren Daten stehen in je einer gemeinsamen TSV-Datei pro Kartengruppe: `cards/ort/liste-ort.tsv`, `cards/aufgabe/liste-aufgabe.tsv`, `cards/wort/liste-wort.tsv` und `cards/figur/liste-figur.tsv`. Auf Stückzahl, ID und Punkte folgen die gruppenspezifischen Inhaltsfelder samt den Ausgangsfarben `col1`, `col2` usw., anschließend Bildpfade, eine leere Trennspalte und die Metadaten Subtyp, Bildmotiv sowie `frequenz`, `komplexität` und `spezifität`. Bei Orten und Aufgaben stehen die Zielwörter vor `phrase` und `phrase_story`. `phrase` enthält die Minimalphrase; `phrase_story` ist für den vollständigen Erzähltext vorgesehen und bleibt bis zu dessen Festlegung leer. CardMaker kann zentral zwischen beiden Fassungen wechseln und verwendet bei leerer Story die Minimalphrase. Verbideen werden universell in der letzten Spalte `vorschläge-verben` geführt. Alle Ideen ohne ID stehen gemeinsam in `cards/liste-ideen.md`.
 
 Die drei Bewertungsfelder verwenden vorläufig Werte von 1 bis 5: `frequenz` reicht von hochfrequent bis selten, `komplexität` von sehr einfach bis hochkomplex und `spezifität` von breit einsetzbar bis stark spezifisch. Die Einordnungen sind Materialhypothesen und später empirisch zu prüfen. Ermittlungsgrundlage und aktuelle Werte des gesamten Kartenmaterials stehen in `cards/info-listen.md`.
 
@@ -75,19 +75,7 @@ Zur Materialprüfung für `ag02` mögliche Verknüpfungen: **greifen – Greifer
 
 **Zielmenge: 12 Nomenkarten.** Die Vorschläge-Verben sind typische Verwendungen, keine zusätzlichen Regeln.
 
-#### Wortideen (noch keine Karten-ID)
-
-| Wort | Subtyp | Mögliche Verwendung | Vorgesehene Punkte | Status |
-|---|---|---|---:|---|
-| Lupe | Nomen | suchen, finden, untersuchen; als Brennglas mit besonderer Begründung | **3** | Kandidat |
-| Kompass | Nomen | orientieren, finden | **3** | Kandidat |
-| Greifer | Nomen | greifen, festhalten | offen | Kandidat aus Aufgabenprüfung |
-| Maske | Nomen | verkleiden, erschrecken | offen | Kandidat aus Aufgabenprüfung |
-| Netz | Nomen | fangen, abdecken | offen | Kandidat aus Aufgabenprüfung |
-| laut | Adjektiv | erschrecken | offen | Kombinationskandidat |
-| leise | Adjektiv | stehlen | offen | Kombinationskandidat |
-
-Diese Wortideen sind **nicht** in den Zählungen der konkretisierten Karten enthalten.
+Sämtliche noch nicht konkretisierten Ideen stehen ausschließlich in der gemeinsamen `cards/liste-ideen.md` und sind **nicht** in den Zählungen der konkretisierten Karten enthalten.
 
 ### 5. Wortkarten – Adjektive (wa)
 
@@ -96,7 +84,7 @@ Diese Wortideen sind **nicht** in den Zählungen der konkretisierten Karten enth
 | `wa01` | schnell | Luftwirbel | laufen, ausweichen | **1** |
 | `wa02` | kalt | Eiskristalle | einfrieren, kühlen, erstarren | **1** |
 
-**Zielmenge: 12 Adjektivkarten.** Die Wörter *laut* und *leise* bleiben Kombinationskandidaten ohne Karten-ID und stehen zusammen mit allen anderen Ideen in `cards/liste-wortideen.tsv`.
+**Zielmenge: 12 Adjektivkarten.** Die Wörter *laut* und *leise* bleiben Kombinationskandidaten ohne Karten-ID und stehen zusammen mit allen anderen Ideen in `cards/liste-ideen.md`.
 
 ### 6. Figurenkarten (f, optional)
 

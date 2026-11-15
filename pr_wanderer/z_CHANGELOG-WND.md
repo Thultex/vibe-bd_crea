@@ -4,25 +4,33 @@
 
 Ausgangsdatum: 2026-11-13
 
-*Diese Woche (ca. 4,7h, 2 Tage, 20 Inhalte):*
-WND: Projektgrundlage übernommen, Kartenlisten vereinheitlicht und eine zentrale Liste für alle Wortideen ergänzt.
+*Diese Woche (ca. 4,9h, 2 Tage, 21 Inhalte):*
+WND: Projektgrundlage übernommen, Kartenlisten vereinheitlicht und eine zentrale Ideenliste für alle Kartenarten ergänzt.
 
 *Letzte Woche (0,0h, 0 Tage, 0 Inhalte):*
 Keine Einträge.
 
-*Dieser Monat (ca. 4,7h, 2 Tage, 20 Inhalte):*
+*Dieser Monat (ca. 4,9h, 2 Tage, 21 Inhalte):*
 WND: Anleitung, Design, Materialbestand, Kartenverzeichnisse und getrennte CardMaker-Produktionswege mit Textfassungswahl aufgebaut.
 
 *Letzter Monat (0,0h, 0 Tage, 0 Inhalte):*
 Keine Einträge.
 
-*Jahr (ca. 4,7h, 2 Tage, 20 Inhalte):*
+*Jahr (ca. 4,9h, 2 Tage, 21 Inhalte):*
 WND: Projektgrundlage mit Dokumentation, vereinheitlichten Kartendaten und CardMaker-Ausgabe erstellt.
 
-*Insgesamt (ca. 4,7h, 2 Tage, 20 Inhalte):*
+*Insgesamt (ca. 4,9h, 2 Tage, 21 Inhalte):*
 WND: Projektgrundlage mit Dokumentation, vereinheitlichten Kartendaten und CardMaker-Ausgabe erstellt.
 
 ## Log
+
+### 2026-11-15 - wnd, ideen, aufgaben, markdown (ca. 0,2h)
+
+- Summary: Die Wortideenliste durch eine allgemeine, abhakbare Markdown-Ideenliste für sämtliche Kartenarten ersetzt.
+- Material: Sieben bestehende Wortideen übernommen und um `Treppenlabyrinth` (`ah`), `Fluss überschwemmt` (`ag`), `Wagen kaputt` (`at`), `Hund verläuft sich` (`as`) und `Blitz schlägt ein` (`ag`) ergänzt.
+- Struktur: `cards/liste-wortideen.tsv` in `cards/liste-ideen.md` überführt; die unbeschriftete linke Tabellenspalte dient zum Abhaken.
+- Doku: Listendokumentation, Projekt-README und Material v1.12 an die allgemeine Ideenliste angepasst; doppelte Ideentabellen aus der Materialdokumentation entfernt.
+- Test: Markdown-Spalten, Kartenarten, eindeutige Ideen und alle fünf neuen Aufgabenideen automatisch validiert.
 
 ### 2026-11-15 - wnd, listen, wortideen (ca. 0,2h)
 

@@ -36,8 +36,7 @@ def channel_sum(color: str) -> int:
 
 def validate_tsv() -> None:
     specs = list(LIST_SPECS)
-    idea_source = CARDMAKER_DIR.parent / "cards" / "liste-wortideen.tsv"
-    for source, color_count in [(spec.source, len(spec.target_fields)) for spec in specs] + [(idea_source, 1)]:
+    for source, color_count in [(spec.source, len(spec.target_fields)) for spec in specs]:
         with source.open(encoding="utf-8-sig", newline="") as handle:
             rows = list(csv.reader(handle, delimiter="\t"))
         header = rows[0]
@@ -60,19 +59,35 @@ def validate_tsv() -> None:
                 if not COLOR_PATTERN.fullmatch(row[index]):
                     raise RuntimeError(f"Ungültiger Farbwert: {source}:{line_number}")
 
-    with idea_source.open(encoding="utf-8-sig", newline="") as handle:
-        ideas = list(csv.DictReader(handle, delimiter="\t"))
-    words = [(row.get("wort") or "").strip().casefold() for row in ideas]
-    if len(words) != len(set(words)):
-        raise RuntimeError(f"Doppelte Wörter in {idea_source}")
-    for line_number, row in enumerate(ideas, start=2):
-        if row.get("anzahl") or row.get("id"):
-            raise RuntimeError(f"Wortidee ist bereits konkretisiert: {idea_source}:{line_number}")
-        if not row.get("wort") or row.get("subtyp") not in {"nomen", "adjektiv"} or not row.get("status"):
-            raise RuntimeError(f"Unvollständige Wortidee: {idea_source}:{line_number}")
-        for field in ("frequenz", "komplexität", "spezifität"):
-            if row.get(field) not in {"1", "2", "3", "4", "5"}:
-                raise RuntimeError(f"Ungültige Bewertung in {field}: {idea_source}:{line_number}")
+
+def validate_idea_list() -> None:
+    idea_source = CARDMAKER_DIR.parent / "cards" / "liste-ideen.md"
+    lines = idea_source.read_text(encoding="utf-8").splitlines()
+    if not any(line.startswith("|  | Art | Idee / Minimalphrase |") for line in lines):
+        raise RuntimeError(f"Unbeschriftete Abhakspalte fehlt: {idea_source}")
+    idea_rows = [line for line in lines if line.startswith("| ☐ |")]
+    ideas: list[str] = []
+    allowed_types = {"e", "ag", "as", "at", "ah", "wn", "wa", "f"}
+    for line in idea_rows:
+        cells = [cell.strip() for cell in line.strip("|").split("|")]
+        if len(cells) != 10:
+            raise RuntimeError(f"Falsche Spaltenzahl in Ideenliste: {line}")
+        card_type = cells[1].strip("`")
+        idea = cells[2]
+        if card_type not in allowed_types or not idea or not cells[9]:
+            raise RuntimeError(f"Unvollständige Idee: {line}")
+        ideas.append(idea.casefold())
+    if len(ideas) != len(set(ideas)):
+        raise RuntimeError(f"Doppelte Ideen in {idea_source}")
+    required = {
+        "treppenlabyrinth",
+        "fluss überschwemmt",
+        "wagen kaputt",
+        "hund verläuft sich",
+        "blitz schlägt ein",
+    }
+    if not required.issubset(ideas):
+        raise RuntimeError(f"Neue Aufgabenideen fehlen in {idea_source}")
 
 
 def validate_text_selection() -> None:
@@ -186,6 +201,7 @@ def validate_project(variant: str) -> None:
 
 def main(text_version: str) -> None:
     validate_tsv()
+    validate_idea_list()
     validate_text_selection()
     source_rows = {spec.key: load_tsv(spec) for spec in LIST_SPECS}
     for spec in LIST_SPECS:
