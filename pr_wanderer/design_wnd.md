@@ -1,6 +1,6 @@
 # Wanderer und Träumende Götter
 ## Design- und Entwicklungsdokument
-**Version 1.15 · Entwurf**
+**Version 1.16 · Entwurf**
 
 ### 1. Grundkonzept
 
@@ -66,7 +66,9 @@ Die Grundkarten sollen **mehrere naheliegende Lösungsverben je Aufgabe und Gege
 
 **`ax`** bezeichnet die Aufgabenkarten zusammengefasst. Die IDs sind klein geschrieben und zweistellig nummeriert: `e01`, `ag01`, `wn01` usw. **Kleinode** sind feste Symbole auf Aufgabenkarten; **Lösungen** sind keine Karten.
 
-Die maschinenlesbaren Kartendaten stehen in je einer gemeinsamen TSV-Datei pro übergeordneter Kartengruppe. `anzahl` und `subtyp` sind stets die ersten beiden Spalten; anschließend folgen Karten-ID, gruppenspezifische Daten und optionale Pfade zu tatsächlich vorhandenen Bilddateien. Aufgaben werden gemeinsam in `cards/aufgabe/liste-aufgaben.tsv`, Nomen und Adjektive gemeinsam in `cards/wort/liste-wörter.tsv` geführt.
+Die maschinenlesbaren Kartendaten stehen in je einer gemeinsamen TSV-Datei pro übergeordneter Kartengruppe: `liste-e.tsv`, `liste-a.tsv`, `liste-w.tsv` und `liste-f.tsv`. Jede Liste beginnt mit `anzahl`; anschließend folgen die für die Kartengruppe benötigten Produktions- und Inhaltsfelder.
+
+Die Wortliste ordnet die unmittelbar für Kartenerzeugung und Spiel relevanten Felder zuerst an: ID, Punkte, Wort, Verben sowie Bildpfade. Danach folgen Subtyp, Bildmotiv und die kompakten Bewertungsfelder `freq`, `komplex` und `breite` für spätere Auswahl- und Balanceprüfungen.
 
 #### 3.1 Orte
 
@@ -130,7 +132,7 @@ Wortkarten können nach der Schwierigkeit eines **sinnvollen Einsatzes**, nicht 
 | **2** | Vielseitig, aber mit etwas Planung | Eimer, Seil |
 | **3** | Spezifisch, situationsabhängig und erklärungsbedürftiger | Lupe, Kompass |
 
-**Festgelegte vorläufige Werte:** Eimer = **2**, Seil = **2**, schnell = **1**, Lupe als Kandidat = **3**. Kalt ist noch nicht bewertet. Ob der Punktwert auf Karten gedruckt wird, bleibt offen.
+**Festgelegte vorläufige Werte:** Eimer = **2**, Seil = **2**, schnell = **1**, kalt = **1**, Lupe als Kandidat = **3**. Ob der Punktwert auf Karten gedruckt wird, bleibt offen.
 
 #### 4.5 Kleinode
 
@@ -220,4 +222,4 @@ Farbsystem, Kartengröße und Schriftarten sind noch offen.
 
 **Das vollständige konkrete Karteninventar steht ausschließlich im separat versionierten Dokument `material_wnd.md` und den zugehörigen TSV-Dateien.**
 
-**Ende des Designdokuments – v1.15**
+**Ende des Designdokuments – v1.16**

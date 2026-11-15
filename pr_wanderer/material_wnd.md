@@ -1,6 +1,6 @@
 # Wanderer und Träumende Götter
 ## Material
-**Version 1.05 · Konkreter Kartenbestand und Prototypplanung**
+**Version 1.06 · Konkreter Kartenbestand und Prototypplanung**
 
 Das Materialdokument erfasst **tatsächlich konkretisierte Karten** und getrennt davon **Kandidaten**. Es ersetzt die Materialtabellen im Designdokument.
 
@@ -20,7 +20,7 @@ Das Materialdokument erfasst **tatsächlich konkretisierte Karten** und getrennt
 
 Kennungen sind **kleingeschrieben** und je Kategorie ab `01` zweistellig nummeriert, etwa `e01`, `ag01`, `wa02`.
 
-Die maschinenlesbaren Daten stehen in je einer gemeinsamen TSV-Datei pro Kartengruppe: `cards/ort/liste-orte.tsv`, `cards/aufgabe/liste-aufgaben.tsv`, `cards/wort/liste-wörter.tsv` und `cards/figur/liste-figuren.tsv`. In jeder Kartenliste sind `anzahl` und `subtyp` die ersten beiden Spalten; jede konkretisierte Karte hat derzeit die Stückzahl `1`. Die optionalen Felder `bild_png` und `bild_ai` bleiben leer, solange keine entsprechende Datei vorhanden ist. Wortkandidaten ohne ID werden getrennt in `cards/wort/liste-wörter-kandidaten.tsv` geführt.
+Die maschinenlesbaren Daten stehen in je einer gemeinsamen TSV-Datei pro Kartengruppe: `cards/ort/liste-e.tsv`, `cards/aufgabe/liste-a.tsv`, `cards/wort/liste-w.tsv` und `cards/figur/liste-f.tsv`. Jede Liste beginnt mit `anzahl`; jede konkretisierte Karte hat derzeit die Stückzahl `1`. Die weiteren Spalten folgen dem Bedarf der Kartengruppe. Die Wortliste enthält zusätzlich die kompakten Bewertungsfelder `freq`, `komplex` und `breite`. Wortkandidaten ohne ID werden getrennt in `cards/wort/liste-w-kandidaten.tsv` geführt.
 
 ### 2. Ortskarten (e)
 
@@ -87,10 +87,10 @@ Diese Kandidaten sind **nicht** in den Zählungen der konkretisierten Karten ent
 
 ### 5. Wortkarten – Adjektive (wa)
 
-| ID | Wort | Bildmotiv | Punkte |
-|---|---|---|---:|
-| `wa01` | schnell | Luftwirbel, Bewegungsstreifen | **1** |
-| `wa02` | kalt | Eiskristalle | offen |
+| ID | Wort | Bildmotiv | Mögliche Verben | Punkte |
+|---|---|---|---|---:|
+| `wa01` | schnell | Luftwirbel | laufen, ausweichen | **1** |
+| `wa02` | kalt | Eiskristalle | einfrieren, kühlen, erstarren | **1** |
 
 **Zielmenge: 12 Adjektivkarten.** Die Wörter *laut* und *leise* sind bisher nur Kombinationskandidaten und noch keine konkretisierten Karten.
 
@@ -130,7 +130,7 @@ Die Punkte auf Wortkarten beschreiben die angenommene **Schwierigkeit eines sinn
 
 | Punkte | Bedeutung | Materialbeispiele |
 |---|---|---|
-| **1** | Leicht und vielseitig | `wa01` schnell |
+| **1** | Leicht und vielseitig | `wa01` schnell; `wa02` kalt |
 | **2** | Mittlere Anforderung | `wn01` Eimer; `wn02` Seil |
 | **3** | Spezifisch, erklärungsbedürftig | Lupe und Kompass (noch Kandidaten) |
 
@@ -140,4 +140,4 @@ Ob der Punktwert **mitgedruckt** wird, ist offen. Die Einordnung muss anhand der
 
 Die Punktewertung ist optional: **leicht ohne Punkte, mittel mit Kartenpunkten und Originalitätsbonus, schwer zusätzlich mit Restkartenwertung**. Sie wird im Design- und Anleitungsdokument geregelt und hier für die Materialwerte zusammengefasst.
 
-**Ende Material – v1.05**
+**Ende Material – v1.06**

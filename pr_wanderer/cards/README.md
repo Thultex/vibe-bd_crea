@@ -6,14 +6,16 @@ Die Unterordner enthalten die Kartendaten aus `../material_wnd.md` als UTF-8-kod
 
 | Gruppe | TSV-Datei | Subtypen |
 |---|---|---|
-| Orte | `ort/liste-orte.tsv` | `ort` |
-| Aufgaben | `aufgabe/liste-aufgaben.tsv` | `gefahr`, `sozial`, `technisch`, `hindernis` |
-| Wörter | `wort/liste-wörter.tsv` | `nomen`, `adjektiv` |
-| Figuren | `figur/liste-figuren.tsv` | `figur` |
+| Orte | `ort/liste-e.tsv` | `ort` |
+| Aufgaben | `aufgabe/liste-a.tsv` | `gefahr`, `sozial`, `technisch`, `hindernis` |
+| Wörter | `wort/liste-w.tsv` | `nomen`, `adjektiv` |
+| Figuren | `figur/liste-f.tsv` | `figur` |
 
-Die Wortkandidaten ohne Karten-ID stehen separat in `wort/liste-wörter-kandidaten.tsv` und zählen nicht zum konkretisierten Kartenbestand. Nicht konkretisierte Aufgaben werden nicht als Platzhalterzeilen geführt.
+Die Wortkandidaten ohne Karten-ID stehen separat in `wort/liste-w-kandidaten.tsv` und zählen nicht zum konkretisierten Kartenbestand. Nicht konkretisierte Aufgaben werden nicht als Platzhalterzeilen geführt.
 
-Jede Kartenliste beginnt mit `anzahl` und `subtyp`. Konkretisierte Karten haben derzeit jeweils die Stückzahl `1`. Darauf folgen die kleingeschriebene Karten-ID und die gruppenspezifischen Daten. Die optionalen Spalten `bild_png` und `bild_ai` enthalten nur Pfade zu tatsächlich vorhandenen Dateien; andernfalls bleiben sie leer.
+Jede Kartenliste beginnt mit `anzahl`; konkretisierte Karten haben derzeit jeweils die Stückzahl `1`. Die weiteren Spalten sind auf die jeweilige Kartengruppe zugeschnitten. `liste-w.tsv` verwendet für Cardmaker und Materialbalance die Reihenfolge `anzahl`, `id`, `punkte`, `wort`, `verben`, `img`, `ai`, `subtyp`, `bildmotiv`, `freq`, `komplex`, `breite`. Die drei letzten Felder halten kompakte Bewertungswerte für Auswahl und Balance fest.
+
+Bildpfade werden nur eingetragen, wenn die jeweilige Datei tatsächlich vorhanden ist. Die Wortliste nutzt dafür die kurzen Spalten `img` und `ai`; die übrigen Listen verwenden derzeit `bild_png` und `bild_ai`.
 
 ## Bilddateien
 
