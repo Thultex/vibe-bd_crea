@@ -4,25 +4,33 @@
 
 Ausgangsdatum: 2026-11-13
 
-*Diese Woche (ca. 4,5h, 2 Tage, 19 Inhalte):*
-WND: Projektgrundlage übernommen, Kartenlisten vereinheitlicht und CardMaker um austauschbare Minimal- und Storytexte ergänzt.
+*Diese Woche (ca. 4,7h, 2 Tage, 20 Inhalte):*
+WND: Projektgrundlage übernommen, Kartenlisten vereinheitlicht und eine zentrale Liste für alle Wortideen ergänzt.
 
 *Letzte Woche (0,0h, 0 Tage, 0 Inhalte):*
 Keine Einträge.
 
-*Dieser Monat (ca. 4,5h, 2 Tage, 19 Inhalte):*
+*Dieser Monat (ca. 4,7h, 2 Tage, 20 Inhalte):*
 WND: Anleitung, Design, Materialbestand, Kartenverzeichnisse und getrennte CardMaker-Produktionswege mit Textfassungswahl aufgebaut.
 
 *Letzter Monat (0,0h, 0 Tage, 0 Inhalte):*
 Keine Einträge.
 
-*Jahr (ca. 4,5h, 2 Tage, 19 Inhalte):*
+*Jahr (ca. 4,7h, 2 Tage, 20 Inhalte):*
 WND: Projektgrundlage mit Dokumentation, vereinheitlichten Kartendaten und CardMaker-Ausgabe erstellt.
 
-*Insgesamt (ca. 4,5h, 2 Tage, 19 Inhalte):*
+*Insgesamt (ca. 4,7h, 2 Tage, 20 Inhalte):*
 WND: Projektgrundlage mit Dokumentation, vereinheitlichten Kartendaten und CardMaker-Ausgabe erstellt.
 
 ## Log
+
+### 2026-11-15 - wnd, listen, wortideen (ca. 0,2h)
+
+- Summary: Alle noch nicht konkretisierten Wortideen in einer zentralen Liste im Kartenverzeichnis zusammengeführt.
+- Material: `cards/liste-wortideen.tsv` mit dem einheitlichen Wortschema angelegt und die bisherige Unterliste `cards/wort/liste-wort-kandidaten.tsv` ersetzt.
+- Material: Die fünf vorhandenen Nomenideen sowie die bereits dokumentierten Adjektivideen `laut` und `leise` gemeinsam erfasst; IDs und Stückzahlen bleiben bis zur Konkretisierung leer.
+- Doku: Listendokumentation, Projekt-README und Material v1.11 auf den zentralen Pfad und sieben Wortideen aktualisiert.
+- Test: Einheitliche Spaltenzahl, Farbwerte, Metadaten und CardMaker-Validierung mit der neuen Ideenliste geprüft.
 
 ### 2026-11-15 - wnd, listen, phrase-story, cardmaker (ca. 0,3h)
 

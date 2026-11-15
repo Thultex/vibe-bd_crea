@@ -36,8 +36,8 @@ def channel_sum(color: str) -> int:
 
 def validate_tsv() -> None:
     specs = list(LIST_SPECS)
-    candidate_source = CARDMAKER_DIR.parent / "cards" / "wort" / "liste-wort-kandidaten.tsv"
-    for source, color_count in [(spec.source, len(spec.target_fields)) for spec in specs] + [(candidate_source, 1)]:
+    idea_source = CARDMAKER_DIR.parent / "cards" / "liste-wortideen.tsv"
+    for source, color_count in [(spec.source, len(spec.target_fields)) for spec in specs] + [(idea_source, 1)]:
         with source.open(encoding="utf-8-sig", newline="") as handle:
             rows = list(csv.reader(handle, delimiter="\t"))
         header = rows[0]
@@ -59,6 +59,20 @@ def validate_tsv() -> None:
             for index in indexes:
                 if not COLOR_PATTERN.fullmatch(row[index]):
                     raise RuntimeError(f"Ungültiger Farbwert: {source}:{line_number}")
+
+    with idea_source.open(encoding="utf-8-sig", newline="") as handle:
+        ideas = list(csv.DictReader(handle, delimiter="\t"))
+    words = [(row.get("wort") or "").strip().casefold() for row in ideas]
+    if len(words) != len(set(words)):
+        raise RuntimeError(f"Doppelte Wörter in {idea_source}")
+    for line_number, row in enumerate(ideas, start=2):
+        if row.get("anzahl") or row.get("id"):
+            raise RuntimeError(f"Wortidee ist bereits konkretisiert: {idea_source}:{line_number}")
+        if not row.get("wort") or row.get("subtyp") not in {"nomen", "adjektiv"} or not row.get("status"):
+            raise RuntimeError(f"Unvollständige Wortidee: {idea_source}:{line_number}")
+        for field in ("frequenz", "komplexität", "spezifität"):
+            if row.get(field) not in {"1", "2", "3", "4", "5"}:
+                raise RuntimeError(f"Ungültige Bewertung in {field}: {idea_source}:{line_number}")
 
 
 def validate_text_selection() -> None:

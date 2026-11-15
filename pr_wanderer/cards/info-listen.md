@@ -10,8 +10,9 @@ Diese Datei ist die zentrale Dokumentation für alle maschinenlesbaren Kartenlis
 | Aufgaben | `aufgabe/liste-aufgabe.tsv` | `gefahr`, `sozial`, `technisch`, `hindernis` |
 | Wörter | `wort/liste-wort.tsv` | `nomen`, `adjektiv` |
 | Figuren | `figur/liste-figur.tsv` | `figur` |
+| Wortideen | `liste-wortideen.tsv` | `nomen`, `adjektiv` |
 
-Wortkandidaten ohne Karten-ID stehen separat in `wort/liste-wort-kandidaten.tsv` und zählen nicht zum konkretisierten Kartenbestand. Nicht konkretisierte Aufgaben werden nicht als Platzhalterzeilen geführt.
+Alle noch nicht konkretisierten Wortideen stehen gemeinsam in `liste-wortideen.tsv` direkt im Verzeichnis `cards/`. Sie haben noch keine Karten-ID oder Stückzahl und zählen nicht zum konkretisierten Kartenbestand. Nicht konkretisierte Aufgaben werden nicht als Platzhalterzeilen geführt.
 
 Alle Dateien sind UTF-8-kodierte TSV-Dateien mit echten Tabulatoren. Mehrere Einträge in `vorschläge-verben` sind mit Semikolon getrennt.
 
@@ -42,9 +43,12 @@ anzahl  id  punkte  wort  col1  img  ai  [leer]  subtyp  bildmotiv  frequenz  ko
 
 liste-figur.tsv:
 anzahl  id  punkte  name  faehigkeiten  col1  img  ai  [leer]  subtyp  bildmotiv  frequenz  komplexität  spezifität  vorschläge-verben
+
+liste-wortideen.tsv:
+anzahl  id  punkte  wort  col1  img  ai  [leer]  subtyp  bildmotiv  frequenz  komplexität  spezifität  status  vorschläge-verben
 ```
 
-Die Kandidatenliste ergänzt vor `vorschläge-verben` das Feld `status`.
+Die zentrale Wortideenliste verwendet dasselbe Schema wie `liste-wort.tsv` und ergänzt vor `vorschläge-verben` das Feld `status`.
 
 Bei Orten und Aufgaben stehen zuerst die beiden Zielwörter, danach die zwei austauschbaren Textfassungen:
 
@@ -115,7 +119,7 @@ Die Werte dienen Materialauswahl, Mischung und Balance. Sie sind Arbeitshypothes
 | `f01` | Jonas | 4 | 1 | 1 |
 | `f02` | Mira | 4 | 1 | 1 |
 
-### Wortkandidaten
+### Wortideen
 
 | Inhalt | Frequenz | Komplexität | Spezifität |
 |---|---:|---:|---:|
@@ -124,6 +128,8 @@ Die Werte dienen Materialauswahl, Mischung und Balance. Sie sind Arbeitshypothes
 | Greifer | 4 | 2 | 3 |
 | Maske | 2 | 2 | 3 |
 | Netz | 1 | 2 | 2 |
+| laut | 1 | 1 | 1 |
+| leise | 1 | 1 | 1 |
 
 ## Bilddateien
 
