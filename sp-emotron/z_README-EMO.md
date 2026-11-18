@@ -11,13 +11,13 @@ Emotronic ist eine installierbare, offlinefähige PWA zur Auswahl, Darstellung, 
 - `z_CHANGELOG-EMO.md`: Arbeitsprotokoll und Versionsverlauf.
 - `assets/`: Platz für spätere allgemeine Medien außerhalb der PWA.
 - `files/`: Platz für spätere allgemeine Daten und nicht ausführbare Quellen.
-- `tools/emotronic-pwa/`: maßgebliche, vollständige PWA-Quelle.
-- `../share/apps/emotronic/`: veröffentlichter Spiegel der PWA-Laufzeitdateien.
+- `tools/emotronic-pwa/`: Generator, Validator und Entwicklungsdokumentation.
+- `../share/apps/emotronic/`: vollständige, maßgebliche und veröffentlichte PWA-Laufzeitdateien.
 
 ## Aktueller Stand
 
-- Anwendung: Emotronic v2.34
-- Service-Worker-Cache: `emotronic-v134`
+- Anwendung: Emotronic v2.35
+- Service-Worker-Cache: `emotronic-v135`
 - Öffentlicher Zielpfad: `/share/apps/emotronic/`
 - Erwarteter GitHub-Pages-Link:
   `https://thultex.github.io/vibe-bd_crea/share/apps/emotronic/`

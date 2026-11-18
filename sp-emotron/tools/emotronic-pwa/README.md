@@ -1,8 +1,8 @@
-# Emotronic v2.34
+# Emotronic v2.35
 
 Emotronic ist eine installierbare, offlinefähige PWA zur Auswahl, Darstellung, Kombination und Wiedergabe von Gefühlen. Die Oberfläche ist an ein kompaktes Retro-Handgerät angelehnt und für Touch, Maus und Tastatur ausgelegt.
 
-Die maßgebliche PWA-Quelle liegt unter `sp-emotron/tools/emotronic-pwa/`. Alle PWA-Pfade sind relativ, sodass dieselben Laufzeitdateien unter `share/apps/emotronic/` als öffentlicher App-Spiegel bereitgestellt werden können.
+Die vollständige und maßgebliche PWA liegt unter `share/apps/emotronic/`. Dieser Tool-Ordner enthält nur Generator, Validator und Entwicklungsdokumentation; außerhalb des Share-Ordners werden keine Emotronic-Laufzeitdateien gepflegt.
 
 Wenn GitHub Pages den Branch `main` aus dem Repository-Root veröffentlicht, lautet der PWA-Link:
 
@@ -26,7 +26,7 @@ Emotronic speichert keine Gefühls-, Replay- oder Score-Daten auf einem Server. 
 Beispiel für einen lokalen Testserver:
 
 ```bash
-cd sp-emotron/tools/emotronic-pwa
+cd share/apps/emotronic
 python3 -m http.server 8080
 ```
 
@@ -47,7 +47,7 @@ Ein Druck auf Telefon kopiert in **Bereit**, auf der `Simon Feels!`-Auswahl oder
 | Datei | Zweck |
 |---|---|
 | `index.html` | Hauptanwendung mit Oberfläche, CSS und JavaScript |
-| `Emotronic-v2.34.html` | Versionierte Kopie der Hauptanwendung |
+| `versions/Emotronic-v2.35.html` | Versionierte Kopie der Hauptanwendung |
 | `manifest.webmanifest` | PWA-Metadaten und Installationskonfiguration |
 | `sw.js` | Service Worker für Offline-Cache |
 | `icon-192.png`, `icon-512.png` | PWA-Symbole |
@@ -55,11 +55,11 @@ Ein Druck auf Telefon kopiert in **Bereit**, auf der `Simon Feels!`-Auswahl oder
 | `favicon.png`, `apple-touch-icon.png` | Browser- und iOS-Symbole |
 | `HANDOFF-CODEX.md` | Technische Übergabe für Codex oder andere Entwickler |
 | `README-INSTALLATION.txt` | Kurze Installationshinweise |
-| `validate_emotronic.js` | Gesamtprüfung von Modell, Spiegelung, Emojis, Audio, Version und Laufzeitspiegel |
+| `validate_emotronic.js` | Gesamtprüfung von Modell, Spiegelung, Emojis, Audio, Version und Laufzeitordner |
 
-## Share-Spiegel
+## Laufzeitordner
 
-Für die öffentliche PWA werden folgende Laufzeitdateien bytegleich nach `../../../share/apps/emotronic/` gespiegelt:
+Alle Laufzeitdateien liegen ausschließlich unter `share/apps/emotronic/`:
 
 - `index.html`
 - `manifest.webmanifest`
@@ -69,8 +69,10 @@ Für die öffentliche PWA werden folgende Laufzeitdateien bytegleich nach `../..
 - `icon-192.png`
 - `icon-512.png`
 - `icon-maskable-512.png`
+- `assets/audio/emotronic/` einschließlich Manifest und optionalem Soft-Soundset
+- `versions/`
 
-Der versionierte Snapshot und die ausführlichen Entwicklungsdokumente bleiben in dieser maßgeblichen Quelle.
+Generator und Validator bleiben unter `sp-emotron/tools/emotronic-pwa/`, erzeugen und prüfen aber unmittelbar den öffentlichen Laufzeitordner.
 
 ## Normalmodus
 
@@ -299,7 +301,7 @@ Am Game Over zeigt die Zahl neben `R` sofort die Anzahl der gespeicherten Runden
 ## Ton
 
 - Jede Grundemotion hat eigene Klangfolgen je Intensität. Kombinationen, Erfolg, Fehler, Lebensverlust, Lebensgewinn sowie Ein- und Ausschalten besitzen eigene Signale.
-- Alle 40 Klangereignisse der optionalen weicheren Variante liegen unter `assets/audio/emotronic/8-bit_soft/`. Sie verwendet dieselben Tonhöhen und Rhythmen wie die klassische Synthese, aber weichere Ein-/Ausläufe sowie einen kurzen dezenten Nachhall.
+- Alle 40 Klangereignisse der optionalen weicheren Variante liegen unter `share/apps/emotronic/assets/audio/emotronic/8-bit_soft/`. Sie verwendet dieselben Tonhöhen und Rhythmen wie die klassische Synthese, aber weichere Ein-/Ausläufe sowie einen kurzen dezenten Nachhall.
 - `generate_audio_assets.py` erzeugt den Soft-Ordner und `manifest.json` reproduzierbar. Neue Sounds werden zuerst in den Datentabellen des Generators ergänzt und anschließend für das Soft-Set generiert.
 - Die Live-PWA verwendet mit `APP_CONFIG.audio.soundSet='classic'` standardmäßig wieder die ursprüngliche direkte Web-Audio-Synthese. Dadurch reagieren die klassischen Töne ohne den Ladeweg einer Audiodatei.
 - Der einzelne Wert kann optional auf `8-bit_soft` gesetzt werden, um vollständig auf das weiche WAV-Set zu wechseln. Kann eine Soft-WAV-Datei nicht geladen oder abgespielt werden, fällt die App für dieses Ereignis automatisch auf die klassische Synthese zurück. Erfolgreich geladene Sounds werden durch den Service Worker im Laufzeitcache gehalten.
@@ -330,14 +332,14 @@ Diese Reihenfolge soll bei weiteren Änderungen erhalten bleiben.
 ## Offline/PWA
 
 - Der Service Worker cached die Kernressourcen.
-- Die aktuelle Cache-Version lautet `emotronic-v134`.
+- Die aktuelle Cache-Version lautet `emotronic-v135`.
 - Beim Aktivieren werden nur ältere Emotronic-Caches entfernt; Caches anderer Anwendungen auf derselben Domain bleiben erhalten.
 - Nicht gecachte GET-Anfragen werden aus dem Netz geladen und anschließend gespeichert.
 - Bei einem Netzfehler wird als Fallback `index.html` verwendet.
 
 ## Prüfung
 
-Vom Repository-Root aus prüft `node sp-emotron/tools/emotronic-pwa/validate_emotronic.js` die JavaScript-Syntax, das gespiegelte Rad samt Ziffernsteuerung, alle kurzen Begriffe und eindeutigen Emojis, die acht emotionsbezogenen Kombi-Anker, beide WAV-Sets, Version/Cache sowie die bytegleichen HTML- und Service-Worker-Spiegel.
+Vom Repository-Root aus prüft `node sp-emotron/tools/emotronic-pwa/validate_emotronic.js` die JavaScript-Syntax, das gespiegelte Rad samt Ziffernsteuerung, alle kurzen Begriffe und eindeutigen Emojis, die acht emotionsbezogenen Kombi-Anker, das optionale WAV-Set, Version, Snapshot und Cache unmittelbar im Share-Ordner.
 
 ## Drittmaterial
 

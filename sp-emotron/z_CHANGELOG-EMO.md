@@ -4,25 +4,35 @@
 
 Ausgangsdatum: 2026-07-26
 
-*Diese Woche (ca. 2,2h, 2 Tage, Inhalte):*
-Emotronic auf das neue funktionale 8+1-Rad umgebaut und anschließend die klassische Audiosynthese als Standard mit Soft als einziger optionaler Variante wiederhergestellt.
+*Diese Woche (ca. 0,4h, 1 Tag, Inhalte):*
+Emotronic-Laufzeitdateien vollständig unter `share/apps/emotronic/` zusammengeführt.
 
-*Letzte Woche (ca. 3,0h, 2 Tage, Inhalte):*
-Emotronic-PWA übernommen, strukturiert, dokumentiert, Replay-Verlauf sowie Intensitätszeiger korrigiert, Emoji-Intensitätsvorschau ergänzt und ausgeschaltete Bedientasten verfeinert.
+*Letzte Woche (0h, 0 Tage, Inhalte):*
+Keine Einträge.
 
-*Dieser Monat (ca. 2,2h, 2 Tage, Inhalte):*
-Vollständiger Neuaufbau des Emotionsmodells samt gespiegeltem Rad, eindeutigen Emojis, neuen Kombinationen, angepassten Bewegungen sowie klassischem Standardsound mit optionaler Soft-Variante.
+*Dieser Monat (ca. 0,4h, 1 Tag, Inhalte):*
+Öffentliche PWA-Struktur bereinigt und alle Laufzeitdateien im Share-Pfad gebündelt.
 
 *Letzter Monat (0h, 0 Tage, Inhalte):*
 Keine Einträge.
 
-*Jahr (ca. 5,2h, 4 Tage, Inhalte):*
+*Jahr (ca. 5,6h, 5 Tage, Inhalte):*
 Erstübernahme, vollständiger Neuaufbau von Emotronic mit funktionalem 8+1-Rad und Wiederherstellung der klassischen Standardsynthese.
 
-*Insgesamt (ca. 5,2h, 4 Tage, Inhalte):*
+*Insgesamt (ca. 5,6h, 5 Tage, Inhalte):*
 Erstübernahme, vollständiger Neuaufbau von Emotronic mit funktionalem 8+1-Rad und Wiederherstellung der klassischen Standardsynthese.
 
 ## Log
+
+### 2026-11-18 - struktur, share, audio, pwa (ca. 0,4h)
+
+- Summary: Sämtliche Emotronic-Laufzeitdateien unter `share/apps/emotronic/` zusammengeführt; außerhalb verbleiben nur Projektunterlagen und Entwicklungswerkzeuge.
+- Struktur: Den bisherigen Root-Ordner `assets/` entfernt und das vollständige Soft-Audio-Set nach `share/apps/emotronic/assets/audio/emotronic/` verschoben; der leere Root-Ordner `tmp/` wurde entfernt.
+- Struktur: Historische HTML-Versionen nach `share/apps/emotronic/versions/` und die Installationshinweise in den Laufzeitordner verschoben; doppelte Laufzeitdateien aus `sp-emotron/tools/emotronic-pwa/` entfernt.
+- Tool: Audio-Generator und Validator auf den maßgeblichen Share-Pfad umgestellt.
+- PWA: Audio-Basispfad auf `./assets/audio/emotronic` geändert und Cache-Revision auf `emotronic-v135` erhöht.
+- Version: Emotronic v2.35 mit Cache-Revision 135.
+- Test: 40 WAV-Dateien neu erzeugt, App-Syntax, Audio-Manifest, Versionssnapshot, Cache und vollständige Laufzeitstruktur validiert.
 
 ### 2026-08-12 - audio, pwa, doku (ca. 0,2h)
 

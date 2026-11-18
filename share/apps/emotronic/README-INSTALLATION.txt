@@ -21,5 +21,6 @@ Enthalten
 - manifest.webmanifest
 - Service Worker sw.js
 - Icons für Android, iPhone und Maskable Icons
+- optionale Audiodateien unter assets/audio/emotronic/
 - Offline-App-Shell
 - Zwischenspeicherung verwendeter OpenMoji-Grafiken

@@ -1,10 +1,10 @@
 <!--
   ============================================================================
-  Emotronic v2.34
+  Emotronic v2.35
   Projektname: Emotronic
   Autor: Rasmus Klette
   Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-  Aktuelle Revision: 134
+  Aktuelle Revision: 135
   ============================================================================
 -->
 <!doctype html>
@@ -197,16 +197,16 @@ body{margin:0;width:100%;max-width:100%;height:100vh;height:100dvh;min-height:0;
 </main>
 <script>
 /* ==========================================================================
-   Emotronic v2.34 — CODEKOPF
+   Emotronic v2.35 — CODEKOPF
    Projektname: Emotronic
    Autor: Rasmus Klette
    Versionsschema: v1.00 = Ausgangsversion; jede abgeschlossene Änderung +0.01
-   Aktuelle Revision: 134
+   Aktuelle Revision: 135
    ========================================================================== */
 const APP_META=Object.freeze({
   name:'Emotronic',
-  version:'2.34',
-  revision:134,
+  version:'2.35',
+  revision:135,
   author:'Rasmus Klette'
 });
 
@@ -227,7 +227,7 @@ const APP_CONFIG={
     enabled:true,              // false = App bleibt vollständig lautlos
     masterVolume:1,            // 0 bis 1
     soundSet:'classic',        // einzige WAV-Alternative: '8-bit_soft'
-    assetRoot:'../../../assets/audio/emotronic'
+    assetRoot:'./assets/audio/emotronic'
   },
   normalMode:{
     minEmotionLevel:1,         // Grundemotionen dürfen nicht unter diese Stufe fallen

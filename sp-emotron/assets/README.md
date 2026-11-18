@@ -1,7 +1,5 @@
 # Assets Emotronic
 
-Dieser Ordner ist für spätere allgemeine Emotronic-Medien vorgesehen.
+Dieser Ordner ist ausschließlich für spätere allgemeine Spielmedien vorgesehen, die nicht zur installierbaren App gehören.
 
-Die unmittelbar für die installierbare PWA benötigten Icons bleiben gemäß Repository-Regeln gemeinsam mit dem Tool unter `../tools/emotronic-pwa/`.
-
-Die repositoryweit auslieferbaren optionalen Audiodateien liegen gemäß Sound-Workflow unter `../../assets/audio/emotronic/`. Dort befindet sich das Set `8-bit_soft` samt Manifest; erzeugt wird es durch `../tools/emotronic-pwa/generate_audio_assets.py`. Die klassische Standardvariante wird direkt per Web Audio synthetisiert.
+Sämtliche PWA-Laufzeitdateien einschließlich Icons und optionalem Audio liegen ausschließlich unter `../../share/apps/emotronic/`. Das Set `8-bit_soft` samt Manifest wird dort durch `../tools/emotronic-pwa/generate_audio_assets.py` erzeugt. Die klassische Standardvariante wird direkt per Web Audio synthetisiert.

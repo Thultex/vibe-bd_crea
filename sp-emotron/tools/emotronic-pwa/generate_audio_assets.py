@@ -12,7 +12,7 @@ from pathlib import Path
 
 SAMPLE_RATE = 22_050
 REPO_ROOT = Path(__file__).resolve().parents[3]
-AUDIO_ROOT = REPO_ROOT / "assets" / "audio" / "emotronic"
+AUDIO_ROOT = REPO_ROOT / "share" / "apps" / "emotronic" / "assets" / "audio" / "emotronic"
 
 EMOTION_PATTERNS = {
     "curiosity": [[523, 659], [523, 659, 784], [659, 784, 988]],

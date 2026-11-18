@@ -5,10 +5,10 @@ const path = require('path');
 
 const toolRoot = __dirname;
 const repoRoot = path.resolve(toolRoot, '..', '..', '..');
-const sourcePath = path.join(toolRoot, 'index.html');
-const swPath = path.join(toolRoot, 'sw.js');
 const shareRoot = path.join(repoRoot, 'share', 'apps', 'emotronic');
-const audioRoot = path.join(repoRoot, 'assets', 'audio', 'emotronic');
+const sourcePath = path.join(shareRoot, 'index.html');
+const swPath = path.join(shareRoot, 'sw.js');
+const audioRoot = path.join(shareRoot, 'assets', 'audio', 'emotronic');
 
 function assert(condition, message) {
   if (!condition) throw new Error(message);
@@ -189,7 +189,7 @@ for (const fragment of ['#e=', '#r=', '#s=', '#g=']) {
 assert(data.APP_CONFIG?.replay?.maxItems === 24, 'Normaler Replay-Verlauf ist nicht auf 24 Schritte begrenzt');
 assert(html.includes('state.history.splice(0,state.history.length-APP_CONFIG.replay.maxItems)'), 'Älteste Replay-Schritte werden bei neuer Eingabe nicht entfernt');
 assert(data.APP_CONFIG?.audio?.soundSet === 'classic', 'Klassische Web-Audio-Synthese ist nicht Standard');
-assert(data.APP_CONFIG?.audio?.assetRoot === '../../../assets/audio/emotronic', 'WAV-Basispfad ist nicht für Quelle und Laufzeitspiegel gemeinsam');
+assert(data.APP_CONFIG?.audio?.assetRoot === './assets/audio/emotronic', 'WAV-Basispfad liegt nicht innerhalb der veröffentlichten App');
 assert(html.includes("set!=='8-bit_soft'"), 'Soft-WAV ist nicht als einzige auswählbare Alternative begrenzt');
 assert(html.includes("if(set==='classic'){fallback();return}"), 'Direkte Auswahl der klassischen Synthese fehlt');
 assert(html.includes('function playSoundAsset(id,synthFallback)'), 'WAV-Wiedergabe mit Synthese-Fallback fehlt');
@@ -223,11 +223,9 @@ assert(playedAudioUrls[2]?.endsWith('/8-bit_soft/special_life_gain.wav'), 'Soft-
 const { version, revision } = data.APP_META;
 assert(html.includes(`Emotronic v${version}`), 'Codekopf und APP_META-Version weichen ab');
 assert(html.includes(`Aktuelle Revision: ${revision}`), 'Codekopf und APP_META-Revision weichen ab');
-const snapshotPath = path.join(toolRoot, `Emotronic-v${version}.html`);
+const snapshotPath = path.join(shareRoot, 'versions', `Emotronic-v${version}.html`);
 assert(fs.existsSync(snapshotPath), 'Versionierter Snapshot fehlt');
 sameBytes(sourcePath, snapshotPath, 'Snapshot');
-sameBytes(sourcePath, path.join(shareRoot, 'index.html'), 'Öffentlicher HTML-Spiegel');
-sameBytes(swPath, path.join(shareRoot, 'sw.js'), 'Öffentlicher Service-Worker-Spiegel');
 assert(read(swPath).toString('utf8').includes(`\${CACHE_PREFIX}${revision}`), 'Cache-Version stimmt nicht mit der Revision überein');
 
 const manifest = JSON.parse(read(path.join(audioRoot, 'manifest.json')).toString('utf8'));
@@ -256,4 +254,4 @@ for (const setName of manifest.sets) {
   }
 }
 
-console.log(`Emotronic v${version}: Modell, Kurzlinks, Spiegelung, Emojis, Kombis, Audio, Cache und Laufzeitspiegel OK`);
+console.log(`Emotronic v${version}: Modell, Kurzlinks, Spiegelung, Emojis, Kombis, Audio, Cache und Laufzeitordner OK`);

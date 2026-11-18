@@ -1,11 +1,11 @@
 # Emotronic PWA
 
-Dieser Ordner ist der veröffentlichte Laufzeitspiegel von Emotronic v2.34.
+Dieser Ordner ist die vollständige, maßgebliche und veröffentlichte Laufzeitfassung von Emotronic v2.35.
 
 - Öffentlicher Unterpfad: `/share/apps/emotronic/`
 - Erwarteter GitHub-Pages-Link:
   `https://thultex.github.io/vibe-bd_crea/share/apps/emotronic/`
-- Maßgebliche Quelle und vollständige Dokumentation:
+- Entwicklungswerkzeuge und vollständige Dokumentation:
   [`../../../sp-emotron/tools/emotronic-pwa/`](../../../sp-emotron/tools/emotronic-pwa/)
 
-Laufzeitdateien werden nicht direkt in diesem Ordner weiterentwickelt. Änderungen erfolgen zuerst in der maßgeblichen Quelle und werden nach erfolgreicher Prüfung bytegleich hierher gespiegelt.
+Alle Laufzeitdateien einschließlich Audio und Versionskopien bleiben in diesem Ordner. Generator und Validator unter `sp-emotron/tools/emotronic-pwa/` arbeiten unmittelbar mit diesem Pfad.
