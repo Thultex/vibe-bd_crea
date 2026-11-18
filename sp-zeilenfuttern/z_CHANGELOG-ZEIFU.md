@@ -4,25 +4,31 @@
 
 Ausgangsdatum: 2026-06-21
 
-*Diese Woche (ca. 0,2h, 1 Tag, 1 Inhalt):*
-Zeifu: Wortmenge nach Wort- und Silbenfiltern deterministisch skalierbar gemacht.
+*Diese Woche (ca. 0,3h, 1 Tag, 2 Inhalte):*
+Zeifu: Zentrale WL-Korpora angebunden und Wortmenge deterministisch skalierbar gehalten.
 
 *Letzte Woche (0,0h, 0 Tage, 0 Inhalte):*
 Keine Eintraege.
 
-*Dieser Monat (ca. 2,9h, 3 Tage, 49 Inhalte):*
-Zeifu: Wortanalyse-Tool um skalierbare Wortmengen ergänzt; bestehende Spielstruktur, Analyse-, Print- und Aufgabenfunktionen bleiben erhalten.
+*Dieser Monat (ca. 3,0h, 4 Tage, 50 Inhalte):*
+Zeifu: Wortanalyse-Tool um skalierbare Wortmengen und eine zentrale Korpusanbindung ergänzt.
 
 *Letzter Monat (0,0h, 0 Tage, 0 Inhalte):*
 Keine Eintraege.
 
-*Jahr (ca. 2,9h, 3 Tage, 49 Inhalte):*
+*Jahr (ca. 3,0h, 4 Tage, 50 Inhalte):*
 Zeifu: Grundstruktur und Wortanalyse-Tool einschließlich Aufgaben-, Print-, Text- und Wortmengenkonfiguration aufgebaut.
 
-*Insgesamt (ca. 2,9h, 3 Tage, 49 Inhalte):*
+*Insgesamt (ca. 3,0h, 4 Tage, 50 Inhalte):*
 Zeifu: Grundstruktur und Wortanalyse-Tool einschließlich Aufgaben-, Print-, Text- und Wortmengenkonfiguration aufgebaut.
 
 ## Log
+
+### 2026-11-18 - zeifu, tools, struktur (ca. 0,1h)
+
+- Struktur: `Leibnitz 100k` aus dem spielbezogenen Preset-Ordner in die allgemeine Ressource `z_wortlisten/korpora/` verschoben.
+- Tooling: Wortanalysewerkzeug lädt Text- und Browser-Fallback nun aus dem zentralen Korpusordner; die globale Fallbackvariable ist spielunabhängig benannt.
+- Versionen: word-task-analyzer v1.86.
 
 ### 2026-07-14 - zeifu, tools, doku (ca. 0,2h)
 

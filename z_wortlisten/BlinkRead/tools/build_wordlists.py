@@ -13,8 +13,10 @@ from pathlib import Path
 
 LISTEN = Path(__file__).resolve().parents[1]
 REPO = LISTEN.parents[1]
-LEIBNITZ = REPO / "sp-zeilenfuttern" / "tools" / "presets" / "leibnitz-100k.txt"
-VERSION = "1.00"
+KORPORA = REPO / "z_wortlisten" / "korpora"
+LEIBNITZ = KORPORA / "leibnitz-100k.txt"
+BRANDENBURG = KORPORA / "grundwortschatz-brandenburg-2024.txt"
+VERSION = "1.01"
 
 WORTDATEIEN = {
     2: "de_2_Zeichen.txt",
@@ -134,6 +136,31 @@ Sonnenhut Teekanne Vogelhaus Wasserhahn Wäschekorb Werkzeug
 Zahnbürste Zeitung Zeltplane
 """.split()
 
+# Kurze, konkrete Ergänzungen außerhalb des historischen Bestands. Die
+# Brandenburger Grundwörter bis sechs Zeichen werden zusätzlich dynamisch
+# eingelesen, damit die amtliche Referenz nicht im Skript dupliziert wird.
+NEUE_KURZWOERTER = """
+au ha hm na
+Aal Aas Ass Boa Deo Fee Fön Hai Klo Lid Oma Opa Sau Ski Tau Wal Wok Öse
+fit rar roh zäh
+Ahle Alge Boje Bock Brei Damm Düse Eber Elch Farn Floh Garn Harz Hefe Ibis Kanu
+Keil Klee Kohl Kran Laib Laus Lehm Luke Mais Mast Mohn Moor Mops Möwe Muli Pfau
+Pult Rebe Reis Riff Rübe Saat Säge Teer Tuch Tube Uhu Wels Zopf Kiwi
+äsen faul fein flau froh lahm matt müde nett reif rosa säen wach zart
+Acker Ahorn Angel Blase Borke Brett Daune Dohle Dolch Eiche Euter Falke Fasan
+Feile Feger Garbe Hafer Honig Hirse Iltis Kamel Kelle Klaue Klotz Kröte Lachs
+Laken Leine Linse Luchs Molch Nelke Otter Pfahl Pudel Quark Ranke Sirup Spatz
+Speck Speer Spule Toast Truhe Wachs Wespe Zeder
+atmen eckig eilen flink frech kauen nagen sauer tauen toben
+Ameise Becher Dattel Eichel Fichte Fliese Fohlen Gitter Hummel Kessel
+Kiefer Korken Kreide Krücke Lärche Marder Nudeln Oliven Qualle Ranzen Raspel
+Rechen Rüssel Schilf Sichel Spaten Storch
+angeln bissig blasen brauen heulen kehren kneten lecken melken rudern salzig
+stumpf wühlen zottig zupfen
+""".split()
+
+NICHT_UEBERNEHMEN = {"fleiss"}
+
 def normalisieren(text: str) -> str:
     return " ".join(text.replace("\ufeff", "").strip().split())
 
@@ -164,6 +191,10 @@ def leibnitz_raenge() -> dict[str, int]:
     for rang, wort in enumerate(lesen(LEIBNITZ), 1):
         raenge.setdefault(wort.casefold(), rang)
     return raenge
+
+
+def brandenburg_woerter() -> dict[str, str]:
+    return {wort.casefold(): wort for wort in lesen(BRANDENBURG)}
 
 
 def eindeutig(zeilen: list[str]) -> list[str]:
@@ -202,8 +233,9 @@ def planen() -> dict:
     gesehen: dict[str, set[str]] = {name: set() for name in dateinamen}
     entfernt: list[tuple[str, str, str]] = []
     verschoben: list[tuple[str, str, str]] = []
-    ergaenzt: list[tuple[str, str, int | None]] = []
+    ergaenzt: list[tuple[str, str, int | None, bool]] = []
     raenge = leibnitz_raenge()
+    brandenburg = brandenburg_woerter()
     gesamt = sum(len(v) for v in vorher.values())
     aktuell = 0
 
@@ -246,15 +278,22 @@ def planen() -> dict:
             gesehen[spezialname].add(schluessel)
             nachher[spezialname].append(wort)
 
-    for wort in NEUE_WOERTER:
+    kurze_grundwoerter = [
+        wort
+        for wort in brandenburg.values()
+        if 2 <= len(wort) <= 6 and wort.casefold() not in NICHT_UEBERNEHMEN
+    ]
+    for wort in NEUE_WOERTER + NEUE_KURZWOERTER + kurze_grundwoerter:
         dateiname = WORTDATEIEN.get(len(wort))
-        if not dateiname:
+        if not dateiname or ist_gesperrt(wort):
             continue
         schluessel = wort.casefold()
         if schluessel not in gesehen[dateiname]:
             gesehen[dateiname].add(schluessel)
             nachher[dateiname].append(wort)
-            ergaenzt.append((dateiname, wort, raenge.get(schluessel)))
+            ergaenzt.append(
+                (dateiname, wort, raenge.get(schluessel), schluessel in brandenburg)
+            )
 
     return {
         "vorher": vorher,
@@ -274,9 +313,11 @@ def vorschau(plan: dict) -> None:
     for wort, quelle, ziel in plan["verschoben"]:
         print(f"  - {wort!r}: {quelle} -> {ziel}")
     print(f"3/3 Ergänzen ({len(plan['ergaenzt'])})")
-    for dateiname, wort, rang in plan["ergaenzt"]:
-        quelle = f"Leibnitz-Rang {rang}" if rang else "nicht in Leibnitz-100k"
-        print(f"  + {dateiname}: {wort} [{quelle}]")
+    for dateiname, wort, rang, in_brandenburg in plan["ergaenzt"]:
+        quellen = [f"Leibnitz-Rang {rang}" if rang else "nicht in Leibnitz-100k"]
+        if in_brandenburg:
+            quellen.append("Grundwortschatz Brandenburg 2024")
+        print(f"  + {dateiname}: {wort} [{'; '.join(quellen)}]")
 
 
 def backup_anlegen(plan: dict) -> Path:
@@ -361,9 +402,11 @@ def main() -> int:
     if not LISTEN.is_dir() or LISTEN.is_symlink():
         print(f"FEHLER: ungültiges BlinkRead-Verzeichnis: {LISTEN}", file=sys.stderr)
         return 1
-    if not args.check and not LEIBNITZ.is_file():
-        print(f"FEHLER: Referenzliste fehlt: {LEIBNITZ}", file=sys.stderr)
-        return 1
+    if not args.check:
+        for referenz in (LEIBNITZ, BRANDENBURG):
+            if not referenz.is_file():
+                print(f"FEHLER: Referenzliste fehlt: {referenz}", file=sys.stderr)
+                return 1
 
     if not args.check:
         plan = planen()

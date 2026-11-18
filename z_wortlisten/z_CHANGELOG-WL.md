@@ -4,22 +4,22 @@
 
 Ausgangsdatum: 2026-11-18
 
-*Diese Woche (ca. 1,0h, 1 Tag, Inhalte):*
-Import, Wortbereinigung, 2-Zeichen-Liste, konkrete Wortergänzungen und Prüftool.
+*Diese Woche (ca. 1,5h, 1 Tag, Inhalte):*
+Import, Wortbereinigung, zentrale Korpora, kurze Grundwörter und Prüftool.
 
 *Letzte Woche (0,0h, 0 Tage, Inhalte):*
 Keine Einträge.
 
-*Dieser Monat (ca. 1,0h, 1 Tag, Inhalte):*
-Import und erste allgemeine Pflege der WL-Ressource.
+*Dieser Monat (ca. 1,5h, 1 Tag, Inhalte):*
+Import, erste allgemeine Pflege und Korpusabgleich der WL-Ressource.
 
 *Letzter Monat (0,0h, 0 Tage, Inhalte):*
 Keine Einträge.
 
-*Jahr (ca. 1,0h, 1 Tag, Inhalte):*
+*Jahr (ca. 1,5h, 1 Tag, Inhalte):*
 Aufbau der allgemeinen WL-Ressource.
 
-*Insgesamt (ca. 1,0h, 1 Tag, Inhalte):*
+*Insgesamt (ca. 1,5h, 1 Tag, Inhalte):*
 Aufbau der allgemeinen WL-Ressource.
 
 ## Log
@@ -34,4 +34,8 @@ Aufbau der allgemeinen WL-Ressource.
 - Fix: Leere Zeilen und Dubletten unabhängig von Groß- und Kleinschreibung bereinigt.
 - Tool: Reproduzierbare Bereinigung, Ergänzung und Validierung mit `BlinkRead/tools/build_wordlists.py` ergänzt; Ergänzungen werden gegen Bestand und `leibnitz-100k.txt` abgeglichen, Änderungen schrittweise vorab angezeigt, vor dem Schreiben gesichert und bei längeren Läufen mit Fortschrittsbalken begleitet.
 - Doku: Zweck, Kürzel `wl`, Auswahlregeln und Pflegeablauf beschrieben.
-- Versionen: build_wordlists v1.00.
+- Struktur: `Leibnitz 100k` aus Zeilenfuttern in den allgemeinen Ordner `korpora/` verschoben; Browser- und Textfassung bleiben zentral gemeinsam verfügbar.
+- Quelle: Amtlichen Grundwortschatz Brandenburg 2024 als Original-PDF und als bereinigte Textfassung mit 685 eindeutigen Grundformen aufgenommen.
+- Material: Einzelwortlisten besonders im Bereich zwei bis sechs Zeichen um amtliche Grundwörter und zusätzlich kuratierte konkrete Kurzbegriffe erweitert; Phrasen bleiben unverändert.
+- Tool: Vorschau weist nun neben dem Leibnitz-Rang auch Treffer im Grundwortschatz Brandenburg aus.
+- Versionen: build_wordlists v1.01.

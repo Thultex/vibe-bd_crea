@@ -78,7 +78,7 @@ Bildpfade werden nur eingetragen, wenn die Datei tatsächlich vorhanden ist.
 
 ### Ermittlungsgrundlage
 
-- `frequenz`: Gebrauchshäufigkeit und erwartete frühe Verfügbarkeit der zentralen Wörter beziehungsweise Phrase. Als zusätzlicher Anhaltspunkt dient die Repository-Liste `sp-zeilenfuttern/tools/presets/leibnitz-100k.txt`. Sie ersetzt keine kindgerichteten oder logopädischen Normdaten.
+- `frequenz`: Gebrauchshäufigkeit und erwartete frühe Verfügbarkeit der zentralen Wörter beziehungsweise Phrase. Als zusätzliche Anhaltspunkte dienen die Repository-Korpora `z_wortlisten/korpora/leibnitz-100k.txt` und `z_wortlisten/korpora/grundwortschatz-brandenburg-2024.txt`. Sie ersetzen keine kindgerichteten oder logopädischen Normdaten.
 - `komplexität`: phonologische, lexikalische und bei Phrasen auch grammatische beziehungsweise strukturelle Schwierigkeit.
 - `spezifität`: Breite plausibler Bedeutungen, Handlungen und Einsatzsituationen. Wert 1 bedeutet bewusst eine große Einsatzbreite; Wert 5 eine enge, stark situationsabhängige Verwendung.
 

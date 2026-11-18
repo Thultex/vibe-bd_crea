@@ -10,6 +10,7 @@ Die Wortlisten sind eine allgemeine Repo-Ressource und gehören zu keinem einzel
 - `de_Phrasen_*.txt`: historische Wortgruppen und Sätze; ihre inhaltliche Pflege erfolgt getrennt von den Wortlisten
 - `de_Spezial_Doppelkonsonanten.txt`: Wörter zum Üben von Doppelkonsonanten
 - `BlinkRead/tools/build_wordlists.py`: reproduzierbare Bereinigung, Ergänzung und Prüfung der BlinkRead-Einzelwörter
+- `korpora/`: zentrale Referenzbestände für Häufigkeit und schulischen Grundwortschatz
 
 ## Auswahlregeln
 
@@ -18,7 +19,7 @@ Die Wortlisten sind eine allgemeine Repo-Ressource und gehören zu keinem einzel
 - Abstrakte Fach-, Verwaltungs- und Nachrichtensprache wird nicht neu aufgenommen.
 - Schreibweise und Großschreibung folgen dem Deutschen; Dubletten werden unabhängig von Groß- und Kleinschreibung entfernt.
 - Jede kuratierte Ergänzung wird nach der Längenzuordnung gegen den gesamten vorhandenen Einzelwortbestand abgeglichen; vorhandene Wörter werden nicht erneut aufgenommen.
-- Zusätzlich zeigt die Vorschau den Fund und Häufigkeitsrang aus `sp-zeilenfuttern/tools/presets/leibnitz-100k.txt`. Ein fehlender Fund wird sichtbar markiert, aber nicht automatisch verworfen, weil konkrete Komposita in einer Häufigkeitsliste fehlen können.
+- Zusätzlich zeigt die Vorschau den Fund und Häufigkeitsrang aus `korpora/leibnitz-100k.txt` sowie die Zugehörigkeit zum `Grundwortschatz Brandenburg 2024`. Ein fehlender Leibnitz-Fund wird sichtbar markiert, aber nicht automatisch verworfen, weil konkrete Komposita in einer Häufigkeitsliste fehlen können.
 - Umlaute zählen als ein Zeichen. Leerzeichen und Satzzeichen zählen bei Phrasen mit.
 
 Die Phrasen werden bewusst nicht gemeinsam mit den Einzelwörtern überarbeitet, damit beide Materialarten getrennt geprüft und versioniert werden können.

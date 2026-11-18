@@ -29,6 +29,7 @@ WND: Projektgrundlage mit Dokumentation, vereinheitlichten Kartendaten und CardM
 - Summary: Den Projektordner auf `sp_wanderer` umbenannt.
 - Struktur: Alle 27 versionierten Projektdateien sowie die lokale Paper-PDF gemeinsam in den neuen Ordner verschoben.
 - Doku: Verbliebene aktuelle Pfadverweise auf `sp_wanderer/` angepasst.
+- Doku: Frequenzhinweis in `cards/info-listen.md` auf die zentralen WL-Korpora für Leibnitz und den Grundwortschatz Brandenburg umgestellt.
 - Test: Repositoryweit geprüft, dass keine aktuellen Verweise auf den alten Ordnernamen verbleiben; CardMaker-Build und Validierung aus dem neuen Pfad ausgeführt.
 
 ### 2026-11-15 - wnd, ideen, aufgaben, markdown (ca. 0,2h)
