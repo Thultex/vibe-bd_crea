@@ -26,9 +26,9 @@ Zeifu: Grundstruktur und Wortanalyse-Tool einschließlich Aufgaben-, Print-, Tex
 
 ### 2026-11-18 - zeifu, tools, struktur (ca. 0,1h)
 
-- Struktur: `Leibnitz 100k` aus dem spielbezogenen Preset-Ordner in die allgemeine Ressource `z_wortlisten/korpora/` verschoben.
-- Tooling: Wortanalysewerkzeug lädt Text- und Browser-Fallback nun aus dem zentralen Korpusordner; die globale Fallbackvariable ist spielunabhängig benannt.
-- Versionen: word-task-analyzer v1.86.
+- Struktur: `Leibnitz 100k` aus dem spielbezogenen Preset-Ordner in die allgemeine Ressource `z_wortlisten/korpora/` verschoben und dort getrennt als Quelle unbekannter Herkunft abgelegt.
+- Tooling: Wortanalysewerkzeug lädt Text- und Browser-Fallback nun aus dem zentralen Korpusordner; die globale Fallbackvariable ist spielunabhängig benannt und die irreführende Zuordnung zu „mixed typical“ entfernt.
+- Versionen: word-task-analyzer v1.87.
 
 ### 2026-07-14 - zeifu, tools, doku (ca. 0,2h)
 

@@ -39,3 +39,7 @@ Aufbau der allgemeinen WL-Ressource.
 - Material: Einzelwortlisten besonders im Bereich zwei bis sechs Zeichen um amtliche Grundwörter und zusätzlich kuratierte konkrete Kurzbegriffe erweitert; Phrasen bleiben unverändert.
 - Tool: Vorschau weist nun neben dem Leibnitz-Rang auch Treffer im Grundwortschatz Brandenburg aus.
 - Versionen: build_wordlists v1.01.
+- Struktur: Korpora nach `JAHR_name-art_umfang` getrennt; jeder Bestand beschreibt Inhalt, Felder, Reihenfolge und Sortiermöglichkeiten in `_info.md`.
+- Korrektur: Die historische Datei `leibnitz-100k` nicht länger dem Leipziger Mixed-Typical-Korpus zugeordnet; unbekannte Herkunft als `local` und erster nachvollziehbarer Repository-Stand als 2026 ausgewiesen.
+- Quelle: Vollständigen Leipziger Bestand `deu_mixed-typical_2011_1M` aufgenommen und die drei großen Rohdaten verlustfrei als reproduzierbare Gzip-Archive mit SHA-256-Manifest gespeichert.
+- Quelle: Lokale Wortfrequenz-/POS-Datenbank mit 864.609 Einträgen als verlustfreies Archiv sowie einen bereinigten TSV-Arbeitsauszug für 2 bis 6 Zeichen aufgenommen; ursprüngliche Korpusquelle bleibt als unbekannt dokumentiert.

@@ -30,6 +30,7 @@ WND: Projektgrundlage mit Dokumentation, vereinheitlichten Kartendaten und CardM
 - Struktur: Alle 27 versionierten Projektdateien sowie die lokale Paper-PDF gemeinsam in den neuen Ordner verschoben.
 - Doku: Verbliebene aktuelle Pfadverweise auf `sp_wanderer/` angepasst.
 - Doku: Frequenzhinweis in `cards/info-listen.md` auf die zentralen WL-Korpora für Leibnitz und den Grundwortschatz Brandenburg umgestellt.
+- Doku: Frequenzhinweis um die lokale POS-/Häufigkeitsquelle ergänzt und klargestellt, dass `leibnitz-100k` nicht als Teil des Leipziger Mixed-Typical-Korpus belegt ist.
 - Test: Repositoryweit geprüft, dass keine aktuellen Verweise auf den alten Ordnernamen verbleiben; CardMaker-Build und Validierung aus dem neuen Pfad ausgeführt.
 
 ### 2026-11-15 - wnd, ideen, aufgaben, markdown (ca. 0,2h)

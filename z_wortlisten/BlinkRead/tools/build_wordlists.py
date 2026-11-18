@@ -14,8 +14,16 @@ from pathlib import Path
 LISTEN = Path(__file__).resolve().parents[1]
 REPO = LISTEN.parents[1]
 KORPORA = REPO / "z_wortlisten" / "korpora"
-LEIBNITZ = KORPORA / "leibnitz-100k.txt"
-BRANDENBURG = KORPORA / "grundwortschatz-brandenburg-2024.txt"
+HISTORISCHE_100K = (
+    KORPORA
+    / "2026_local-haeufigkeitsliste_102k"
+    / "leibnitz-100k.txt"
+)
+BRANDENBURG = (
+    KORPORA
+    / "2024_brandenburg-grundwortschatz_685"
+    / "grundwortschatz-brandenburg-2024.txt"
+)
 VERSION = "1.01"
 
 WORTDATEIEN = {
@@ -186,9 +194,9 @@ def lesen(path: Path) -> list[str]:
     return [normalisieren(line) for line in path.read_text(encoding="utf-8-sig").splitlines()]
 
 
-def leibnitz_raenge() -> dict[str, int]:
+def historische_raenge() -> dict[str, int]:
     raenge: dict[str, int] = {}
-    for rang, wort in enumerate(lesen(LEIBNITZ), 1):
+    for rang, wort in enumerate(lesen(HISTORISCHE_100K), 1):
         raenge.setdefault(wort.casefold(), rang)
     return raenge
 
@@ -234,7 +242,7 @@ def planen() -> dict:
     entfernt: list[tuple[str, str, str]] = []
     verschoben: list[tuple[str, str, str]] = []
     ergaenzt: list[tuple[str, str, int | None, bool]] = []
-    raenge = leibnitz_raenge()
+    raenge = historische_raenge()
     brandenburg = brandenburg_woerter()
     gesamt = sum(len(v) for v in vorher.values())
     aktuell = 0
@@ -314,7 +322,10 @@ def vorschau(plan: dict) -> None:
         print(f"  - {wort!r}: {quelle} -> {ziel}")
     print(f"3/3 Ergänzen ({len(plan['ergaenzt'])})")
     for dateiname, wort, rang, in_brandenburg in plan["ergaenzt"]:
-        quellen = [f"Leibnitz-Rang {rang}" if rang else "nicht in Leibnitz-100k"]
+        quellen = [
+            f"Rang {rang} in historischer 100k-Liste"
+            if rang else "nicht in historischer 100k-Liste"
+        ]
         if in_brandenburg:
             quellen.append("Grundwortschatz Brandenburg 2024")
         print(f"  + {dateiname}: {wort} [{'; '.join(quellen)}]")
@@ -403,7 +414,7 @@ def main() -> int:
         print(f"FEHLER: ungültiges BlinkRead-Verzeichnis: {LISTEN}", file=sys.stderr)
         return 1
     if not args.check:
-        for referenz in (LEIBNITZ, BRANDENBURG):
+        for referenz in (HISTORISCHE_100K, BRANDENBURG):
             if not referenz.is_file():
                 print(f"FEHLER: Referenzliste fehlt: {referenz}", file=sys.stderr)
                 return 1
