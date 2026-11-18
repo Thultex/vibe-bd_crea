@@ -26,7 +26,6 @@ Fülle
 Kasse
 Masse
 Pappe
-Wolle
 Kanne
 Amme
 Summe
@@ -34,7 +33,6 @@ immer
 affig
 Mitte
 Wille
-essen
 Elle
 Tanne
 Sonne
@@ -67,5 +65,4 @@ Gasse
 Gully
 Buggy
 Motto
-rolle
 Teddy
