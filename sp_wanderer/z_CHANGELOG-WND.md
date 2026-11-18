@@ -4,25 +4,32 @@
 
 Ausgangsdatum: 2026-11-13
 
-*Diese Woche (ca. 4,9h, 2 Tage, 21 Inhalte):*
+*Diese Woche (ca. 0,1h, 1 Tag, 1 Inhalt):*
+WND: Projektordner auf `sp_wanderer` vereinheitlicht.
+
+*Letzte Woche (ca. 4,9h, 2 Tage, 21 Inhalte):*
 WND: Projektgrundlage übernommen, Kartenlisten vereinheitlicht und eine zentrale Ideenliste für alle Kartenarten ergänzt.
 
-*Letzte Woche (0,0h, 0 Tage, 0 Inhalte):*
-Keine Einträge.
-
-*Dieser Monat (ca. 4,9h, 2 Tage, 21 Inhalte):*
+*Dieser Monat (ca. 5,0h, 3 Tage, 22 Inhalte):*
 WND: Anleitung, Design, Materialbestand, Kartenverzeichnisse und getrennte CardMaker-Produktionswege mit Textfassungswahl aufgebaut.
 
 *Letzter Monat (0,0h, 0 Tage, 0 Inhalte):*
 Keine Einträge.
 
-*Jahr (ca. 4,9h, 2 Tage, 21 Inhalte):*
+*Jahr (ca. 5,0h, 3 Tage, 22 Inhalte):*
 WND: Projektgrundlage mit Dokumentation, vereinheitlichten Kartendaten und CardMaker-Ausgabe erstellt.
 
-*Insgesamt (ca. 4,9h, 2 Tage, 21 Inhalte):*
+*Insgesamt (ca. 5,0h, 3 Tage, 22 Inhalte):*
 WND: Projektgrundlage mit Dokumentation, vereinheitlichten Kartendaten und CardMaker-Ausgabe erstellt.
 
 ## Log
+
+### 2026-11-18 - wnd, struktur, ordner (ca. 0,1h)
+
+- Summary: Den Projektordner auf `sp_wanderer` umbenannt.
+- Struktur: Alle 27 versionierten Projektdateien sowie die lokale Paper-PDF gemeinsam in den neuen Ordner verschoben.
+- Doku: Verbliebene aktuelle Pfadverweise auf `sp_wanderer/` angepasst.
+- Test: Repositoryweit geprüft, dass keine aktuellen Verweise auf den alten Ordnernamen verbleiben; CardMaker-Build und Validierung aus dem neuen Pfad ausgeführt.
 
 ### 2026-11-15 - wnd, ideen, aufgaben, markdown (ca. 0,2h)
 
@@ -86,7 +93,7 @@ WND: Projektgrundlage mit Dokumentation, vereinheitlichten Kartendaten und CardM
 ### 2026-11-15 - wnd, struktur, doku, material, assets (ca. 1,5h)
 
 - Summary: Projekt und Kartenbestand auf das Kürzel `wnd`, sprechende gemeinsame TSV-Listen und eine Cardmaker-taugliche Bildstruktur umgestellt.
-- Struktur: Projektordner in `pr_wanderer` und die fünf zentralen Projektdokumente auf das Kürzel `wnd` umbenannt.
+- Struktur: Den damaligen Projektordner vereinheitlicht und die fünf zentralen Projektdokumente auf das Kürzel `wnd` umbenannt.
 - Material: Die zehn konkretisierten Karten vollständig in `liste-ort.tsv`, `liste-aufgabe.tsv`, `liste-wort.tsv` und `liste-figur.tsv` zusammengeführt; keine neuen Karten ergänzt.
 - Material: Alle Kartenlisten beginnen mit `anzahl`; die Stückzahl jeder konkretisierten Karte ist `1`, IDs bleiben kleingeschrieben.
 - Material: Das produktionsnahe Grundschema auf alle Kartenlisten übertragen; gruppenspezifische Inhaltsfelder stehen geschlossen nach `punkte`, gemeinsame Medien- und Bewertungsfelder folgen danach.

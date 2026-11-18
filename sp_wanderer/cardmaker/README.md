@@ -57,5 +57,5 @@ Die quadratischen Paper-Layouts sind auf eine dichte A4-Anordnung ausgelegt. Fü
 
 Damit passen bis zu 24 Paper-Karten in einem 4 × 6-Raster auf eine A4-Seite. Die Projekte definieren Kartenformat, Auflösung, Exportdateinamen und Exportrand; das A4-Seitenformat selbst ist eine globale CardMaker-PDF-Einstellung und wird nicht in einer `.cmp`-Datei gespeichert.
 
-Ein Bild wird nur benutzt, wenn der in `img` eingetragene Pfad beim Bauen tatsächlich existiert. Relative Bildpfade dürfen vom jeweiligen Listenordner oder vom Projektordner `pr_wanderer/` ausgehen.
+Ein Bild wird nur benutzt, wenn der in `img` eingetragene Pfad beim Bauen tatsächlich existiert. Relative Bildpfade dürfen vom jeweiligen Listenordner oder vom Projektordner `sp_wanderer/` ausgehen.
 Die Print-Layouts prüfen `img` direkt: ein leeres Feld zeigt die Textkarte, ein vorhandener Pfad die Bildkarte. Eine zusätzliche Hilfsvariable wird dafür nicht erzeugt.
