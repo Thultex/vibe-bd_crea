@@ -2,19 +2,19 @@
 
 ## Auftrag
 
-Diese Übergabe beschreibt den aktuellen Stand der installierbaren Emotronic-PWA. Änderungen erfolgen direkt in `share/apps/emotronic/index.html`. Die App ist bewusst eine weitgehend eigenständige Einzeldatei mit eingebettetem CSS und JavaScript. Außerhalb von `share/apps/emotronic/` liegen nur Entwicklungswerkzeuge und Projektdokumentation.
+Diese Übergabe beschreibt den aktuellen Stand der installierbaren Emotronic-PWA. Änderungen erfolgen zuerst in `sp-emotron/tools/emotronic-pwa/` und werden anschließend vollständig nach `share/apps/emotronic/` gespiegelt. Außerhalb dieser beiden Ordner liegen keine Emotronic-Laufzeitdateien.
 
 ## Relevante Dateien
 
-- `share/apps/emotronic/index.html` – maßgebliche Quelle
-- `share/apps/emotronic/versions/Emotronic-v2.35.html` – versionierter Snapshot, nach Änderungen neu erzeugen
+- `sp-emotron/tools/emotronic-pwa/index.html` – maßgebliche Quelle
+- `sp-emotron/tools/emotronic-pwa/versions/Emotronic-v2.35.html` – versionierter Snapshot, nach Änderungen neu erzeugen
 - `sp-emotron/tools/emotronic-pwa/generate_audio_assets.py` – reproduzierbarer Generator des optionalen Soft-Soundsets
-- `share/apps/emotronic/assets/audio/emotronic/` – Manifest und optionale Variante `8-bit_soft`
-- `share/apps/emotronic/sw.js` – Service Worker und Cache-Version
-- `share/apps/emotronic/manifest.webmanifest` – PWA-Manifest
+- `sp-emotron/tools/emotronic-pwa/assets/audio/emotronic/` – Manifest und optionale Variante `8-bit_soft`
+- `sp-emotron/tools/emotronic-pwa/sw.js` – Service Worker und Cache-Version
+- `sp-emotron/tools/emotronic-pwa/manifest.webmanifest` – PWA-Manifest
 - `sp-emotron/tools/emotronic-pwa/README.md` – Nutzer- und Funktionsdokumentation
 - `sp-emotron/tools/emotronic-pwa/validate_emotronic.js` – verbindliche Gesamtprüfung
-- `share/apps/emotronic/` – vollständiger und maßgeblicher Laufzeitordner
+- `share/apps/emotronic/` – vollständige veröffentlichte Kopie der PWA-Laufzeitdateien
 
 `sp-emotron/files/emotron.ai` und die Illustrator-Anwendung nur nach einer ausdrücklich darauf bezogenen Anweisung anfassen. Allgemeine Änderungsaufträge schließen sie nicht ein.
 
@@ -46,7 +46,7 @@ Globale Optionen nicht zwischen die Funktionslogik verteilen.
 
 ## Audio – Kerninvarianten
 
-- `share/apps/emotronic/assets/audio/emotronic/8-bit_soft/` enthält 40 Sound-IDs; `manifest.json` ist die maschinenlesbare Übersicht.
+- `sp-emotron/tools/emotronic-pwa/assets/audio/emotronic/8-bit_soft/` enthält 40 Sound-IDs; `manifest.json` ist die maschinenlesbare Übersicht. Die Share-Kopie ist bytegleich.
 - Neue oder geänderte Tonfolgen zuerst in `generate_audio_assets.py` pflegen und danach das Soft-Set neu generieren.
 - `playEmotionSound`, `playComboSound` und `playSpecialSound` laden die passenden WAV-Dateien; `playTonePattern` bleibt als automatischer Fehler-Fallback erhalten.
 - Die PWA verwendet standardmäßig mit `APP_CONFIG.audio.soundSet='classic'` wieder die ursprüngliche direkte Web-Audio-Synthese. Nur `8-bit_soft` ist als optionale Laufzeitvariante auswählbar. Fehlgeschlagene Soft-WAV-Wiedergabe fällt automatisch auf die klassische Synthese zurück.
@@ -166,7 +166,7 @@ In Simon ist die Kombi-Taste deutlich abgedunkelt und ignoriert direkte Eingaben
 node sp-emotron/tools/emotronic-pwa/validate_emotronic.js
 ```
 
-Der Validator prüft Syntax, 8+1-Datentabellen, eindeutige Begriffe und Emojis, Y-Spiegelung, Tastaturzuordnung, emotionsbezogene Kombi-Anker, WAV-Manifest und Soundset, Version/Cache sowie den Snapshot im maßgeblichen Laufzeitordner.
+Der Validator prüft Syntax, 8+1-Datentabellen, eindeutige Begriffe und Emojis, Y-Spiegelung, Tastaturzuordnung, emotionsbezogene Kombi-Anker, WAV-Manifest und Soundset, Version/Cache sowie die vollständige Share-Kopie.
 
 Für ein auslieferbares ZIP vom Repository-Root aus:
 

@@ -6,11 +6,11 @@ Emotronic ist eine eigenständige, installierbare Webanwendung ohne Framework od
 
 ## Quellen- und Veröffentlichungsstruktur
 
-- Maßgeblicher Laufzeitordner: `../share/apps/emotronic/`
-- Entwicklungswerkzeuge: `tools/emotronic-pwa/`
+- Maßgebliche vollständige Quelle: `tools/emotronic-pwa/`
+- Vollständige Veröffentlichungskopie: `../share/apps/emotronic/`
 - Installationspfad: `/share/apps/emotronic/`
 
-Der Laufzeitordner enthält `index.html`, Manifest, Service Worker, Icons, Audio und Versionskopien vollständig an einem Ort. Generator und Validator liegen als Werkzeuge im Spielprojekt, schreiben und prüfen jedoch direkt den Share-Pfad.
+Quelle und Veröffentlichungskopie enthalten `index.html`, Manifest, Service Worker, Icons, Audio und Versionskopien jeweils vollständig. Änderungen erfolgen zuerst in der Quelle; Generator und Validator synchronisieren beziehungsweise prüfen die Share-Kopie. Außerhalb dieser beiden Ordner liegen keine PWA-Laufzeitdateien.
 
 ## PWA
 
@@ -72,7 +72,7 @@ Der Laufzeitordner enthält `index.html`, Manifest, Service Worker, Icons, Audio
 
 ## Audio
 
-- Alle 40 Klangereignisse der optionalen weicheren Variante liegen reproduzierbar unter `/share/apps/emotronic/assets/audio/emotronic/8-bit_soft/`; sie verwendet die Tonhöhen und Rhythmen der klassischen Synthese mit weicheren Hüllkurven und kurzem Nachhall.
+- Alle 40 Klangereignisse der optionalen weicheren Variante liegen reproduzierbar unter `tools/emotronic-pwa/assets/audio/emotronic/8-bit_soft/` und bytegleich unter `/share/apps/emotronic/assets/audio/emotronic/8-bit_soft/`; sie verwendet die Tonhöhen und Rhythmen der klassischen Synthese mit weicheren Hüllkurven und kurzem Nachhall.
 - `generate_audio_assets.py` erzeugt das Soft-Set und `manifest.json` aus einer gemeinsamen Datengrundlage. Neue Sounds werden dort ergänzt und für den Soft-Ordner generiert.
 - Die Live-PWA verwendet wieder die ursprüngliche direkte Web-Audio-Synthese als klassische Standardvariante. Über den einzelnen Konfigurationswert `APP_CONFIG.audio.soundSet` kann ausschließlich auf `8-bit_soft` gewechselt werden.
 - Bei der Soft-WAV-Variante bleibt die klassische Web-Audio-Synthese als automatischer Fallback erhalten, falls eine Datei nicht geladen oder abgespielt werden kann.

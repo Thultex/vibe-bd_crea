@@ -4,32 +4,32 @@
 
 Ausgangsdatum: 2026-07-26
 
-*Diese Woche (ca. 0,4h, 1 Tag, Inhalte):*
-Emotronic-Laufzeitdateien vollständig unter `share/apps/emotronic/` zusammengeführt.
+*Diese Woche (ca. 0,5h, 1 Tag, Inhalte):*
+Emotronic-Laufzeitdateien in vollständiger Quelle und vollständiger Share-Kopie gebündelt.
 
 *Letzte Woche (0h, 0 Tage, Inhalte):*
 Keine Einträge.
 
-*Dieser Monat (ca. 0,4h, 1 Tag, Inhalte):*
-Öffentliche PWA-Struktur bereinigt und alle Laufzeitdateien im Share-Pfad gebündelt.
+*Dieser Monat (ca. 0,5h, 1 Tag, Inhalte):*
+PWA-Struktur bereinigt und Quelle sowie Veröffentlichung vollständig synchronisiert.
 
 *Letzter Monat (0h, 0 Tage, Inhalte):*
 Keine Einträge.
 
-*Jahr (ca. 5,6h, 5 Tage, Inhalte):*
+*Jahr (ca. 5,7h, 5 Tage, Inhalte):*
 Erstübernahme, vollständiger Neuaufbau von Emotronic mit funktionalem 8+1-Rad und Wiederherstellung der klassischen Standardsynthese.
 
-*Insgesamt (ca. 5,6h, 5 Tage, Inhalte):*
+*Insgesamt (ca. 5,7h, 5 Tage, Inhalte):*
 Erstübernahme, vollständiger Neuaufbau von Emotronic mit funktionalem 8+1-Rad und Wiederherstellung der klassischen Standardsynthese.
 
 ## Log
 
-### 2026-11-18 - struktur, share, audio, pwa (ca. 0,4h)
+### 2026-11-18 - struktur, share, audio, pwa (ca. 0,5h)
 
-- Summary: Sämtliche Emotronic-Laufzeitdateien unter `share/apps/emotronic/` zusammengeführt; außerhalb verbleiben nur Projektunterlagen und Entwicklungswerkzeuge.
-- Struktur: Den bisherigen Root-Ordner `assets/` entfernt und das vollständige Soft-Audio-Set nach `share/apps/emotronic/assets/audio/emotronic/` verschoben; der leere Root-Ordner `tmp/` wurde entfernt.
-- Struktur: Historische HTML-Versionen nach `share/apps/emotronic/versions/` und die Installationshinweise in den Laufzeitordner verschoben; doppelte Laufzeitdateien aus `sp-emotron/tools/emotronic-pwa/` entfernt.
-- Tool: Audio-Generator und Validator auf den maßgeblichen Share-Pfad umgestellt.
+- Summary: Emotronic als vollständige Quelle unter `sp-emotron/tools/emotronic-pwa/` und als vollständige Veröffentlichungskopie unter `share/apps/emotronic/` gebündelt.
+- Struktur: Den bisherigen Root-Ordner `assets/` entfernt und das vollständige Soft-Audio-Set in Quelle und Share-Kopie verschoben; der leere Root-Ordner `tmp/` wurde entfernt.
+- Struktur: Historische HTML-Versionen und Installationshinweise in beiden PWA-Bäumen eingeordnet; außerhalb dieser beiden Ordner verbleiben keine Laufzeitdateien.
+- Tool: Audio-Generator synchronisiert Quelle und Share-Audio; Validator prüft Kernressourcen, aktuellen Snapshot und alle WAV-Dateien bytegleich.
 - PWA: Audio-Basispfad auf `./assets/audio/emotronic` geändert und Cache-Revision auf `emotronic-v135` erhöht.
 - Version: Emotronic v2.35 mit Cache-Revision 135.
 - Test: 40 WAV-Dateien neu erzeugt, App-Syntax, Audio-Manifest, Versionssnapshot, Cache und vollständige Laufzeitstruktur validiert.

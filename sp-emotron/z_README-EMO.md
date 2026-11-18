@@ -11,8 +11,8 @@ Emotronic ist eine installierbare, offlinefähige PWA zur Auswahl, Darstellung, 
 - `z_CHANGELOG-EMO.md`: Arbeitsprotokoll und Versionsverlauf.
 - `assets/`: Platz für spätere allgemeine Medien außerhalb der PWA.
 - `files/`: Platz für spätere allgemeine Daten und nicht ausführbare Quellen.
-- `tools/emotronic-pwa/`: Generator, Validator und Entwicklungsdokumentation.
-- `../share/apps/emotronic/`: vollständige, maßgebliche und veröffentlichte PWA-Laufzeitdateien.
+- `tools/emotronic-pwa/`: vollständige maßgebliche PWA-Quelle mit Generator, Validator und Entwicklungsdokumentation.
+- `../share/apps/emotronic/`: vollständige veröffentlichte Kopie der PWA-Laufzeitdateien.
 
 ## Aktueller Stand
 

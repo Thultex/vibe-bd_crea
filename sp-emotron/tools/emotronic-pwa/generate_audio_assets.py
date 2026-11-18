@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import json
 import math
+import shutil
 import struct
 import wave
 from pathlib import Path
@@ -12,7 +13,9 @@ from pathlib import Path
 
 SAMPLE_RATE = 22_050
 REPO_ROOT = Path(__file__).resolve().parents[3]
-AUDIO_ROOT = REPO_ROOT / "share" / "apps" / "emotronic" / "assets" / "audio" / "emotronic"
+TOOL_ROOT = Path(__file__).resolve().parent
+AUDIO_ROOT = TOOL_ROOT / "assets" / "audio" / "emotronic"
+SHARE_AUDIO_ROOT = REPO_ROOT / "share" / "apps" / "emotronic" / "assets" / "audio" / "emotronic"
 
 EMOTION_PATTERNS = {
     "curiosity": [[523, 659], [523, 659, 784], [659, 784, 988]],
@@ -166,7 +169,8 @@ def main() -> None:
     }
     AUDIO_ROOT.mkdir(parents=True, exist_ok=True)
     (AUDIO_ROOT / "manifest.json").write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"Generated {len(specs)} sounds in {AUDIO_ROOT / '8-bit_soft'}")
+    shutil.copytree(AUDIO_ROOT, SHARE_AUDIO_ROOT, dirs_exist_ok=True)
+    print(f"Generated {len(specs)} sounds in {AUDIO_ROOT / '8-bit_soft'} and synchronized the share copy")
 
 
 if __name__ == "__main__":
