@@ -24,7 +24,12 @@ BRANDENBURG = (
     / "2024_brandenburg-grundwortschatz_685"
     / "grundwortschatz-brandenburg-2024.txt"
 )
-VERSION = "1.01"
+LOKALE_HAEUFIGKEIT = (
+    KORPORA
+    / "2021_local-wortfrequenz-pos_864k"
+    / "worte-2-6.tsv"
+)
+VERSION = "1.02"
 
 WORTDATEIEN = {
     2: "de_2_Zeichen.txt",
@@ -108,6 +113,7 @@ klinsmann lafontaine leipziger leverkusen münchener nordkorea oldenburg österr
 reutlingen schumacher schweizer siegfried steinbrück steinmeier südafrika thüringer
 tschechien washington wiesbaden wolfsburg zimmermann
 composite javascript
+max
 """.split())
 
 NEUE_WOERTER = """
@@ -167,6 +173,20 @@ angeln bissig blasen brauen heulen kehren kneten lecken melken rudern salzig
 stumpf wühlen zottig zupfen
 """.split()
 
+# Manuell geprüfte, kurze Ergänzungen aus der lokalen POS-/Häufigkeitsliste.
+# Die Quelle enthält auch Flexionsformen, Satzanfänge und Fachsprache; deshalb
+# werden nur diese allgemein verständlichen Einträge übernommen.
+NEUE_LOKALE_WOERTER = """
+ah tu
+bei kam gab ins sei zog hin lag her sah per gar bot tun ums mag tot bat via las
+hob Lok tut lud dir wog Jet Kot wem Alm Heu ach wen Huf arg war
+eine nahm ging trat fand dazu nahe lebt fiel will oben trug lief fort traf fuhr
+rein legt jene sagt sang wies Bass rief sank wahr samt Male half litt flog quer
+warf aufs Stab baut treu halb Null Funk Zoll ruft grob fing Blei Vieh ruht gebe
+hebt Kalk Watt Deck Maul Leib Mine Korn Gase Tank Zink fern rege Bart kahl Darm
+hing warb Sarg Lama Loge riss egal Zinn Joch
+""".split()
+
 NICHT_UEBERNEHMEN = {"fleiss"}
 
 def normalisieren(text: str) -> str:
@@ -205,6 +225,23 @@ def brandenburg_woerter() -> dict[str, str]:
     return {wort.casefold(): wort for wort in lesen(BRANDENBURG)}
 
 
+def lokale_haeufigkeiten() -> dict[str, int]:
+    haeufigkeiten: dict[str, int] = {}
+    zeilen = LOKALE_HAEUFIGKEIT.read_text(encoding="utf-8-sig").splitlines()
+    for zeile in zeilen[1:]:
+        teile = zeile.split("\t")
+        if len(teile) < 2:
+            continue
+        wort, anzahl = teile[:2]
+        try:
+            wert = int(anzahl)
+        except ValueError:
+            continue
+        schluessel = wort.casefold()
+        haeufigkeiten[schluessel] = max(haeufigkeiten.get(schluessel, 0), wert)
+    return haeufigkeiten
+
+
 def eindeutig(zeilen: list[str]) -> list[str]:
     ergebnis: list[str] = []
     gesehen: set[str] = set()
@@ -241,9 +278,10 @@ def planen() -> dict:
     gesehen: dict[str, set[str]] = {name: set() for name in dateinamen}
     entfernt: list[tuple[str, str, str]] = []
     verschoben: list[tuple[str, str, str]] = []
-    ergaenzt: list[tuple[str, str, int | None, bool]] = []
+    ergaenzt: list[tuple[str, str, int | None, bool, int | None]] = []
     raenge = historische_raenge()
     brandenburg = brandenburg_woerter()
+    lokale_werte = lokale_haeufigkeiten()
     gesamt = sum(len(v) for v in vorher.values())
     aktuell = 0
 
@@ -291,7 +329,12 @@ def planen() -> dict:
         for wort in brandenburg.values()
         if 2 <= len(wort) <= 6 and wort.casefold() not in NICHT_UEBERNEHMEN
     ]
-    for wort in NEUE_WOERTER + NEUE_KURZWOERTER + kurze_grundwoerter:
+    for wort in (
+        NEUE_WOERTER
+        + NEUE_KURZWOERTER
+        + NEUE_LOKALE_WOERTER
+        + kurze_grundwoerter
+    ):
         dateiname = WORTDATEIEN.get(len(wort))
         if not dateiname or ist_gesperrt(wort):
             continue
@@ -300,7 +343,13 @@ def planen() -> dict:
             gesehen[dateiname].add(schluessel)
             nachher[dateiname].append(wort)
             ergaenzt.append(
-                (dateiname, wort, raenge.get(schluessel), schluessel in brandenburg)
+                (
+                    dateiname,
+                    wort,
+                    raenge.get(schluessel),
+                    schluessel in brandenburg,
+                    lokale_werte.get(schluessel),
+                )
             )
 
     return {
@@ -321,13 +370,15 @@ def vorschau(plan: dict) -> None:
     for wort, quelle, ziel in plan["verschoben"]:
         print(f"  - {wort!r}: {quelle} -> {ziel}")
     print(f"3/3 Ergänzen ({len(plan['ergaenzt'])})")
-    for dateiname, wort, rang, in_brandenburg in plan["ergaenzt"]:
+    for dateiname, wort, rang, in_brandenburg, lokale_anzahl in plan["ergaenzt"]:
         quellen = [
             f"Rang {rang} in historischer 100k-Liste"
             if rang else "nicht in historischer 100k-Liste"
         ]
         if in_brandenburg:
             quellen.append("Grundwortschatz Brandenburg 2024")
+        if lokale_anzahl is not None:
+            quellen.append(f"lokale Häufigkeit {lokale_anzahl}")
         print(f"  + {dateiname}: {wort} [{'; '.join(quellen)}]")
 
 
@@ -414,7 +465,7 @@ def main() -> int:
         print(f"FEHLER: ungültiges BlinkRead-Verzeichnis: {LISTEN}", file=sys.stderr)
         return 1
     if not args.check:
-        for referenz in (HISTORISCHE_100K, BRANDENBURG):
+        for referenz in (HISTORISCHE_100K, BRANDENBURG, LOKALE_HAEUFIGKEIT):
             if not referenz.is_file():
                 print(f"FEHLER: Referenzliste fehlt: {referenz}", file=sys.stderr)
                 return 1

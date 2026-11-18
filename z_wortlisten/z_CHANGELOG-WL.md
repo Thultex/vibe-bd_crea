@@ -43,3 +43,7 @@ Aufbau der allgemeinen WL-Ressource.
 - Korrektur: Die historische Datei `leibnitz-100k` nicht länger dem Leipziger Mixed-Typical-Korpus zugeordnet; unbekannte Herkunft als `local` und erster nachvollziehbarer Repository-Stand als 2026 ausgewiesen.
 - Quelle: Vollständigen Leipziger Bestand `deu_mixed-typical_2011_1M` aufgenommen und die drei großen Rohdaten verlustfrei als reproduzierbare Gzip-Archive mit SHA-256-Manifest gespeichert.
 - Quelle: Lokale Wortfrequenz-/POS-Datenbank mit 864.609 Einträgen als verlustfreies Archiv sowie einen bereinigten TSV-Arbeitsauszug für 2 bis 6 Zeichen aufgenommen; ursprüngliche Korpusquelle bleibt als unbekannt dokumentiert.
+- Material: Lokale POS-/Häufigkeitsquelle mit dem bestehenden BlinkRead-Bestand abgeglichen und daraus 111 manuell geprüfte Wörter mit zwei bis vier Zeichen ergänzt; Phrasen bleiben unverändert.
+- Fix: Den übersehenen Personennamen `Max` entfernt sowie die deutsche Verbform `War` und die Interjektionen `Ah`/`Ach` regelgerecht kleingeschrieben.
+- Tool: Vorschau um den lokalen Häufigkeitswert ergänzt; Referenzen werden aus ihren getrennten Korpusverzeichnissen geladen.
+- Versionen: build_wordlists v1.02.

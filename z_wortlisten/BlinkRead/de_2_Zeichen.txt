@@ -23,3 +23,5 @@ au
 ha
 hm
 na
+ah
+tu
