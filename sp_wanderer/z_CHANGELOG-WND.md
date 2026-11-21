@@ -4,25 +4,32 @@
 
 Ausgangsdatum: 2026-11-13
 
-*Diese Woche (ca. 0,1h, 1 Tag, 1 Inhalt):*
-WND: Projektordner auf `sp_wanderer` vereinheitlicht.
+*Diese Woche (ca. 0,2h, 2 Tage, 2 Inhalte):*
+WND: Projektordner vereinheitlicht und die Ortskarte „Wüste“ mit Bildmaterial und Storytext eingepflegt.
 
 *Letzte Woche (ca. 4,9h, 2 Tage, 21 Inhalte):*
 WND: Projektgrundlage übernommen, Kartenlisten vereinheitlicht und eine zentrale Ideenliste für alle Kartenarten ergänzt.
 
-*Dieser Monat (ca. 5,0h, 3 Tage, 22 Inhalte):*
-WND: Anleitung, Design, Materialbestand, Kartenverzeichnisse und getrennte CardMaker-Produktionswege mit Textfassungswahl aufgebaut.
+*Dieser Monat (ca. 5,1h, 4 Tage, 23 Inhalte):*
+WND: Anleitung, Design, Materialbestand, Kartenverzeichnisse und getrennte CardMaker-Produktionswege mit Textfassungswahl aufgebaut; erste Ortskarte bebildert.
 
 *Letzter Monat (0,0h, 0 Tage, 0 Inhalte):*
 Keine Einträge.
 
-*Jahr (ca. 5,0h, 3 Tage, 22 Inhalte):*
-WND: Projektgrundlage mit Dokumentation, vereinheitlichten Kartendaten und CardMaker-Ausgabe erstellt.
+*Jahr (ca. 5,1h, 4 Tage, 23 Inhalte):*
+WND: Projektgrundlage mit Dokumentation, vereinheitlichten Kartendaten und CardMaker-Ausgabe sowie erster bebilderter Ortskarte erstellt.
 
-*Insgesamt (ca. 5,0h, 3 Tage, 22 Inhalte):*
-WND: Projektgrundlage mit Dokumentation, vereinheitlichten Kartendaten und CardMaker-Ausgabe erstellt.
+*Insgesamt (ca. 5,1h, 4 Tage, 23 Inhalte):*
+WND: Projektgrundlage mit Dokumentation, vereinheitlichten Kartendaten und CardMaker-Ausgabe sowie erster bebilderter Ortskarte erstellt.
 
 ## Log
+
+### 2026-11-21 - wnd, wüste, bildkarte (ca. 0,1h)
+
+- Summary: Die Ortskarte `e01` „Wüste“ vollständig in die Wanderer-Produktion eingepflegt.
+- Material: Bridge-Export `E01_Wüste-01.png` und editierbares Illustrator-Original `E01_Wüste.ai` verknüpft; die größere Beschnittfassung bleibt außerhalb der versionierten Produktion.
+- Text: Storyfassung „In der Wüste glühte der Sand heiß...“ und das konkrete Bildmotiv ergänzt.
+- CardMaker: Ortsreferenz mit dem vorhandenen Bildpfad neu erzeugt und Minimal- sowie Storyfassung validiert.
 
 ### 2026-11-18 - wnd, struktur, ordner (ca. 0,1h)
 

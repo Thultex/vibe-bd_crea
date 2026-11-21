@@ -1,3 +1,3 @@
 anzahl	id	punkte	ort	wort_1	wort_2	phrase	phrase_story	col1	col2	img	ai		subtyp	bildmotiv	frequenz	komplexität	spezifität	vorschläge-verben
-1	e01		Wüste	Sand	heiß	In der Wüste ist der Sand heiß.		0x54D7CC	0xFF9A5C				ort		2	2	3	""
+1	e01		Wüste	Sand	heiß	In der Wüste ist der Sand heiß.	In der Wüste glühte der Sand heiß...	0x54D7CC	0xFF9A5C	img/E01_Wüste-01.png	img/E01_Wüste.ai		ort	Düne und Fußspuren, Sand und Hitze	2	2	3	""
 1	e02		Wald	Baum	dunkel	Im Wald ist es dunkel. Überall stehen Bäume.		0x54D7CC	0xFF9A5C				ort		1	2	2	""

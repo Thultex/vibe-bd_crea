@@ -94,11 +94,18 @@ def validate_text_selection() -> None:
     for spec in LIST_SPECS:
         if not spec.story_field:
             continue
-        source_row = load_tsv(spec)[0]
-        if resolve_text(source_row, spec, "phrase_story") != source_row[spec.plain_field]:
+        source_rows = load_tsv(spec)
+        fallback_row = next((row for row in source_rows if not row.get(spec.story_field, "").strip()), None)
+        if fallback_row is None:
+            fallback_row = source_rows[0].copy()
+            fallback_row[spec.story_field] = ""
+        if resolve_text(fallback_row, spec, "phrase_story") != fallback_row[spec.plain_field]:
             raise RuntimeError(f"Leeres phrase_story fällt bei {spec.key} nicht auf phrase zurück.")
-        story_row = source_row.copy()
-        story_row[spec.story_field] = f"{source_row[spec.plain_field]} Danach geht die Geschichte weiter."
+
+        story_row = next((row.copy() for row in source_rows if row.get(spec.story_field, "").strip()), None)
+        if story_row is None:
+            story_row = source_rows[0].copy()
+            story_row[spec.story_field] = f"{story_row[spec.plain_field]} Danach geht die Geschichte weiter."
         if resolve_text(story_row, spec, "phrase_story") != story_row[spec.story_field]:
             raise RuntimeError(f"phrase_story wird bei {spec.key} nicht ausgewählt.")
         for light_card in (True, False):
